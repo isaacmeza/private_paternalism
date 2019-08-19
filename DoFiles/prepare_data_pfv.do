@@ -1,10 +1,5 @@
 use "$directorio/DB/Master.dta", clear
 
-
-cap drop tentado
-gen tentado=(tempt>=3) if tempt!=.
-
-
 *Aux Dummies 
 foreach var of varlist dow suc prenda_tipo edo_civil choose_same trabajo {
 	tab `var', gen(dummy_`var')
