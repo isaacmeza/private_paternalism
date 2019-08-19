@@ -1,0 +1,391 @@
+ \documentclass[11pt]{article}
+
+\input{preamble.tex}
+\usepackage{anyfontsize}
+%%% HELPER CODE FOR DEALING WITH EXTERNAL REFERENCES
+\usepackage{xr}
+\makeatletter
+\newcommand*{\addFileDependency}[1]{
+  \typeout{(#1)}
+  \@addtofilelist{#1}
+  \IfFileExists{#1}{}{\typeout{No file #1.}}
+}
+\makeatother
+
+\newcommand*{\myexternaldocument}[1]{
+    \externaldocument{#1}
+    \addFileDependency{#1.tex}
+    \addFileDependency{#1.aux}
+}
+
+%\myexternaldocument{OA}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% DOCUMENT
+\begin{document}
+
+
+\title{Frequent Payment \thanks{}}
+\author{Joyce Sadka \and Enrique Seira  }
+\date{This draft:  \today \\[2 cm]}
+
+%\vspace{.5in}
+
+
+\maketitle
+\begin{abstract}
+XXX 
+\end{abstract}
+
+\textbf{Keywords: } XXX.
+
+\textbf{XXX} XXX
+
+\newpage
+
+
+
+\section{Introduction}
+
+
+\section{Conclusion}
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+\pagebreak
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%BIBLIOGRAPHY
+
+
+
+
+\section{Tables}
+
+
+\begin{table}[H]
+\caption{Summary statistics}
+\label{SS}
+\begin{center}
+\scriptsize{\input{./Tables/SS.tex}}
+\end{center}
+ \footnotesize
+\textit{Notes:} 
+
+\textit{Do file: } \texttt{ss.do}
+\end{table}
+
+
+
+
+\pagebreak
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Figures}
+
+
+\begin{figure}[H]
+        \caption{Timeline of the experiment}
+    \label{micas}
+    \begin{center}
+        \centering
+        \includegraphics[width=0.70\textwidth]{Figuras/timeline_suc_exp.pdf}
+    \end{center}
+     \footnotesize \textit{Notes: } 
+      \footnotesize{ \textit{Do file: }  \texttt{timeline\_suc\_exp.do}}
+\end{figure}
+
+
+\begin{figure}[H]
+        \caption{Experiment arms}
+    \label{micas}
+    \begin{center}
+        \centering
+        \includegraphics[width=0.70\textwidth]{Figuras/exp_arms.pdf}
+    \end{center}
+     \footnotesize \textit{Notes: } 
+      \footnotesize{ }
+\end{figure}
+
+
+\begin{figure}[H]
+        \caption{Booklet with product information}
+    \label{micas}
+    \begin{center}
+        \centering
+        \includegraphics[width=\textwidth]{micas.pdf}
+    \end{center}
+     \footnotesize \textit{Notes: } 
+      \footnotesize{ }
+\end{figure}
+
+
+\begin{figure}[H]
+    \caption{Treatment Effect}
+    \label{Treatment Effect}
+    \begin{center}
+    \begin{subfigure}{0.4\textwidth}
+        \caption{Paid loan}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/te_graph_des_c.pdf}
+    \end{subfigure}
+    \begin{subfigure}{0.4\textwidth}
+        \caption{Number of payments}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/te_graph_num_p.pdf}
+    \end{subfigure}
+     \begin{subfigure}{0.4\textwidth}
+      \caption{Percentage of payment}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/te_graph_sum_porcp_c.pdf}
+    \end{subfigure}
+      \begin{subfigure}{0.4\textwidth}
+      \caption{Days to un-pledge}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/te_graph_dias_al_desempenyo.pdf}
+    \end{subfigure}
+    \end{center}
+     \footnotesize \textit{Notes: } 
+      \footnotesize{ \textit{Do file: }  \texttt{te.do}}
+\end{figure}
+
+\begin{figure}[H]
+        \caption{Reincidence}
+    \label{micas}
+    \begin{center}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/te_graph_reincidence.pdf}
+    \end{center}
+     \footnotesize \textit{Notes: } 
+      \footnotesize{ }
+\end{figure}
+
+
+\begin{figure}[H]
+    \caption{Heterogeneous Treatment Effect}
+    \label{Treatment Effect}
+    \begin{center}
+    \begin{subfigure}{0.4\textwidth}
+        \caption{Paid loan}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/he_dist_des_c.pdf}
+    \end{subfigure}
+    \begin{subfigure}{0.4\textwidth}
+        \caption{Number of payments}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/he_dist_num_p.pdf}
+    \end{subfigure}
+     \begin{subfigure}{0.4\textwidth}
+      \caption{Percentage of payment}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/he_dist_sum_porcp_c.pdf}
+    \end{subfigure}
+    \begin{subfigure}{0.4\textwidth}
+      \caption{Days to un-pledge}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/he_dist_dias_al_desempenyo.pdf}
+    \end{subfigure}    
+    \end{center}
+     \footnotesize \textit{Notes: } 
+      \footnotesize{ \textit{Do file: }  \texttt{te.do}}
+\end{figure}
+
+
+
+\begin{figure}[H]
+        \caption{Histogram of payments}
+    \label{HistPayments}
+    \begin{center}
+        \centering
+        \includegraphics[width=\textwidth]{hist_payments.pdf}
+    \end{center}
+     \footnotesize \textit{Notes: } 
+      \footnotesize{ \textit{Do file: }  \texttt{hist\_payments.do}}
+\end{figure}
+
+
+\begin{figure}[H]
+        \caption{Percentage of payments}
+    \label{HistPayments}
+    \begin{center}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/hist_perc_payment.pdf}
+    \end{center}
+     \footnotesize \textit{Notes: } 
+      \footnotesize{ \textit{Do file: }  \texttt{hist\_perc\_payment.do}}
+\end{figure}
+
+\pagebreak
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% APPENDIX TABLES
+
+\section{APPENDIX}
+
+\subsection{Tables}
+
+\begin{landscape}
+\begin{table}[H]
+\caption{Treatment effects results}
+\label{te_table}
+\begin{center}
+\scriptsize{\input{./Tables/te.tex}}
+\end{center}
+ \footnotesize
+\textit{Notes:} 
+
+\textit{Do file: } \texttt{te.do}
+\end{table}
+
+
+\end{landscape}
+
+
+
+
+
+\subsection{Figures}
+
+
+\begin{figure}[H]
+    \caption{Robustness check effect of arms in reincidence}
+    \label{Evolution payment}
+    \begin{center}
+    \begin{subfigure}{0.49\textwidth}
+        \caption{ No Choice/Fee}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/reincidence_robust_curve_p2.pdf}
+    \end{subfigure}
+     \begin{subfigure}{0.49\textwidth}
+      \caption*{No Choice/No fee}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/reincidence_robust_curve_p3.pdf}
+    \end{subfigure}
+    
+     \begin{subfigure}{0.49\textwidth}
+        \caption{Choice/Fee - SQ}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/reincidence_robust_curve_p4.pdf}
+    \end{subfigure}
+     \begin{subfigure}{0.49\textwidth}
+      \caption*{Choice/Fee - NSQ}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/reincidence_robust_curve_p5.pdf}
+    \end{subfigure}
+    
+    \begin{subfigure}{0.49\textwidth}
+        \caption{Choice/No fee - SQ}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/reincidence_robust_curve_p6.pdf}
+    \end{subfigure}
+     \begin{subfigure}{0.49\textwidth}
+      \caption*{Choice/No fee - NSQ}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/reincidence_robust_curve_p7.pdf}
+    \end{subfigure}
+    \end{center}
+     \footnotesize \textit{Notes: } 
+      \footnotesize{ \textit{Do file: }  \texttt{reincidence\_robust\_effect.do}}
+\end{figure}
+
+
+\pagebreak
+
+
+\begin{figure}[H]
+    \caption{Treatment Effect (conditional to positive payment)}
+    \label{Treatment Effect}
+    \begin{center}
+    \begin{subfigure}{0.4\textwidth}
+        \caption{Paid loan}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/te_graph_des_c_robust.pdf}
+    \end{subfigure}
+    \begin{subfigure}{0.4\textwidth}
+        \caption{Number of payments}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/te_graph_num_p_robust.pdf}
+    \end{subfigure}
+     \begin{subfigure}{0.4\textwidth}
+      \caption{Percentage of payment}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/te_graph_sum_porcp_c_robust.pdf}
+    \end{subfigure}
+      \begin{subfigure}{0.4\textwidth}
+      \caption{Days to un-pledge}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/te_graph_dias_al_desempenyo_robust.pdf}
+    \end{subfigure}
+    \end{center}
+     \footnotesize \textit{Notes: } 
+      \footnotesize{ \textit{Do file: }  \texttt{te.do}}
+\end{figure}
+
+\begin{figure}[H]
+        \caption{Reincidence (conditional to positive payment)}
+    \label{micas}
+    \begin{center}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/te_graph_reincidence_robust.pdf}
+    \end{center}
+     \footnotesize \textit{Notes: } 
+      \footnotesize{ }
+\end{figure}
+
+
+
+\begin{figure}[H]
+    \caption{Evolution of payment}
+    \label{Evolution payment}
+    \begin{center}
+    \begin{subfigure}{0.49\textwidth}
+        \caption{Paid loans}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/desempeno_evol.pdf}
+    \end{subfigure}
+     \begin{subfigure}{0.49\textwidth}
+      \caption*{}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/desempeno_evol_choice.pdf}
+    \end{subfigure}
+    
+     \begin{subfigure}{0.49\textwidth}
+        \caption{Average percentage of paid loans}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/sum_porc_evol.pdf}
+    \end{subfigure}
+     \begin{subfigure}{0.49\textwidth}
+      \caption*{}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/sum_porc_evol_choice.pdf}
+    \end{subfigure}
+    
+    \begin{subfigure}{0.49\textwidth}
+        \caption{Average percentage of paid loans (condition on paid loan)}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/sum_porc_cond_evol.pdf}
+    \end{subfigure}
+     \begin{subfigure}{0.49\textwidth}
+      \caption*{}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/sum_porc_cond_evol_choice.pdf}
+    \end{subfigure}
+    \end{center}
+     \footnotesize \textit{Notes: } 
+      \footnotesize{ \textit{Do file: }  \texttt{evol\_payment.do}}
+\end{figure}
+
+
+
+
+\end{document}
