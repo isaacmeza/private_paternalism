@@ -30,8 +30,8 @@ gen id = _n
 twoway (pcarrow id min_fecha_suc id max_fecha_suc, lcolor(gs5) lwidth(vvthick) msize(vhuge) mcolor(gs5)  barbsize(medlarge)) /// 
 (pcarrow id min_fecha id max_fecha, lcolor(gs12) lwidth(thick) msize(medium) mcolor(gs12) barbsize(medlarge)), ///
 	graphregion(color(white)) ytitle("Branch") ///
-	ylabel(1 "Calzada" 2 "Congreso" 3 "Insurgentes" 4 "José Martí" ///
-	5 "San Cosme" 6 "San Simón", angle(horizontal)) ///
+	ylabel(1 "Calzada" 2 "Congreso" 3 "Insurgentes" 4 "Jose Marti" ///
+	5 "San Cosme" 6 "San Simon", angle(horizontal)) ///
 	xtitle("") 	legend(off)
 	
 graph export "$directorio\Figuras\timeline_suc_exp_extended.pdf", replace
