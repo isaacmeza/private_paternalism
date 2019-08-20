@@ -24,7 +24,6 @@ global ind_var dummy_dow1-dummy_dow5 dummy_suc1-dummy_suc5 /// *Controls
 	dummy_prenda_tipo1-dummy_prenda_tipo4 dummy_edo_civil1-dummy_edo_civil3  /// *Categorical covariates
 	dummy_choose_same1-dummy_choose_same2   /// 
 	genero pres_antes fam_pide fam_comun ahorros cta_tanda /// *Dummy variables
-	renta comida medicina luz gas telefono agua  ///
 	masqueprepa estresado_seguido pb fb hace_presupuesto tentado low_cost low_time
 	
 *Independent variables (factor variables)

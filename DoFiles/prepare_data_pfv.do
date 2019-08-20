@@ -1,5 +1,10 @@
 use "$directorio/DB/Master.dta", clear
 
+
+cap drop tentado
+gen tentado=(tempt>=3) if tempt!=.
+
+
 *Aux Dummies 
 foreach var of varlist dow suc prenda_tipo edo_civil choose_same trabajo {
 	tab `var', gen(dummy_`var')
@@ -32,7 +37,7 @@ order suc_x_dia producto  NombrePignorante fecha_inicial /// *Admin variables
 keep if inrange(producto,4,7)
 *Frequent voluntary payment        
 gen pago_frec_voluntario_fee=(producto==5) if (producto==4 | producto==5)
-gen pago_frec_voluntario_nofee=(producto==7) if (producto==6 | producto==7)
+gen pago_frec_voluntario_promise=(producto==7) if (producto==6 | producto==7)
 gen pago_frec_voluntario=inlist(producto,5,7)
 
 		
@@ -62,7 +67,7 @@ qui sum pago_frec_voluntario if e(sample)
 local media_dep=r(mean)
 estadd scalar MDep = `media_dep'
 
-eststo: reg pago_frec_voluntario_nofee i.pb##i.tentado prestamo pr_recup ///
+eststo: reg pago_frec_voluntario_promise i.pb##i.tentado prestamo pr_recup ///
 	edad visit_number faltas genero dummy_dow* dummy_suc*, cluster(suc_x_dia) 
 qui sum pago_frec_voluntario if e(sample)
 local media_dep=r(mean)

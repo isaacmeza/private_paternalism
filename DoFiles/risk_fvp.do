@@ -162,7 +162,7 @@ roccomp $dep_var logit_pred  boost_pred  ,graph summary ///
 *Regression
 gen pago_frec_voluntario=inlist(producto,5,7)
 gen pago_frec_voluntario_fee=inlist(producto,5) if inlist(producto,4,5)
-gen pago_frec_voluntario_nofee=inlist(producto,7) if inlist(producto,6,7)
+gen pago_frec_voluntario_promise=inlist(producto,7) if inlist(producto,6,7)
 
 
 
@@ -175,6 +175,5 @@ reg logit_pred i.pago_frec_voluntario_fee, r
 reg boost_pred i.pago_frec_voluntario_fee, r
 
 
-
-reg logit_pred i.pago_frec_voluntario_nofee, r
-reg boost_pred i.pago_frec_voluntario_nofee, r
+reg logit_pred i.pago_frec_voluntario_promise, r
+reg boost_pred i.pago_frec_voluntario_promise, r
