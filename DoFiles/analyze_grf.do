@@ -2,7 +2,7 @@
 set more off
 graph drop _all
 *foreach depvar in des_c  dias_al_desempenyo  ganancia  num_p  sum_porcp_c reincidence {
-foreach depvar in des_c   {
+foreach depvar in des_c {
 
 	forvalues arm = 2/5 {
 
@@ -17,6 +17,7 @@ foreach depvar in des_c   {
 			append using `temp`i''
 			}
 		*Overlap assumption
+		
 		twoway (kdensity propensity_score if !missing(pro_2), lpattern(solid)) ///
 				(kdensity propensity_score if !missing(pro_3), lpattern(dot)) ///
 				(kdensity propensity_score if !missing(pro_4), lpattern(dash)) ///				
@@ -45,7 +46,7 @@ foreach depvar in des_c   {
 			legend(order(1 "No choice/Fee" 2 "No choice/Promise"	3 "Choice/Fee"	4 "Choice/Promise"))			
 			graph export "$directorio\Figuras\he_dist_`depvar'_`var'.pdf", replace
 		}
-			
+		
 		*Variable interaction results
 		
 	forvalues t = 2/5 {
@@ -65,18 +66,19 @@ foreach depvar in des_c   {
 	do "$directorio\DoFiles\plot_te_he.do" ///
 			"`depvar'" pro_`t' "`vrlist'" "`vrlistnames'"
 	
+	
 	*Lists of variables according to its clasification
 	local familia fam_pide fam_comun faltas
-	local ingreso prestamo low_cost low_time ahorros
+	local ingreso renta comida medicina luz gas telefono agua ahorros
 	local self_control pb fb hace_presupuesto tentado
 	local experiencia pres_antes cta_tanda pr_recup visit_number
-	local otros renta comida medicina luz gas telefono agua edad genero masqueprepa estresado_seguido
+	local otros prestamo edad genero masqueprepa estresado_seguido low_cost low_time
 	
 	local familianames fam.asks common.asks lack 
-	local ingresonames loan.amt low.cost low.time saves
+	local ingresonames rent food medicine electricity gas phone water  saves
 	local self_controlnames pb fb makes.budget tempt
 	local experiencianames pawn.before relay pr.recovery visits
-	local otrosnames rent food medicine electricity gas phone water age gender more.high.school stressed
+	local otrosnames loan.amt age gender more.high.school stressed low.cost low.time
 	
 	do "$directorio\DoFiles\coeficients.do" ///
 			"`depvar'" pro_`t' "`vrlist'" "`vrlistnames'" "`familia'" "`ingreso'" "`self_control'" ///

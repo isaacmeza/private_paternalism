@@ -157,61 +157,13 @@ matrix colnames other = "k" "beta" "se" "p"
 matrix rownames other = `rownms3'
 matsort other 2 "down"
 mat l other
- 
-
-*Matriz para toda la gráfica
-local nv = 0	
-foreach var of varlist `vrlist' {
-	local nv = `nv'+1
-}
-
-matrix results = J(`nv', 6, .) // empty matrix for results
-//  4 cols are: (1) Treatment arm, (2) beta, (3) std error, (4) pvalue 
- 
-*Pasamos los valores de una matriz a la otra.
-forvalues i = 1/`fam'{
-	forvalues j = 1/6{
-		mat results[`i',`j'] = family[`i',`j']
-	}
-}
-
-forvalues i = `=`fam'+1'/`=`fam'+`ing''{
-	local k = `i'-`fam'
-	forvalues j = 1/6{
-		mat results[`i',`j'] = income[`k',`j']
-	}
-}
-
-
-forvalues i = `=`fam'+`ing'+1'/`=`fam'+`ing'+`self''{
-	local k = `i'-`fam'-`ing'
-	forvalues j = 1/6{
-		mat results[`i',`j'] = selfc[`k',`j']
-	}
-}
-
-forvalues i = `=`fam'+`ing'+`self'+1'/`=`fam'+`ing'+`self'+`exp''{
-	local k = `i'-`fam'-`ing'-`self'
-	forvalues j = 1/6{
-		mat results[`i',`j'] = experience[`k',`j']
-	}
-}
-
-forvalues i = `=`fam'+`ing'+`self'+`exp'+1'/`=`fam'+`ing'+`self'+`exp'+`ot''{
-	local k = `i'-`fam'-`ing'-`self'- `exp'
-	forvalues j = 1/6{
-		mat results[`i',`j'] = other[`k',`j']
-	}
-}
-
-matrix colnames results = "k" "beta" "se" "p"
 
 /*
-	local familianames fam.asks common.asks lack 
-	local ingresonames loan.amt low.cost low.time saves
-	local self_controlnames pb fb makes.budget tempt
-	local experiencianames pawn.before relay pr.recovery visits
-	local otrosnames rent food medicine electricity gas phone water age gender more.high.school stressed
+	local familia fam_pide fam_comun faltas
+	local ingreso renta comida medicina luz gas telefono agua ahorros
+	local self_control pb fb hace_presupuesto tentado
+	local experiencia pres_antes cta_tanda pr_recup visit_number
+	local otros prestamo edad genero masqueprepa estresado_seguido low_cost low_time
 	
 */
 
@@ -224,73 +176,85 @@ local graphregion graphregion(fcolor(white) lstyle(none) color(white))
 local plotregion plotregion(margin(sides) fcolor(white) lstyle(none) lcolor(white)) 
 
 if "`depvar'" == "des_c" & "`treat'" == "pro_2"{
-	mat rownames family = "common_asks" "lack" "fam_asks"
-	mat rownames income = "loan_amt" "saves" "low_time" "low_cost"
-	mat rownames selfc = "pb" "fb" "makes_budget" "tempt"
-	mat rownames experience = "pawn_before" "pr_recovery" "visits" "relay"
-	mat rownames other = "water" "electricity" "gas" "medicine" ///
-	"phone" "rent" "stressed" "food" "age" "gender" "more_high_school"
-	
+	mat rownames family = "Common_asks" "Lack" "Fam_asks"
+	mat rownames income = "Water" "Electricity" "Gas" ///
+	"Medicine" "Phone" "Rent" "Food" "Saves"
+	mat rownames selfc = "Present_bias" "Future_bias" "Makes_budget" "Tempt"
+	mat rownames experience = "Pawn_before" "Prob_recovery" "Visits" ///
+	"Relay" 
+	mat rownames other = "Stressed" "Age" "Loan_amt" "Gender" ///
+	 "More_high_school" "Low_time" "Low_cost"	
+	 
 	coefplot (matrix(family[,2]), ci((family[,5] family[,6])) `options1' ciopts(lcolor(gs12))) /// 
 	(matrix(income[,2]), ci((income[,5] income[,6])) `options2' ciopts(lcolor(gs10))) ///
 	(matrix(selfc[,2]), ci((selfc[,5] selfc[,6])) `options3' ciopts(lcolor(gs8))) ///
 	(matrix(experience[,2]), ci((experience[,5] experience[,6])) `options4' ciopts(lcolor(gs6))) ///
 	(matrix(other[,2]), ci((other[,5] other[,6])) `options5' ciopts(lcolor(gs4))), ///
-	headings("common_asks" = "{bf:Family}" "loan_amt" = "{bf:Income}" ///
-	"pb" = "{bf:Self Control}" "pawn_before" = "{bf:Experience}" "water" = "{bf:Other}",labsize(vsmall)) ///
+	headings("Common_asks" = "{bf:Family}" "Water" = "{bf:Income}" ///
+	"Present_bias" = "{bf:Self Control}" "Pawn_before" = "{bf:Experience}" "Stressed" = "{bf:Other}",labsize(vsmall)) ///
 	legend(off) offset(0) xline(0) `graphregion' `plotregion' ylabel(,labsize( tiny ))	
 }
 if "`depvar'" == "des_c" & "`treat'" == "pro_3"{
-	mat rownames family = "lack"  "common_asks" "fam_asks"
-	mat rownames income = "loan_amt" "saves" "low_time" "low_cost"
-	mat rownames selfc = "fb" "tempt" "makes_budget" "pb" 
-	mat rownames experience = "pr_recovery" "pawn_before" "visits" "relay"
-	mat rownames other = "food" "water" "gas"  "electricity" "stressed" "medicine" ///
-	"rent" "phone" "gender" "age" "more_high_school"
+	mat rownames family = "Lack" "Common_asks" "Fam_asks"
+	mat rownames income = "Food" "Water" "Gas" "Electricity"  ///
+	"Medicine" "Rent" "Phone" "Saves"
+	mat rownames selfc = "Future_bias" "Tempt" "Makes_budget" "Present_bias"   
+	mat rownames experience = "Prob_recovery" "Pawn_before" "Visits" ///
+	"Relay" 
+	mat rownames other = "Stressed" "Gender" "Age" "Loan_amt"  ///
+	 "More_high_school" "Low_time" "Low_cost"	
 
 coefplot (matrix(family[,2]), ci((family[,5] family[,6])) `options1' ciopts(lcolor(gs12))) /// 
 	(matrix(income[,2]), ci((income[,5] income[,6])) `options2' ciopts(lcolor(gs10))) ///
 	(matrix(selfc[,2]), ci((selfc[,5] selfc[,6])) `options3' ciopts(lcolor(gs8))) ///
 	(matrix(experience[,2]), ci((experience[,5] experience[,6])) `options4' ciopts(lcolor(gs6))) ///
 	(matrix(other[,2]), ci((other[,5] other[,6])) `options5' ciopts(lcolor(gs4))), ///
-	headings("lack" = "{bf:Family}" "loan_amt" = "{bf:Income}" ///
-	"fb" = "{bf:Self Control}" "pr_recovery" = "{bf:Experience}" "food" = "{bf:Other}",labsize(vsmall)) ///
+	headings("Lack" = "{bf:Family}" "Food" = "{bf:Income}" ///
+	"Future_bias" = "{bf:Self Control}" "Prob_recovery" = "{bf:Experience}" "Stressed" = "{bf:Other}",labsize(vsmall)) ///
 	legend(off) offset(0) xline(0) `graphregion' `plotregion' ylabel(,labsize( tiny ))	
+	
+	
 }
 if "`depvar'" == "des_c" & "`treat'" == "pro_4"{
-	mat rownames family = "lack" "fam_asks" "common_asks"
-	mat rownames income = "low_time" "loan_amt" "low_cost" "saves"  
-	mat rownames selfc = "pb"  "tempt" "makes_budget" "fb" 
-	mat rownames experience = "pr_recovery" "pawn_before" "relay" "visits" 
-	mat rownames other = "phone" "medicine" "electricity" "gas" ///
-	"food" "water" "gender" "stressed" "rent"  "age" "more_high_school"
-	
+	mat rownames family = "Lack" "Fam_asks" "Common_asks" 
+	mat rownames income = "Phone" "Medicine" "Electricity" "Gas" ///
+	"Food" "Water" "Rent"  "Saves"
+	mat rownames selfc = "Future_bias" "Tempt" "Makes_budget" "Present_bias"   
+	mat rownames experience = "Prob_recovery" "Pawn_before" "Visits" ///
+	"Relay" 
+	mat rownames other = "Stressed" "Gender" "Age" "Loan_amt"  ///
+	 "More_high_school" "Low_time" "Low_cost"	
+	 
 coefplot (matrix(family[,2]), ci((family[,5] family[,6])) `options1' ciopts(lcolor(gs12))) /// 
 	(matrix(income[,2]), ci((income[,5] income[,6])) `options2' ciopts(lcolor(gs10))) ///
 	(matrix(selfc[,2]), ci((selfc[,5] selfc[,6])) `options3' ciopts(lcolor(gs8))) ///
 	(matrix(experience[,2]), ci((experience[,5] experience[,6])) `options4' ciopts(lcolor(gs6))) ///
 	(matrix(other[,2]), ci((other[,5] other[,6])) `options5' ciopts(lcolor(gs4))), ///
-	headings("lack" = "{bf:Family}" "low_time" = "{bf:Income}" ///
-	"pb" = "{bf:Self Control}" "pr_recovery" = "{bf:Experience}" "phone" = "{bf:Other}",labsize(vsmall)) ///
+	headings("Lack" = "{bf:Family}" "Phone" = "{bf:Income}" ///
+	"Future_bias" = "{bf:Self Control}" "Prob_recovery" = "{bf:Experience}" "Stressed" = "{bf:Other}",labsize(vsmall)) ///
 	legend(off) offset(0) xline(0) `graphregion' `plotregion' ylabel(,labsize( tiny ))	
+	
 }
 if "`depvar'" == "des_c" & "`treat'" == "pro_5"{
-	mat rownames family = "lack" "common_asks" "fam_asks" 
-	mat rownames income = "saves" "loan_amt" "low_cost" "low_time"  
-	mat rownames selfc = "fb"  "tempt" "fb" "makes_budget"  
-	mat rownames experience = "relay" "pr_recovery" "visits" "pawn_before" 
-	mat rownames other = "phone" "rent" "food" "medicine" "water" ///
-	"gas" "electricity" "stressed" "gender" "age" "more_high_school"
+	mat rownames family = "Lack" "Common_asks" "Fam_asks" 
+	mat rownames income = "Phone" "Rent" "Food" "Medicine" "Water" ///
+	"Gas" "Electricity" "Saves"
+	mat rownames selfc = "Future_bias" "Tempt" "Present_bias" "Makes_budget"    
+	mat rownames experience = "Relay" "Prob_recovery" "Visits" "Pawn_before" 
+	mat rownames other = "Stressed" "Gender" "Loan_amt" "Age"   ///
+	 "More_high_school" "Low_cost" "Low_time" 	
+	 
 	
 coefplot (matrix(family[,2]), ci((family[,5] family[,6])) `options1' ciopts(lcolor(gs12))) /// 
 	(matrix(income[,2]), ci((income[,5] income[,6])) `options2' ciopts(lcolor(gs10))) ///
 	(matrix(selfc[,2]), ci((selfc[,5] selfc[,6])) `options3' ciopts(lcolor(gs8))) ///
 	(matrix(experience[,2]), ci((experience[,5] experience[,6])) `options4' ciopts(lcolor(gs6))) ///
 	(matrix(other[,2]), ci((other[,5] other[,6])) `options5' ciopts(lcolor(gs4))), ///
-	headings("lack" = "{bf:Family}" "saves" = "{bf:Income}" ///
-	"fb" = "{bf:Self Control}" "phone" = "{bf:Experience}" "phone" = "{bf:Other}",labsize(vsmall)) ///
+	headings("Lack" = "{bf:Family}" "Phone" = "{bf:Income}" ///
+	"Future_bias" = "{bf:Self Control}" "Relay" = "{bf:Experience}" "Stressed" = "{bf:Other}",labsize(vsmall)) ///
 	legend(off) offset(0) xline(0) `graphregion' `plotregion' ylabel(,labsize( tiny ))	
-}
+	
+	}
 graph export "$directorio\Figuras\HE\he_int_vertical_`depvar'_`treat'.pdf", replace
 
 
