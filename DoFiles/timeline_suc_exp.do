@@ -5,25 +5,14 @@
 use "$directorio/DB/Base_Boleta_230dias_Seguimiento_Ago2013_ByPrenda_2", clear
 
 *Only empenios
-*keep if !missing(producto)
-
-*For the complete time line
-bysort suc: egen min_fecha_suc = min(fecha_inicial)
-bysort suc: egen max_fecha_suc = max(fecha_inicial)
-
 keep if !missing(producto)
-
 keep if clave_movimiento == 4
 
-
-
-
 *Get min/max dates of the experiment
-collapse (min) min_fecha = fecha_inicial  (max) max_fecha = fecha_inicial /// 
-(first) min_fecha_suc max_fecha_suc , by(suc)
+collapse (min) min_fecha = fecha_inicial  (max) max_fecha = fecha_inicial, by(suc)
 
-format min_fecha_suc %td
-format max_fecha_suc %td
+*Extended time line
+merge 1:1 suc using "$directorio/DB/time_line_aux"
 
 gen id = _n
 

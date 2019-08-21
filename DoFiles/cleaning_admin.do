@@ -56,7 +56,16 @@ label var clave_movimiento "Movement type"
 label values suc lab_suc
 label values clave_movimiento lab_mov
 
+*Base Auxiliar para la linea de tiempo*
+preserve
+bysort suc: egen min_fecha_suc = min(fecha_inicial)
+bysort suc: egen max_fecha_suc = max(fecha_inicial)
 
+collapse (min) min_fecha_suc = fecha_inicial /// 
+(max) max_fecha_suc = fecha_inicial, by(suc)
+
+saveold "$directorio/DB/time_line_aux", replace
+restore
 
 *Days passed between movement date and initial date
 gen dias_inicio = fecha_movimiento - fecha_inicial
