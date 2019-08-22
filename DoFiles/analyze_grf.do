@@ -1,8 +1,7 @@
 ** RUN R CODE HERE
 set more off
 graph drop _all
-*foreach depvar in des_c  dias_al_desempenyo  ganancia  num_p  sum_porcp_c reincidence {
-foreach depvar in des_c {
+foreach depvar in des_c  dias_al_desempenyo  ganancia  num_p  sum_porcp_c reincidence {
 
 	forvalues arm = 2/5 {
 
@@ -62,7 +61,7 @@ foreach depvar in des_c {
 	rent food medicine electricity gas phone water  ///
 	more.high.school stressed pb fb makes.budget tempt low.cost low.time
 
-	
+
 	do "$directorio\DoFiles\plot_te_he.do" ///
 			"`depvar'" pro_`t' "`vrlist'" "`vrlistnames'"
 	

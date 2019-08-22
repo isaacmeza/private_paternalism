@@ -62,7 +62,7 @@ preserve
 *bysort suc: egen max_fecha_suc = max(fecha_movimiento)
 
 collapse (min) min_fecha_suc = fecha_inicial /// 
-(max) max_fecha_suc = fecha_movimiento, by(suc)
+(max) max_fecha_suc = fecha_movimiento max_fecha2 = fecha_inicial, by(suc)
 
 saveold "$directorio/DB/time_line_aux", replace
 restore

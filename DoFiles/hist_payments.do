@@ -1,7 +1,11 @@
 
 use "$directorio/DB/Base_Boleta_230dias_Seguimiento_Ago2013_Grandota_2.dta", clear	   
 
-	
+label define product 1 "Control" 2 "No Choice/Fee" 3 "No Choice/Promise" ///
+ 4 "Choice/Fee - SQ" 5 "Choice/Fee - NSQ" 6 "Choice/Promise - SQ" ///
+ 7 "Choice/Promise - NSQ"
+ label values producto product
+
 *Histogram of payments by product
 twoway ( hist dias_inicio if inrange(dias_inicio, 1,120) , ///
 		xlabel(0(30)120) scheme(s2mono) graphregion(color(white)) percent by(producto, note(" ") legend(off)  graphregion(color(white)))) ///
@@ -13,3 +17,6 @@ twoway ( hist dias_inicio if inrange(dias_inicio, 1,120) , ///
 	xtitle("Elapsed days between initial date and current movement") ///
 	ytitle("Percent")
 graph export "$directorio/Figuras/hist_payments.pdf", replace
+
+
+

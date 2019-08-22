@@ -16,6 +16,13 @@ keep if dias_inicio == 115
 
 xtile perc = sum_porc_p , nq(100)
 
+
+label define product 1 "Control" 2 "No Choice/Fee" 3 "No Choice/Promise" ///
+ 4 "Choice/Fee - SQ" 5 "Choice/Fee - NSQ" 6 "Choice/Promise - SQ" ///
+ 7 "Choice/Promise - NSQ"
+ label values producto product
+
+
 twoway (hist sum_porc_p if perc<=99, percent  w(0.1) by(producto,  legend(off) note("") graphregion(color(white)))) ///
 	, ///
 	scheme(s2mono) ///

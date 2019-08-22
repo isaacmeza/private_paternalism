@@ -167,7 +167,7 @@ mat l other
 	
 */
 
-local options1 mcolor(gs12) msymbol(O)  msize(small) color(gs12)
+local options1 mcolor(gs11) msymbol(O)  msize(small) color(gs11)
 local options2 mcolor(gs10) msymbol(O)  msize(small) color(gs10)
 local options3 mcolor(gs8) msymbol(O)  msize(small) color(gs8)
 local options4 mcolor(gs6) msymbol(O)  msize(small) color(gs6)
@@ -185,14 +185,14 @@ if "`depvar'" == "des_c" & "`treat'" == "pro_2"{
 	mat rownames other = "Stressed" "Age" "Loan_amt" "Gender" ///
 	 "More_high_school" "Low_time" "Low_cost"	
 	 
-	coefplot (matrix(family[,2]), ci((family[,5] family[,6])) `options1' ciopts(lcolor(gs12))) /// 
+	coefplot (matrix(family[,2]), ci((family[,5] family[,6])) `options1' ciopts(lcolor(gs11))) /// 
 	(matrix(income[,2]), ci((income[,5] income[,6])) `options2' ciopts(lcolor(gs10))) ///
 	(matrix(selfc[,2]), ci((selfc[,5] selfc[,6])) `options3' ciopts(lcolor(gs8))) ///
 	(matrix(experience[,2]), ci((experience[,5] experience[,6])) `options4' ciopts(lcolor(gs6))) ///
 	(matrix(other[,2]), ci((other[,5] other[,6])) `options5' ciopts(lcolor(gs4))), ///
 	headings("Common_asks" = "{bf:Family}" "Water" = "{bf:Income}" ///
 	"Present_bias" = "{bf:Self Control}" "Pawn_before" = "{bf:Experience}" "Stressed" = "{bf:Other}",labsize(vsmall)) ///
-	legend(off) offset(0) xline(0) `graphregion' `plotregion' ylabel(,labsize( tiny ))	
+	legend(off) offset(0) xline(0) `graphregion' `plotregion' ylabel(,labsize( small )) 
 }
 if "`depvar'" == "des_c" & "`treat'" == "pro_3"{
 	mat rownames family = "Lack" "Common_asks" "Fam_asks"
@@ -204,7 +204,7 @@ if "`depvar'" == "des_c" & "`treat'" == "pro_3"{
 	mat rownames other = "Stressed" "Gender" "Age" "Loan_amt"  ///
 	 "More_high_school" "Low_time" "Low_cost"	
 
-coefplot (matrix(family[,2]), ci((family[,5] family[,6])) `options1' ciopts(lcolor(gs12))) /// 
+coefplot (matrix(family[,2]), ci((family[,5] family[,6])) `options1' ciopts(lcolor(gs11))) /// 
 	(matrix(income[,2]), ci((income[,5] income[,6])) `options2' ciopts(lcolor(gs10))) ///
 	(matrix(selfc[,2]), ci((selfc[,5] selfc[,6])) `options3' ciopts(lcolor(gs8))) ///
 	(matrix(experience[,2]), ci((experience[,5] experience[,6])) `options4' ciopts(lcolor(gs6))) ///
@@ -225,7 +225,7 @@ if "`depvar'" == "des_c" & "`treat'" == "pro_4"{
 	mat rownames other = "Stressed" "Gender" "Age" "Loan_amt"  ///
 	 "More_high_school" "Low_time" "Low_cost"	
 	 
-coefplot (matrix(family[,2]), ci((family[,5] family[,6])) `options1' ciopts(lcolor(gs12))) /// 
+coefplot (matrix(family[,2]), ci((family[,5] family[,6])) `options1' ciopts(lcolor(gs11))) /// 
 	(matrix(income[,2]), ci((income[,5] income[,6])) `options2' ciopts(lcolor(gs10))) ///
 	(matrix(selfc[,2]), ci((selfc[,5] selfc[,6])) `options3' ciopts(lcolor(gs8))) ///
 	(matrix(experience[,2]), ci((experience[,5] experience[,6])) `options4' ciopts(lcolor(gs6))) ///
@@ -245,20 +245,22 @@ if "`depvar'" == "des_c" & "`treat'" == "pro_5"{
 	 "More_high_school" "Low_cost" "Low_time" 	
 	 
 	
-coefplot (matrix(family[,2]), ci((family[,5] family[,6])) `options1' ciopts(lcolor(gs12))) /// 
+coefplot (matrix(family[,2]), ci((family[,5] family[,6])) `options1' ciopts(lcolor(gs11))) /// 
 	(matrix(income[,2]), ci((income[,5] income[,6])) `options2' ciopts(lcolor(gs10))) ///
 	(matrix(selfc[,2]), ci((selfc[,5] selfc[,6])) `options3' ciopts(lcolor(gs8))) ///
 	(matrix(experience[,2]), ci((experience[,5] experience[,6])) `options4' ciopts(lcolor(gs6))) ///
 	(matrix(other[,2]), ci((other[,5] other[,6])) `options5' ciopts(lcolor(gs4))), ///
 	headings("Lack" = "{bf:Family}" "Phone" = "{bf:Income}" ///
 	"Future_bias" = "{bf:Self Control}" "Relay" = "{bf:Experience}" "Stressed" = "{bf:Other}",labsize(vsmall)) ///
-	legend(off) offset(0) xline(0) `graphregion' `plotregion' ylabel(,labsize( tiny ))	
+	legend(off) offset(0) xline(0) `graphregion' `plotregion' ylabel(,labsize( small ))	
 	
 	}
 graph export "$directorio\Figuras\HE\he_int_vertical_`depvar'_`treat'.pdf", replace
 
 
-
+/*
+HAY QUE CAMBIAR LOS TAMAÑOS DE LAS 
+*/
 
 
 
