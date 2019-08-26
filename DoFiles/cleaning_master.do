@@ -18,9 +18,17 @@ if "`var'"!="prenda"{
 *Variable elimination
 drop prod regalo pres_fundacion ledara AW AX question_miss question_miss1 question_miss2 Mprep
 
-bysort prenda: keep if _n==1
+*How many people repeat the survey?
+bysort prenda: gen aux = _N
+
+*Encuestas repetidas 446+6+10: 462
+*Personas que repitieron encuesta: 227
+
+*bysort prenda: keep if _n==1
 	
-merge 1:1 prenda using "$directorio/DB/Base_Boleta_230dias_Seguimiento_Ago2013_ByPrenda_2", keep(2 3) nogen
+*merge 1:1 prenda using "$directorio/DB/Base_Boleta_230dias_Seguimiento_Ago2013_ByPrenda_2", keep(2 3) nogen
+
+merge m:1 prenda using "$directorio/DB/Base_Boleta_230dias_Seguimiento_Ago2013_ByPrenda_2", keep(2 3) nogen
 
 
 *Impute/recover some answers of survey answers for 'Pignorante' who has several 'prendas'
@@ -53,5 +61,5 @@ sum t_llegar, d
 gen low_time=(t_llegar<=r(p50)) if t_llegar!=.
 
 
-	
-save "$directorio/DB/Master.dta", replace
+*save "$directorio/DB/Master.dta", replace	
+save "$directorio/DB/Master_with_duplicates.dta", replace
