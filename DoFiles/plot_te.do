@@ -16,9 +16,9 @@ local T_line_options lwidth(thin) lcolor(gray) lpattern(dash)
 // To show significance: hollow gray (gs7) will be insignificant from 0,
 //  filled-in gray significant at 10%
 //  filled-in black significant at 5%
-local estimate_options_0  mcolor(gs10)   msymbol(Oh) msize(medlarge)
-local estimate_options_90 mcolor(gs7)   msymbol(O)  msize(medlarge)
-local estimate_options_95 mcolor(black) msymbol(O)  msize(medlarge)
+local estimate_options_0  mcolor(gs9)  msymbol(Oh) msize(large)
+local estimate_options_90 mcolor(gs7)   msymbol(O)  msize(large)
+local estimate_options_95 mcolor(black) msymbol(O)  msize(large)
 local rcap_options_0  lcolor(gs10)   lwidth(thin)
 local rcap_options_90 lcolor(gs7)   lwidth(thin)
 local rcap_options_95 lcolor(black) lwidth(thin)

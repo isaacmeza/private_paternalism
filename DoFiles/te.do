@@ -1,6 +1,6 @@
 *Treatment effects main results (Graphs and Table)
 
-
+set more off
 *ADMIN DATA
 use "$directorio/DB/Base_Boleta_230dias_Seguimiento_Ago2013_ByPrenda_2.dta", clear
 
@@ -10,7 +10,8 @@ tab suc, gen(dummy_suc)
 
 
 local C0 = "prestamo dummy_*" /*Controls*/
-local resultados des_c  dias_al_desempenyo  ganancia  num_p  sum_porcp_c 
+local resultados des_c  dias_al_desempenyo  ganancia  num_p  sum_porcp_c refrendo
+
 
 eststo clear
 	

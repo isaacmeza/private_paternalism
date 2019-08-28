@@ -3,7 +3,8 @@ library(grf)
 library(ggplot2)
 
 # SET WORKING DIRECTORY
-setwd('C:/Users/xps-seira/Dropbox/Apps/ShareLaTeX/Donde 2019')
+#setwd('C:/Users/xps-seira/Dropbox/Apps/ShareLaTeX/Donde 2019')
+setwd("C:\\Users\\Ricardo\\Documents\\SEIRA\\donde2019")
 set.seed(5289374)
 
 heterogeneity_effect <- function(data_in,treatment_var,outcome_var) {
@@ -55,7 +56,9 @@ write_csv(data.out,filename)
 
 # READ DATASET
 # Prenda level
-data <- read_csv('C:/Users/xps-seira/Downloads/heterogeneity_grf.csv')
+#data <- read_csv('C:/Users/xps-seira/Downloads/heterogeneity_grf.csv')
+
+data <- read_csv('C:\\Users\\Ricardo\\Documents\\SEIRA\\donde2019\\_aux\\heterogeneity_grf.csv')
 # Customer level
 data_customer <- data %>% 
   select(-c(dummy_prenda_tipo1, dummy_prenda_tipo2, dummy_prenda_tipo3, dummy_prenda_tipo4,
