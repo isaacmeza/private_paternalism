@@ -94,7 +94,7 @@ XXX
 
 \begin{figure}[H]
         \caption{Timeline of the experiment}
-    \label{micas}
+    \label{timeline}
     \begin{center}
         \centering
         \includegraphics[width=0.70\textwidth]{Figuras/timeline_suc_exp_extended.pdf}
@@ -106,7 +106,7 @@ XXX
 
 \begin{figure}[H]
         \caption{Experiment arms}
-    \label{micas}
+    \label{exp_arms}
     \begin{center}
         \centering
         \includegraphics[width=0.70\textwidth]{Figuras/exp_arms.pdf}
@@ -147,6 +147,11 @@ XXX
         \centering
         \includegraphics[width=\textwidth]{Figuras/te_graph_sum_porcp_c.pdf}
     \end{subfigure}
+     \begin{subfigure}{0.4\textwidth}
+      \caption{Refrendum}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/te_graph_ref_c.pdf}
+    \end{subfigure}
       \begin{subfigure}{0.4\textwidth}
       \caption{Days to un-pledge}
         \centering
@@ -159,7 +164,7 @@ XXX
 
 \begin{figure}[H]
         \caption{Reincidence}
-    \label{micas}
+    \label{reincidence_welfare}
     \begin{center}
         \centering
         \includegraphics[width=\textwidth]{Figuras/te_graph_reincidence.pdf}
@@ -171,7 +176,7 @@ XXX
 
 \begin{figure}[H]
     \caption{Heterogeneous Treatment Effect}
-    \label{Treatment Effect}
+    \label{heterogeneous_te}
     \begin{center}
     \begin{subfigure}{0.4\textwidth}
         \caption{Paid loan}
@@ -188,6 +193,11 @@ XXX
         \centering
         \includegraphics[width=\textwidth]{Figuras/he_dist_sum_porcp_c.pdf}
     \end{subfigure}
+     \begin{subfigure}{0.4\textwidth}
+      \caption{Refrendum}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/he_dist_ref_c.pdf}
+    \end{subfigure}    
     \begin{subfigure}{0.4\textwidth}
       \caption{Days to un-pledge}
         \centering
@@ -200,8 +210,8 @@ XXX
 
 
 \begin{figure}[H]
-    \caption{Heterogeneous Treatment Effect for Paid Loan Branches}
-    \label{Treatment Effect branch}
+    \caption{Heterogeneous Treatment Effect for Paid Loan}
+    \label{heterogeneous_paid_loan}
     \begin{center}
     \begin{subfigure}{0.3\textwidth}
         \caption{x}
@@ -297,6 +307,18 @@ XXX
 \end{table}
 
 
+\begin{table}[H]
+\caption{Treatment effects results (conditional on positive payment)}
+\label{te_robust_table}
+\begin{center}
+\scriptsize{\input{./Tables/te_robust.tex}}
+\end{center}
+ \footnotesize
+\textit{Notes:} 
+
+\textit{Do file: } \texttt{te.do}
+\end{table}
+
 \end{landscape}
 
 
@@ -308,7 +330,7 @@ XXX
 
 \begin{figure}[H]
     \caption{Robustness check effect of arms in reincidence}
-    \label{Evolution payment}
+    \label{robust_reincidence}
     \begin{center}
     \begin{subfigure}{0.49\textwidth}
         \caption{ No Choice/Fee}
@@ -353,7 +375,7 @@ XXX
 
 \begin{figure}[H]
     \caption{Treatment Effect (conditional to positive payment)}
-    \label{Treatment Effect}
+    \label{te_robust_table}
     \begin{center}
     \begin{subfigure}{0.4\textwidth}
         \caption{Paid loan}
@@ -370,6 +392,11 @@ XXX
         \centering
         \includegraphics[width=\textwidth]{Figuras/te_graph_sum_porcp_c_robust.pdf}
     \end{subfigure}
+     \begin{subfigure}{0.4\textwidth}
+      \caption{Referendum}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/te_graph_ref_c_robust.pdf}
+    \end{subfigure}
       \begin{subfigure}{0.4\textwidth}
       \caption{Days to un-pledge}
         \centering
@@ -382,7 +409,7 @@ XXX
 
 \begin{figure}[H]
         \caption{Reincidence (conditional to positive payment)}
-    \label{micas}
+    \label{reincidence_positive}
     \begin{center}
         \centering
         \includegraphics[width=\textwidth]{Figuras/te_graph_reincidence_robust.pdf}

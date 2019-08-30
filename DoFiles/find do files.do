@@ -6,4 +6,4 @@ clear
 set more off
  
  
-rcd "$directorio/DoFiles"  : find *.do , match(Promise) show
+rcd "$directorio/DoFiles"  : find *.do , match(pago_frec_volu) show

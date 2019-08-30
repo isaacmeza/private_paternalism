@@ -3,30 +3,36 @@ library(grf)
 library(ggplot2)
 
 # SET WORKING DIRECTORY
-setwd('C:/Users/xps-seira/Dropbox/Apps/ShareLaTeX/Donde 2019')
+setwd('C:/Users/xps-seira/Dropbox/Apps/ShareLaTeX/Donde2019')
 set.seed(5289374)
 
 
 rf_predict <- function(data_in,take.up) {
   
   require("dplyr")
-  data_frame <- data_in %>%
-    filter(data_in[,take.up] == 1 | data_in[,take.up] == 0) %>%
-    select(-c(suc_x_dia, producto, NombrePignorante, fecha_inicial,pago_frec_voluntario_fee,
-              pago_frec_voluntario_nofee,pago_frec_voluntario), take.up ) %>%
-    drop_na()   
-  
+  data_train <- data_in %>% 
+    filter(insample == 1) 
+
+  data_test <- data_in %>% 
+    select(-c(take.up, nombrepignorante, prenda, insample))
+###################################################################  
+###################################################################  
+
+    
   # PREPARE VARIABLES
-  X <- select(data_frame,-c(take.up))
-  W <- as.numeric(data_frame[,take.up] == 1)
- 
+  X <- select(data_train,-c(take.up, nombrepignorante, prenda, insample))
+  W <- as.numeric(data_train[,take.up] == 1)
+
+###################################################################  
+###################################################################  
+  
   
   # ESTINATE MODEL
-  propensity.forest = regression_forest(X, W)
-  rf_predict = predict(propensity.forest)$predictions
-  hist(rf_predict, xlab = "predictions")
+  pred.forest = regression_forest(X, W)
+  rf_pred = predict(pred.forest,data_test)$predictions
+  hist(rf_pred, xlab = "predictions")
   
-  data.out <- add_column(data_frame, rf_predict)
+  data.out <- add_column(data_in, rf_pred)
   filename <- paste("_aux/pred_",take.up,".csv", sep="") 
   write_csv(data.out,filename)
 }
@@ -35,12 +41,9 @@ rf_predict <- function(data_in,take.up) {
 
 # READ DATASET
 # Prenda level
-data <- read_csv('C:/Users/xps-seira/Downloads/data_pfv.csv')
+data <- read_csv('./_aux/data_pfv_test.csv')
 
-
-
-#Heterogeneous Effects
-for (t in c("pago_frec_voluntario")) {
-  rf_predict(data,t) 
-}
-
+#RF Predictions
+rf_predict(data,"pago_frec_vol") 
+rf_predict(data,"pago_frec_vol_fee")
+rf_predict(data,"pago_frec_vol_promise") 

@@ -1,54 +1,27 @@
 ** RUN R CODE HERE
 
-global dep_var pago_frec_voluntario
-import delimited "$directorio/_aux/pred_pago_frec_voluntario.csv", clear
+global dep_var pago_frec_vol
 
+import delimited "$directorio\_aux\pred_${dep_var}.csv", clear
+tempfile temp_rf_pred
+save `temp_rf_pred'
+
+import delimited "$directorio\_aux\data_pfv.csv", clear 
+merge 1:1 nombrepignorante prenda using `temp_rf_pred', ///
+	keepusing(rf_pred) keep(3)
+	
 ********************************************************************************
-*Measures of fit (OOS)
-
-*Difference in l1 of probabilities (predicted values)
-qui gen error_rf=abs(rf_predict-$dep_var) 
-	su error_rf
-
-
-*Correlation
-corr $dep_var rf_predict   
-
-*MSE
-* - regression forest
-
-gen rf_eps=$dep_var-rf_predict 
-gen rf_eps2= rf_eps*rf_eps
-gen rf_ss=sum(rf_eps2)
-count 
-local mse=rf_ss[_N] / `r(N)'
-di " "
-di "Regression Forest:  mse=" `mse' 
-
-*ROC curve
-roctab $dep_var rf_predict   ,graph summary  graphregion(color(white))
-
 ********************************************************************************
 *INTERACTIONS	
 		
-
-local nv = 0	
-foreach var of varlist prestamo pr_recup  edad visit_number faltas /// *Continuous covariates
-	genero pres_antes fam_pide fam_comun ahorros cta_tanda /// *Dummy variables
-	renta comida medicina luz gas telefono agua  ///
-	masqueprepa estresado_seguido pb fb hace_presupuesto tentado low_cost low_time {
-	
-	local nv = `nv'+1
-	}
-
-matrix results = J(`nv', 4, .) // empty matrix for results
+matrix results = J(4, 4, .) // empty matrix for results
 //  4 cols are: (1) Variable, (2) beta, (3) std error, (4) pvalue
 		
 local row = 1		
-foreach var of varlist  pb fb  tentado {
+foreach var of varlist  pb fb  tentado rec_cel {
 	
 
-	qui reg rf_predict `var'  ahorros cta_tanda edad genero renta comida medicina luz gas telefono agua, r
+	qui reg rf_pred `var'  ahorros cta_tanda edad genero renta comida medicina luz gas telefono agua , r
 	local df = e(df_r)	
 	
 	matrix results[`row',1] = `row'
@@ -72,7 +45,7 @@ svmat results, names(col)
 gen varname = ""
 local row = 1
 local lbl = "k"
-foreach var in  pb fb  tempt {
+foreach var in  pb fb  tempt reminder {
 	replace varname = "`var'" in `row'
 	local varn  `var'
 	local lbl  `lbl' `row' "`varn'"
@@ -128,10 +101,11 @@ graph twoway
 			xscale(noline) /* because manual axis at 0 with yline above) */
 			`plotregion' `graphregion'  
 			legend(off)
-			xlabel(1(1)`nv',valuelabel  angle(vertical))
+			xlabel(1(1)4,valuelabel  angle(vertical))
 			;
 
 #delimit cr
-graph export "$directorio\Figuras\fvp_interactions_rf_cond.pdf", replace
+graph export "$directorio\Figuras\\${dep_var}_interactions_rf_cond.pdf", replace
+graph export "$directorio\Figuras\\${dep_var}_interactions_rf_cond.png", replace
 
 		

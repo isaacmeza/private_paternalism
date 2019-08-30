@@ -1,7 +1,7 @@
 ** RUN R CODE HERE
 set more off
 graph drop _all
-foreach depvar in des_c  dias_al_desempenyo  ganancia  num_p  sum_porcp_c reincidence {
+foreach depvar in des_c  dias_al_desempenyo  num_p  sum_porcp_c ref_c reincidence {
 
 	forvalues arm = 2/5 {
 
@@ -39,11 +39,11 @@ foreach depvar in des_c  dias_al_desempenyo  ganancia  num_p  sum_porcp_c reinci
 		
 		*Heterogeneous effect distributions - SEPARATE
 		
-		foreach var of varlist pro_2 pro_3 pro_4 pro_5{
+		foreach tarm of varlist pro_2 pro_3 pro_4 pro_5{
 			twoway (kdensity tau_hat_oobpredictions if !missing(`var'), lpattern(solid)), ///
 			scheme(s2mono) graphregion(color(white)) ytitle("Density") xtitle("Effect") ///
 			legend(order(1 "No choice/Fee" 2 "No choice/Promise"	3 "Choice/Fee"	4 "Choice/Promise"))			
-			graph export "$directorio\Figuras\he_dist_`depvar'_`var'.pdf", replace
+			graph export "$directorio\Figuras\he_dist_`depvar'_`tarm'.pdf", replace
 		}
 		
 		*Variable interaction results

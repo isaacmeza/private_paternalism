@@ -3,8 +3,8 @@ library(grf)
 library(ggplot2)
 
 # SET WORKING DIRECTORY
-#setwd('C:/Users/xps-seira/Dropbox/Apps/ShareLaTeX/Donde 2019')
-setwd("C:\\Users\\Ricardo\\Documents\\SEIRA\\donde2019")
+setwd('C:/Users/xps-seira/Dropbox/Apps/ShareLaTeX/Donde2019')
+#setwd("C:\\Users\\Ricardo\\Documents\\SEIRA\\donde2019")
 set.seed(5289374)
 
 heterogeneity_effect <- function(data_in,treatment_var,outcome_var) {
@@ -12,8 +12,9 @@ heterogeneity_effect <- function(data_in,treatment_var,outcome_var) {
 require("dplyr")
 data_frame <- data_in %>%
   filter(data_in[,treatment_var] == 1 | data_in[,treatment_var] == 0) %>%
-  select(-c( pro_2, pro_3, pro_4, pro_5 , t_producto, NombrePignorante, fecha_inicial, des_c, dias_al_desempenyo , 
-             ganancia  , num_p , sum_porcp_c, reincidence), treatment_var, outcome_var ) %>%
+  select(-c( pro_2, pro_3, pro_4, pro_5 , t_producto, NombrePignorante, fecha_inicial,
+             des_c, dias_al_desempenyo , 
+             ref_c  , num_p , sum_porcp_c, reincidence), treatment_var, outcome_var ) %>%
   drop_na()  
 
 
@@ -56,9 +57,9 @@ write_csv(data.out,filename)
 
 # READ DATASET
 # Prenda level
-#data <- read_csv('C:/Users/xps-seira/Downloads/heterogeneity_grf.csv')
+data <- read_csv('./_aux/heterogeneity_grf.csv')
+#data <- read_csv('C:\\Users\\Ricardo\\Documents\\SEIRA\\donde2019\\_aux\\heterogeneity_grf.csv')
 
-data <- read_csv('C:\\Users\\Ricardo\\Documents\\SEIRA\\donde2019\\_aux\\heterogeneity_grf.csv')
 # Customer level
 data_customer <- data %>% 
   select(-c(dummy_prenda_tipo1, dummy_prenda_tipo2, dummy_prenda_tipo3, dummy_prenda_tipo4,
@@ -70,7 +71,7 @@ data_customer <- data %>%
 
 #Heterogeneous Effects
 for (t in c("pro_2", "pro_3", "pro_4", "pro_5")) {
-  for (dep in c("des_c", "dias_al_desempenyo" , "ganancia"  , "num_p" , "sum_porcp_c" )) {
+  for (dep in c("des_c", "dias_al_desempenyo", "num_p" , "sum_porcp_c", "ref_c" )) {
     heterogeneity_effect(data,t,dep) 
   }
   heterogeneity_effect(data_customer,t,"reincidence") 

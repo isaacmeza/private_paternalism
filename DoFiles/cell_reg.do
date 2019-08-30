@@ -1,5 +1,5 @@
 *Dependent variable
-global dep_var pago_frec_voluntario
+global dep_var pago_frec_vol
 *Independent variable (dummies)
 global ind_var_dummy  dummy_prenda_tipo1-dummy_prenda_tipo4 dummy_edo_civil1-dummy_edo_civil3  /// *Categorical covariates
 	dummy_choose_same1-dummy_choose_same2   /// 

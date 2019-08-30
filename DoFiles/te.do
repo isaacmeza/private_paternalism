@@ -10,7 +10,7 @@ tab suc, gen(dummy_suc)
 
 
 local C0 = "prestamo dummy_*" /*Controls*/
-local resultados des_c  dias_al_desempenyo  ganancia  num_p  sum_porcp_c refrendo
+local resultados des_c  dias_al_desempenyo  num_p  sum_porcp_c ref_c
 
 
 eststo clear
@@ -57,7 +57,7 @@ tab suc, gen(dummy_suc)
 
 
 local C0 = "prestamo dummy_*" /*Controls*/
-local resultados des_c  dias_al_desempenyo  ganancia  num_p  sum_porcp_c 
+local resultados des_c  dias_al_desempenyo   num_p  sum_porcp_c ref_c
 
 foreach var of varlist `resultados' {
 	rename `var' `var'_robust
