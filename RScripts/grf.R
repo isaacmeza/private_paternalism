@@ -12,14 +12,13 @@ heterogeneity_effect <- function(data_in,treatment_var,outcome_var) {
 require("dplyr")
 data_frame <- data_in %>%
   filter(data_in[,treatment_var] == 1 | data_in[,treatment_var] == 0) %>%
-  select(-c( pro_2, pro_3, pro_4, pro_5 , t_producto, NombrePignorante, fecha_inicial,
-             des_c, dias_al_desempenyo , 
-             ref_c  , num_p , sum_porcp_c, reincidence), treatment_var, outcome_var ) %>%
+  select(-c( pro_2, pro_3, pro_4, pro_5, pro_6, pro_7, pro_8, pro_9, fee, fecha_inicial,
+             def_c, fc_admin_disc, dias_primer_pago), treatment_var, outcome_var ) %>%
   drop_na()  
 
 
 # PREPARE VARIABLES
-X <- select(data_frame,-c(outcome_var, treatment_var))
+X <- select(data_frame,-c(outcome_var, treatment_var,NombrePignorante, prenda))
 Y <- select(data_frame,outcome_var)
 W <- as.numeric(data_frame[,treatment_var] == 1)
 
@@ -40,12 +39,15 @@ tau_hat_oob = predict(tau.forest, estimate.variance = TRUE)
 hist(tau_hat_oob$predictions)
 
 # Estimate the conditional average treatment effect on the full sample (CATE).
-average_treatment_effect(tau.forest, target.sample = "all")
+print(average_treatment_effect(tau.forest, target.sample = "all"))
 
 # Estimate the conditional average treatment effect on the treated sample (CATT).
 # Here, we don't expect much difference between the CATE and the CATT, since
 # treatment assignment was randomized.
-average_treatment_effect(tau.forest, target.sample = "treated")
+print(average_treatment_effect(tau.forest, target.sample = "treated"))
+
+#The (conditional) average treatment effect on the controls 
+print(average_treatment_effect(tau.forest, target.sample = "control"))
 
 
 data.out <- add_column(data_frame,tau_hat_oob$predictions,tau_hat_oob$variance.estimates, propensity_score)
@@ -70,10 +72,14 @@ data_customer <- data %>%
 
 
 #Heterogeneous Effects
-for (t in c("pro_2", "pro_3", "pro_4", "pro_5")) {
-  for (dep in c("des_c", "dias_al_desempenyo", "num_p" , "sum_porcp_c", "ref_c" )) {
-    heterogeneity_effect(data,t,dep) 
-  }
-  heterogeneity_effect(data_customer,t,"reincidence") 
+
+for (dep in c("dias_primer_pago", "def_c", "fc_admin_disc")){
+  heterogeneity_effect(data,"pro_2",dep) 
+  heterogeneity_effect(data,"pro_3",dep) 
+  heterogeneity_effect(data,"pro_4",dep) 
+  heterogeneity_effect(data,"pro_5",dep) 
+  #heterogeneity_effect(data,"fee",dep) 
 }
+  #heterogeneity_effect(data_customer,"pro_2","reincidence") 
+
 

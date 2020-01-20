@@ -25,6 +25,9 @@
 \usepackage{caption}
 \usepackage{subcaption}
 \usepackage{epstopdf}
+
+
+
 \epstopdfDeclareGraphicsRule{.tiff}{png}{.png}{convert #1 \OutputFile}
 \AppendGraphicsExtensions{.tiff}
 
@@ -72,5 +75,7 @@
 
 \newtheorem{theorem}{Theorem}
 \newtheorem{claim}[theorem]{Claim}
+
+\DeclareRobustCommand{\hlgr}[1]{{\sethlcolor{green}\hl{#1}}}
 
 
