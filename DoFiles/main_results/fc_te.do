@@ -30,38 +30,26 @@ set more off
 *ADMIN DATA
 use "$directorio/DB/Master.dta", clear
 
+*Dependent variables
+gen fc_survey_pospay = fc_survey_disc if pagos>0
+gen fc_survey_fee = fc_survey_disc if fee==1 | prod==1
 
 
 ********************************************************************************
 **********************************Financial cost********************************
 ********************************************************************************
 
-*Dependent variables
-gen fc_survey_pospay = fc_survey_disc if pagos>0
-gen fc_survey_fee = fc_survey_disc if fee==1 | prod==1
-gen fc_survey_feepospay = fc_survey_disc if pagos>0 & (fee==1 | prod==1)
 
-logit des_c i.prenda_tipo val_pren prestamo genero edad i.educacion i.pres_antes ///
-	i.plan_gasto i.ahorros i.cta_tanda i.tent i.rec_cel faltas 
-predict pr_prob
-
-gen fc_survey_oc = fc_survey_disc if pr_recup>pr_prob
-gen fc_survey_noc = fc_survey_disc if pr_recup<=pr_prob
-gen fc_survey_pb = fc_survey_disc if pb | rec_cel
-
-
-
-
-foreach arm of varlist pro_2 pro_3 {
+foreach arm of varlist pro_2 pro_3  {
 
 
 	if "`arm'"=="pro_2" {
-		local vrlist  fc_admin_disc fc_survey_disc  fc_trans_disc fc_survey_pospay fc_survey_fee fc_survey_feepospay fc_survey_oc fc_survey_noc fc_survey_pb
-		local vrlistnames  "admin (disc)" "subjective (disc)"  "subj + tc (disc)" "subj | pay>0" "subj | fee=1" "subj | pay>0 & fee=1" "subj | OC" "subj | no OC" "subj | PB"
+		local vrlist  fc_admin_disc fc_survey_disc  fc_trans_disc fc_survey_pospay fc_survey_fee  
+		local vrlistnames  "admin (disc)" "subjective (disc)"  "subj + tc (disc)" "subj | pay>0" "subj | fee=1" 
 		}
 	else {
-		local vrlist  fc_admin_disc fc_survey_disc  fc_trans_disc fc_survey_pospay   fc_survey_oc fc_survey_noc fc_survey_pb
-		local vrlistnames  "admin (disc)" "subjective (disc)"  "subj + tc (disc)" "subj | pay>0"  "subj | OC" "subj | no OC" "subj | PB"
+		local vrlist  fc_admin_disc fc_survey_disc  fc_trans_disc fc_survey_pospay   
+		local vrlistnames  "admin (disc)" "subjective (disc)"  "subj + tc (disc)" "subj | pay>0"  
 		}
 
 	local nv = 0	
@@ -69,14 +57,16 @@ foreach arm of varlist pro_2 pro_3 {
 		local nv = `nv'+1
 		}
 		
-
+	eststo clear
 	matrix results = J(`nv', 4, .) // empty matrix for results
 	//  4 cols are: (1) Treatment arm, (2) beta, (3) std error, (4) pvalue
 
 	local row = 1	
 	foreach depvar of varlist `vrlist' {
 
-	reg `depvar' `arm' ${C0}, r cluster(suc_x_dia) 
+	eststo: reg `depvar' `arm' ${C0}, r cluster(suc_x_dia) 
+	su `depvar' if e(sample) & `arm'==0
+	estadd scalar ContrMean = `r(mean)'
 	local df = e(df_r)	
 		
 		matrix results[`row',1] = `row'
@@ -142,5 +132,8 @@ foreach arm of varlist pro_2 pro_3 {
 	#delimit cr
 	restore
 	graph export "$directorio\Figuras\fc_te_`arm'.pdf", replace
+	
+	esttab using "$directorio/Tables/reg_results/fc_te_`arm'.csv", se r2 star(* 0.1 ** 0.05 *** 0.01) b(a2) ///
+		scalars("ContrMean Control Mean") replace 
 	}		
 			

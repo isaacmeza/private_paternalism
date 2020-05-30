@@ -42,6 +42,9 @@ foreach var of varlist  genero edad edo_civil trabajo educacion fam_pide f_estre
 	replace `var'=aux1
 	}
 
+*Response elimination
+replace trabajo = . if inlist(trabajo,6,7,8)
+replace cont_fam = . if inlist(cont_fam,0)
 
 *Variable creation
 
@@ -63,16 +66,16 @@ gen fc_survey = sum_p_c
 replace fc_survey = fc_survey + val_pren if des_c != 1
 gen log_fc_survey = log(1+fc_survey)
 	*discounted
-gen fc_survey_disc = sum_pdisc_c
-replace fc_survey_disc = fc_survey_disc + val_pren if des_c != 1
+gen fc_survey_disc = sum_pdisc_c + val_pren
+replace fc_survey_disc = fc_survey_disc - val_pren/((1+0.00225783)^dias_al_desempenyo) if des_c == 1
 gen log_fc_survey_disc = log(1+fc_survey_disc)
 
 	*transport fc
 gen fc_trans = sum_p_c + (c_trans + 62.33)*num_p
-replace fc_trans = fc_trans + val_pren/0.7 if des_c != 1
+replace fc_trans = fc_trans + val_pren if des_c != 1
 	*transport fc (disc)
-gen fc_trans_disc = sum_pdisc_c + (c_trans + 62.33)*num_p
-replace fc_trans_disc = fc_trans_disc + val_pren/0.7 if des_c != 1
+gen fc_trans_disc = sum_pdisc_c + (c_trans + 62.33)*num_p + val_pren
+replace fc_trans_disc = fc_trans_disc - val_pren/((1+0.00225783)^dias_al_desempenyo) if des_c == 1
 	*trans cost
 gen trans_cost = (c_trans + 62.33)*num_p	
 
@@ -101,10 +104,34 @@ tab num_arms, gen(num_arms_d)
 tab visit_number, gen(visit_number_d)
 tab num_arms_75, gen(num_arms_75_d)
 tab visit_number_75, gen(visit_number_75_d)
-foreach var of varlist dow suc prenda_tipo edo_civil choose_same trabajo  {
+foreach var of varlist dow suc /*prenda_tipo edo_civil choose_same trabajo*/  {
 	tab `var', gen(dummy_`var')
 	}
-drop num_arms_d1 num_arms_d2 num_arms_75_d1 num_arms_75_d2 visit_number_d1 visit_number_75_d1
+	*for grf
+foreach var of varlist prenda_tipo edo_civil choose_same trabajo  {
+	tab `var', gen(grf_dummy_`var')
+	}	
+drop num_arms_d1 num_arms_d2 visit_number_d1
+drop num_arms_75_d1 num_arms_75_d2  visit_number_75_d1
+
+*Overconfidence
+	*Cross-validation LASSO
+cvlasso des_c prenda_tipo val_pren prestamo genero edad educacion pres_antes ///
+	plan_gasto ahorros cta_tanda tent rec_cel faltas , lopt seed(823) 
+*lopt = the lambda that minimizes MSPE.
+local lambda_opt=e(lopt)
+*Variable selection
+lasso2 des_c prenda_tipo val_pren prestamo genero edad educacion pres_antes ///
+	plan_gasto ahorros cta_tanda tent rec_cel faltas , lambda( `lambda_opt'  ) 
+*Variable selection
+local vrs=e(selected)
+local regressors  `regressors' `vrs'
+logit des_c `regressors'
+predict pr_prob
+replace pr_prob = pr_prob*100
+*Overconfident
+gen OC = (pr_recup>pr_prob) if (!missing(pr_recup) & !missing(pr_prob))
+gen cont_OC = pr_recup-pr_prob if (!missing(pr_recup) & !missing(pr_prob))
 
 
 save "$directorio/DB/Master.dta", replace	

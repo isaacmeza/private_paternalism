@@ -17,12 +17,12 @@ by t_prod suc_x_dia, sort: gen nvals = _n == 1
 by t_prod: replace nvals = sum(nvals)
 by t_prod: replace nvals = nvals[_N] 
 
-
 *Trimming	
 xtile perc = prestamo, nq(100)
-replace prestamo=. if perc>=99
+replace prestamo=. if perc>=99 & !missing(prestamo)
 
-orth_out prestamo monday num_empenio nvals, by(t_prod) count se  vce(cluster suc_x_dia) pcompare ///
+drop if missing(t_prod)
+orth_out prestamo monday num_empenio nvals, by(t_prod) overall count se  vce(cluster suc_x_dia) pcompare ///
 	 bdec(2) stars
 	
 qui putexcel B2=matrix(r(matrix)) using "$directorio\Tables\SS.xlsx", sheet("SS_admin") modify
@@ -32,7 +32,7 @@ foreach var of varlist prestamo monday num_empenio {
 	qui reg `var' i.t_prod, r cluster(suc_x_dia)
 	test 1.t_prod==2.t_prod==3.t_prod==4.t_prod==5.t_prod
 	local p_val = `r(p)'
-	qui putexcel Q`i'=matrix(`p_val') using "$directorio\Tables\SS.xlsx", sheet("SS_admin") modify
+	qui putexcel R`i'=matrix(`p_val') using "$directorio\Tables\SS.xlsx", sheet("SS_admin") modify
 	local i = `i'+2
 	}
 
@@ -65,11 +65,10 @@ graph hbar propor, over(razon) ///
  ytitle("") ylabel(0 "0" 20 "20%" 40 "40%" 60 "60%" 80 "80%")
  
 graph export "$directorio/Figuras/reasons_pawn.pdf", replace
-
 restore
 
-
-orth_out genero edad  val_pren pres_antes pr_recup masqueprepa response, by(t_prod) se  vce(cluster suc_x_dia) ///
+drop if missing(t_prod)
+orth_out genero edad  val_pren pres_antes pr_recup masqueprepa response, by(t_prod) overall se  vce(cluster suc_x_dia) ///
 	 bdec(2) stars pcompare
 	
 qui putexcel B2=matrix(r(matrix)) using "$directorio\Tables\SS.xlsx", sheet("SS_survey") modify
@@ -88,10 +87,95 @@ foreach var of varlist genero edad  val_pren pres_antes pr_recup masqueprepa res
 	qui reg `var' i.t_prod, r cluster(suc_x_dia)
 	test 1.t_prod==2.t_prod==3.t_prod==4.t_prod==5.t_prod
 	local p_val = `r(p)'
-	qui putexcel Q`i'=matrix(`p_val') using "$directorio\Tables\SS.xlsx", sheet("SS_survey") modify
+	qui putexcel R`i'=matrix(`p_val') using "$directorio\Tables\SS.xlsx", sheet("SS_survey") modify
 	local i = `i'+2
 	}
-		
+	
+*Complete responses
+
+tab prenda_tipo, matcell(freq)
+qui putexcel I3=matrix(freq) using "$directorio\Tables\baseline_survey.xlsx", sheet("baseline_survey") modify
+	
+local j = 9	
+foreach var of varlist  pr_recup val_pren genero edad {
+su `var'
+qui putexcel I`j'=matrix(`r(mean)') using "$directorio\Tables\baseline_survey.xlsx", sheet("baseline_survey") modify
+qui putexcel J`j'=matrix(`r(sd)') using "$directorio\Tables\baseline_survey.xlsx", sheet("baseline_survey") modify
+qui putexcel K`j'=matrix(`r(N)') using "$directorio\Tables\baseline_survey.xlsx", sheet("baseline_survey") modify
+local j = `j' + 2
+}
+
+tab edo_civil, matcell(freq)
+qui putexcel I17=matrix(freq) using "$directorio\Tables\baseline_survey.xlsx", sheet("baseline_survey") modify
+
+tab trabajo, matcell(freq)
+qui putexcel I22=matrix(freq) using "$directorio\Tables\baseline_survey.xlsx", sheet("baseline_survey") modify
+
+tab educacion, matcell(freq)
+qui putexcel I29=matrix(freq) using "$directorio\Tables\baseline_survey.xlsx", sheet("baseline_survey") modify
+
+su fam_pide
+qui putexcel I35=matrix(`r(mean)') using "$directorio\Tables\baseline_survey.xlsx", sheet("baseline_survey") modify
+qui putexcel J35=matrix(`r(sd)') using "$directorio\Tables\baseline_survey.xlsx", sheet("baseline_survey") modify
+qui putexcel K35=matrix(`r(N)') using "$directorio\Tables\baseline_survey.xlsx", sheet("baseline_survey") modify
+
+tab t_consis1, matcell(freq)
+qui putexcel I37=matrix(freq) using "$directorio\Tables\baseline_survey.xlsx", sheet("baseline_survey") modify
+
+tab f_estres, matcell(freq)
+qui putexcel I40=matrix(freq) using "$directorio\Tables\baseline_survey.xlsx", sheet("baseline_survey") modify
+
+tab razon, matcell(freq)
+qui putexcel I45=matrix(freq) using "$directorio\Tables\baseline_survey.xlsx", sheet("baseline_survey") modify
+
+tab r_estress, matcell(freq)
+qui putexcel I50=matrix(freq) using "$directorio\Tables\baseline_survey.xlsx", sheet("baseline_survey") modify
+
+tab s_fin_mes, matcell(freq)
+qui putexcel I55=matrix(freq) using "$directorio\Tables\baseline_survey.xlsx", sheet("baseline_survey") modify
+
+su pres_antes
+qui putexcel I59=matrix(`r(mean)') using "$directorio\Tables\baseline_survey.xlsx", sheet("baseline_survey") modify
+qui putexcel J59=matrix(`r(sd)') using "$directorio\Tables\baseline_survey.xlsx", sheet("baseline_survey") modify
+qui putexcel K59=matrix(`r(N)') using "$directorio\Tables\baseline_survey.xlsx", sheet("baseline_survey") modify
+
+tab cont_fam, matcell(freq)
+qui putexcel I61=matrix(freq) using "$directorio\Tables\baseline_survey.xlsx", sheet("baseline_survey") modify
+
+tab plan_gasto, matcell(freq)
+qui putexcel I67=matrix(freq) using "$directorio\Tables\baseline_survey.xlsx", sheet("baseline_survey") modify
+
+local j = 71	
+foreach var of varlist  otra_prenda ahorros cta_tanda fam_comun c_trans t_llegar gasto_fam ahorro_fam {
+su `var'
+qui putexcel I`j'=matrix(`r(mean)') using "$directorio\Tables\baseline_survey.xlsx", sheet("baseline_survey") modify
+qui putexcel J`j'=matrix(`r(sd)') using "$directorio\Tables\baseline_survey.xlsx", sheet("baseline_survey") modify
+qui putexcel K`j'=matrix(`r(N)') using "$directorio\Tables\baseline_survey.xlsx", sheet("baseline_survey") modify
+local j = `j' + 2
+}
+
+tab tempt, matcell(freq)
+qui putexcel I87=matrix(freq) using "$directorio\Tables\baseline_survey.xlsx", sheet("baseline_survey") modify
+
+local j = 92	
+foreach var of varlist  renta comida medicina luz gas telefono agua {
+su `var'
+qui putexcel I`j'=matrix(`r(mean)') using "$directorio\Tables\baseline_survey.xlsx", sheet("baseline_survey") modify
+qui putexcel J`j'=matrix(`r(sd)') using "$directorio\Tables\baseline_survey.xlsx", sheet("baseline_survey") modify
+qui putexcel K`j'=matrix(`r(N)') using "$directorio\Tables\baseline_survey.xlsx", sheet("baseline_survey") modify
+local j = `j' + 2
+}
+
+tab t_consis2, matcell(freq)
+qui putexcel I100=matrix(freq) using "$directorio\Tables\baseline_survey.xlsx", sheet("baseline_survey") modify
+
+su rec_cel
+qui putexcel I103=matrix(`r(mean)') using "$directorio\Tables\baseline_survey.xlsx", sheet("baseline_survey") modify
+qui putexcel J103=matrix(`r(sd)') using "$directorio\Tables\baseline_survey.xlsx", sheet("baseline_survey") modify
+qui putexcel K103=matrix(`r(N)') using "$directorio\Tables\baseline_survey.xlsx", sheet("baseline_survey") modify
+
+
+	
 ********************************************************************************
 
 *SURVEY DATA (EXIT)
@@ -116,8 +200,9 @@ cap drop perc
 xtile perc = prestamo, nq(100)
 replace prestamo=. if perc>=99
 
+drop if missing(t_prod)
 orth_out contrataria satisfied_esquema_pago sit_econ_mejor optaria_mensual ///
-	prestamo genero edad  val_pren pres_antes pr_recup masqueprepa , by(t_prod) count se  vce(cluster suc_x_dia) ///
+	prestamo genero edad  val_pren pres_antes pr_recup masqueprepa , by(t_prod) overall count se  vce(cluster suc_x_dia) ///
 	 bdec(2) stars pcompare
 	
 qui putexcel B2=matrix(r(matrix)) using "$directorio\Tables\SS.xlsx", sheet("SS_survey_exit") modify
@@ -129,6 +214,6 @@ foreach var of varlist contrataria satisfied_esquema_pago sit_econ_mejor optaria
 	qui reg `var' i.t_prod, r cluster(suc_x_dia)
 	test 1.t_prod==2.t_prod==3.t_prod==4.t_prod==5.t_prod
 	local p_val = `r(p)'
-	qui putexcel Q`i'=matrix(`p_val') using "$directorio\Tables\SS.xlsx", sheet("SS_survey_exit") modify
+	qui putexcel R`i'=matrix(`p_val') using "$directorio\Tables\SS.xlsx", sheet("SS_survey_exit") modify
 	local i = `i'+2
 	}	

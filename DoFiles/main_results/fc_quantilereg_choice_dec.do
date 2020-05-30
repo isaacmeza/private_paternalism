@@ -59,11 +59,14 @@ foreach arm of varlist pro_4 pro_5  {
 		local arm_dec_nsq pro_9
 		}
 			
+	eststo clear		
 	local row = 1
 	local nu = 1	
 	foreach quant in `qlist' {
 
-		qreg fc_admin_disc `arm' ${C0},  vce(robust) q(`quant')
+		eststo: qreg fc_admin_disc `arm' ${C0},  vce(robust) q(`quant')
+		su fc_admin_disc if e(sample) & `arm'==0
+		estadd scalar ContrMean = `r(mean)'		
 		local df = e(df_r)	
 		
 		matrix results[`row',1] = `nu'
@@ -77,7 +80,7 @@ foreach arm of varlist pro_4 pro_5  {
 		local row = `row' + 1
 		
 		
-		qreg fc_admin_disc `contrarm' ${C0},  vce(robust) q(`quant')
+		qreg fc_admin_disc `contrarm' ${C0},  vce(robust) q(`quant')		
 		local df = e(df_r)	
 		
 		matrix results[`row',1] = `nu'
@@ -90,7 +93,10 @@ foreach arm of varlist pro_4 pro_5  {
 		
 		local row = `row' + 1
 		
-		qreg fc_admin_disc `arm_dec_sq' ${C0},  vce(robust) q(`quant') 
+		
+		eststo : qreg fc_admin_disc `arm_dec_sq' ${C0},  vce(robust) q(`quant') 
+		su fc_admin_disc if e(sample) & `arm_dec_sq'==0
+		estadd scalar ContrMean = `r(mean)'			
 		local df_sq = e(df_r)	
 		matrix results[`row',1] = `nu'+0.3
 		// Beta 
@@ -102,7 +108,9 @@ foreach arm of varlist pro_4 pro_5  {
 			
 		local row = `row' + 1
 
-		qreg fc_admin_disc `arm_dec_nsq' ${C0},  vce(robust) q(`quant') 
+		eststo: qreg fc_admin_disc `arm_dec_nsq' ${C0},  vce(robust) q(`quant') 
+		su fc_admin_disc if e(sample) & `arm_dec_nsq'==0
+		estadd scalar ContrMean = `r(mean)'			
 		local df_nsq = e(df_r)	
 		matrix results[`row',1] = `nu'+0.3
 		// Beta 
@@ -173,4 +181,7 @@ graph twoway
 	#delimit cr
 	restore
 	graph export "$directorio\Figuras\fc_quantile_`arm'.pdf", replace
+	
+	esttab using "$directorio/Tables/reg_results/fc_quantile_`arm'.csv", se r2 star(* 0.1 ** 0.05 *** 0.01) b(a2) ///
+		scalars("ContrMean Control Mean") replace 	
 	}

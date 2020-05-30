@@ -28,37 +28,31 @@ local rcap_options_95 lcolor(black) lwidth(thin)
 set more off
 *ADMIN DATA
 use "$directorio/DB/Master.dta", clear
+*Dependent variables
+gen fc_survey_pospay = fc_survey_disc if pagos>0
 
 
-local vrlist  fc_admin_disc fc_survey_disc  fc_trans_disc fc_survey_pospay   fc_survey_oc fc_survey_noc fc_survey_pb
-local vrlistnames  "admin (disc)" "subjective (disc)"  "subj + tc (disc)" "subj | pay>0"  "subj | OC" "subj | no OC" "subj | PB"
+local vrlist  fc_admin_disc fc_survey_disc  fc_trans_disc fc_survey_pospay  
+local vrlistnames  "admin (disc)" "subjective (disc)"  "subj + tc (disc)" "subj | pay>0"  
 
 ********************************************************************************
 **********************************Financial cost********************************
 ********************************************************************************
-
-*Dependent variables
-gen fc_survey_pospay = fc_survey_disc if pagos>0
-
-logit des_c i.prenda_tipo val_pren prestamo genero edad i.educacion i.pres_antes ///
-	i.plan_gasto i.ahorros i.cta_tanda i.tent i.rec_cel faltas 
-predict pr_prob
-
-gen fc_survey_oc = fc_survey_disc if pr_recup>pr_prob
-gen fc_survey_noc = fc_survey_disc if pr_recup<=pr_prob
-gen fc_survey_pb = fc_survey_disc if pb | rec_cel
-
 
 
 foreach arm of varlist pro_4 pro_5 {
 
 
 	if "`arm'"=="pro_4" {
+		local cbr = 2
+		local nsq = 5
 		local contrarm pro_2
 		local arm_dec_sq pro_6
 		local arm_dec_nsq pro_7
 		}
 	else {
+		local cbr = 3
+		local nsq = 7
 		local contrarm pro_3
 		local arm_dec_sq pro_8
 		local arm_dec_nsq pro_9
@@ -70,7 +64,7 @@ foreach arm of varlist pro_4 pro_5 {
 		local nv = `nv'+1
 		}
 		
-
+	eststo clear
 	matrix results = J(`=`nv'*4', 4, .) // empty matrix for results
 	//  4 cols are: (1) Treatment arm, (2) beta, (3) std error, (4) pvalue
 
@@ -78,7 +72,9 @@ foreach arm of varlist pro_4 pro_5 {
 	local nu = 1
 	foreach depvar of varlist `vrlist' {
 
-	reg `depvar' `arm' ${C0}, r cluster(suc_x_dia) 
+	eststo : reg `depvar' `arm' ${C0}, r cluster(suc_x_dia) 
+	su `depvar' if e(sample) & `arm'==0
+	estadd scalar ContrMean = `r(mean)'		
 	local df = e(df_r)	
 		
 		matrix results[`row',1] = `nu'
@@ -104,7 +100,10 @@ foreach arm of varlist pro_4 pro_5 {
 		
 		local row = `row' + 1	
 		
-	reg `depvar' `arm_dec_sq' `C', r cluster(suc_x_dia) 
+		
+	eststo: reg `depvar' `arm_dec_sq' ${C0}, r cluster(suc_x_dia) 
+	su `depvar' if e(sample) & `arm_dec_sq'==0
+	estadd scalar ContrMean = `r(mean)'	
 	local df_sq = e(df_r)	
 		matrix results[`row',1] = `nu'+0.3
 		// Beta 
@@ -116,7 +115,15 @@ foreach arm of varlist pro_4 pro_5 {
 			
 		local row = `row' + 1
 
-	reg `depvar' `arm_dec_nsq' `C', r cluster(suc_x_dia) 
+	*p-value  H_0 : nsq == contrarm
+	reg `depvar' i.prod ${C0}, r cluster(suc_x_dia) 
+	test `cbr'.prod==`nsq'.prod
+	local rp = `r(p)'
+	
+	eststo: reg `depvar' `arm_dec_nsq' ${C0}, r cluster(suc_x_dia) 
+	su `depvar' if e(sample) & `arm_dec_nsq'==0
+	estadd scalar ContrMean = `r(mean)'	
+	estadd scalar p_val = `rp'
 	local df_nsq = e(df_r)	
 		matrix results[`row',1] = `nu'+0.3
 		// Beta 
@@ -124,8 +131,8 @@ foreach arm of varlist pro_4 pro_5 {
 		// Standard error
 		matrix results[`row',3] = _se[`arm_dec_nsq']
 		// P-value
-		matrix results[`row',4] = 2*ttail(`df_sq', abs(_b[`arm_dec_nsq']/_se[`arm_dec_nsq']))
-			
+		matrix results[`row',4] = 2*ttail(`df_sq', abs(_b[`arm_dec_nsq']/_se[`arm_dec_nsq']))	
+	
 		local row = `row' + 1
 		local nu = `nu' + 1
 		}
@@ -194,5 +201,8 @@ foreach arm of varlist pro_4 pro_5 {
 	#delimit cr
 	restore
 	graph export "$directorio\Figuras\fc_te_`arm'.pdf", replace
+	
+	esttab using "$directorio/Tables/reg_results/fc_te_`arm'.csv", se r2 star(* 0.1 ** 0.05 *** 0.01) b(a2) ///
+		scalars("ContrMean Control Mean" "p_val p-value") replace 
 	}			
 			

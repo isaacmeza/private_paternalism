@@ -5,7 +5,7 @@ library(ggplot2)
 # SET WORKING DIRECTORY
 setwd('C:/Users/xps-seira/Dropbox/Apps/ShareLaTeX/Donde2019')
 set.seed(5289374)
-
+options(digits=18)
 
 rf_predict <- function(data_in,take.up,nme) {
   
@@ -50,3 +50,4 @@ for (arm in c("pro_2")) {
     }
   }
 }
+

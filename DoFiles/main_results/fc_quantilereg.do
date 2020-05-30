@@ -36,7 +36,7 @@ use "$directorio/DB/Master.dta", clear
 ********************************************************************************
 
 *Dependent variables
-local qlist  0.15 0.25 0.50 0.75 0.85 
+local qlist  0.15 0.25 0.50 0.75 0.84 
 local qlistnames "15%"  "25%" "50%" "75%" "85%"
 	
 matrix results = J(6, 4, .) // empty matrix for results
@@ -46,10 +46,13 @@ matrix results = J(6, 4, .) // empty matrix for results
 
 foreach arm of varlist pro_2 pro_3 {
 
+	eststo clear
 	local row = 1	
 	foreach quant in `qlist' {
 
-		qui qreg fc_admin_disc `arm' ${C0},  vce(robust) q(`quant')
+		qui eststo: qreg fc_admin_disc `arm' ${C0},  vce(robust) q(`quant')
+		su fc_admin_disc if e(sample) & `arm'==0
+		estadd scalar ContrMean = `r(mean)'
 		local df = e(df_r)	
 		
 		matrix results[`row',1] = `row'
@@ -126,4 +129,7 @@ foreach arm of varlist pro_2 pro_3 {
 	#delimit cr
 	restore
 	graph export "$directorio\Figuras\fc_quantile_`arm'.pdf", replace
+	
+	esttab using "$directorio/Tables/reg_results/fc_quantile_`arm'.csv", se r2 star(* 0.1 ** 0.05 *** 0.01) b(a2) ///
+		scalars("ContrMean Control Mean") replace 
 	}

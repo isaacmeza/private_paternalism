@@ -4,17 +4,17 @@ Data preparation for Random Forest take-up prediction
 
 ********************************************************************************
 *Dependent variable
-global takeup_var pago_frec_vol_fee
+global takeup_var pago_frec_vol
 *Independent variable (not factor variables)
 global ind_var dummy_dow1-dummy_dow5 dummy_suc1-dummy_suc5 /// *Controls
-	prestamo pr_recup  edad visit_number faltas /// *Continuous covariates
-	dummy_prenda_tipo1-dummy_prenda_tipo4 dummy_edo_civil1-dummy_edo_civil3  /// *Categorical covariates
-	dummy_choose_same1-dummy_choose_same2   /// 
+	prestamo pr_recup  edad visit_number num_arms faltas /// *Continuous covariates
 	genero pres_antes fam_pide fam_comun ahorros cta_tanda /// *Dummy variables
-	masqueprepa estresado_seguido pb fb hace_presupuesto tentado low_cost low_time rec_cel
+	masqueprepa estresado_seguido oc pb fb hace_presupuesto tentado low_cost low_time rec_cel
+	
 	
 *Train fraction
 global trainf=0.85
+set seed 9834623
 ********************************************************************************
 
 

@@ -139,6 +139,7 @@ label var pagos "Client deposits"
 
 *'pagos' indicate deposits from the customers, i.e. refrendo, desempeno, venta con billete, abono al capital.
 * DISCOUNTED with daily interest rate equivalent to a 7% monthly rate.
+save "$directorio/_aux/pre_admin.dta", replace /*save for discounted_noeffect.do*/	
 gen pagos_disc=importe/((1+0.00225783)^dias_inicio) if clave_movimiento <= 3 | clave_movimiento==5
 replace pagos_disc=0 if pagos_disc==.
 
@@ -181,22 +182,6 @@ drop dum_pago
 label var sum_np "Number of payments at current date"
 label var sum_visit "Number of visits at current date"
 
-*Dummy indicating if a fee was charged (late payment)		
-	*Payment in each cylce
-bysort prenda : gen ppc = inrange(fecha_movimiento, fecha_inicial, fecha_inicial+30) if pagos>0
-bysort prenda : egen pago_primer_ciclo = max(ppc) 
-replace pago_primer_ciclo = 0 if missing(pago_primer_ciclo)
-bysort prenda : gen psc = inrange(fecha_movimiento, fecha_inicial+31, fecha_inicial+60) if pagos>0
-bysort prenda : egen pago_seg_ciclo = max(psc) 
-replace pago_seg_ciclo = 0 if missing(pago_seg_ciclo)
-bysort prenda : gen ptc = inrange(fecha_movimiento, fecha_inicial+61, fecha_inicial+90) if pagos>0
-bysort prenda : egen pago_ter_ciclo = max(ptc) 
-replace pago_ter_ciclo = 0 if missing(pago_ter_ciclo)
-	*Fee dummy (late payment)
-gen fee = 1-(pago_primer_ciclo & pago_seg_ciclo & pago_ter_ciclo)	
-replace fee = 0 if prod==1
-replace fee = . if !inlist(prod,2,5)
-label var fee "Charged late fee - dummy"
 
 *Var correction (desempeno)
 bysort prenda: replace clave_movimiento=5 if clave_movimiento==3 & sum_p<prestamo
@@ -211,6 +196,10 @@ gen pasealmoneda=(clave_movimiento==6)
 
 *Recidivism
 preserve
+bysort prenda: egen des_c=max(desempeno)
+bysort prenda: egen dias_ultimo_mov = max(dias_inicio)
+gen dias_inicio_d=dias_inicio if des_c
+bysort prenda: egen dias_al_desempenyo=max(dias_inicio_d)
 duplicates drop NombrePignorante fecha_inicial, force
 sort NombrePignorante fecha_inicial
 *Number of visits to pawn 
@@ -230,20 +219,35 @@ sort NombrePignorante fecha_inicial
 bysort NombrePignorante: gen first_visit = fecha_inicial[1]
 bysort NombrePignorante: gen first_product = t_producto[1]
 bysort NombrePignorante: gen first_prenda = prenda[1]
-gen aux_reincidence = (fecha_inicial >	first_visit + 75) if !missing(first_product)	
+bysort NombrePignorante: gen first_loan_value = prestamo[1]
+bysort NombrePignorante: gen first_dias_des = dias_al_desempenyo[1] if !missing(des_c)
+gen aux_reincidence_uncond = (fecha_inicial >	first_visit + 75) if !missing(first_product)	
+bysort NombrePignorante : egen reincidence_uncond = max(aux_reincidence_uncond)
+
+*Dummy indicating if customer returned after first visit to pawn ANOTHER piece
+gen aux_reincidence = (fecha_inicial >	first_visit + 75 & ///
+	(inrange(prestamo,first_loan_value*0.975,first_loan_value*1.025)!=1 | first_dias_des>=75)) ///
+	if !missing(first_product)	
 bysort NombrePignorante : egen reincidence = max(aux_reincidence)
 
+*Dummy indicating if customer returned after first visit to pawn second piece
+*when first one is NOT recovered yet
+gen aux_reincidence_fnr = (fecha_inicial >	first_visit + 75 & ///
+	first_dias_des>=75 ) if !missing(first_product)	
+bysort NombrePignorante : egen reincidence_fnr = max(aux_reincidence_fnr)
+
+
 *Dummy indicating if customer received same treatment in reincidence (compared to first visit)
-sort NombrePignorante fecha_inicial
+sort NombrePignorante fecha_inicial					
 bysort NombrePignorante : gen aux_re_product = t_prod ///
-					if aux_reincidence==1 & aux_reincidence[_n-1]==0
+					if aux_reincidence_uncond==1 & aux_reincidence_uncond[_n-1]==0
 bysort NombrePignorante : egen reincidence_product = max(aux_re_product) 
 bysort NombrePignorante : gen same_prod_reincidence = (first_product==reincidence_product) ///
 					if !missing(reincidence)
 
 
-keep NombrePignorante fecha_inicial reincidence visit_number num_arms ///
-		more_one_arm same_prod_reincidence first_prenda
+keep NombrePignorante fecha_inicial reincidence* visit_number num_arms ///
+		more_one_arm same_prod_reincidence* first_prenda
 tempfile temp_rec
 save  `temp_rec'
 restore
@@ -360,13 +364,38 @@ label var mn_p_c "Mean of payments"
 label var mn_pdisc_c "Mean of (discounted) payments"
 label var sum_porcp_c "Percentage of payment"
 label var num_p "Number of payment"
-label var num_p "Number of visits"
 label var pam_c "Pase al moneda"
 label var ref_default "Refrendum but default"
 label var pos_pay_default "Positive payment but default"
 label var pos_pay_120_def_c "Positive payment (after 120dd) but default"
 label var zero_pay_default "Selled pawn"
 label var pay_30_default "Payment of at least 30pp but default"
+
+*Dummy indicating if a fee was charged (late payment)		
+	*Payment in each cylce
+bysort prenda : gen ppc = inrange(fecha_movimiento, fecha_inicial, fecha_inicial+30) if pagos>0
+bysort prenda : egen pago_primer_ciclo = max(ppc) 
+replace pago_primer_ciclo = 0 if missing(pago_primer_ciclo)
+	*recover in first cycle
+bysort prenda : gen rpc = inrange(ultima_fecha, fecha_inicial, fecha_inicial+30) if des_c==1
+
+bysort prenda : gen psc = inrange(fecha_movimiento, fecha_inicial+31, fecha_inicial+60) if pagos>0 & rpc!=1
+bysort prenda : egen pago_seg_ciclo = max(psc) 
+replace pago_seg_ciclo = 0 if missing(pago_seg_ciclo)
+replace pago_seg_ciclo = 1 if rpc==1
+
+bysort prenda : gen rsc = inrange(ultima_fecha, fecha_inicial+31, fecha_inicial+60) if des_c==1
+
+bysort prenda : gen ptc = inrange(fecha_movimiento, fecha_inicial+61, fecha_inicial+90) if pagos>0 & rpc!=1 & rsc!=1
+bysort prenda : egen pago_ter_ciclo = max(ptc) 
+replace pago_ter_ciclo = 0 if missing(pago_ter_ciclo)
+replace pago_ter_ciclo = 1 if rpc==1 | rsc==1
+
+	*Fee dummy (late payment)
+gen fee = 1-(pago_primer_ciclo & pago_seg_ciclo & pago_ter_ciclo)	
+replace fee = 0 if prod==1
+replace fee = . if !inlist(prod,2,5)
+label var fee "Charged late fee - dummy"
 
 
 *Trimming
@@ -377,12 +406,12 @@ foreach var of varlist sum_porcp_c sum_p_c sum_pdisc_c {
 	}
 
 *Financial cost
-gen fc_admin = sum_p_c
-replace fc_admin = fc_admin + prestamo/0.7 if des_c != 1
+gen fc_admin = sum_p_c + prestamo/(0.7)
+replace fc_admin = fc_admin - prestamo/(0.7) if des_c == 1
 gen log_fc_admin = log(1+fc_admin)
 	*discounted
-gen fc_admin_disc = sum_pdisc_c
-replace fc_admin_disc = fc_admin_disc + prestamo/0.7 if des_c != 1
+gen fc_admin_disc = sum_pdisc_c + prestamo/(0.7)
+replace fc_admin_disc = fc_admin_disc - prestamo/(0.7*(1+0.00225783)^dias_al_desempenyo) if des_c == 1
 gen log_fc_admin_disc = log(1+fc_admin_disc)
 
 *Suc by day
@@ -397,9 +426,11 @@ keep if clave_movimiento == 4
 duplicates drop prenda, force
 bysort suc_x_dia t_prod: gen num=_n
 bysort suc_x_dia t_prod: egen num_empenio=max(num)
+*# pawns at the item level
+gen num_empenio_prenda = num_empenio
 bysort suc_x_dia t_prod: replace num_empenio=. if num!=num_empenio
 
-keep num_empenio prenda 
+keep num_empenio num_empenio_prenda prenda 
 tempfile temp_emp
 save `temp_emp'
 restore

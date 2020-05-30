@@ -21,27 +21,27 @@ set.seed(5289374)
   
   
   data_test <- data_in %>% 
-    select(-c(fc_admin, fee_arms, prenda, insample))
+    select(-c(fc_admin_disc, fee_arms, prenda, insample))
   data_test_tau <- data_in %>% 
-    select(-c(fc_admin, prenda, insample))
+    select(-c(fc_admin_disc, prenda, insample))
   
   ###################################################################  
   ###################################################################  
   
   
   # PREPARE VARIABLES
-  X <- select(data_train,-c(fc_admin, fee_arms, prenda, insample))
-  Y <- select(data_train,fc_admin)
+  X <- select(data_train,-c(fc_admin_disc, fee_arms, prenda, insample))
+  Y <- select(data_train,fc_admin_disc)
   W <- as.numeric(data_train$fee_arms == 1)
   
-  X_full <- select(data_in,-c(fc_admin, fee_arms, prenda, insample))
-  Y_full <- select(data_in,fc_admin)
+  X_full <- select(data_in,-c(fc_admin_disc, fee_arms, prenda, insample))
+  Y_full <- select(data_in,fc_admin_disc)
   W_full <- as.numeric(data_in$fee_arms == 1)
   
-  X_fee <- select(data_train_fee,-c(fc_admin, fee_arms, prenda, insample))
-  Y_fee <- as.numeric(data_train_fee$fc_admin)
-  X_nofee <- select(data_train_nofee,-c(fc_admin, fee_arms, prenda, insample))
-  Y_nofee <- as.numeric(data_train_nofee$fc_admin)
+  X_fee <- select(data_train_fee,-c(fc_admin_disc, fee_arms, prenda, insample))
+  Y_fee <- as.numeric(data_train_fee$fc_admin_disc)
+  X_nofee <- select(data_train_nofee,-c(fc_admin_disc, fee_arms, prenda, insample))
+  Y_nofee <- as.numeric(data_train_nofee$fc_admin_disc)
   
   ###################################################################  
   ###################################################################  

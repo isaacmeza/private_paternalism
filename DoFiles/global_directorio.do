@@ -1,5 +1,5 @@
 *Directory
-
+set more off
 global directorio "C:\Users\xps-seira\Dropbox\Apps\ShareLaTeX\Donde2019"
 
 global C0 = "dummy_* num_arms_d* visit_number_d*" /*Controls*/

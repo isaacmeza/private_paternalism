@@ -11,24 +11,19 @@ sort NombrePignorante fecha_inicial
 *Covariates - Randomization - Outcomes
 keep NombrePignorante prenda suc_x_dia producto /// *Admin variables
 	dummy_dow* dummy_suc* /// *Controls
-	prestamo pr_recup  edad visit_number faltas /// *Continuous covariates
-	dummy_prenda_tipo* dummy_edo_civil*  /// *Categorical covariates
-	dummy_choose_same* dummy_trabajo*  /// 
+	prestamo pr_recup  edad visit_number num_arms faltas /// *Continuous covariates
 	genero pres_antes fam_pide fam_comun ahorros cta_tanda /// *Dummy variables
-	renta comida medicina luz gas telefono agua  ///
-	masqueprepa estresado_seguido pb fb hace_presupuesto tentado low_cost low_time ///
-	rec_cel
+	renta comida medicina luz gas telefono agua  /// 
+	masqueprepa estresado_seguido OC pb fb hace_presupuesto tentado low_cost low_time rec_cel
+	
 	
 	
 order NombrePignorante prenda suc_x_dia /// *Admin variables
 	dummy_dow* dummy_suc* /// *Controls
-	prestamo pr_recup  edad visit_number faltas /// *Continuous covariates
-	dummy_prenda_tipo* dummy_edo_civil*  /// *Categorical covariates
-	dummy_choose_same1 dummy_choose_same2 dummy_trabajo1-dummy_trabajo8  /// 
+	prestamo pr_recup  edad visit_number num_arms faltas /// *Continuous covariates
 	genero pres_antes fam_pide fam_comun ahorros cta_tanda /// *Dummy variables
-	renta comida medicina luz gas telefono agua  ///
-	masqueprepa estresado_seguido pb fb hace_presupuesto tentado low_cost low_time ///
-	rec_cel
+	renta comida medicina luz gas telefono agua  /// 
+	masqueprepa estresado_seguido OC pb fb hace_presupuesto tentado low_cost low_time rec_cel
 
 	
 	

@@ -1,0 +1,224 @@
+\documentclass{amsart}
+
+
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{amsmath}
+\usepackage{amscd}
+\usepackage{enumerate}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsthm}
+\usepackage{imakeidx}
+\usepackage{hyperref}
+\usepackage{tikz}
+\usetikzlibrary{arrows,decorations.pathmorphing,backgrounds,positioning,fit,matrix, calc, quotes, angles, decorations.pathreplacing}
+
+\usepackage{tikz-cd}
+\usepackage{wrapfig}
+\usepackage{fullpage}
+\usepackage{color}
+\usepackage{xcolor}
+\usepackage{dsfont}
+\usepackage{scalerel,stackengine}
+\usepackage{centernot}
+\usepackage{chngcntr}
+\usepackage{apptools}
+\usepackage{lscape}
+\usepackage{nameref}
+\usepackage{afterpage}
+
+\newcommand\blankpage{%
+    \null
+    \thispagestyle{empty}%
+    \addtocounter{page}{-1}%
+    \newpage}
+
+\AtAppendix{\counterwithin{theorem}{section}}
+
+\tikzset{node distance=2cm, auto}
+
+\definecolor{darkred}{rgb}{0.8, 0.0, 0.0}
+\definecolor{navyblue}{rgb}{0.0, 0.0, 0.8}
+\definecolor{cadmiumgreen}{rgb}{0.0, 0.6, 0.24}
+\definecolor{MyDarkBlue}{rgb}{0,0.1,0.7}
+\hypersetup{
+    pdfstartview={FitH},    		% fits the width of the page to the window
+    pdftitle={BST},    % title
+    pdfauthor={IML},     % author
+    colorlinks=true,       % false: boxed links; true: colored links
+    filecolor=magenta,      % color of file links
+    urlcolor={MyDarkBlue},citecolor={MyDarkBlue},linkcolor={MyDarkBlue}
+}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lem}[theorem]{Lemma} 
+\newtheorem{dfn}{Definition}[section]
+\newtheorem{cor}[theorem]{Corollary} 
+\newtheorem{prop}[theorem]{Proposition} 
+\newtheorem{example}{Example} [section]
+
+\newtheorem{rem}{Remark} [section]
+\newtheorem{prob}{Problem} [section]
+
+
+\renewcommand*{\proofname}{Proof}
+\renewcommand\indexname{Índice}
+
+
+\newtheoremstyle{named}{}{}{\itshape}{}{\bfseries}{.}{.5em} {\thmnote{#3 }#1}
+\theoremstyle{named}
+\newtheorem*{namedtheorem}{}
+
+\def\quotient#1#2{%
+    \raise1ex\hbox{$#1$}\big/\hbox{$#2$}%
+}
+
+
+\newcommand{\vspan}[1]{\text{span}\left\lbrace #1\right\rbrace}
+\newcommand{\dual}[2]{\left\langle #1 , #2\right\rangle}
+
+
+\newcommand{\norm}[1]{\left|\left| #1\right|\right |}
+
+\newcommand{\ultra}[1]{\left( #1\right)_\mathcal{U}}
+
+\newcommand{\hl}[1]{\colorbox{yellow}{#1}}
+
+
+\stackMath
+\newcommand\reallywidehat[1]{%
+\savestack{\tmpbox}{\stretchto{%
+  \scaleto{%
+    \scalerel*[\widthof{\ensuremath{#1}}]{\kern-.6pt\bigwedge\kern-.6pt}%
+    {\rule[-\textheight/2]{1ex}{\textheight}}%WIDTH-LIMITED BIG WEDGE
+  }{\textheight}% 
+}{0.5ex}}%
+\stackon[1pt]{#1}{\tmpbox}%
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  Bibliography 
+
+%  \usepackage[backend=biber, style=alphabetic ,
+% citestyle=authoryear]{biblatex} %the latest version of biblatex?
+%   % biber is version 2.4; the latest?
+% \addbibresource{References.bib}
+
+\usepackage{natbib}
+\setcitestyle{square}
+
+% \renewcommand{\contentsname}{Contenidos}
+% \renewcommand{\chaptername}{Capítulo}
+
+
+\tikzset{snake arrow/.style=
+{-{Latex[width=1.75mm]},
+decorate,
+decoration={zigzag,amplitude=.4mm,segment length=2mm,post length=1.5mm}}
+}
+
+\tikzset{coil arrow/.style=
+{-{Latex[width=1.75mm]},
+decorate,
+decoration={coil,amplitude=.8mm,segment length=2mm,post length=1.5mm}}
+}
+
+\tikzset{double snake arrow/.style=
+{{Latex[width=1.75mm]}-{Latex[width=1.75mm]},
+decorate,
+decoration={zigzag,amplitude=.4mm,segment length=2mm,post length=1.5mm}}
+}
+
+\tikzset{double coil arrow/.style=
+{{Latex[width=1.75mm]}-{Latex[width=1.75mm]},
+decorate,
+decoration={coil,amplitude=.8mm,segment length=2mm,post length=1.5mm}}
+}
+
+
+\newcommand*{\rightsnakearrow}[1]{\ {\tikz \draw [->,
+line join=round,
+decorate, decoration={
+    zigzag,
+    segment length=4,
+    amplitude=.9,
+    post=lineto,
+    post length=2pt
+}] (0,0) -- (#1,0);}\ }
+
+\newcommand*{\rightcoilarrow}[1]{\ {\tikz \draw [->,
+line join=round,
+decorate, decoration={
+    coil,
+    segment length=4,
+    amplitude=1.5,
+    post=lineto,
+    post length=2pt
+}] (0,0) -- (#1,0);}\ }
+
+\newcommand*{\rightdottedarrow}[1]{\ {\tikz \draw [-{Latex[width=1.0mm]}, dotted,
+line join=round,
+decorate, decoration={
+    segment length=4,
+    amplitude=.9,
+    post=lineto,
+    post length=2pt
+}] (0,0) -- (#1,0);}\ }
+
+\newcommand*{\rightnormalarrow}[1]{\ {\tikz \draw [->,
+line join=round,
+decorate, decoration={
+    segment length=4,
+    amplitude=.9,
+    post=lineto,
+    post length=2pt
+}] (0,0) -- (#1,0);}\ }
+
+
+\newenvironment{dedication}
+  {%\clearpage           % we want a new page          %% I commented this
+   \thispagestyle{empty}% no header and footer
+   \vspace*{\stretch{1}}% some space at the top
+   \itshape             % the text is in italics
+   \raggedleft          % flush to the right margin
+  }
+  {\par % end the paragraph
+   \vspace{\stretch{3}} % space at bottom is three times that at the top
+   \clearpage           % finish off the page
+  }
+
+
+
+\begin{document}
+
+
+\title{Inverse decision making}
+%    Information for first author
+\author{Isaac Meza}
+%    Address of record for the research reported here
+\address{University of California, Berkeley - IEOR}
+%    Current address
+\curraddr{}
+
+
+
+
+%\vspace{.5in}
+
+\maketitle
+
+
+\begin{center}
+    \textit{WORKING}
+\end{center}
+
+We consider a expected utility maximizing agent, which depends on its income and whether or not she has in her possession the pawn piece. The agent chooses which amount to pay in three consecutive periods, after which the time ends.\\
+
+
+
+\bibliographystyle{amsalpha}
+\bibliography{References}
+
+\end{document}

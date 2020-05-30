@@ -9,7 +9,7 @@ gen fee_arms = inlist(prod, 2 ,5) & !missing(prod)
 gen insample = !missing(pro_2)
 
 *Covariates 
-keep fc_admin genero edad val_pren_pr masqueprepa faltas ${C0} ///
+keep fc_admin_disc genero edad val_pren_pr masqueprepa faltas ${C0} ///
 	prenda fee_arms insample
 
 *Drop missing values

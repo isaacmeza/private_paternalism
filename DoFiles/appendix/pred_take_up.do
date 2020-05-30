@@ -17,14 +17,12 @@ set seed 12345678
 
 ********************************************************************************
 *Dependent variable
-global takeup_var pago_frec_vol_fee
+global takeup_var pago_frec_vol
 *Independent variable (not factor variables)
 global ind_var dummy_dow1-dummy_dow5 dummy_suc1-dummy_suc5 /// *Controls
-	prestamo pr_recup  edad visit_number faltas /// *Continuous covariates
-	dummy_prenda_tipo1-dummy_prenda_tipo4 dummy_edo_civil1-dummy_edo_civil3  /// *Categorical covariates
-	dummy_choose_same1-dummy_choose_same2   /// 
+	prestamo pr_recup  edad visit_number num_arms faltas /// *Continuous covariates
 	genero pres_antes fam_pide fam_comun ahorros cta_tanda /// *Dummy variables
-	masqueprepa estresado_seguido pb fb hace_presupuesto tentado low_cost low_time rec_cel
+	masqueprepa estresado_seguido oc pb fb hace_presupuesto tentado low_cost low_time rec_cel
 	
 *Train fraction
 global trainf=0.85
@@ -41,22 +39,16 @@ global profiler=0
 
 ********************************************************************************
 
-preserve	
 *Random Forest take-up prediction (created in pfv_pred.R)
 import delimited "$directorio\_aux\pred_${takeup_var}.csv", clear
-tempfile temp_rf_pred
-save `temp_rf_pred'
-restore
-merge 1:1 nombrepignorante prenda using `temp_rf_pred', ///
-	keepusing(rf_pred) keep(3)
 
 	
 ********************************************************************************
 *Summary statistics for independent variables
-su $takeup_var $ind_var in 1/$trainn
+su $takeup_var $ind_var if insample==1
 
 
 ********************************************************************************
-do "$directorio\DoFiles\prediction_oos_stata.do"
+do "$directorio\DoFiles\appendix\prediction_oos_stata.do"
 ********************************************************************************
 	
