@@ -1,0 +1,494 @@
+
+
+\documentclass[9pt]{beamer}
+
+\input{preamble_beamer.tex}
+
+
+%\setbeamercolor{section in head/foot}{bg=darkcrimsonred}
+\setbeamersize{text margin left=11pt, text margin right=11pt}
+%\setbeamertemplate{section in toc}[square]
+
+
+
+\begin{document}
+
+
+\title{Frequent Payments as a Commitment Device?}
+
+%\subtitle{VERY PRELIMINARY!}
+
+\author[]{
+Isaac Meza\inst{1}\and Joyce Sadka\inst{2}  \and Enrique Seira\inst{2}}
+\institute{ \inst{1} University of California, Berkeley \and
+  \inst{2}  Instituto Tecnológico Autónomo de México}
+
+
+\date{Oct 4, 2019\\\;\;\textsc{Applied Lunch}\\\;\;\textbf{\alert{VERY PRELIMINARY!} }}
+
+
+\begin{frame}[c, noframenumbering]%{\phantom{title page}}
+% The \phantom{title page} is a kludge to get the red bar on top
+\titlepage
+\end{frame}
+
+
+\begin{frame}{Motivation}
+\begin{itemize}
+\vfill \item True story:
+    \begin{itemize}
+        \item A large Mexican pawn shop (PS) contacted us worried that their default was too high...
+        \item ...conjecturing it had to do with contract without frequent payments.
+    \end{itemize}
+    \pause
+\vfill \item Their contract:
+    \begin{itemize}
+        \item Accepted gold jewelry as collateral, gave you 70\% of the value of gold in cash.
+        \item 7\% Monthly interest in outstanding debt.
+        \item 3 month term. You could pay principal+interest anytime with no penalty and recover your item. 
+        \item Only 33\% paid before day 85th.
+        \item if in 90 (+15 days grace) you did not do this, you lose your item.
+    \end{itemize}
+    \pause
+\vfill \item Does forcing them to \textbf{pay monthly} increase payment (decrease default)?
+    \begin{itemize}
+        \item PS prefers clients recover their item (non-profit mandate).
+        \item Higher frequency has costs: $\uparrow$ transaction costs, $\downarrow$  welfare (with neo-classical consumers).
+        \item But may help present biased consumers. 
+    \end{itemize}
+    \vfill
+    \pause
+    \item \textbf{Is there demand for commitment?}
+\end{itemize}
+\vfill
+\end{frame}
+
+
+
+\begin{frame}{Why could frequency decrease default?}
+    \begin{itemize}
+        \vfill \item Behavioral:
+        \begin{itemize}
+            \item Commitment device not to spend the money (for present biased consumers).
+            \item Creates a habit for saving (or paying) / forces to make a plan (for inattentive consumers).
+            \item Sunk cost fallacy (having already paid some).
+        \end{itemize}
+    \end{itemize}    
+    
+    \begin{itemize}
+        \vfill \item Neoclassical:
+        \begin{itemize}    
+        \item Increases consumer trust with branch personnel?
+        \item Pecuniary/psychological cost from not paying?
+        \item Less ``distance to goal''.
+         \item Borrows from other lenders to pay $\rightarrow$ more monitoring.
+        \end{itemize}
+        \vfill
+    \item Neoclassical consumers would \textbf{not} tie their hands for free.
+        \begin{itemize}
+            \item Demand for commitment would signal the presence of present biased consumers.
+        \end{itemize}
+    \end{itemize}   
+    \vfill
+\end{frame}
+
+
+\begin{frame}{What ``punishment'' to use for late payment?}
+
+\begin{itemize}
+    \item There needs to be a punishment from not paying in order to have commitment.
+    \vfill
+    \item But punishment if it is too hard, and there are random shocks to income, even present biased consumers will not demand it.
+    \vfill 
+    \item Two types of punishment in different arms:
+    \begin{itemize}
+        \item Monetary fee: $4\%$ of missed payment.
+        \item Psychological cost of lying: made promise very salient.
+    \end{itemize}
+\end{itemize}
+    
+\end{frame}
+
+
+\begin{frame}{Literature in Microfinance}
+
+        \begin{itemize}
+        \vfill \item Field and Pande ``\textit{Repayment Frequency and Default in Microfinance}'' JEEA 2008.
+            \begin{itemize}
+            \item Randomized 100 MFI groups to weekly vs monthly payment.
+            \item Found no effect of frequency (default in about 1\% for all).
+            \end{itemize}
+            \pause
+        \vfill \item Field et al ``Repayment flexibility can reduce financial stress'' PLOS 2012
+            \begin{itemize}
+            \item Randomized ~100 MFI groups to weekly vs monthly payment.
+            \item Found those in weekly payment  50\% more likely to report feeling anxious.
+            \end{itemize}
+            \pause
+        \vfill \item Field, Pande, Papp, Rigol ``Does the classic microfinance model discourage entrepreneurship among the poor?'' AER 2013
+        \pause
+        \vfill \item Ahsarf et al ``Tying odysseus to the mast'' QJE 2006.
+               \begin{itemize}
+                \item Offered savings where they could not withdraw for a given time /goal (~700 people, 28\% accepted).
+                \item Found present biased women  are more 15pp likely to take up.
+                \item 80\% increase in savings 1yr later (ITT).
+             \end{itemize}
+             \vfill
+
+    \end{itemize}
+
+\end{frame}
+
+
+
+% LOS SIGUIENTE ES PARA QUE PONGA SECCIONES Y DIVISIONES ENTRE SECCIONES
+	\setbeamertemplate{section in toc}{\hypersetup{linkcolor=.}\colorbox{lightash}{\textcolor{white}{\inserttocsectionnumber}}\enskip\inserttocsection}
+	
+	\begin{frame}[t]{Steps}
+	\hfill
+	\parbox[t]{.95\textwidth}{
+		\begin{minipage}[c][0.75\textheight]{\textwidth}
+			\tableofcontents[hideallsubsections]	
+	\end{minipage}}
+	\hfill
+\end{frame}
+
+
+\AtBeginSection[]
+{
+\begin{frame}[t]{Steps}
+\hfill
+\parbox[t]{.95\textwidth}{
+	\begin{minipage}[c][0.75\textheight]{\textwidth}
+		\tableofcontents[currentsection,hideallsubsections,sectionstyle=show/shaded]  				
+\end{minipage}}
+\hfill
+\end{frame}
+}
+
+
+%EMPIEZAN LAS SECCIONES
+
+
+\section{Experiment description}
+
+\begin{frame}{Experimental Arms}
+     5 Arms:
+        \begin{itemize}
+            \item \textbf{Control} = status quo pay any time in 90 days.
+            \vfill
+            \item \textbf{Frequent payment treatments}: 4 arms in a 2x2 design: 
+            \vfill
+            \begin{itemize}
+                \item ``Forced'' to have the monthly payment contract vs given choice.
+                \vfill
+                \item  Break promise vs penalty fee (4\%) if delinquent on payment.
+            \end{itemize}
+            \vfill
+            \item Randomization at branch-day level.
+                \begin{itemize}
+                    \item No difference in number of contracts by arm.
+                \end{itemize}
+        \end{itemize}
+    \vfill
+    \begin{center}
+        \centering
+        \includegraphics[width=0.70\textwidth]{Figuras/exp_arms.PNG}
+    \end{center}
+\end{frame}
+
+
+\begin{frame}{Branches and Timeline}
+    \begin{itemize}
+        \item We worked on 6 branches during 2012
+        \item We observe transactions for about 30 days before and 6 months after the experiment ends.
+    \end{itemize}
+    \begin{center}
+        \includegraphics[width=0.80\textwidth]{Figuras/timeline_suc_exp_extended.pdf}
+    \end{center}
+\end{frame}
+
+
+\begin{frame}{Data}
+
+\begin{itemize}
+    \item Admin data:
+    \begin{itemize}
+        \item Date of pawning
+        \item Value of item --> loan size
+        \item Dates of payments and amounts, 
+        \item Whether borrower recovered item
+        \item Borrower id
+    \end{itemize}
+    \vfill
+    \item Survey data: Own 2 page questionnaire at the branch before pawning
+    \begin{itemize}
+        \item Some demographics
+        \item Vulnerability
+        \item Cost of going to branch
+        \item 3 ``self control'' questions
+        \item ... others.
+    \end{itemize}
+\end{itemize}
+    
+\end{frame}
+
+
+\begin{frame}{Survey questions}
+    \begin{enumerate}
+        \item Family
+            \begin{itemize}
+                \item Common asks - Is it common family or friends ask you for money?
+            \end{itemize}
+        \item Income 
+        \begin{itemize}
+            \item In the last six months, did you need money to pay...?
+        \end{itemize}
+        \item Self-Control
+        \begin{itemize}
+            \item Makes budget - Do you budget your monthly expenses?
+            \item Present bias - Prefers 100 tomorrow over 250 in a month AND 150 in 4 months over 100 in 3 months
+            \item Reminder - Would you like to receive free reminders on your cell phone?
+            \item Tempt - Has it happened to you that you spend more than you would like because you fall into temptation?
+        \end{itemize}
+        \item Experience
+        \begin{itemize}
+            \item Rosca - Do you participate in a \textit{rosca} or in a savings account?
+            \item Pawn before - Have you pawn before?
+        \end{itemize}
+        \item Other
+            \begin{itemize}
+            \item Low time - Below median in reported time to arrive to the pawn shop.
+            \item Low cost - Below median in reported cost spent to arrive to the pawn shop
+            \item Prob recovery - From 0 to 100 mark with an X how sure you are to recover your garment
+            \item Stressed - How often do you feel stressed by your household economic situation? - 0 when answered `never' and 1 otherwise
+        \end{itemize}
+    \end{enumerate}
+\end{frame}
+
+
+\begin{frame}{SS Histograms}
+
+\begin{figure}[H]
+    \label{nochoicehte_takeup_pred}
+    \begin{center}
+     \begin{subfigure}{0.45\textwidth}
+        \caption{In the last six months, did you need money to pay...?}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/perc_utilities.pdf}
+    \end{subfigure}
+     \begin{subfigure}{0.45\textwidth}
+        \caption{Cost and Time to arrive to pawn shop}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/cost_time_scatter_hist.png}
+    \end{subfigure}
+    \end{center}
+    \end{figure}
+    
+\end{frame}
+
+
+
+\begin{frame}{Summary Stats}
+    \begin{table}
+        \begin{center}
+        \tiny{\input{./Tables/SS.tex}}
+        \end{center}
+    \end{table}
+\end{frame}
+
+
+
+
+\section{Results on Payments and Recovery}
+
+\begin{frame}{When do borrowers pay?}
+    \begin{center}
+        \includegraphics[width=\textwidth]{Figuras/hist_payments.pdf}
+    \end{center}
+\end{frame}
+
+
+\begin{frame}{Recovering Piece}
+
+    \begin{center}
+        \includegraphics[width=.70\textwidth]{Figuras/te_graph_des_c.pdf}
+    \end{center}
+\end{frame}
+
+
+\begin{frame}{Number of Payments}
+    \begin{center}
+        \includegraphics[width=.70\textwidth]{Figuras/te_graph_num_p.pdf}
+    \end{center}
+\end{frame}
+
+
+\begin{frame}{Percentage of Loan paid}
+    \begin{center}
+        \includegraphics[width=.70\textwidth]{Figuras/te_graph_sum_porcp_c.pdf}
+    \end{center}
+\end{frame}
+
+
+\begin{frame}{Days to recover piece | recovering}
+    \begin{center}
+        \includegraphics[width=.70\textwidth]{Figuras/te_graph_dias_al_desempenyo.pdf}
+    \end{center}
+\end{frame}
+
+
+\begin{frame}{Reincidence}
+    \begin{center}
+        \includegraphics[width=.70\textwidth]{Figuras/te_graph_reincidence.pdf}
+    \end{center}
+\end{frame}
+
+
+
+\begin{frame}[label = hte]{TE heterogeneity in Recovering}
+    \begin{center}
+        \includegraphics[width=.80\textwidth]{Figuras/he_dist_des_c_pro_2.pdf}
+    \end{center}
+    
+ Based on \hyperlink{GRF}{\beamerbutton{GRF}}   
+\end{frame}
+
+
+\begin{frame}{Some determinants of TE - The nature of heterogeneity}
+    \begin{center}
+        \includegraphics[width=.9\textwidth]{Figuras/HE/he_int_des_c_pro_2.pdf}
+    \end{center}
+\end{frame}
+
+
+
+
+\section{Results on Demand for Commitment}
+
+\begin{frame}{10\% take up with fee: who are they?}
+    \begin{center}
+        \includegraphics[width=.90\textwidth]{Figuras/pago_frec_vol_fee_interactions_rf.pdf}
+    \end{center}
+\end{frame}
+
+
+
+\begin{frame}{Those taking up are not those with highest TE}
+    \begin{center}
+        \includegraphics[width=.70\textwidth]{Figuras/takeup_he_pro_2_fee.pdf}
+    \end{center}
+\end{frame}
+
+
+
+\section{Next steps}
+
+\begin{frame}{Next steps}
+
+\begin{itemize}
+    \item Can a simple neoclassical model explain quantitatively the results?
+    \vfill
+    \item Estimate a model and talk about welfare?
+    \vfill
+    \item What about naive present-biased consumers? Can we separate them?
+    \vfill
+    \item Does promise commitment work for some people?
+    \vfill
+    \item Does frequent payment cause lack of payment of basic services or other loans?
+\end{itemize}
+    
+\end{frame}
+
+
+
+\section{Appendix}
+
+\begin{frame}{Explanation in ``choice'' days}
+    \begin{center}
+        \includegraphics[width=\textwidth]{Figuras/micas.pdf}
+    \end{center}
+\end{frame}
+
+
+\begin{frame}{Histograms Percentage Paid}
+    \begin{center}
+        \includegraphics[width=.9\textwidth]{Figuras/hist_perc_payment.pdf}
+    \end{center}
+\end{frame}
+
+
+
+\begin{frame}{Characteristics of present bias}
+\begin{table}[H]
+\label{pb_chars}
+\begin{center}
+\tiny{\input{./Tables/pb_chars.tex}}
+\end{center}
+\end{table}
+\end{frame}
+
+
+
+\begin{frame}{30\% take up with promise: Different relation with self control}
+    \begin{center}
+        \includegraphics[width=.90\textwidth]{Figuras/pago_frec_vol_promise_interactions_rf.pdf}
+    \end{center}
+\end{frame}
+
+
+\begin{frame}{ML fit}
+    \begin{center}
+    \scriptsize
+    \input{./Tables/oos_pago_frec_vol_fee.tex}
+    \end{center}
+\end{frame}
+
+
+
+
+\begin{frame}{Exit survey}
+    \begin{center}
+    \tiny
+    \input{./Tables/SS_exit.tex}
+    \end{center}
+\end{frame}
+
+
+
+\begin{frame}[label = GRF]{Generalized Random Forests}
+
+A method for non-parametric statistical estimation based on RF
+for estimating $\theta(x)$ that can be identified as the solution to a set of local moment equations:
+
+\[\mathbb{E}[\psi(Z,\theta,h(x,W))\;|\;X=x]=0\]
+
+where $\psi$ is a known score function and $h$ is an unknown nuisance function also estimated from data.\\
+
+\vspace{5mm}
+
+The main application involves HTE. To achieve this, the method seeks trees that, when combined, produces leaves that maximizes heterogeneity. In other words, it splits the data that produce the biggest difference in TE across leaves, by still producing accurate estimates of the TE. Moreover, the splits are made honest by taking the training data and splitting it into two subsamples: a splitting subsample and an estimating subsample. The estimates being calculated on the latter. \hyperlink{hte}{\beamerbutton{Back}}\\
+
+\end{frame}
+
+
+
+\begin{frame}{Honest Causal Tree construction}
+Given a dataset with an outcome $Y$, covariates $X$, and a randomized condition $W$ that takes on the value of 0 for control and 1 for treatment:
+
+\begin{enumerate}
+\item Split the data into subsample $I$ and subsample $J$
+
+\item Train a decision tree on subsample $I$ predicting $Y$ from $X$, with the requirement that each terminal node has at least $k$ observations from each condition in subsample $J$
+
+\item Apply the decision tree constructed on subsample $I$ to subsample $J$
+
+\item At each terminal node, get the mean of predictions for the $W = 1$ cases from subsample $J$ and subtract the mean of predictions for the $W = 0$ cases from subsample $J$; the resulting difference is the estimated treatment effect.
+
+\end{enumerate}
+
+This is then applied to a causal random forest by using bagging or bootstrapping
+
+\end{frame}
+\end{document}
+
