@@ -19,14 +19,16 @@
 \usepackage[nokeyprefix]{refstyle}
 \usepackage{rotating}
 \usepackage{threeparttable}
+\usepackage{afterpage}
 \usepackage{lscape}
 \usepackage{enumerate}
-\usepackage{afterpage}
 \usepackage{caption}
 \usepackage{subcaption}
 \usepackage{epstopdf}
 \usepackage{setspace}
 \usepackage{svg}
+\usepackage{dsfont}
+\usepackage{amsthm}
 
 \epstopdfDeclareGraphicsRule{.tiff}{png}{.png}{convert #1 \OutputFile}
 \AppendGraphicsExtensions{.tiff}
@@ -75,6 +77,8 @@
 
 \newtheorem{theorem}{Theorem}
 \newtheorem{claim}[theorem]{Claim}
+\newtheorem{prop}[theorem]{Proposition} 
+\newtheorem{cor}[theorem]{Corollary} 
 
 \DeclareRobustCommand{\hlgr}[1]{{\sethlcolor{green}\hl{#1}}}
 

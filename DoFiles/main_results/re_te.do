@@ -30,7 +30,7 @@ local rcap_options_95 lcolor(black) lwidth(thin)
 set more off
 				
 eststo clear
-matrix results = J(13, 4, .) // empty matrix for results
+matrix results = J(11, 4, .) // empty matrix for results
 	//  4 cols are: (1) Treatment arm, (2) beta, (3) std error, (4) pvalue
 	
 	local row = 1	
@@ -107,31 +107,6 @@ foreach arm in pro_2 pro_3 {
 		local nu = `nu' + 1
 		restore
 		}
-		
-		preserve
-		*Subsample of people who recovers its first pawn
-		keep if prenda==first_prenda  & des_c==1
-		collapse reincidence prestamo $C1  `arm' ///
-			if prenda, by(NombrePignorante fecha_inicial)
-
-		sort NombrePignorante fecha_inicial
-		bysort NombrePignorante : keep if _n==1
-
-		eststo: reg reincidence `arm' ${C1} , r 
-		su reincidence if e(sample) & `arm'==0
-		estadd scalar ContrMean = `r(mean)' 
-		local df = e(df_r)	
-		
-		matrix results[`row',1] = `nu'
-		// Beta 
-		matrix results[`row',2] = _b[`arm']
-		// Standard error
-		matrix results[`row',3] = _se[`arm']
-		// P-value
-		matrix results[`row',4] = 2*ttail(`df', abs(_b[`arm']/_se[`arm']))
-		local row = `row' + 1
-		local nu = `nu' + 1
-		restore
 		
 		preserve
 		*Subsample of people who recovers its first pawn
@@ -265,28 +240,28 @@ gen rcap_hi = beta + invnorm(`=`alpha'/2')*se
 
 // GRAPH
 gen ord=_n
-replace k = 6 in 8
-replace k = 6.9 in 9
-replace k = 7.1 in 10
+replace k = 5 in 6
+replace k = 5.9 in 7
+replace k = 6.1 in 8
+replace k = 8 in 4
 replace k = 9 in 5
-replace k = 10 in 6
-replace k = 11 in 7
+
 
 #delimit ;
 graph twoway 
 			(scatter beta k if p<0.05 & mod(k, 1) == 0 ,           `estimate_options_95') 
 			(scatter beta k if p>=0.05 & p<0.10 & mod(k, 1) == 0 , `estimate_options_90') 
 			(scatter beta k if p>=0.10 & mod(k, 1) == 0,          `estimate_options_0' )
-			(scatter beta k if p<0.05 & inlist(ord,9,12),          mcolor(black) msymbol(T)  msize(medlarge)) 
-			(scatter beta k if p>=0.05 & inlist(ord,9,12), mcolor(gs7)   msymbol(T)  msize(medlarge)) 
-			(scatter beta k if p>=0.10 & inlist(ord,9,12),          mcolor(gs10)   msymbol(Th)  msize(medlarge))
-			(scatter beta k if p<0.05  & inlist(ord,10,13),          mcolor(black) msymbol(S)  msize(medlarge)) 
-			(scatter beta k if p>=0.05 & p<0.10 & inlist(ord,10,13), mcolor(gs7)   msymbol(S)  msize(medlarge)) 
-			(scatter beta k if p>=0.10 & inlist(ord,10,13),          mcolor(gs10)   msymbol(Sh)  msize(medlarge) ///
-				text(.25 2.5 "Fee-forcing", place(n)) ///
-				text(.25 6.5 "Choice-fee", place(n)) ///
-				text(.25 10 "Fee-promise", place(n)) ///
-				text(.25 13 "Choice-promise", place(n)) ///
+			(scatter beta k if p<0.05 & inlist(ord,7,10),          mcolor(black) msymbol(T)  msize(medlarge)) 
+			(scatter beta k if p>=0.05 & inlist(ord,7,10), mcolor(gs7)   msymbol(T)  msize(medlarge)) 
+			(scatter beta k if p>=0.10 & inlist(ord,7,10),          mcolor(gs10)   msymbol(Th)  msize(medlarge))
+			(scatter beta k if p<0.05  & inlist(ord,8,11),          mcolor(black) msymbol(S)  msize(medlarge)) 
+			(scatter beta k if p>=0.05 & p<0.10 & inlist(ord,8,11), mcolor(gs7)   msymbol(S)  msize(medlarge)) 
+			(scatter beta k if p>=0.10 & inlist(ord,8,11),          mcolor(gs10)   msymbol(Sh)  msize(medlarge) ///
+				text(.25 2 "Fee-forcing", place(n)) ///
+				text(.25 5.1 "Choice-fee", place(n)) ///
+				text(.25 8.1 "Fee-promise", place(n)) ///
+				text(.25 11.1 "Choice-promise", place(n)) ///
 				) ///
 			(rcap rcap_hi rcap_lo k if p<0.05,           `rcap_options_95')
 			(rcap rcap_hi rcap_lo k if p>=0.05 & p<0.10, `rcap_options_90')
@@ -298,19 +273,17 @@ graph twoway
 			xscale(range(`min_xaxis' `max_xaxis'))
 			xscale(noline) /* because manual axis at 0 with yline above) */
 			`plotregion' `graphregion'  
-			legend(order(5 "SQ" 7 "NSQ") rows(1))
-			xline(5, lpattern(dot) lwidth(thick) lcolor(black))
-			xline(8, lpattern(dot) lwidth(thick) lcolor(black))
-			xline(12, lpattern(dot) lwidth(thick) lcolor(black))
+			legend(order(4 "SQ" 7 "NSQ") rows(1))
+			xline(4, lpattern(dot) lwidth(thick) lcolor(black))
+			xline(7, lpattern(dot) lwidth(thick) lcolor(black))
+			xline(10, lpattern(dot) lwidth(thick) lcolor(black))
 			xlabel(1 "reincidence (Forcing/Fee)" 
 			2 "reincidence (fnr)"
-			3 "reincidence | rec."  
-			4 "reincidence | >50th perc."
-			6 "reincidence (Choice/Fee)"
-			9 "reincidence (Forcing/Promise)" 
-			10 "reincidence | rec." 
-			11 "reincidence | >50th perc."
-			13 "reincidence (Choice/Promise)", angle(vertical) labsize(small))
+			3 "reincidence | >50th perc."
+			5 "reincidence (Choice/Fee)"
+			8 "reincidence (Forcing/Promise)" 
+			9 "reincidence | >50th perc."
+			11 "reincidence (Choice/Promise)", angle(vertical) labsize(small))
 			;
 
 #delimit cr

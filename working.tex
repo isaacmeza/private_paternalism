@@ -37,117 +37,79 @@ XXX
 \end{abstract}
 
 
-\begin{figure}[H]
-    \caption{}
-    \label{det_naiveness}
-    \begin{center}
-    \begin{subfigure}{0.45\textwidth}
-        \caption{Elapsed days}
-        \centering
-        \includegraphics[width=\textwidth]{Figuras/hist_days_default.pdf}
-    \end{subfigure}
-        \begin{subfigure}{0.45\textwidth}
-        \caption{\% of payments}
-        \centering
-        \includegraphics[width=\textwidth]{Figuras/hist_percpay_default.pdf}
-    \end{subfigure}
-    \begin{subfigure}{0.45\textwidth}
-        \caption{Number of payments}
-        \centering
-        \includegraphics[width=\textwidth]{Figuras/hist_numpay_default.pdf}
-    \end{subfigure}
-    \end{center}
-\end{figure}
+We want to claim that for all increasing utility functions $u(\cdot)$:
+\begin{align}
+\label{fosd}
+    \mathbb{E}_{sq}(u(FC))\geq \mathbb{E}_{fee}(u(FC))
+\end{align}
+as the FC is seen as a `bad'. It can be proven that relation (\ref{fosd}) is equivalent to 
+\[F_{sq}(FC)\leq F_{fee}(FC)\]
+where $F$ is the distribution function.
 
+\begin{theorem}
+The following are equivalent:
+\begin{enumerate}[(a)]
+    \item For every weakly decreasing utility function $u$: $E_{sq}(u(FC))\leq E_{fee}(u(FC))$
+    \item $F_{sq}(FC)\leq F_{fee}(FC)$ 
+\end{enumerate}
+\end{theorem}
+\begin{proof} \;
 
-\begin{figure}[H]
-    \caption{Financial cost}
-    \label{fc}
-    \begin{center}
-    \begin{subfigure}{0.45\textwidth}
-        \caption{Regression}
-        \centering
-        \includegraphics[width=\textwidth]{Figuras/fc_te.pdf}
-    \end{subfigure}
-        \begin{subfigure}{0.45\textwidth}
-        \caption{Quantile regression}
-        \centering
-        \includegraphics[width=\textwidth]{Figuras/fc_admin quantile.pdf}
-    \end{subfigure}
-    \end{center}
-\end{figure}
+[$(a)\Longrightarrow (b)$] Suppose  $(b)$ does not hold. So there exists $FC^*$ such that $F_{sq}(FC^*)>F_{fee}(FC^*)$, Define $u:=\mathds{1}_{FC\leq FC^*}$. Then
+\[E_{sq}(u(FC)) = \int u(FC)dF_{sq} = F_{sq}(FC^*)>F_{fee}(FC^*)= \int u(FC)dF_{fee} =E_{fee}(u(FC))\]
+which contradicts $(a)$.\\
+
+[$(a)\Longleftarrow (b)$] On the other hand for $u$ weakly decreasing,
+
+\[\int u(y(FC))dF_{sq}(y(FC)) = \int u(y(FC))dF_{fee}(FC) \leq \int u(FC)dF_{fee}(FC)\]
+with $y(FC) = F_{sq}^{-1}F_{fee}(FC)$.
+\end{proof}
+
+Note the proof was done in the case of absolutely continuous and strictly increasing distribution functions $F_{sq}$ and $F_{fee}$.
 
 
 
-\begin{figure}[H]
-    \caption{Financial cost}
-    \label{det_naiveness}
-    \begin{center}
-        \caption{Not recovery treatment effects}
-        \centering
-        \includegraphics[width=\textwidth]{Figuras/def_te.pdf}
-    \end{center}
-\end{figure}
+\begin{theorem}
+Let $F$ and $G$ be the cumulative distributions of two alternative log-normal prospects. The following are equivalent:
+
+\begin{enumerate}[(a)]
+    \item For every weakly decreasing utility function $u$: $E_{F}(u(FC))\leq E_G(u(FC))$
+    \item $E_F \log(FC)\geq E_G\log(FC)$ and $Var_F \log(FC)= Var_G\log(FC)$
+\end{enumerate}
+
+\end{theorem}
+
+\begin{proof}
+See Theorem 4 in \cite{lognormal_dominance}.
+\end{proof}
 
 
-\begin{figure}[H]
-    \caption{Determinants of naiveness}
-    \label{det_naiveness}
-    \begin{center}
-    \begin{subfigure}{0.45\textwidth}
-        \caption{Naiveness 1}
-        \centering
-        \includegraphics[width=\textwidth]{Figuras/det_naiveness_ref_c.pdf}
-    \end{subfigure}
-    \begin{subfigure}{0.45\textwidth}
-        \caption{Naiveness 2}
-        \centering
-        \includegraphics[width=\textwidth]{Figuras/det_naiveness_ref_default.pdf}
-    \end{subfigure}
-        \begin{subfigure}{0.45\textwidth}
-        \caption{Naiveness 3}
-        \centering
-        \includegraphics[width=\textwidth]{Figuras/det_naiveness_pos_pay_default.pdf}
-    \end{subfigure}
-    \begin{subfigure}{0.45\textwidth}
-        \caption{Naiveness 4}
-        \centering
-        \includegraphics[width=\textwidth]{Figuras/det_naiveness_pay_30_default.pdf}
-    \end{subfigure}
-    \end{center}
-     \footnotesize \textit{Notes: } 
-      \footnotesize{ \textit{Do file: }  \texttt{naiveness.do}}
-\end{figure}
+
+Consider a two period model. The agent chooses to 
+
+A linear model is sufficient to highlight the basic mechanism, and provides a reasonable approximation for small stakes
 
 
-\begin{figure}[H]
-    \caption{Treatment effect - naiveness}
-    \label{te_naiveness}
-    \begin{center}
-    \begin{subfigure}{0.45\textwidth}
-        \caption{Naiveness 1}
-        \centering
-        \includegraphics[width=\textwidth]{Figuras/te_graph_ref_c.pdf}
-    \end{subfigure}
-    \begin{subfigure}{0.45\textwidth}
-        \caption{Naiveness 2}
-        \centering
-        \includegraphics[width=\textwidth]{Figuras/te_graph_ref_default.pdf}
-    \end{subfigure}
-        \begin{subfigure}{0.45\textwidth}
-        \caption{Naiveness 3}
-        \centering
-        \includegraphics[width=\textwidth]{Figuras/te_graph_pos_pay_default.pdf}
-    \end{subfigure}
-    \begin{subfigure}{0.45\textwidth}
-        \caption{Naiveness 4}
-        \centering
-        \includegraphics[width=\textwidth]{Figuras/te_graph_pay_30_default.pdf}
-    \end{subfigure}
-    \end{center}
-     \footnotesize \textit{Notes: } 
-      \footnotesize{ \textit{Do file: }  \texttt{naiveness.do}}
-\end{figure}
+In the two period model, there is only one decision: whether the agent saves or not. 
 
 
+\begin{prop}
+Absent shocks in the first period, recovery is realized for sufficiently low probability of income shocks, i.e. when
+\[\lambda\leq \frac{\beta b-p+(1-\beta)+D}{\beta(b-p)} =: \lambda_{max}\]
+\end{prop}
+
+
+\begin{cor}
+\begin{enumerate}[(i)]
+    \item $\frac{\partial \lambda_{max}}{\partial \beta}>0 $ : Probability of recovery in neoclassical individuals ($\beta = 1$) is higher than in present bias individuals.
+    \item $\frac{\partial \lambda_{max}}{\partial D}>0 $ : In present bias individuals, the probability of recovery is higher in the Fee-Forcing ($D>0$) contract.  
+\end{enumerate}
+\end{cor}
+
+\clearpage
+\bibliographystyle{authordate1}
+%\bibliographystyle{amsalpha}
+%\bibliographystyle{AER}
+
+\bibliography{References}
 \end{document}

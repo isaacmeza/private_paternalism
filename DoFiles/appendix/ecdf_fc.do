@@ -51,5 +51,5 @@ twoway (line fc_cdf_1 fc_cdf_0 dif fc if fc<=`r(p95)', ///
 	sort ylab(, grid)) ///
 	(line sig_range fc if fc<=`r(p95)', lcolor(navy)), ///
 	ytitle("") xtitle("Pesos") ///
-	legend(order(1 "Fee-forcing" 2 "SQ" 3 "Difference") rows(1)) xtitle("Pesos") scheme(s2mono) graphregion(color(white)) 
+	legend(order(1 "Fee-forcing" 2 "SQ" 3 "SQ-Fee") rows(1)) xtitle("Pesos") scheme(s2mono) graphregion(color(white)) 
 graph export "$directorio/Figuras/cdf_fc_pro_2.pdf", replace

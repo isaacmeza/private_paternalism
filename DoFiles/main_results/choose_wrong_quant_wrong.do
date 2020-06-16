@@ -156,31 +156,24 @@ foreach var of varlist fc_te_cf {
 		}
 
 
-	twoway 	(line cwf threshold, lpattern(solid) lwidth(medthick) lcolor(red)) ///
-			(line cwf_h95 threshold, lpattern(dot) lwidth(medthick) lcolor(red)) ///
-			(line cwf_l95 threshold, lpattern(dot) lwidth(medthick) lcolor(red)) ///
-			(line cwp threshold, lpattern(solid) lwidth(medthick) lcolor(navy)) ///
-			(line cwp_h95 threshold, lpattern(dot) lwidth(medthick) lcolor(navy)) ///
-			(line cwp_l95 threshold, lpattern(dot) lwidth(medthick) lcolor(navy)) ///
-			(scatter cwf threshold,  msymbol(x) color(red) ) ///
-			(scatter cwp threshold, msymbol(x) color(navy) ) ///
+	twoway 	(line cwf threshold, lpattern(solid) lwidth(medthick) lcolor(navy)) ///
+			(line cwf_h95 threshold, lpattern(dot) lwidth(medthick) lcolor(navy)) ///
+			(line cwf_l95 threshold, lpattern(dot) lwidth(medthick) lcolor(navy)) ///
+			(scatter cwf threshold,  msymbol(x) color(navy) ) ///
 			(scatter qwf threshold,  msymbol(x) color(red) yaxis(2)) ///
-			(scatter qwp threshold, msymbol(x) color(navy) yaxis(2)) ///
-			, legend(order(1 "Fee arm" 4 "Promise arm" ///
-				9 "Money (fee)" 10 "Money (Promise)"))  scheme(s2mono) ///
+			, legend(order(1 "Fee arm"  ///
+				5 "Money (fee)" ))  scheme(s2mono) ///
 			graphregion(color(white)) xtitle("Threshold (as % of loan)") ///
 			ytitle("Percentage mistakes", axis(1)) ///
 			ytitle("Money (in pesos)",axis(2)) ylabel(0(10)100, axis(1)) 
 	graph export "$directorio/Figuras/line_cw_`var'.pdf", replace
 	
-		twoway 	(rarea bfa_h95 bfa_l95 threshold,  fintensity(inten20)  fcolor(navy) lcolor(white)) ///
-			(line better_forceall threshold, lpattern(solid) lwidth(medthick) lcolor(navy)) ///
+		twoway 	(line better_forceall threshold, lpattern(solid) lwidth(medthick) lcolor(navy)) ///
 			(scatter better_forceall threshold,  msymbol(x) color(navy) ) ///
-			(scatter qbfa threshold,  msymbol(x) color(red) yaxis(2)) ///
-			, legend(order(2 "Better off" 4 "Money (abs)"))  scheme(s2mono) ///
+			, legend(off) scheme(s2mono) ///
 			graphregion(color(white)) xtitle("Threshold (as % of loan)") ///
 			ytitle("Percentage", axis(1)) ///
-			ytitle("Money (in pesos)",axis(2)) ylabel(0(10)100, axis(1)) 
+			ylabel(0(10)100, axis(1)) 
 	graph export "$directorio/Figuras/line_better_forceall_`var'.pdf", replace
 
 	
