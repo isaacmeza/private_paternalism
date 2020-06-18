@@ -1,0 +1,115 @@
+ \documentclass[11pt]{article}
+
+\input{preamble.tex}
+\usepackage{anyfontsize}
+%%% HELPER CODE FOR DEALING WITH EXTERNAL REFERENCES
+\usepackage{xr}
+\makeatletter
+\newcommand*{\addFileDependency}[1]{
+  \typeout{(#1)}
+  \@addtofilelist{#1}
+  \IfFileExists{#1}{}{\typeout{No file #1.}}
+}
+\makeatother
+
+\newcommand*{\myexternaldocument}[1]{
+    \externaldocument{#1}
+    \addFileDependency{#1.tex}
+    \addFileDependency{#1.aux}
+}
+
+%\myexternaldocument{OA}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% DOCUMENT
+\begin{document}
+
+
+\title{Frequent Payment \thanks{}}
+\author{Joyce Sadka \and Enrique Seira \and Isaac Meza }
+\date{This draft:  \today \\[2 cm]}
+
+%\vspace{.5in}
+
+
+\maketitle
+\begin{abstract}
+XXX 
+\end{abstract}
+
+
+We want to claim that for all increasing utility functions $u(\cdot)$:
+\begin{align}
+\label{fosd}
+    \mathbb{E}_{sq}(u(FC))\geq \mathbb{E}_{fee}(u(FC))
+\end{align}
+as the FC is seen as a `bad'. It can be proven that relation (\ref{fosd}) is equivalent to 
+\[F_{sq}(FC)\leq F_{fee}(FC)\]
+where $F$ is the distribution function.
+
+\begin{theorem}
+The following are equivalent:
+\begin{enumerate}[(a)]
+    \item For every weakly decreasing utility function $u$: $E_{sq}(u(FC))\leq E_{fee}(u(FC))$
+    \item $F_{sq}(FC)\leq F_{fee}(FC)$ 
+\end{enumerate}
+\end{theorem}
+\begin{proof} \;
+
+[$(a)\Longrightarrow (b)$] Suppose  $(b)$ does not hold. So there exists $FC^*$ such that $F_{sq}(FC^*)>F_{fee}(FC^*)$, Define $u:=\mathds{1}_{FC\leq FC^*}$. Then
+\[E_{sq}(u(FC)) = \int u(FC)dF_{sq} = F_{sq}(FC^*)>F_{fee}(FC^*)= \int u(FC)dF_{fee} =E_{fee}(u(FC))\]
+which contradicts $(a)$.\\
+
+[$(a)\Longleftarrow (b)$] On the other hand for $u$ weakly decreasing,
+
+\[\int u(y(FC))dF_{sq}(y(FC)) = \int u(y(FC))dF_{fee}(FC) \leq \int u(FC)dF_{fee}(FC)\]
+with $y(FC) = F_{sq}^{-1}F_{fee}(FC)$.
+\end{proof}
+
+Note the proof was done in the case of absolutely continuous and strictly increasing distribution functions $F_{sq}$ and $F_{fee}$.
+
+
+
+\begin{theorem}
+Let $F$ and $G$ be the cumulative distributions of two alternative log-normal prospects. The following are equivalent:
+
+\begin{enumerate}[(a)]
+    \item For every weakly decreasing utility function $u$: $E_{F}(u(FC))\leq E_G(u(FC))$
+    \item $E_F \log(FC)\geq E_G\log(FC)$ and $Var_F \log(FC)= Var_G\log(FC)$
+\end{enumerate}
+
+\end{theorem}
+
+\begin{proof}
+See Theorem 4 in \cite{lognormal_dominance}.
+\end{proof}
+
+
+
+Consider a two period model. The agent chooses to 
+
+A linear model is sufficient to highlight the basic mechanism, and provides a reasonable approximation for small stakes
+
+
+In the two period model, there is only one decision: whether the agent saves or not. 
+
+
+\begin{prop}
+Absent shocks in the first period, recovery is realized for sufficiently low probability of income shocks, i.e. when
+\[\lambda\leq \frac{\beta b-p+(1-\beta)+D}{\beta(b-p)} =: \lambda_{max}\]
+\end{prop}
+
+
+\begin{cor}
+\begin{enumerate}[(i)]
+    \item $\frac{\partial \lambda_{max}}{\partial \beta}>0 $ : Probability of recovery in neoclassical individuals ($\beta = 1$) is higher than in present bias individuals.
+    \item $\frac{\partial \lambda_{max}}{\partial D}>0 $ : In present bias individuals, the probability of recovery is higher in the Fee-Forcing ($D>0$) contract.  
+\end{enumerate}
+\end{cor}
+
+\clearpage
+\bibliographystyle{authordate1}
+%\bibliographystyle{amsalpha}
+%\bibliographystyle{AER}
+
+\bibliography{References}
+\end{document}

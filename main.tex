@@ -1,0 +1,1809 @@
+ \documentclass[11pt]{article}
+
+\input{preamble.tex}
+\usepackage{anyfontsize}
+%%% HELPER CODE FOR DEALING WITH EXTERNAL REFERENCES
+\usepackage{xr}
+\makeatletter
+\newcommand*{\addFileDependency}[1]{
+  \typeout{(#1)}
+  \@addtofilelist{#1}
+  \IfFileExists{#1}{}{\typeout{No file #1.}}
+}
+\makeatother
+
+
+\newcommand*{\myexternaldocument}[1]{
+    \externaldocument{#1}
+    \addFileDependency{#1.tex}
+    \addFileDependency{#1.aux}
+}
+
+\usepackage{lmodern} 
+\usepackage{amsmath}
+\usepackage{amssymb}
+\newcommand{\wh}{\widehat}
+\onehalfspacing
+
+\usepackage{comment}
+\usepackage{subcaption,graphicx}
+
+
+%\myexternaldocument{OA}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% DOCUMENT
+\begin{document}
+
+
+\title{Private paternalism and the limits of self commitment  \thanks{We want to thank Craig McIntosh and Mauricio Romero for advice and encouragement. We want to thank also Ricardo Olivares for excellent research assistance and Erick Molina help with formatting. Jose Maria Barrero, Emilio Gutierrez, Aprajit Mahajan, Matt Rabin, and seminar participants at ITAM provided very valuable feedback.}}
+\author{Isaac Meza \and Joyce Sadka \and Enrique Seira   \thanks{Meza: University of California at Berkeley, isaac.meza@berkeley.edu; Sadka: ITAM, jsadka@itam.mx;  
+Seira: ITAM, enrique.seira@itam.mx} }
+\date{This draft:  \today \\[2 cm]}
+
+%\vspace{.5in}
+
+
+\maketitle
+\begin{abstract}
+
+%Many firms provide commitment devices that restrict individuals' choice, but shroud this. Shrouding suggests low demand for commitment. We show that private paternalism is beneficial in the pawnbroker context we study. 
+
+We study the benefits of ``private paternalism'' in the understudied but important pawnbroker context. We show that forcing people into commitment contracts with financial penalties for not paying on time \textit{decreases} their (fee-including) financial cost by 9.5\%, increases the likelihood of recovering their pawn by 25\%, and increases the likelihood of repeat business by 55\%. Using the recent machine learning methods for estimating heterogeneous treatment effects, we calculate that more than 90\% clients would reduce their financing cost with the commitment contract, however 10\% choose it. Using personal promises instead of fees as commitment triples take-of but has no effects.
+
+%and one of the most understudied. In our context more than on half of borrowers default and lose their pawn and whatever they have paid towards recovering it. Compared to the status quo pay-at-anytime 3-month contracts, forcing borrowers to pay monthly and charge a penalty if they didn't --i.e. a commitment contract-- increased recovery of pawn by about 30\% and financial costs by 10\%. However when offered a choice between the two contracts only 10\% took the monthly payment one. A pecuniary commitment seems necessary. In an alternative arm, we made them promise to pay but removed the pecuniary penalty. This increased take up to 31\%, but had zero effect on financing cost or default. The forcing contract may be better than choice for naive present biased consumers.
+
+\end{abstract}
+
+
+
+\textbf{Keywords: } Private paternalism, choice, present bias, naivete, overconfidence, commitment, pawnshop.
+
+\textbf{JEL codes:} G41, C93, O16, G21
+
+\newpage
+
+
+
+%NO MORAL HAZARD IN THE CONTRACT SINCE FULLY COLLATERALIZED
+%DOUBLE FAILURE: DEMAND LOW, AND DOES NOT WORK BY PEOPLE WHO TAKE IT.
+%PENALIZES THEM EVEN MORE ON SOMETHING THEY WERE ALREADY PENALIZED 
+%PROPENSITY TO CHOSE.
+%PULLING PUNISHMENT FORWARD --CHARGING RIGHT WHEN I MESS UP.
+%MAYBE ONLY IMPATIENT AND NAIVE END IN PAWNSHOPS
+%1) SELECT A RANDOM SAMPLE OF NEIGHBORHOODS, EXTERNAL VALIDITY, THE ONES THEY GO ARE NAIF AND
+%HYPERBOLIC
+%2) ASK TO CHOSE AMONG ALL CONTRACTS
+%3) CLASSIFY SOPHISTICATION AT BASELINE
+%4) HOW TO GET AT SHOCKS.  --BUT DOES NOT SQUARE WITH WHY CHARGING THEM FEES WORKE.
+%do shocks vary across strata, predict shocks.
+%DEEP BEHAVIORAL PAPER -- CAN WE REALLY PREDICT?
+
+
+\section{Introduction}
+
+\cite{Laibson2018} recently noted that many institutions ---firms, schools, financial contracts--- restrict choice using built-in incentive/commitment mechanisms which help workers, students, borrowers overcome self-control problems. ``Firms do limit their workers' freedom with intermediate deadlines, progress reports, production targets'', schools with ``pop quizzes, classroom attendance requirements, cold calling, graded problem sets, deadlines''. Similarly, mortgages do so ``with a fixed repayment stream and mandatory principal repayment''. However he notes that these same firms shroud these forcing mechanisms and don't market their commitment features, presumably because students, workers and borrowers ``don't welcome these paternalistic\footnote{\cite{Laibson2018} defines paternalism as a policy that advances an individual's interests by restricting his or her freedom, and private paternalism as paternalism implemented by private institutions.} restrictions''. In this he sees an important \textit{commitment puzzle}: if clients were present biased and  sophisticated about their self control problem they should appreciate commitment features and firms should be eager to market them. The fact that this is not the case suggests some clients may be naive about their self control problems, and that \textit{private paternalism}  ---a policy of restricting choice implemented by private firms--- may increase clients' welfare. 
+
+This paper studies private paternalism in the context of pawnbroker borrowing and finds evidence for its benefits. Pawnshops offer secure loans using items of personal property as collateral. The items pawned are called pledges or pawns. Pawn loans are one of the oldest forms of borrowing, and although data on their market share is scarce, anecdotal evidence suggests they are very prevalent. To give an example, our partner pawnshop (henceforth Lender $P$) served more than 1 million clients in the last 3 years with more than 4 million contracts.\footnote{For comparison there were approximately 2.3 million micro-finance clients in Mexico in 2009 in Mexico (\cite{Pedroza:2010}). We cannot be more precise on the number of total borrowers from Lender $P$ for confidentiality reasons.}  Pawn loans are interesting to study in and on themselves for this reason alone. But they are also interesting because regulators and practitioners view pawnbrokers as the lenders to which people in desperate need turn to. The regulators' concern is that the selection of clients that go to pawnshops may be particularly vulnerable, have bad debt management skills, and be more likely to have present biased preferences while being naive about it.\footnote{In 2013 Mexico's Consumer Protection Bureau (Profeco) is concerned about abuse. It forced Pawnshops to be more transparent in their pricing, register their contracts with them and issued regulation to protect clients. Congress has enacted laws in this regard. \url{http://www.diputados.gob.mx/LeyesBiblio/ref/lfpc.htm}.} 
+
+Indeed, using a survey conducted by us in branches of Lender $P$, we document some evidence consistent with regulators' concerns: while pawnshop clients predict they will recover their pawn with 93\% probability on average, in reality only 40\% of them do, suggesting naivete. Even conditional on paying a positive amount towards pawn recovery, 53\% lose their pawn and their payment. In our survey 69\% report self-control problems saying they often fall into temptation spending. %, but only \hlgr{15\%} show inter-temporal inconsistencies in a classical present-bias question, a similar number to \cite{Ashaf}. %and \hl{19\%} do not normally budget monthly expenses. 
+%While this is suggestive of a present bias problem or overconfidence to save and pay, at the same time our subjects are experienced and not wholly uneducated, 66\% have completed at least high school and 90\% have pawned before. %and \hl{38\%} have participated in a Rosca.
+
+Consistent with little client sophistication, Lender $P$ offers a very simple but highly collateralized contract. It only accepted gold jewelry as collateral and approves all gold pawns, giving in exchange in cash the equivalent of 70\% of the weighted gold value. The contract stipulates a 7\% monthly interest rate charged daily, and a loan term of 90 days plus 15 grace days to pay the principal and the accumulated interest. The client has complete flexibility to pay any number of times any amount she desires towards the recovery of her pawn, with no pre-payment penalties. However if the total amount of principal plus interest is not covered by the end of the 105 days, she loses her pawn and all the payments that have been done (unless she renews the loan before this by paying all accumulated interest). All transactions ---appraisal of the piece, loan disbursement and loan servicing--- are conducted at the branch. The gold collateral is highly liquid and the pawnshop has an associated business that sells the gold jewelry. Given the over-collateralization of the loan one would expect no moral hazard or adverse selection on the part of borrowers. %This lets us focus more cleanly on behavioral economics aspects.
+
+To study the benefits of private paternalism, we implemented a relatively large randomized control trial with close to 10,000 pawnshop clients in 6 branches of Lender $P$ in Mexico City. We answer five main questions using this experiment. First, would clients benefit  ---in terms of recovering their pawn and in terms of incurring in lower financing costs---  from having a frequent (monthly) payment commitment contract \textit{forced} on them, instead of the current 3-month pay-when-you-want contract? That is, we are asking whether \textit{charging} them a 2\% late payment fee for not paying a monthly installment on time can actually \textit{decrease} total fee-inclusive financing cost. Second, would there be demand for such a frequent payment commitment contract vis-a-vis the status quo one if given choice? Notice that any payment profile implemented in the commitment contract can be replicated by the borrower under the status quo contract, but the later affords more flexibility to respond to income shocks without incurring in fees. Third, what types of clients would demand these contracts that restrict choice? Fourth, are late payment fees key to provide commitment or would a non-pecuniary but salient personal promise to pay provide a cost-reducing mix of commitment vs flexibility? A large and important lab experiment literature suggest that promises change behavior significantly in laboratory settings, but we know little about their effect on the field in natural environments.\footnote{Some important papers in this space are \cite{PromisesPartnerships}, \cite{Vanberg}, \cite{Belot2010}, \cite{WhyDoPromises}, \cite{FurtherPromises}, \cite{Ismayilov2017}. There is also some actual policy around using promises for loans: the government Mexico has created a program called ``Loans on your word'' for uncollateralized borrowing (\url{http://tiny.cc/yfmnmz}). There is little information about them though.} Finally and importantly, is \textit{giving choice} among contracts better than forcing them into payment-commitment contracts in terms of minimizing financing costs incurred and the likelihood of recovering their pawn? Or on the contrary, is it better to force the commitment contract 
+paternalistically?
+
+The experiment involved 5 arms, with randomization happening at the branch-day level. It is described in detail in Section \ref{Experiment}. Here let us briefly explain the main 3 arms. The first one involves a group of clients that were given only the status quo contract (henceforth the \textit{status-quo forcing group}). The second arm (\textit{fee-forcing group}) was given only a monthly payment commitment contract, which stipulated that clients had to pay 1/3 of their loan plus accumulated interest in each of the 3 months of the term length. Failing to do this would result in a fee of 2\% of the amount due that month. A third group (\textit{Fee-choice group}) gave clients a choice between these two contracts. 
+
+We find that forcing clients into frequent payment commitment contracts causes them on average to save on financing cost and to recover their pawn more. The effects are large: financing cost decreases by 9.5\% on average, while the likelihood of recovering their pawn increases by 25\%. Results are robust to including in the cost definition transport costs of going to the branch plus losing a day's wage for each visit. Importantly, the benefits are distributed broadly: the whole distribution of treatment effects shows cost savings. The most economically vulnerable, those that report being stressed, and those that asked for a reminder at baseline, experience the largest financial cost savings. Those we classify as present biased and those that requested a reminder at baseline experience the largest effects on pawn recovery. %The commitment contract also causes payments to start 8 days earlier and be 16\% more frequent, compared to the control group. 
+Treatment effects are concentrated on the intensive margin as treatment does not affect the fraction of clients who pay a positive amount towards pawn recovery. It seems that the fee-commitment contract induces people who would otherwise pay something towards recovery, to pay more and faster and thus recover their pawn more at a cheaper financial cost. Finally, we find that borrowers assigned to the forced fee-commitment contract are 5pp (55\% of the mean) more likely to be repeat costumers than the control group, suggesting that they themselves liked the commitment contract more after experiencing it.
+
+%From this first comparison we conclude that penalizing borrowers for delinquency in a contract which has already has large penalties from default actually helps borrowers. In fact, we find that borrowers assigned to the forced fee-commitment contract are 5pp more likely to be repeat costumers, suggesting that they themselves liked the the commitment contract more after experiencing it.\footnote{As it is well known, \textit{naivete} facilitates their exploitation by firms. \cite{Laibson2018} conjectures that this exploitation may be limited if consumers use experienced utility to choose among firms or contracts.}
+
+In spite of these estimated benefits for all clients, their actual demand for the fee-commitment contract is low. Only 10\% of the group offered a choice between the monthly payment fee-commitment contract and the status-quo one chose the former. This is not likely driven by misunderstanding the (already simple) contract.\footnote{We had two ITAM students in each of the experiment's branches every day for all branch opening hours to carefully explain the contracts; material was developed to explain the differences among the two contracts, and subjects spelled back to our ITAM assistants the loan differences. Furthermore take up is systematically predicted by baseline covariates, %\footnote{We find that the more educated, those that report that their family typically asks for money, those that make a monthly budget of expenses, and ask for a remainder to payment (and marginally those we classify as present-biased) are more likely to chose the fee-commitment contract if given the choice. The opposite holds for those that are more vulnerable (can barely pay for food, electricity, etc) and those that report being more stressed.}, 
+making it less likely that it is just random mistakes.} Low demand for commitment is consistent with a large part of the literature of the literature (\cite{Laibson2015}, \cite{Laibson2018}, \cite{John}, \cite{Ted}, \cite{Rabin2018}).%\footnote{\cite{Alcohol} and \cite{Kremer} are some of the few instances of high demand for commitment. \cite{Alcohol} speculates that this difference may be explained by their subjects having more experience with their self control problem. Close to ninety percent of our subjects claim to have pawned before. We find that experience does not predict positive take up in our sample.} 
+\cite{Laibson2015} shows that the lost flexibility resulting from a commitment contract can severely limit take-up when agents are naive about their self control, even though commitment could be welfare improving for them. We estimate zero average treatment effects of the \textit{fee-choice} arm on financial cost and on pawn recovery and throughout the quantile distribution.
+
+ %Using boosting we can predict who takes up with 92\% accuracy. This fact shows that the choice among contracts is not purely random.
+
+How much money is left on the table by the prevalence of the status-quo choice? We calculate that about 80\% of clients in the fee-choice group chose contracts that induced \textit{higher} financial cost. On average they spend an extra \$238 pesos, close to 11\% of the average loan value. In particular 92\% of those that chose the status-quo contract would have been better in the fee-commitment contract, while only 8\% of those who chose the fee-commitment contract would have been better in the status-quo one. This suggests that forcing clients into commitment contacts (i.e. private paternalism) may be welfare increasing for the overwhelming majority of clients.  
+
+Inspired by a significant lab experiment literature on the effects of promises on behavior, we also implemented a ``psychological commitment'' in the form of a salient promise to pay.  \cite{PromisesPartnerships}, \cite{FurtherPromises}, \cite{Vanberg}, and \cite{Ismayilov2017} find that the ability to make a promise about behaving a certain way makes the individual more likely to adhere to the promised behavior. %and also induces trusting behavior by the recipients of the promise. 
+To do this we implemented two other treatment arms. A \textit{promise-forcing} arm exactly analogous to our \textit{fee-forcing arm} except that instead of telling them that there is a fee if they don't pay on time, we made borrowers promise that they would pay one third of the amount in each of the 3 months, and told them that if they didn't they would have broken their promise and failed their word. Because salience is key we made them sign a (non-legally binding) personal promise and emphasized we were counting on them to keep their promise. A final arm (\textit{promise-choice arm}) gave clients the opportunity to choose between the \textit{Promise-forced} contract and the \textit{Status-quo} contract.
+
+We document two main results in the promise arms. First, demand for the commitment-promise contract is three times bigger than for the commitment fee contract, with 31\% take-up. This difference between both choice arms suggests that clients are indeed understanding and taking into account the contractual parameters in their choice, and that the fee commitment was probably too strong from their point of view. Second, the \textit{Promise-forcing} contract had zero effects on average and throughout the distribution on financing cost and pawn recovery. The same is true for the \textit{Promise-choice arm}. %\footnote{There is a decrease in financial cost in the 50th and 75th quantiles in the forced promise-commitment arm however.}
+Promises did not provide enough commitment so as to be reflected in behavior. This is true both imposed promises and chosen promises. Contrary to lab evidence, people did not keep the promise, at least the way it could be implemented in the field.
+
+We contribute to several strands of literature. First, to the broad literature on commitment demand. A significant literature has shown that demand for commitment exists but is somewhat low in some contexts (\cite{Ashraf}, \cite{Gine}, \cite{Ted}), and high in others (\cite{Kremer},  \cite{Casaburi}, \cite{Alcohol}, \cite{AprajitP&P}). We add to this literature by showing that very small fees are enough to drastically reduce demand for commitment, even when commitment is beneficial for almost everybody in our sample, and that softer commitments in the form of non-pecuniary personal promises elicit higher demand.\footnote{Our fees are 16 times smaller than than those of \cite{John} as a fraction of the loan/goal, and five times smaller converting peso values using exchange rates.} Second, two recent papers show that among those who demand commitment, the extent of commitment needed is underestimated (\cite{Ted}, \cite{John}) and that subjects can hurt themselves by self-imposing too week a commitment. We contribute in design ---by not allowing choice of the extent of commitment--- but also on how we infer the underestimation of the value of commitment by subjects. While these two papers infer too low commitment from subjects failing to reach the goal ex-post, we infer it by quantifying forgone personalized treatment effects ex-ante. Third, we focus on an important new context: pawnshop borrowing. Pawnshop borrowing is extremely prevalent in developing countries and very worrisome to regulators, yet severely understudied. 
+
+Fourth, we study \textit{both} causal effects and selection into frequent payment commitment loan contracts. \cite{Ghatak} state that ``high-frequency repayment, a feature in nearly all microfinance contracts, has been largely overlooked''.\footnote{\cite{LittleAtAtime} also note that ``it is especially surprising that there is so little analytical discussion of the incentive effects of the installment system''.} This paper fills part of this gap. \cite{Pande} study the effect of installment payment frequency on loan default and (surprisingly given their prevalence and the literature above) find null effects. \cite{Murdoch} study selection into frequent payment microfinance loans, conjecturing that ``such repayment structure is potentially beneficial in fostering discipline among present-biased borrowers'' and may explain why borrowers choose it. In contrast to \cite{Pande} we find strong effects of payment frequency on decreased default.\footnote{Possibly because there are high levels of default in our context and not in theirs and because we have more statistical power from a larger sample and individual level randomization.} \cite{Murdoch}  show that a robust positive correlation exists between displaying present biased preferences in surveys and selecting into microfinance ---which they interpret as being due to high demand for the discipline of frequent payments--- acknowledging that the ``interpretation is suggestive... and needs to be confirmed by studies that establish causal links''. Our experimental test of this causal link rejects that most people like and demand frequent payments (at least in our context). In contrast to \cite{Murdoch} we can isolate the pure effect of payment frequency on demand by randomly changing just this aspect of the contract. Fifth, we also contribute to the literature on the effect of promises by testing their effect on the field. 
+
+More importantly, our unique experimental design which combines forcing and choice arms, paired with new machine learning methods to estimate heterogeneous treatment effects (\cite{atheygrf}), allows us to estimate whether there is positive or negative selection into beneficial contracts, and whether pawnshop clients forgo money by not demanding commitment. In consonance with what \cite{Walters} finds in another context, we find that it is not the case that those that benefit most from the contract demand it more, consistent with a significant fraction of clients displaying naivete about self control problems (see \cite{Rabin2018}). Our context is one in which private paternalism (\cite{Laibson2018}) could work since almost all pawnshop clients would benefit from frequent payment contract yet there it almost no demand for them. After our experiment ended, Lender P started to tie in installment payment components to some of their contracts themselves.
+
+
+%\footnote{This is consistent with \cite{Belot2010}, who emphasize that elicited promised may have lower effects than voluntary ones.}
+%\cite{Rabin2018} and \cite{Ted} show that naivete may lead to the choice of to little commitment. 
+%Before discussing results, let us mention why these questions are relevant and how they relate to the literature. Most of microfinance involves frequent payments/meeting with the group --sometimes weekly-- even though this increases transaction costs. Several hypothesis have been postulated to explain this, from increased group's cohesion and monitoring, to forming personal payment habits or serving as a commitment device. Most of the literature (e.g. \cite{Pande}) find however null effects of increasing frequency on default, and therefore on payment habits, commitment, or peer pressure.  
+
+The paper is organized as follows. Section \ref{context} provides context and describes the data sources. Section \ref{Data} presents summary statistics and defines our main outcome variables. Section \ref{Experiment} describes the experiment and shows pre-treatment balance across arms. Section \ref{fee-commitment} estimates the effect of forcing clients into the fee-commitment contract, while Section \ref{fee-choice} studies the effects of choice. Section \ref{model} collects all findings and presents a model to rationalize them qualitatively. Section \ref{promises} assesses if promises work in our context as commitment devices. Finally, Section \ref{conclusion} concludes.
+
+
+\section{Context and Data} \label{context}
+
+\subsection{The pawn lender and high default rates}
+    
+Pawn borrowing is one of the oldest forms of borrowing and one to which people with little access to the formal credit market turn to for ``emergency'' loans. They existed in antiquity at least since the Roman Empire, and there are records of it in China about 1,500 years ago (\cite{PawnShops}). As explained above pawn loans involve individuals leaving valuable and liquid assets (typically jewelry) as collateral in exchange for an immediate cash loan. We study such  context by partnering with Lender $P$, one of the largest pawn shops in Mexico, with more than one hundred branches spanning multiple States in Mexico.
+
+Lender $P$ was interested in understanding why half of their clients lost their pawn. Default is really in this context  compared to many papers in the microfinance literature\footnote{\cite{Pande} study of the effect of payment frequency in a context where the rate of default is close to 1\%.} It was concerned with high default rates for two reasons. The first is that the pawned piece may have a sentimental value to the client above of its gold value, making it inefficient for the lender to keep the piece. We actually find that clients report a subjective value that is almost twice the value of its gold content. Second, keeping the piece may lower client satisfaction and make the client less likely to return and pawn again. They were interested in investigating whether a frequent payment contract would increase pawn recovery and costumer satisfaction, and whether there was demand for such a contract. 
+
+One potential explanation for high default is that clients are really just selling their gold piece. This is unlikely for several reasons: (a)  the reported subjective value of the pawn is larger than the loan size for \hl{86\%} of them, (b) among those that lose their pawn 58\% paid a positive amount towards its recovery --- this can only be rationalized if they expected to recover their pawn, (c) it is typical to find gold purchasing stores close to where the pawnshops are located (see Figure \ref{GoldBuyers}) and they give more than what Lender P gives for the pawn, (d) there is a lot of engagement with the lender after pawning even for those who lost their pawn. On average clients that lost their pawn paid 34\% of the value of their loan, and close to 42\% of clients extended the loan for another cycle and made payments in the second cycle (see Figure \ref{proxy_naive} in Appendix).
+
+
+\subsection{The status quo contract}
+
+Lender P's business model is very simple. They take gold jewelry as collateral in exchange for a fraction of money given instantly in cash. The transaction takes less than 10 minutes and is conducted at the branch in person between the client and the appraiser (i.e. a teller, see Figure \ref{PawnshopPicture}). The appraiser weights the gold piece and runs tests on its purity. Based on these he assigns a gold value to the piece, stores it as collateral, and gives 70\% of the gold value of the piece instantly and in cash to the costumer. The costumer signs a 2-sheet contract with the main conditions of the contract at the branch and leaves with the cash.
+
+Lender $P$ had only one type of contract. It stipulated that the interest rate was 7\% \textit{per month} accumulated daily on the outstanding amount of the loan. The loan had a 90 days term with 15 days grace period, and the client could make payments at anytime with no penalty for pre-payment. If the client paid the principal plus the accumulated interest before those 105 days, then she received back her pawn, otherwise the pawnbroker kept the piece and any payments done. Before the contract expired, the client had the right to renew it (using the same collateral) for another 3 months by going to the pawnshop paying the accumulated interest and signing a new contract with exactly the same terms as the original one. %The pawnshop therefore makes money in three ways: by reselling the jewelry left as collateral on defaulted loans, by charging interest on non defaulted loans, and by keeping the payments made on defaulted loans. 
+
+This contract was standard in the industry, the clients that pawned understood its conditions (as we verified in interviews) and still decided to pawn.\footnote{90\% of clients report in our survey they have pawned before.} Bear in mind that these clients have little or no access to other types of loans, and also that they value its convenience: the process is fast and requires no documentation or credit-history. Potentially they like it also because they are overconfident on average about the probability of recovering their pawn, as discussed below.
+
+    
+\section{Data and summary stats} \label{Data}
+    
+We worked in 6 branches of Lender $P$ of differing size and location, although for simplicity all of them in Mexico city. For these 6 branches we have two types of data, administrative data and survey data we collected ourselves for the experiment. 
+
+\subsection{Administrative Data}
+The administrative data contains a unique identifier of the client, an identifier of the piece she is pawning, and the transactions relating to that piece. In particular, the value of the piece as assessed by the appraiser, the amount of money lent (70\% of the value), and the date when it was pawned. As described below, for our experiment the administrative data recorded the type of contract for that pawn. After the pawn happens, we follow each transaction related to that piece in the administrative data as well as when were payments made and for which amounts, whether there was default (i.e. the client lost her pawn), and whether any late-payment fees (active for the relevant experimental arms) were imposed. We have this information for all the pawns that occurred in our 6 branches between August 2nd 2012 and August 13th 2013, this includes all the pawns under our experiment but also those that happened 1 month before it started and up to 8 months after it ended. Figure \ref{exp_description}(a) shows the timing of the experiment and our admin data coverage. The black arrow represent the dates for which we have administrative data (before and after the experiment) while the light gray represents the duration of the experiment. The experiment comprises 13,444 pawns, and our administrative data cover a total of 26,179 pawns.
+
+\subsection{Survey Data} 
+
+We had a team of ITAM student enumerators in each branch collect surveys and clearly explain the contract terms to walk-in clients. The enumerators were inside the branch and asked clients to complete a short 5 minutes survey before going to the teller window to appraise their piece. The survey was necessarily short to avoid discouraging the potential clients from pawning, but at the same time it aimed to measure the following: demographics, proxies for income/wealth, education, self-control problems/present-biased preferences, experience pawning, if the family or friends commonly asked for money, how time consuming and costly was to come to the branch, the subjective probability of recovering their piece that they intended to pawn, the subjective value of their piece in money terms (for how much money would they sell it for), among others. We were able to survey 7,704 clients (some refused). %\footnote{We also surveyed clients before and after the experiment, so our survey covers a larger sample that we are not using in this paper.}. 
+The appendix \ref{baseline_survey} transcribes the questionnaire in English \hl{and presents summary stats}. Survey response rate is 57\%, the Appendix Table \ref{balance_response} shows that response is not related to admin data observables.
+
+
+\subsection{Summary statistics}
+
+Table \ref{SS} presents some summary statistics for the whole sample and by treatment arm. Because treatment arms are described below, here we concentrate on the overall average. Panel A describes variables from the administrative data. It shows that the average loan size is \$2171 pesos (\$105 usd). The average number of pawns per day per branch is 33. Although not shown in the table, only 40\% of clients recover they pawn within 230 days. Even those that recover their pawn tend to pay it back at the last moment, with only 17\% paying before the 90th day.
+
+Panel B reports stats from our survey data. We learn that 73\% of clients are women, with an average age of 44 years; 66\% of them have completed high school or more, and 90\% have pawned before, so that our sample has mostly experienced borrowers. Finally the subjective probability of recovery is close to 93\% on average, which contrast with the 44\% recovery that happens in reality for the pawns in the control group. Just by this measure borrowers seem to be highly overconfident on average (more on this below). It turns out that the average subjective value they report for the pieces is 3250 pesos, which is much larger than the average appraised gold value of 1950 pesos. This makes it inefficient for them to lose it.
+
+Since the main treatment involves making clients come to the branch to pay each month, the transaction costs of coming to the branch are important, and we ask two questions about them. The average time they take to come to the branch is 22 minutes, and the amount of money they spend in transport to do that is 11 pesos (\$0.60 usd).  
+The population we are working with is economically vulnerable in the sense that 30\% of them could not pay either water, electricity \& gas or rent in the past 6 months. They often receive negative income shocks: 87\% said they are pawning because of an emergency, and only 13\% stated it was to use in a `non-urgent expense'.
+%When asked why they are pawning this piece \hlgr{5\%} responded \hlgr{`lost a family member'}, \hlgr{`a medical emergency'} (\hlgr{11\%}), \hlgr{`an urgent expense'} (\hlgr{71\%}), 
+
+
+
+
+\subsection{Financing cost and Default} \label{FC_def}
+
+Our main dependent variables are loan default and financial cost incurred by the borrower. Default is defined as losing the pawn. We observe directly when the piece gets appropriated by Lender $P$. 
+
+We define financial cost as the discounted sum of payments toward the loan plus the value of the pawn, and subtract the subjective discounted value of the pawn when it is recovered: $Financial \; Cost_i = \sum_t \frac{P_{it}}{(1+r)^t} + Pawn \: Value_i - \frac{\text{I}(Recovered \: Pawn_i) \times Pawn \: Value_i}{(1+r)^T}$, with $t$ indexing days, $T$ is the day when the pawn is recovered, I($\cdot$) an indicator function for recovering the pawn, $r$ is a daily interest rate equivalent to a 7\% monthly interest rate.\footnote{We experimented with different interest rates with similar results. See section \ref{neoclasical}.} Figure \ref{fc_hist}(a) plots a histogram of this cost in pesos for loans where the pawn was recovered or lost. This cost is calculated for a time period of 230 days after loan origination, as 60\% of clients actually renew the loan one time. Of those who renew 83\% lose the pawn. Figure \ref{fc_hist}(a) suggest that financial cost is significant, even for those that do recover their pawn.  Panel (b) normalizes the cost by loan size. It shows that as a percentage of their pawn, most of the cost comes from clients that do not recover their pawn. For them the cost is between 140\% and 250\% of the loan value. %\hl{The difference between panel (a) and (b) arises since clients who lose their pawn tend to be those that pledge cheaper pieces.} 
+We calculate an APR of \hl{177\% on average for the control group.}\footnote{The Annual Percentage Rate (for pawn $j$) is calculated as the internal rate of return $i$ such that $\sum_t \frac{P_{jt}}{(1+i)^t} + \frac{\text{I}(Default \: Pawn_j) \times Pawn \: Value_j}{(1+i)^T} - Pawn \: Value_j = 0$, where $T$ is the date the pawn was lost.}
+
+
+\section{Experiment} \label{Experiment}
+
+\subsection{Treatment arms and randomization}
+
+\noindent \textbf{Selection of branches.} Starting September 6th 2012, we implemented our experiment in 6 branches of Lender $P$. The branches were selected by Lender $P$ to be dispersed across Mexico city and have varying sizes. In four of them the experiment ran for 107 days, and in 2 of them we ran it for a shorter time to economize on data collection costs since we realized we would not be constrained by sample size. %Thus we eliminated \hl{the smallest} ones. 
+Branches are more than 5 km apart from each other, and there is little substitution among them (only 1\% of consumers appear in more than one of our branches).
+
+\vspace{.2in}
+\noindent \textbf{The monthly installment contract.} For the purpose of the experiment we designed a new contract that is identical to the status quo contract in all respects except one. It has the same interest rate (7\% \textit{per month} which accumulates daily on outstanding debt, it has the same loan size/collateral ratio (70\%), it has the same loan term (90 days, and a grace period of 15 days), and the gold pawn gets appraised in the same way by the same appraisers. The only difference is that it has a requirement that the client has to pay monthly: for the 3 month duration at least 1/3 of the loan value (plus accumulated interest) has to be paid before day 30th, 60th and 90th after loan disbursement. Failure to pay this amount triggers a penalty fee of 2\% of this minimum amount due, which is added to the amount that the client needs to pay to recover their pawn. This penalty acts as a commitment incentive to pay now vs paying later. The level of the penalty was determined by Lender $P$ after talking to clients and based on Lender $P$'s experience. They deemed 2\% something that was big enough to provide commitment but small enough that if clients had an emergency and could not pay, the fee would not cause the pawn to be unrecoverable.\footnote{In contrast with \cite{John} we don't let the clients choose the size of the fee. As that paper shows doing this results in wrong choices by naive present biased consumers. \hl{Our fee is much smaller than the median in her} experiment as explained above. We also experimented with a contract where there was no pecuniary fee for paying late but where we clients made a personal promise to pay monthly.}
+
+\vspace{.2in}
+\noindent \textbf{Randomization.} Randomization was done at the branch-day level.  Each day the system chose which types of contracts were on offer that day in the branch, and therefore which contract the client signed. Branch personnel did not know which treatment would happen which day. They were told that there were 5 different ``types of contract-days'' and that the system chose randomly which applied any given date, and that it could happen for instance that two consecutive dates had the same contract. They were also told that this way of operating was in place onin various Lender $P$'s branches (they did not know which ones), and that it could be in place for several months. Randomizing at the day level limits the problem of contamination arising from clients realizing that other clients get different contracts than theirs. It also limits potential  manipulation by appraisers, who in the presence of individual level randomization could potentially pick their preferred costumers from the line or tell them to wait until their desired contract shows up on the screen. Intra-branch correlation on the probability of default (ICC) is small, at 0.08, so we don't lose much power vis-a-vis individual level randomization.
+
+\vspace{.2in}
+\noindent \textbf{Treatment Arms.} We have 5 different experimental arms, which differ in which contracts were offered on a given branch-day. 
+
+\begin{enumerate}
+    \item \textit{Status-quo forcing} arm: consisted of branch-days offering the status quo contract described in Section \ref{context}, and only this contract (as was standard). 
+    \item \textit{Fee-Forcing} arm: consisted of branch-days offering only the monthly installment contract with a fee for late payment as described above. 
+    \item \textit{Fee-Choice} arm: consisted of branch-days where the client was given \textit{a choice} between the monthly installment with fee contract, and the status quo contract.
+    \item \textit{Promise-Forcing} arm: consisted of branch-days which offered the monthly payment contract only, but where there was no fee for paying late. Instead, the client was made to sign a paper which said ``I promise to pay every month the corresponding sum of \_\_\_\_\_\_, on the dates \_\_\_\_\_\_, \_\_\_\_\_\_, and \_\_\_\_\_\_. This is \underline{not} a legal document and cannot be used in courts. It is just a \textit{personal promise}. If I do not comply I would have broken my word.''. After signing, the promise was read to the client by the appraiser.
+    \item \textit{Promise-Choice} arm: consisted on branch-days where the client was given \textit{a choice} between the promise-forcing and the status quo contract.\footnote{We did not allocate equal number of days across arms, since we were interested in having more power in some of them. The branch days allocated to each -- in order-- were 84, 80, 93, 68, 82.}
+\end{enumerate}
+
+By comparing the \textit{fee-forcing} arm vs the \textit{status-quo} arm we estimate the causal effect of mandatory installment frequency which acts as a incentive to pay earlier vis-a-vis the pay-when-you-want contract. On the other hand, having arms where clients can choose among these contracts allows us to study client's demand for commitment to pay earlier. Note that a neoclassical consumer (with no intra-household concerns) would not voluntarily restrict her options of payment profiles (as in monthly payment contract) by being subject to fees, since she can always replicate the monthly payment profile herself under the status quo contract if she so desired. The status quo contract gives her extra flexibility to respond to negative income shocks. However, if clients have present biased preferences \textit{and} are sophisticated about them, they may choose the frequent payment contract as it has commitment value. This value would be traded off against the value of flexibility. This design also allows us to test if promises work in a natural field environment which to our knowledge has not been done. Promises could have larger or smaller commitment value that a pecuniary fee, something that we test by comparing behavior in the \textit{promise-forcing}  vs \textit{status-quo} arms. 
+
+Panel (b) of Figure \ref{exp_description} shows how many contracts the experiment has on each arm (rectangles). And for the choice arms, it displays in blue how many people actually chose the commitment contract.
+
+%\subsection{Connection to the literature}
+%Our study connects with two strands of the literature on microfinance. But also to a nascent one that uses RCTs to study to what extent people self-sort to treatments that have larger beneficial treatment effects for them. On the microfinance literature the first paper we could find that used an RCT to evaluate the causal effect of frequent payments in loans is \cite{Pande}. In a group lending rosca context, they note that most contracts involved frequent repayments --even weekly in many instances-- even when this increases transaction costs. They note that clients could benefit from ``the fiscal discipline afforded by the more rigid payments''. Frequency could provide a commitment device for clients, could foster a payment habit, or could generate more trust from social interactions among the group of borrowers. All these potential benefits apply in our context, except those relating to social interactions, as we work with individualized loans.
+    
+\subsection{More on implementation.} \label{implementation}
+
+We want to highlight two potential threats to the validity of our experiment. The first is that the client can chose to leave the branch after the appraiser values her pawn and tells her the contract terms, generating differential attrition across treatment arms. We anticipated this possibility and trained appraiser to say --that whatever was the contract that day-- it was the only available contract for an undetermined amount of time. Empirically, attrition was not a problem. Table \ref{SS} shows that the number of pawns per branch per day across treatment arms is statistically identical. The last column of the table displays the p-value of an $F$ test of equality of means across arms and shows we cannot reject equality for any of the variables (p-value=0.38 for the number of pawns per day per branch). There is no evidence for selection across treatment arms for any of the admin or survey variables.
+
+The second threat is clients' understanding of contract terms. We realized that we needed the terms to be understood in order for choice to be meaningful, and for the monthly payment commitment contract to have bite. We had two `check-points' to do this. First, two ITAM students were present in each branch for the whole day during the duration of our experiment to explain to clients the contract terms. One of the aspects emphasized was that the frequent payment contract involved the commitment to pay \underline{each month} a third of the outstanding amount, and that there was a 2\% penalty fee (or, in the promise arms, the psychological cost of breaking a promise) for failing to do so.  Figure \ref{ExplanatoryMaterial} translates a piece of the materials we used to explain the contracts (in this case a comparison sheet used in the Promise-Choice days to compare contracts terms side to side). The explanation took about 3-5 minutes and was pursued until the client said she understood the contract terms. Students then asked clients to explain back the contract terms and corrected any misunderstandings. 
+
+There was a second check point. Before the clients signed the contract, the appraiser made them read them the ``Contract Terms Summary'' sheet shown in Figure \ref{PaperSlip}. It was a piece of paper given to clients after their piece had been appraised and the size of the loan determined, but before they signed their contract. The appraised read it and asked the client to sign it as a proof of understating. The sheet clearly indicates that this contract is a monthly payment one (numeral 1), that there is a penalty of 2\% for paying late (numeral 2), and the 3 payment dates (numeral 3). Finally, the bottom of the Figure \ref{PaperSlip} shows the paper slip we used for the promise arms. The clients had to put their name in a slip of paper where they stated they promised to pay monthly.
+
+We are fairly confident that the overwhelming majority of clients understood the contracts and made informed choices. As shown below, different contract terms did generate differential demand and differential behavior. Moreover, we can systematically predict demand based on consumer characteristics, beliefs and proxies for present biased preferences.
+
+
+
+\section{The effect of forcing clients into fee-commitment} \label{fee-commitment}
+
+
+
+\subsection{The effect of the fee-forcing contract on financial cost and pawn recovery} \label{TE_fee-forcing}
+
+Now we answer our first question. Would clients benefit ---in terms of recovering their pawn and in terms of paying lower financing cost--- from having a monthly payment commitment contract \textit{forced} on them, vis-a-vis the status quo pay-when-you-want contract? We find they do. For each comparison, we separately estimate the regression equation (\ref{basic_reg}) below.
+
+\begin{equation} \label{basic_reg}
+    y_{ij} = \alpha + \beta T_{i} + \gamma X_{ij} + \epsilon_{ij}
+\end{equation}
+
+\noindent where $i$ refers to client, $j$ indexes branch, and $X_{ij}$ are branch and day-of-week fixed effects.\footnote{There is a minority of of clients that pawned again and got assigned a different treatment. Results are robust to excluding them. In the regressions we include them and add a dummy indicating who are these clients.} %\footnote{If we restrict ourselves to pieces that fall in a single-arm (64\%), then treatment reduces the financial cost by 5.7\%, increases the likelihood of recovering their pawn by 35\%, and increases the likelihood of repeat business by 66\%.}.
+Our main outcome variables $y_{ij}$ are measures of financial cost in pesos as defined in Section \ref{FC_def}, as well as an indicator variable for client $i$ losing her pawn. In this subsection $T_{i}$ is an indicator for $i$ having got the \textit{fee-forcing} contract, and $\beta$ estimates the average treatment effect.%\footnote{This is an ATE and not just an ITT since take up of treatment is 100\%.}  
+
+
+\vspace{.2in}
+\noindent \textbf{Financial Cost.} Figure \ref{fc_pro2}(a) reports $\beta$ coefficients and their 95\% confidence interval from estimating equation (\ref{basic_reg}) using different definitions of financial cost. The leftmost coefficient corresponds to using the appraised gold value of the pawned piece (not discounting makes virtually no difference). The second coefficient uses the subjective value of the pawn instead. In both cases we find that being assigned to the fee-forcing commitment contract causes a large reduction in the financing cost the client incurred, of 9.5\% (\hl{\$304}) in the fist definition and 13.3\% (\hl{\$478}) in the second one. That is, we find that \textit{charging} clients a late payment fee  actually decreases total \textit{fee-inclusive} financing cost. 
+
+Financial cost incurred by pawn-shop clients is a key variable to study. However it is true that it does not take into account other costs like transportation or the opportunity cost of going in person to the branch. Given that the fee-forcing contract makes clients visit the branch more often (monthly), one may want a measure that includes those costs as well. Going in that direction, in a broader measure of costs, for each visit we add the self-reported transport cost plus a whole day's wage, multiplied by the number of visits. Adding a whole day's wage may exaggerate cost, but we still observe a reduction of this more comprehensive measure of cost caused by the frequent payment contract, although we lose more than 1/3 of the observations and it is more imprecisely estimated. 
+
+\vspace{.2in}
+\noindent \textbf{Heterogeneous Treatment Effects.} Average cost reductions could mask substantial heterogeneity. We find that benefits are distributed broadly however. Figure \ref{fc_pro2}(b) displays results from quantile regressions at the 15$^{th}$, 25$^{th}$, 50$^{th}$ 75$^{th}$, and 85$^{th}$ percentiles. All of them are negative. Figure \ref{fc_pro2}(c) uses \cite{atheygrf} generalized random forests methodology to estimate person specific treatment effects, and plots the distribution of those treatment effects.\footnote{\cite{atheygrf} use random forests of honest causal trees to estimate personalized treatment effects. The trees are such that at each leaf (partition determined by covariates) we obtain an unbiased estimate of a treatment effect using treatment and control observations in that leaf. The optimal partition of leaves is that which minimizes expected mean squared error of treatment effects predictions out-of-sample. The tree is honest because it uses one sample to build the tree and another one to estimate treatment effects within that tree. After the optimal tree is build, each person in each leaf is assigned the treatment effect of that leaf. \cite{atheygrf} show that their treatment effects are asymptotically normal, which allows us to construct confidence intervals for our treatment estimate in each leaf. } We find that more than 90\% of clients experienced financial cost savings in the fee-forcing group compared to the status-quo group. Figure \ref{HTE_fee_forcing} in the Appendix shows that the causal cost savings are largest for the more economically vulnerable, %that report at baseline that they have problems paying for services like water, electricity and rent, 
+those that report being stressed, women, those take more time to go to the branch, and those displaying overconfidence about recovering their pawn (see Section \ref{behavioral} for our measure of overconfidence).
+%those that have to incur in higher transport cost to go to the branch  and that asked to be sent reminders to pay, this later one being one proxy of being inattentive or sophisticated present-biased.
+
+\vspace{.2in}
+\noindent \textbf{Pawn Recovery.} Figure \ref{fc_pro2}(d) plots estimated treatment effects of the fee-forcing commitment contract with the dependent variable being an indicator of losing the pawn in less than 230 days. The leftmost coefficient shows that the fee-forcing commitment contract increases the likelihood of recovering the pawn by 11pp (25\% of mean recovery). This is a large effect. It contrasts for instance with \cite{Pande} who find no effect of payment frequency on default in a group lending microfinance context. Figure \ref{fc_pro2}(e) shows the distribution of heterogeneous treatment effects for losing pawn: it shows that \textit{everybody's} likelihood of losing the pawn decreases. %Figure \ref{HTE_fee_forcing}(b) in the Appendix shows that those we classify as present biased, those that requested to be sent a reminder to pay, and those who have more problems paying for basic services experienced the largest increases on pawn recovery.
+
+%the second conditions on the population that paid any positive amount towards recovery of their pawn; the third conditions on having paid at least 30\% of the loan amount; the fourth conditions on the period covering the first cycle of the loan; the fifth on the period of the first cycle and paying any positive amount.
+
+\vspace{.2in}
+\noindent We conclude that penalizing borrowers for delinquency in a contract which has already has large penalties from default (losing the collateral in a highly collateralized loan) actually helps borrowers.
+
+\vspace{.2in}
+\noindent \textbf{Effects on other outcomes.} There are other (intermediate) outcomes that are impacted by being assigned to frequent payments. Table \ref{mechanisms} shows that the first payment happens 8 days earlier (column 1) in the fee-forcing arm than in the status quo one, and that the number of payments increases by 0.19 (column 2). Figure \ref{induced_to_pay_early} in the Appendix correlates heterogeneous treatment effects on financing cost and time of first payment and shows that those induced to pay earlier are also those that have larger induced reduction in financial cost. A second finding is that treatment effects are concentrated on the intensive margin, as treatment does \textit{not} affect the fraction of clients who pay a positive amount (column 6). The percentage of the loan paid increases by 8 percentage points on average (column 7). Note however is that the percentage of the loan paid is not larger for those that end up losing the pawn (first row of column 8).
+
+\vspace{.2in}
+\noindent \textbf{Other sub-samples.} Going back to Figure \ref{fc_pro2}(a), we estimate some interesting correlations. The 4th coefficient from left to right conditions on those who paid a positive amount (in treatment and control). Although this is potentially an a selected subsample, Table \ref{mechanisms} showed that there is no treatment effect on pay$>0$. We were interested in this population to show that the effect is there for those who are serious about recovering their pawn. The fifth coefficient conditions on those that paid a fee in the fee-forcing group, comparing this subset in treatment vs all of the control group.\footnote{Results are similar if we condition in the control group on those who would have paid a fee given current behavior. Again we acknowledge these is an endogenous sample and that the estimate may not be a causal effect.} We find that even those that paid a fee in the fee-forcing contract end up paying a smaller financial cost that those in the status-quo contract. Figure \ref{fc_pro2}(c) shows that the increase in pawn recovery is robust to defining recovery using the first 120 days of the contract, or restricting to those paying a positive amount towards pawn recovery.
+
+
+\subsection{Effects of fee-forcing on repeat pawning}
+
+We have shown that all clients are more likely to recover their pawn and almost all of them incur in a lower financial cost  when assigned to a monthly payment commitment contract. This however does not necessarily show that they benefited in utility terms, and this is hard to show directly. If ---as suggested by \cite{Laibson2018}--- consumers used ``experienced utility'' as a guide to make future purchases, we conjecture that clients in the fee-forcing contract would be more likely to be repeat costumers vis-a-vis those that got status quo contract. This is indeed what we find. 
+
+Figure \ref{reincidence} presents results of equation (\ref{basic_reg}) where the dependent variable is a dummy for the client being a repeat costumer. We define a client as a repeat costumer if, after experiencing at least 75 days of the respective treatment arm, she came back and pawned a \textit{different} piece.\footnote{Results are robust to using other number of days besides 75. We know its a different piece from them having a different weight.}  The left most coefficient shows that the causal effect of the fee-forcing contract on repeat pawning is an increase of 5pp in the probability of being a repeat costumer, this is 55\% increase on a mean re-incidence with respect to those that got the status-quo contract. This effect is not explained by clients recovering their first pawn with higher probability in the fee-forcing contract and re-pawning this same one since we make sure it is another piece (only \hl{16\%} recover their piece in the fist 75 days in the fee forcing contract). The second coefficient restricts the sample in the regression to those that had not recovered their pawn in the first 75 days and finds similar result. Finally, the third coefficient focuses on the subsample who experienced a financial cost savings treatment effect above the median treatment effect in their first pawn. It shows that for these clients the likelihood of coming back is twice as large (although imprecise). That is, those that benefit more from the fee-forcing contract are more likely to repeat.\footnote{We also implemented an exit survey which clients filled when recovering their piece. Unfortunately it had low response rates (7\%), and we take its results with a grain of salt. In this survey 63\% said they liked the frequent payment contract more than the status-quo one, and that is allow them avoid unnecessary expenses.} %The coefficient on repeat pawning is just as big when we focus only 2nd pawns happening after the first was recovered (third coefficient ``fnr'').  This is consistent with \cite{Laibson2018}'s conjecture that clients could be making decisions based on experienced utility.\footnote{The third coefficient conditions on the subsample that did recover their first pawn in both arms and finds a coefficient of 4pp. This is not a causal estimate as recovery is influenced by treatment, but we found it telling that the differences were similar to the causal estimate for the full sample.}
+
+
+
+
+\section{The effect of giving choice} \label{fee-choice}
+
+Section \ref{fee-commitment} showed that the fee-forcing commitment contract reduced financing cost across the board, and that consumers themselves seemed to like it once they tried it. In such a case, one would expect a strong demand for it. 
+
+\subsection{Demand for the fee-forcing commitment contract} \label{sec:demand}
+
+To study demand for commitment, in one experimental arm, we let clients freely choose between the two types of contract: the fee-forcing commitment contract or the status-quo contract. In spite of broadly distributed benefits of the fee-forcing commitment contract we documented above, 90\% of clients chose \textit{not} to have it, they instead preferred the status-quo one. As explained above we are fairly confident this was not because a lack of understanding of the contracts. 
+
+What can explain this low demand? This section discusses some hypothesis but data limits what can be tested. One neoclassical explanation could be risk. Even if the fee forcing contract generates cost savings on average, clients with risk averse preferences may not demand it if they perceive higher risk from it.  Alternatively, even risk-neutral agents may not demand it if the cost of lost flexibility is high. If clients, for instance, face large and frequent income shocks which make it hard to repay monthly.\footnote{We don't observe income shocks in our data, making is hard to quantify how important they are. 91\% of those in the fee-forcing arm incurred a fee, which suggests that shocks are not uncommon.} Below we focus on some explanations of low demand, while Section \ref{model} seeks theories that can explain all the findings at the same time.
+
+
+\subsubsection{Behavioral explanations} \label{behavioral}
+
+The leading behavioral explanation in the literature for low demand for commitment is present biased preferences with naivete (e.g. \cite{Rabin2018}, \cite{John}, \cite{Laibson2018})  \cite{Laibson2015} shows that the lost flexibility resulting from a commitment contract can limit take-up especially severely when agents are naive about their self control problem. In our context if consumers are naive about their present bias, they would plan to save more (or spend less) than what they actually end up saving, thus making it be harder to recover their pawn. This under-saving will be mitigated in the fee forcing contract since the fee makes them save money to pay part of the loan periodically. Section \ref{model} formalizes this in a model. Another behavioral explanation is that clients may underestimate the likelihood and severity of negative income shocks. Both of these explanations predict that clients will be overconfident about their likelihood of pawn recovery. Recall that in the control group the client's subjective probability of recovery is on average 93\%, while actual recovery is just 44\%. A further piece of evidence consistent with underestimating negative income shocks is that a large number of people (31\%) in the control group pay a positive amount toward pawn recovery but end up losing their pawn anyway.
+
+So, overconfidence of recovering the pawn is implied by both present bias preferences with naivete and upward bias in their income expectations. But does overconfidence actually predict low demand for commitment empirically? It does. We define as overconfidence as the reported subjective probability of recovery minus the predicted probability based on the client's characteristics, $P^s_i-\widehat{P_i(X_i)}$.\footnote{We predict $\widehat{P_i(X_i)}$ in two steps. In step one we use Lasso with with cross validation to tune the regularization parameter to select the most predictive variables $X$. The typical present bias question as in \cite{Ashraf} was eliminated in this step. In the second step we estimate $\widehat{P_i(X_i)}$ using those variables in a logit model. The Lasso selected variables were type of pawn, female, age, has pawned before, has savings, participates in rotating savings, often feels tempted to change plans, would like to have a reminder to pay, and an economic vulnerability index. We are careful not to include these variables as controls in Table  \ref{oc_reg}.} There is an impressive amount of overconfidence in our context. Figure \ref{oc_hist} plots a histogram of $OC_i$ and shows that the overwhelming majority display overconfidence, and a large fraction overestimate recovery by more than 50 percentage points.
+
+Table \ref{oc_reg} regresses an indicator of take up of the monthly payment contract against an indicator for overconfidence $OC_i:=\mathbbm{1}(P^s_i-\widehat{P_i(X_i)}>0)$ and controls. Controls $Z$ include branch and day of the week dummies, schooling, whether the client does a monthly budget plan, among others. We are careful not to include controls that were in $X$. % and a measure of intertemporal preference reversal analogous to that of \cite{Ashraf} as controls.\
+Column \hl{1} shows that in the choice-fee arm, being overconfident decreases the likelihood of demanding commitment by 16 percentage points, and column \hl{2} shows that this is robust to including controls. Columns \hl{3} and \hl{4} which use the promise-choice arm are intended as a placebo comparison. Overconfidence it not predictive of take up of the promise-commitment contract.  One interpretation of the results is that the overconfident think they do not need commitment, and its demand decreases as soon as there is even a small fee but not when the contract involves a free commitment, as if the promise for them was cheap. Column 5 and 6 use as a dependent variable the estimated heterogeneous treatment effects of the fee-forcing contract vs the status quo one. They show that the overconfident benefit \textit{more} from the commitment contract, with 20\% (=\$24/\$121) more savings. Thus while we predict the overconfident benefit more from commitment, they demand less.
+
+We think our measure of overconfidence is useful especially when there is limited time for a detailed survey.\footnote{It may be more useful than a simple elicitation of present bias as in \cite{Ashraf}. We find that 15\% of clients are classified as present biased using this measure of preference reversal. This level is similar to the number \cite{Ashraf} find but small to explain no take-up of commitment for 90\% of clients. This measure was not correlated with take up of commitment in our sample.} First it is very prevalent, which makes it promising to explain the overwhelming prevalence of low take up. Second, it is easy to measure and showed predictive value for take-up. It is also implied by present bias with naivete but also by biased expectations of negative income shocks, thus capturing both kinds of bias. 
+
+
+\subsubsection{Neoclassical Alternatives} \label{neoclasical}
+
+\vspace{.1in}
+\noindent \textbf{Risk aversion.} We do not have measures of risk aversion in our necessarily short survey, which makes it hard to assess the hypothesis that risk aversion limits take-up of the fee frequent payment contract. One way to proceed is to take the empirical distribution of financing cost ---$F_{fee}(FC)$--- as one the client would have faced had she chosen the the fee-commitment contract. We could then ask what would risk aversion have to be in order to justify the client choosing the fee-commitment contract distribution of costs over the distribution associated with the status quo contract, $F_{sq}(FC)$. Framed as a choice among cost distributions, we can calculate what risk aversion is needed to rationalize the choice of the status quo contract. This exercise of course assumes --as it is common in economics-- that clients know the distribution of financial cost, that it is common across consumers (although this can be relaxed), and that this cost distribution is the only difference among contracts. Fortunately for us it turns out that one distribution first-order-stochastically dominates the other, we do not need to calibrate a specific utility function or use a parametric distribution function in order to rank them in terms of expected utility. We use the fact that if the utility $u(FC)$ is decreasing in $FC$ and $F_{fee}(FC) \geq F_{sq}(FC)$ for all $FC$, then $E_{fee}[u(FC)] \geq E_{sq}[u(FC)]$.\footnote{See the appendix for the proof.} That is any expected utility maximizer who dislikes paying higher financing cost, regardless of the concavity of his utility function, will prefer the fee-commitment distribution of financial cost.  Figure \ref{ecdf_fc} in the Appendix shows that indeed $F_{fee}(FC) \geq F_{sq}(FC)$. Moreover, Table \ref{stochastic_dominance} shows that this holds also for an overwhelming majority of sub-populations.
+
+%To have a benchmark we implement a very simple calibration exercise in two steps. First, we fit a Weibull distribution to the distribution of financing cost, were the scale and shape parameters depend on client's and loan observable characteristics. We do this separately for the status quo contract and the fee-forcing contract, obtaining two distributions $f_{sq}(FC|X;\Gamma_1)$ and  $f_{fee}(FC|X;\Gamma_2)$ with different parameters $\Gamma_1$, $\Gamma_2$. Second, we assume a representative consumer with a CRRA utility function over financial cost, $u(FC)=\frac{1}{1-\theta}FC^{1-\theta}$. We then ask what would $\theta$ have to be for a consumer to prefer the status-quo contract. That is for which $\theta$'s would  $\int u(FC|\theta)f_{sq}(FC|X;\Gamma_1) dFC \geq \int u(FC|\theta)f_{fee}(FC|X;\Gamma_2) dFC $ hold? It turns out that it holds for risk aversion levels that are too high to be believable. That is, with our calibration, it seems unlikely that risk aversion is reducing demand for the fee-forcing contract.
+
+
+\vspace{.1in}
+\noindent \textbf{Lost flexibility.} A second neoclassical explanation for low take up is lost flexibility. That is, the fee-commitment contract may provide too much commitment which is costly because the client may be forced to incur in late payment fees if he experiences a negative income shock.\footnote{Note that income shocks that affect the ability to pay the entire loan are a worry for both the fee-forcing contract and the status quo one, and should not make one contract more favorable than the other.} While we cannot rule out that income shocks combined with lost flexibility of the contract explain the low demand, we think it is unlikely. First, we showed above clients report a subjective probability of recovery of 93\% on average, which suggests they are not too worried about income shocks. Second, the fear of incurring fees is quantitatively not enough of a concern when compared to the savings they are experiencing. %Note that fees for late payment are not that high. In an average loan of 2,000 pesos the monthly payment is close to 700 pesos, and a fee of 2\% of that is 14 pesos (less than \$1 dollar). This is about \hlgr{1\%} of monthly per capita income of the first 3 deciles of Mexican \hl{household's} income distribution. %This compares favorably to the \hlgr{\$11.6 + \$62.3)} pesos transportation / transaction cost of one. 
+To make this concrete, we calculated what the financing cost of the fee-commitment contract would be if all its clients incurred in \textit{all} potential fees (while keeping payment profiles and pawn recovery constant) and added these fictitious fees to financing cost for those in the fee-forcing arm, thus artificially inflating their cost. We then re-estimated the quantile treatment effects analogous to Figure \ref{fc_pro2}(b) with this inflated financial cost. %\footnote{Of course behavior may not be constant, but we believe this is a reasonable fist approximation. %It could be that having this small fee added to the balance discourages them to pay or makes it harder to pay back the loan. But the contrary may also happen, with the fee making them more determined to pay early. We would need a structural model of client behavior to estimate a full counterfactual. We suspect that such small fees would not generate large changes in behavior in a simple neoclassical model.}). 
+Figure \ref{fc_allfee} presents the results. We find that even in this extreme scenario, tilted against the fee-forcing contract, the estimated effect still implies cost savings from the fee-forcing contract at the mean, 25$^{th}$, 50$^{th}$, and 75$^{th}$ percentiles.\footnote{Recall that the differences in financing cost already takes into account the fact that clients in the fee forcing contract sink more pre-payments than those in the status quo contract, and that those prepayments are lost if the loan is not fully paid back.}  Although these arguments are not definitive, they suggest that low demand for commitment may be driven by more than the anticipation of lost flexibility.
+
+\vspace{.1in}
+\noindent \textbf{High time discounting.} We mentioned above that clients in the status quo contract tend to wait until the last moment to pay to recover their pawns. Even among those that recover their pawn, only 42\% pay before the 90$^{th}$ day. Table \ref{mechanisms} shows that clients assigned to the fee-forcing contract front load their payments, starting their first payment earlier and finishing to pay earlier too. However, clients may dislike front loading payments if their time preference discount rate is high. They may be willing to trade off a higher probability of losing their pawn for more \textit{back} loaded payments.  
+
+What would discount rates have to be in order for back loaded payments to offset the reductions in financial cost effects we observe? We can calculate this number by looping across a grid of discount rates, incorporating this higher discount rate in the definition of financial cost, and reestimating equation \ref{basic_reg} with this modified financial cost measure as the dependent variable in equation 1, searching for the discount rate that makes $\beta$ equal zero. We did this and obtained that the discount rate that rationalizes a zero effect is a staggering 8,190 percent per year. We find this discount rate implausibly high even for this credit constrained population\footnote{Just for comparison, \cite{Levin} find that a discount rate of 1,415 per year for subprime borrowers in the US is too high to be believable.}, seriously casting doubt on high discount rates as explanation for low demand for commitment. %\footnote{In the baseline survey we give respondents a hypothetical choice between $100$ pesos tomorrow or $150$ pesos in one month (an implicit yearly interest rate of \hl{12,800\%}) and only 30\% chose the later one.} 
+
+\vspace{.2in}
+\noindent It seems to us that present bias with naivete is the more likely explanation for low commitment demand in our case. Moreover, Section \ref{model} shows that present bias with naivete is able to qualitatively explain all the main findings of the paper, not just low demand for commitment.
+
+
+\subsection{The effect of choice on pawn recovery and financial cost} \label{effect_choice}
+
+When preferences or income streams are heterogeneous, and consumers are neoclassical, giving choice among contracts is often a welfare increasing strategy. Consumers would chose the contract that best fits their needs. This holds also in most simple models of present bias preferences if consumers are sophisticated about their present bias. %Actually, it could be the case that the opportunity of choosing itself could affect behavior.
+But when consumers are overconfident about their ability to save cash to pay back the loan, free choice could be a sub-optimal policy from the point of view of the client's long run self, and match the clients with a more costly contract. Defenders of choice make another subtler point: that even if take up of the commitment-fee contract is low, the sole fact of having choice could potentially change behavior (\cite{Dalboetal:2010}, \cite{Sjostrometal:2018}, \cite{Tlaxcala}). 
+
+We find that giving clients the option of choosing among the fee-forcing and the status quo contract does \textit{not} lead to lower financial cost compared to forcing them into the status-quo contract. Nor does it lead to higher pawn recovery. The hollow circles in Figure \ref{fc_pro4}(a) show zero average effects for the different definitions of financial cost analogous to the ones described above. Figure \ref{fc_pro4}(b) shows further that the null effect happens for the 15$^{th}$, 25$^{th}$, 50$^{th}$ 75$^{th}$, and 85$^{th}$ percentiles.\footnote{The few that selected the fee-commitment contract (the solid black squares) do enjoy cost savings of 1005 pesos, which compares favorably to the 304 pesos in the fee-forcing arm (as a fraction of the loan the numbers are 41.5\% and 12.5\%), but this combines the selection and treatment effects.} %Figure \ref{heterogeneous_te_4} plots the distribution of treatment effects and finds that the distribution offering choice actually \textit{increased} financial cost and default for about half of clients compared to being assigned the status-quo contract. Those tended to be the less economically vulnerable and more educated, \hl{women}, and those whose family typically asks them for money.
+Figure \ref{fc_pro4}(c) finds null effects for pawn recovery. Consistent with these findings, Figure \ref{reincidence} finds no effect on repeat purchases for the fee-choice group. 
+
+
+
+\subsection{The scope for private paternalism}
+    
+This is not the first paper to find low demand for commitment, however \hl{it is the first we know of that can compare choice vs forcing}. The fact that the fee-forcing contract lowers financial costs for almost all clients, together with the fact that only 10\% choose it must mean that many consumers are choosing contracts with higher financial costs for them. We can ask how many consumers seem to be making a cost increasing choice and how much money are they leaving on the table. We conduct two exercises. 
+
+\vspace{.2in}
+\noindent \textbf{Are there ``mistakes'' in choice?} Answering this question requires calculating a counterfactual: for each client in the choice arm we want to know how much cost savings she would have had she chosen the opposite contract. We do this in two steps. First, using the honest causal forests method of \cite{atheygrf} described above we calculate the causal effect on financing cost of getting the fee-forcing contract instead of the status quo contract for a client with characteristics $x_i$ \textit{in the forcing arms}, we call it $TE^{fee}_{i}(x_i)$. Recall that \cite{atheygrf}'s method uses causal trees to generate a partition of the space of characteristics $x$, where each element of the partition is a leaf, and each leaf contains treatment and control clients with similar characteristics $x$ which are used to calculate unbiased honest treatment effects for that leaf. Second, we predict treatment effects for clients \textit{in the choice arm} using the partition into leaves and the treatment effect associated with the leaf obtained in step 1, that is client $j$  is imputed the treatment effect of the leaf corresponding to her characteristics $x_j$. We call this counterfactual treatment effect $\widehat{TE}^{fee}_{i}(x_j)$. This is precisely the counterfactual we wanted.\footnote{This extrapolation of the treatment effects assumes that choice itself --conditional on a given contract-- does not affect behavior. Given the results in subsection \ref{effect_choice} we are comfortable with this assumption. Note that although the extrapolation is to another population, by randomization it is a statistically identical population with common support.} Armed with this, we say that a client made a ``mistake'' if either she chose the status quo contract and her $\widehat{TE}^{fee}_{i}$ is negative (i.e. more cost saving from the fee contract), or if she chose the fee-commitment contract and $\widehat{TE}^{fee}_{i}$ is positive, meaning that financial cost are larger for the fee-commitment contract. When a client made a choice mistake, we say that the peso-size of it is $|\widehat{TE}^{fee}_{i}|$. 
+
+%Using the forcing arms and extrapolating to the choice arms.
+%Then, we predict these treatment effects for everybody in the choice arm using characteristics $x_i$. Let $\widehat{TE}^{fee}_{i}$ be the predicted financial cost savings for person $i$ of choosing the fee-forcing contract rather than the status quo one, divided by the size of her loan (i.e. the negative value of the predicted treatment effect on financial cost for person $i$). $\widehat{TE}^{sq}_{i}$ is the analogous for the status quo contract. We define the choice of person $i$ to be a ``mistake'' if 
+
+%\begin{equation}
+% \{ i \; \text{chose} \; sq \; \text{and} \; \;  \widehat{TE}^{fee}_{i}>\widehat{TE}^{sq}_{i} + z \} \; \text{or} \; \{ i \; \text{chose} \; fee \; \text{and} \; \;  \widehat{TE}^{fee}_{i}<\widehat{TE}^{sq}_{i} - z \}
+%\end{equation}
+
+Since the prediction of the treatment effect is an estimate and has noise, we do two things. First, we normalize $\widehat{TE}^{fee}_{i}$ by the value of the loan of person $i$ and introduce a threshold parameter $z$ and say that a choice is a ``mistake'' if the alternative contract would generate greater than $z$ in savings. That is, we introduce a threshold that we vary from 0\% to \hl{15}\% of the value of the loan. Second, we take into account uncertainty in estimation of treatment effects and report results using the extremes of the \hl{90\%} confidence interval bounds for $\widehat{TE}^{fee}_{i}$. 
+
+Figure \ref{choose_wrong}(a) plots in the left Y-axis the fraction of clients that made a choice ``mistake'' and on the right Y-axis the peso size of the mistake. In the X-axis it varies the threshold $z$ of what we classify as a mistake. When $z=0$, we calculate that about 80\% of clients in the fee-choice group chose contracts that induced \textit{higher} financial cost (90\% confidence interval \hl{[45,94]}). Most mistakes are failures to choose the fee-commitment contract (92\%), while only 8\% of those who chose the fee-commitment contract would have been better in the status-quo one. The average mistake in pesos is \$238 (90\% confidence interval \hl{[140,390]}). Figure \ref{choose_wrong}(b) separates the analysis for those we classify as overconfident about recovering their pawn vs the rest. It shows that there are about \hl{11} percentage points more mistakes in the overconfident population (when $z=0$).
+
+All the above suggests that forcing clients into commitment contacts (i.e. private paternalism) may be welfare increasing for the overwhelming majority of clients. Figure \ref{choose_wrong}(c) calculates what fraction of clients would be made better off if we forced them to the fee-commitment contract: 92\% when $z=0$, and they would on average have savings of 232 pesos. This conclusion is in line with a recent paper by \cite{John}. In a savings context, she finds that when commitment is on the menu a majority of subjects wrongly choose to little commitment. She concludes this by observing high levels of default even with late payment fees, whereas we work directly with estimated counterfactual treatment effects.
+
+    
+\vspace{.2in}
+\noindent \textbf{Is there positive selection on treatment effects?} The previous exercise consisted on extrapolating treatment effects from the no-choice arms to the choice arm. Here we do the converse. First, we estimate a flexible model of take-up of the fee commitment contract \textit{in the choice arm} using random forests and obtain for a client with characteristics $x_i$ a probability $P(x_i)$ of choosing the fee-forcing contract. We then use this model to predict the counterfactual probability of a client with characteristics $x_j$ choosing the fee-commitment contract in the no choice-arms if she would have been given the choice, what we call $\widehat{P(x_j)}$.\footnote{Our random forest take-up model has a good out-of-sample fit with an out-of-sample AUC of 0.85. We think we are not introducing too much noise by this extrapolation.} Second, armed with this prediction in the no-choice arms, we can ask the following: is it true that people with larger fee-forcing contract treatment effects (i.e. more cost savings) are more likely to have demanded the fee-forcing contract if choice had been given to them? 
+
+Figure \ref{choose_wrong}(d) plots $\widehat{P(x_i)}$ in the X-axis, and the heterogeneous treatment effects we estimated in section \ref{TE_fee-forcing} in the Y-axis. If it was true that those with larger cost savings have larger demand for the fee-commitment contract, we would expect a negative slope (recall that more savings mean lower financial cost in the Y-axis). This is not what we find. Figure \ref{choose_wrong}(d) is a binscatter that splits the X-axis in 100 percentiles bins of predicted take-up probability and for each bin averages the financial cost treatment effects. Using all clouds we estimate a slope of zero in the relationship. Using the 80 right most points, we estimate a \textit{positive} relationship. A positive relation means that those more likely to demand commitment are also those that had smaller benefits from commitment. This result is similar to \cite{Walters}, who finds that students that select into more effective schools are the ones with smaller treatment effects from attending.\footnote{\cite{Walters} uses distance to school as an instrumental variable for choice, while we use randomization to choice vs no-choice groups as our empirical strategy.}
+
+
+\section{Viewing the results through a simple model} \label{model}
+
+This section uses a model to interpret our empirical results. The model is stylized but incorporates important features of our context. First, it allows for negative income shocks which we think are prevalent in this population (that's why they pawn in the first place)\footnote{71\% say they need the money for an emergency.}. The shock generates a cost of committing to monthly payments and could potentially be a reason for low take up. Second, it features clients with present biased time preferences and allows for naivete about them. As we discuss below these two features parsimoniously explain several facts about the context ---e.g. overconfidence in recovering the pawn, and large inefficient default---  and about the results ---e.g. forcing commitment seems to help, and that there is also some (although small) demand for commitment at no benefit for neoclassical consumers. Third, it incorporates the fact that the pawned piece is more valuable than the loan. Fourth, it allows for a simple way to model commitment afforded by late payment fees. Nonetheless, the model abstracts from several details of the context. Even with these abstraction it allows us to explain our six main results listed in Section \ref{explanations_recap} below.
+
+
+\subsection{A simple model} \label{model_detail}
+
+We use the model of \cite{John} and refer the reader to that paper for more detail, justification of assumptions and some of the proofs. The model has three periods and linear utility.\footnote{This does not map perfectly to our 3 period contract, but it is enough to generate the results we need.} Period $t=0$ is a planning period where the client is either allocated to the status quo, the fee-forcing contract, or a choice between the two. Period $t=1$ is the savings decision period, and $t=2$ in the pawn recovery (loan payment) period. In period 1 the client receives her income $y_1=1$, or gets zero with probability $\lambda$. She can consume ($c_1$) or save ($s_1$) part that income. In period 2 the client gets her savings from period 1, and again receives income of either $y_2=1$, or zero with independent probability $\lambda$. In this last period, she decides whether to use income and savings for consumption $c_2$ and/or for paying back the loan of size $p \in(1,2)$ to recover the pawned piece valued at $b>p$. In this simple set up we model the fee-commitment contract as a contract that imposes a fee of size $F$ if the client fails at $t=1$ to save $s1=p-1$ pesos, which is what is needed to pay the loan back when there are no shocks. In period $t=0$ she evaluates her welfare as $E[c_1+c_2]$, were for simplicity we have set the time discount to one. We also assume the interest rate is one. We introduce present biased preferences by assuming the following utility function $U_t=c_t+\beta \: \sum_{k=t+1}^{2} E[c_k]$, with $\beta<1$ indicating present bias. A naive client perceives she is not so present biased and instead of $\beta$ uses $\hat{\beta} \in (\beta,1]$. 
+
+Note that under these assumptions it is efficient at $t=0$ to recover the loan since $b>p$ and since there is no discounting at $t=0$. Because $b>1$, paying back the loan requires that there is no negative shock in any period and that $s_1>0$. Because $\beta<1$ at $t=1$ the client will not send savings in excess of what is needed to recover the loan: $s_1=p-1$. This parsimonious model implies the following results:
+
+\vspace{.2in}
+\noindent \textbf{Result 1: Present biased clients default more.} Under the status-quo contract, absent shock realizations, present biased clients (sophisticated or naive) with $\beta<\beta_{SQ}<1$ will lose their pawn, while clients with no present bias will not.\footnote{$\beta_{SQ}=\frac{p-1}{\lambda(p-1)+(1-\lambda)(b-1)}$. See Proposition 1 in \cite{John}.} 
+
+\vspace{.1in}
+\noindent \textbf{Result 2: Forcing present-biased clients into the fee-commitment contract reduces default.} Imposing a fee $F>0$ for late payments weakly decreases default (for present biased clients only). It strictly decreases default if $F>F_{min}(\beta):=(p-1)-\beta[\lambda(p-1)+(1-\lambda)(b-1)]$. The larger the present bias the larger the $F$ required to induce pawn recovery.\footnote{$F_{min}(\beta)$ is derived from the incentive compatibility constraint needed to generate savings at $t=1$ to recover the pawn can be written as $1-(p-1)+\beta[\lambda(p-1)+(1-\lambda)(b-1)] \geq 1-F+\beta(1-\lambda)$.}
+
+\vspace{.1in}
+\noindent \textbf{Result 3: Demand for commitment.} Given $F>0$, (a) Neoclassical clients will never demand commitment. (b) Present-biased sophisticated clients will prefer the fee-forcing contract over the status quo contract $\iff$  $\lambda \: F<(1-\lambda)^2(b-p)$ and $F>F_{min}(\beta)$, that is $\iff$  $\beta \in [\beta_{min},\beta_{SQ}]$.\footnote{$\beta_{SQ}$ was determined in Result 1. $\beta_{min}$ is such that $F=F_{min}(\beta_{min})$.} (c) Analogously, naive clients will demand commitment $\iff$ $\hat{\beta} \in [\widehat{\beta_{min}},\beta_{SQ}]$, where $\widehat{\beta_{min}}<\beta_{min}$. So strongly naive clients will on the one hand demand more commitment than sophisticated clients since they believe (incorrectly) that a smaller fee will motivate them to pay. On the other hand they may demand less commitment since they think they can save and pay on their own. Whether they demand more or less than sophisticated clients depends on the empirical distribution of $\beta$ and $\hat{\beta}$. 
+
+\vspace{.1in}
+\noindent \textbf{Result 4: Overconfidence.} Only naive clients will be overconfident about the probability of recovery. This will be true whether they have the status quo or the fee-forcing contract. Overconfidence is increasing in $\hat{\beta}$.
+
+\vspace{.1in}
+\noindent \textbf{Result 5: Welfare.} (a) Neoclassical consumers' welfare strictly decreases when we force clients into the fee-commitment contract instead of the status quo contract, and does not change when we offer a choice between them. (b) The welfare of sophisticated present biased consumers weakly increases when we give them choice, and it strictly increases  $\iff$  $\beta \in [\beta_{min},\beta_{SQ}]$, that is when they would choose the fee-commitment contract themselves. Forcing them into the fee-commitment contract increases welfare $\iff$  $\beta \in [\beta_{min},\beta_{SQ}]$, otherwise it strictly decreases it. So choice is better than forcing for sophisticates. (c) Forcing can be welfare improving for the naive. Indeed if $\hat{\beta}>\beta_{SQ}>\beta$ then forcing the fee-commitment contract increases welfare, and if $\hat{\beta} \in (\widehat{\beta_{min}},\beta_{min})$ then forcing the status quo contract increases welfare.\footnote{This result is different from that in \cite{John}. Her context has individuals choosing the size of the fee. In that context naive clients will \textit{always} chose the wrong fee size and default later, therefore choice is always decreasing for the naive. In our context $F$ is fixed at 2\% of the balance due, and this implies that choice could be welfare improving for some naifs.}
+
+\vspace{.1in}
+\noindent \textbf{Result 6: Welfare and ex-post observed behavior.} If for a naive client $i$ the fee-forcing contract causes higher pawn recovery, then we know the fee $F$ made her IC constraint binding, and therefore that $\hat{\beta}_i>\widehat{\beta}_{min}$. If in addition if it was the case that $\beta_i<\beta_{SQ}$. %\footnote{\hl{Isaac, aqui tengo dos pregutas: (1) si es $\beta$ y no $\hat{\beta}$ verdad?  (2) Para que una persona naive empenie en el status quo tiene que ser que cree que va a recuperar no? Es decir tiene que ser $\hat{\beta}>\beta_{SQ}$ correcto?}} 
+then the fee-forcing contract would have increased welfare for the naive. That is, our finding that the fee-forcing contract increases pawn recovery is a sign of higher welfare (although not a sufficient condition).\footnote{It is not sufficient since ex-ante the commitment $F$ may have been too expensive given the income shocks, i.e. if $\lambda \: F>(1-\lambda)^2(b-p)$.}
+
+
+\subsection{Interpretation}
+
+The model of \cite{John} is very parsimonious but powerful and it can potentially explain all facts qualitatively.\footnote{The model is sufficiently stylized that we think we would not gain much from estimating it. Furthermore we have no data on income shocks which figure prominently in the model. \cite{Ted} and \cite{Aprajit} are two very recent models that combine a field experiment with commitment contracts and estimation of present bias parameters.} First, it can explain why default is high in the status-quo contract, namely that clients are present biased and have no commitment devices. Second, it can explain why clients are overconfident in our data, namely by virtue of naivete about present bias. Under the model naivete is necessary to explain this. Third, it can also explain why the fee forcing contract induces lower default, but not for everyone: namely that it makes the IC constraint for the present biased binding while it was not binding in the status quo contract. Fourth, it can also explain why there is low demand for commitment even if it seems to improve welfare: namely that there is a small share of neoclassical and sophisticated clients, and at the same time naifs have  $\hat{\beta}>\beta_{SQ}$ and therefore think they can save on their own.\footnote{By Result 6 we can eliminate $F<F_{min}(\widehat{\beta}$) as an explanation.} Fifth, it explains non-zero demand for commitment for a set of clients. Sixth, it can explain why clients exposed to the fee-forcing contract are more likely to come back, namely that $\hat{\beta_i}>\beta_{SQ}>\beta$ and so their welfare increased as a result of being forced into the fee-commitment contract, and they realized this after experiencing it.
+
+
+
+
+\subsection{Other potential explanations: recap} \label{explanations_recap}
+
+There may be other interpretation of the empirical findings. But the bar is high. An alternative explanation will need to explain the 6 facts below:
+
+\begin{enumerate}
+\itemsep0em 
+\item High (although ex-post inefficient) default in status quo contract.
+\item Overconfidence about pawn recovery.
+\item Forcing commitment increases pawn recovery.
+\item Small demand for commitment...
+\item ...but positive demand for commitment.
+\item Forcing commitment makes clients more likely to come back.
+\end{enumerate}
+
+Let us consider alternative explanations in isolation (i.e. just considering one change or feature at a time with respect to a neoclassical model):
+
+\vspace{.1in}
+\noindent \textbf{Alternative 1: Strong prevalence of income shocks.} This could explain low demand for commitment (4) and (1), but not why forcing helps (3) and (6), nor why there is overconfidence (1), or why they come to pawn in the first place and then default (2) as they would weight in on the high chance of losing the pawn.
+
+
+\vspace{.1in}
+\noindent \textbf{Alternative 2: High time discounting}. This could not explain (1) nor (6) nor (4). It could qualitatively explain (3). But as we say in section \ref{sec:demand} it cannot quantitatively explain (5) and (3) unless the discount rate is unbelievably high.
+
+
+\vspace{.1in}
+\noindent \textbf{Alternative 3: Risk aversion.} We already discussed and rejected risk aversion in section \ref{sec:demand}, although using strong assumptions in the process. We think this could still play a role and should be investigated in future research.\footnote{For instance by  providing insurance or by measuring risk aversion and using it to predict take up.}
+
+\vspace{.1in}
+\noindent \textbf{Alternative 4: Misunderstanding the contracts.}\footnote{This is a potential criticism of \textit{any} paper offering choice, and one that is non-falsifiable if the critic has free reign to propose how the contracts are perceived in the subject's mind.} We were very aware of the importance of clients understanding the contract in order to infer preferences from choice. That is why we made a strong effort for clients to understand the contracts (see subsection \ref{implementation}). Note however that while clients making purely random mistakes could explain why 10\% demand commitment ---i.e. (4) and (5)--- it would not explain the rest of the findings, nor why the promise-commitment (see below) had more take up that the fee-commitment, or why those with measured present bias and those that want a reminder to pay are more likely to make the ``error'' to demand commitment.\footnote{See Figure \ref{interactions_takeup} and Table \ref{Table_compliance}} 
+
+\vspace{.1in}
+\noindent \textbf{Alternative 5: Forgetting to pay.} Frequent payments may act as a reminder to save and recover the pawn. This would try to explain (1) by appealing to people forgetting to pay, and (3), (5) and (6) by appealing to frequent payment acting as reminders (i.e. there being demand for reminders). It would not explain (2) or (4) which are critical in the paper. However even for (1) it seems to us a stretch to explain people losing a valuable pawn by forgetting to pay it. 
+
+\vspace{.1in}
+\noindent \textbf{Alternative 6 (behavioral): Income shocks overconfidence}. One could also easily introduce in the overconfidence in income shocks with $\widehat{\lambda} <\lambda$ in the model of section \ref{model_detail}. This would leave default unchanged in both the status quo and the fee forcing contract thus would not explain (3), %since $F_{min}(\beta,\widehat{\lambda})<F_{min}(\beta,\lambda)$. 
+but the effect on demand for commitment is uncertain since on the one hand it decreases $\beta_{SQ}$ decreasing demand, but on the other a smaller $F$ is needed to make the IC binding, making commitment less costly. $\widehat{\lambda} <\lambda$ alone would not explain the (5) or (6) as demand for commitment would be zero without present bias. 
+
+\begin{comment}
+\vspace{.1in}
+\noindent \textbf{Alternative 6: Learning that they are more present biased than they thought.} This is essentially the same as our proposed explanation (i.e. not an alternative) with the additional prediction that more people will demand commitment if they just experienced it, an specially appealing one in light of finding (6). We are sympathetic to the learning hypothesis and in fact it is \cite{Alcohol}'s main conjecture about why he finds strong demand for commitment while most other studies don't.\footnote{Close to ninety percent of our subjects claim to have pawned before. We find that experience does not predict positive take up in our sample correlationally.} To test it we would ideally need to give choice to a group of people that randomly experienced the fee-commitment vs those that did not, and test if the former demand it more. Unfortunately we did not do this experiment and we have very limited data to try it: \hl{210 (6\%)} clients were given a choice in a second pawns in our experiment after being randomly assigned to the status quo or fee-forcing contract. 
+\end{comment}
+
+
+\vspace{.1in}
+We do not claim that the model in section \ref{model_detail} is the only possible explanation of our findings, but it is a parsimonious explanation of all of them and a lens for interpretation.
+
+
+\section{The effect of promises} \label{promises}
+
+One finding of the paper is that a rather small fee of 14 pesos on average changes behavior substantially: on the one hand generates average savings for almost everybody (and in the order of \hl{230} pesos on average) when forced, but on the other dissuades take up when clients have choice. In this context one would want a commitment device that generates higher take up while at the same time providing incentives for paying fast and recovering the pawn. One way to go would be to decrease the already small fee say to 1\% or lower. We decided to instead experiment with a non-pecuniary penalty, in the form of a psychological cost of breaking a promise. As explained in Section \ref{Experiment} the promise contract involved making a salient promise to repay monthly, and receive a short speech by the appraiser about the importance of keeping her promise of paying monthly.
+
+A substantial literature documents that people don't like to break their promises, and are willing to incur in monetary loses in trying to keep them. To our knowledge this result has been replicated several times in laboratory contexts but not in a field setting like ours. If breaking a promise is perceived as having a lower cost than paying the 2\% fee and at the same time help as a commitment, we predict that more people will have demand for the promise-commitment contract.
+
+\subsection{The demand for promise-commitment contracts and their effects}
+
+\vspace{.1in}
+\noindent \textbf{Demand}. It turns out that the demand for monthly payment contracts with a personal promise to pay monthly ---but no pecuniary penalty for not doing so--- induces higher demand by a factor of three compared with fee-commitment contract: 31\% of clients offered a choice between the status quo contract and the promise-commitment contract chose commitment. This means that the pecuniary fee indeed limited demand for commitment. In passing this means also that clients are responsive to contract terms and seem to understand the conditions. Interestingly however, the set of people who demand the promise-commitment contract are different from those that demanded the fee-commitment one. While in both cases the economically vulnerable demand less, in the case of the promise-commitment those that we classify as present biased, those that report that they frequently fall into temptation buying, and those that ask for reminders of payment are \textit{less} likely to demand the promise-commitment contract.  This suggests that those taking up the promise commitment are not the ones needing the commitment. The opposite is weakly true for those who take up the fee-commitment contract (see Figure \ref{interactions_takeup} in the Appendix). 
+
+\vspace{.2in}
+\noindent \textbf{Effect of choosing to promise}. Figure \ref{fc_pro5}(a) finds that assigning clients to the choice-promise condition has a zero effect on financial cost on average (circles). We see no difference even for the endogenous group that \textit{chose} to promise (squares). This null effect happens not only on average, but also by percentiles (not shown in Figure). There is also no effect on pawn recovery on (first coefficient in Figure \ref{fc_pro5}(b)), even for those that themselves choose to promise. And the null effect carries over if we use the definition of recovery in less than 120 days, or for the (endogenous) subgroups that paid a positive amount. Finally, there is no effect on repeat pawning (Figure \ref{reincidence}). 
+
+\vspace{.2in}
+\noindent \textbf{Effects of forcing to promise}. Giving choice of whether to promise or not has the advantage of making promising an active decision by the client. In most of the the experimental literature promising is voluntary. But it has the disadvantage that we cannot measure the causal effect of promising, since those that promise are a selected sample. To evaluate the causal effect of promising, we compare people allocated to the promise-forcing arm (were all clients were forced to make a promise) against those in the status quo contract arm. Figure \ref{fc_pro5} (c) and (d) show the results. It documents null average treatment effects for both financial cost and recovering the pawn. Also there is no effect on repeat pawning.
+
+\vspace{.2in}
+\noindent The evidence presented in this section contrasts sharply with the evidence in laboratory experiments where people choosing to promise has a large effects on behavior, and were people keep their promises. While clients are more enthusiastic about the promise-commitment contract than the fee-commitment one in the sense of tripling take-up, the promise contract provides no commitment. Results for the promise arms are consistent with \cite{Ted} and \cite{John} who find that people are likely to demand commitment when the commitment is too week to have beneficial effects.
+   
+   
+%\vspace{.2in}
+%\noindent \textit{Size of ``mistakes''.} Although promises have very muted effects, there is some heterogeneity (see Figure \ref{heterogeneous_te_3}). This opens the space for choice mistakes. Figure \ref{choose_wrong} shows that indeed there are some mistakes, but these are smaller that for the fee-choice arm.  When $z=0$, we calculate that about 60\% of clients in the promise-choice group chose contracts that induced \textit{higher} financial cost. In particular \hlgr{97\%} of those that chose the status-quo contract would have been better in the promise-commitment contract, while \hlgr{3\%} of those who chose the promise-commitment contract would have been better in the status-quo one. On average they spend \$250 pesos on extra financing cost. 
+
+
+    
+\section{Conclusion} \label{conclusion}
+
+In a pawnshop borrowing context, we studied whether forcing borrowers into frequent payment commitment contracts reduces their borrowing costs, compared to a contract that does not provide commitment to pay monthly. Even though we are charging them fees, their borrowing cost are actually reduced by 9.5\%, and they recover their pawn with 25\% higher likelihood. Moreover they themselves seem to like this contract, as they are 55\% more likely to come back and pawn again when they get it. That is, commitment matters and it seems beneficial. Examining treatment heterogeneity we find that almost all clients benefit from the commitment contract. 
+
+However when given choice between the commitment and the status quo contract only 10\% choose the former one and thus forgo important benefits. A simple model shows that present bias with naivete parsimoniously explains all findings. This strongly suggests that ``private paternalism'', a policy that advances an individual's interests by restricting her freedom, is beneficial in our context. We provide a quantification of the size of unrealized benefits that arise when clients have choice and calculate that 92\% of clients would benefit with more recovery and lower financial cost from being forced into the fee-commitment contract. 
+
+Methodologically, to our knowledge this is the first paper in economics that uses machine learning methods to estimate personalized counterfactual treatment gains and ask whether treatment take up is positively selected on benefits, using treatment effects in forcing arms to calculate benefits in choice arms.
+
+Needless to say, pawnshop borrowing likely attracts particularly unsophisticated clients (millions of them). Choice may fare better in other contexts.  Choice may also fare better with other contracts besides the fee-commitment one. We experimented with a ``softer'' commitment contract in the form of a personal promise, and found that although promise-commitment contracts do indeed elicit more interest they did not cause changes in behavior. 
+
+We see three lines of further work that are of interest. First, investigate why the fee-commitment contract had such low demand in spite of its across-the-board benefits and very low fees. In particular tease out the roles of naivete about self control problems, biased expectations about income shocks, and ambiguity aversion with better direct baseline measurements. Second, whether other types of contracts ---for instance those that provide some insurance against shocks--- could induce larger demand and better performance. Third, whether individuals choosing to borrow from pawnshops are more present biased and naive than similar individuals borrowing from other types of lenders.
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+\newpage
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%BIBLIOGRAPHY
+
+
+\clearpage
+\bibliographystyle{authordate1}
+%\bibliographystyle{amsalpha}
+%\bibliographystyle{AER}
+
+\bibliography{References}
+
+
+
+%\FloatBarrier
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newpage
+\singlespacing
+
+\section{Tables}
+
+
+\begin{table}[H]
+\caption{Summary statistics and Balance}
+\label{SS}
+\begin{center}
+\scriptsize{\input{./Tables/SS.tex}}
+\end{center}
+ \scriptsize
+This table presents balance tests for the administrative data (Panel A) and survey data (Panel B). Each column corresponds to an arm of the experiment: control (status quo contract), no choice with fee, no choice with promise, choice among both contracts where the commitment contract has fee, and choice among both contracts where the commitment contract involves only a promise. The last column show the p-value of an F-test of the hypothesis that the mean across arms for that variable is the same across the 5 arms. Randomization was done at the branch-day level. By design the observation are not exactly equal cross arms as we were more interested in detecting effects in the choice-fee arm and less so in the no-choice-promise. Loan amount is the peso amount given to the client; Monday is the fraction of loans given on a Monday; number of pledges is the number of loans given in each arm. That it is balanced shows that there was no detectable selection across arms when clients found out what was the contract. In Panel B: woman indicated whether the client is female, age of the client is measured in years; has pawned before is a dummy=1 if the client declares to have pawned before (although not necessarily with Lender $P$). The subjective probability of recovery was elicited a la Manski, from 0 to 100 what is the probability that you will recoup your pawn. High-school is a dummy that indicates if the client has completed high school. Finally, the response rate is the percentage of clients in the admin data for whom we have a baseline survey.
+%\textit{Do file: } \texttt{ss.do}
+\end{table}
+
+
+\newpage
+
+
+
+\begin{table}[H]
+\caption{Overconfidence: Take-up and Treatment Effects}
+\label{oc_reg}
+\begin{center}
+\scriptsize{\input{./Tables/oc_reg.tex}}
+\end{center}
+ \footnotesize This table shows the parameter estimates of $y_i = \alpha + \beta \: OC_i + Z_i'\gamma + \epsilon_i$, where $OC_i:=\mathbbm{1}(P^s_i-\widehat{P_i(X_i)}>0)$ is an indicator for the subjective probability of recovery being larger that the predicted one. In columns 1-4 $y_i$ is a dummy for whether the client $i$ chose to have the commitment contract in the respective choice arm, and in columns 5 and 6 $y_i$ is the heterogeneous treatment effect for financial cost (in pesos) estimated by comparing the fee-forcing vs status quo arms in Section \ref{TE_fee-forcing}. Columns 1 and 3 are estimated for the promise-choice arm, while columns 2 and 4 are estimated for the fee-choice arm. The low number of observations results from  our use of  covariates for $\widehat{P(x)}$ and in $Z$ in the regression, given that some of them are missing.
+%\textit{Do file: } \texttt{oc.do}
+\end{table}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
+\section{Figures}
+
+
+\begin{figure}[H]
+     \caption{Experiment description}
+    \label{exp_description}
+    \begin{center}
+    \begin{subfigure}{.50\textwidth}
+      \caption{Timeline of the experiment}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/timeline_suc_exp_extended.pdf}
+    \end{subfigure}
+    \begin{subfigure}{0.45\textwidth}
+    \caption{Experiment arms}
+       \centering
+      \includegraphics[width=\textwidth]{Figuras/exp_arms.PNG}
+    \end{subfigure}
+    \end{center}
+         \scriptsize Panel (a) displays in black arrows the period covered by our administrative data: from August 6th 2012 (30 days before the experiment began) to August 13th 2013. The gray lines arrows correspond to the dates of implementation of the experiment. We finished the experiment earlier in branches 1 and 2 because we realized that we would have enough sample size with the remaining branches and save on operational costs. Panel (b) shows our 5 treatment arms: control (status quo contract), no fee-forcing, promise-forcing, choice among status quo and fee-commitment, and choice among status quo promise-commitment. Within each arm it displays the number of observations. And  for the choice groups it splits the sample size into those who chose the commitment contract (shaded blue triangle) and those that did not (un-shaded triangle).
+%\textit{Do file: }  \texttt{timeline\_suc\_exp.do}
+\end{figure}
+
+
+
+\begin{figure}[H]
+     \caption{Explanatory Material: Promise-Choice Days}
+    \label{ExplanatoryMaterial}
+    \begin{center}
+    \begin{subfigure}{0.8\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/MicaChoiceDonde.png}
+    \end{subfigure}
+    \end{center}
+    \scriptsize
+        This is a (translated) sample information mica shown to clients in choice-promise days. The real ones were twice the size of this figure and were laminated. Different ones were shown in each treatment arm.
+\end{figure}
+
+
+
+
+
+\begin{figure}[H]
+     \caption{Financial cost}
+    \label{fc_hist}
+    \begin{center}
+    \begin{subfigure}{.45\textwidth}
+      \caption{In pesos}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/hist_fc.pdf}
+    \end{subfigure}
+    \begin{subfigure}{0.45\textwidth}
+    \caption{As a fraction of the loan}
+       \centering
+      \includegraphics[width=\textwidth]{Figuras/hist_fc_perc_loan.pdf}
+    \end{subfigure}
+    \end{center}
+         \scriptsize
+         Panel (a) presents a histogram of financial cost for the control group. Financial cost is defined as the sum of payments made by a client towards recovering her pawn + the cost of the pawned piece when she ends up losing it. In the paper we use different costs of losing the pawn: its value in gold, or the self reported subjective (e.g. jewelry may have sentimental value). This Figure uses the gold value. We plot separately the financial cost for those who lose the pawn (blue) and those that recover it (transparent).  Panel (b) is analogous but we normalized the financial cost dividing it by the loan size.  %Given that the loan lasts close to 90 days, bringing payments to present value makes little difference. 
+      %\footnotesize{ } \textit{Do file: }  \texttt{hist\_fc.do}
+\end{figure}
+
+
+
+
+
+
+\begin{figure}[H]
+    \caption{The effect of the fee-forcing treatment}
+    \label{fc_pro2}
+    \begin{center}
+    \begin{subfigure}{0.42\textwidth}
+        \caption{Financial cost (pesos)}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/fc_te_pro_2.pdf}
+    \end{subfigure}
+        \begin{subfigure}{0.42\textwidth}
+        \caption{Financial cost (quantile reg)}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/fc_quantile_pro_2.pdf}
+    \end{subfigure}
+    
+        \bigskip
+    
+    \begin{subfigure}{0.42\textwidth}
+        \caption{Financial cost (HTE)}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/he_dist_fc_admin_disc_pro_2.pdf}
+    \end{subfigure}
+    ~
+    ~
+    \bigskip
+    \begin{subfigure}{0.42\textwidth}
+        \caption{Lost pawn}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/def_te_pro_2.pdf}
+    \end{subfigure}
+    \begin{subfigure}{0.42\textwidth}
+    \caption{Losing Pawn}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/he_dist_def_c_pro_2.pdf}
+    \end{subfigure}
+
+    \end{center}
+        \scriptsize 
+        
+      %\textit{Do file: }  \texttt{fc\_te.do, def\_te.do, fc\_quantilereg.do}
+\end{figure}
+
+\scriptsize {
+\noindent This figure shows the estimated treatment effect of ``forcing'' the frequent payment commitment contract using fees, compared to the status-quo (control). In Panel (a) each dot represents the estimated treatment effect for a different definition of financing cost, or for a different sub-population, and its 95\% confidence interval. From left to right, the first effect corresponds to using the gold value of the pawned piece in the definition of financial cost and discounting the payments to present value using a 7\% monthly rate; the second uses the subjective value of the pawn; the third is analogous to the second but adds transaction cost (transport+1 day's wage) per visit; the fourth conditions on the population that paid any positive amount towards recovery of their pawn; the fifth conditions on the sub-population of the treatment group that paid a fee and compares these to all the control group. Panel (b) plots the effects on different quantiles of the distribution of financial cost (using the first definition): 15th, 25th, 50th, 75th, 85th percentile. Panel (c) plots the distribution of the heterogeneous treatment effects on financial cost, estimated using \cite{atheygrf}. Panel (d) Measures the effect of treatment on the likelihood of losing their pawn. The first coefficient compares all the treatment group vs all the control using 230 days after pawning to define the dependent variable; the second defines it using 120 days. The third coefficient from the left conditions on the population that paid any positive amount towards recovery of their pawn (which in theory may be endogenous but empirically we showed not to be affected by treatment). Finally, Panel (e) shows the distribution of heterogeneous treatment effects of the probability of losing the pawn. % the effect on ``repeat purchase''. That is likelihood of doing an additional pawn (in treatment vs control) after having been subjected to treatment for at least 75 days. The second coefficient estimates the regression conditional on recovering the pawn \hl{in both treatment and control}, and the rightmost coefficient compares those above the median treatment effect in financial cost savings, \hl{versus all the control group.}
+}
+
+\vspace{3ex}
+
+\begin{figure}[H]
+        \caption{Effects on repeat purchasing}
+    \label{reincidence}
+    \begin{center}
+        \centering
+        \includegraphics[width=0.6\textwidth]{re_te.pdf}
+    \end{center}
+     \scriptsize This figure shows the estimated effects on repeat purchasing of the four treatment arms (fee-forcing, choice-fee, fee-promise, choice-promise) compared to the status-quo control group. It shows robustness of the effects by focusing on different sub-populations. The leftmost coefficient compares all the fee-forcing group against all status quo group. The second coefficient conditions on the first pawn not being recovered when the second was pawned. The third coefficient uses all clients (in both the fee-forcing and the status-quo arms) who had an estimated heterogeneous treatment effect above the median. Conditioning on this set keeps the sample balanced across arms and therefore still allows for a causal interpretation. For the choice arm we present three coefficients: coefficients represented by a circle compare all those offered choice to all those in the status quo arm, thus estimating a causal effect. Coefficients in triangles and squares represent those that self-select into the fee or promise arms and compare this subset against the whole status quo arm. They therefore contain a selection effect together with the treatment effect and cannot be interpreted causally.
+      %\footnotesize{ \textit{Do file: }  \texttt{re\_te.do}
+\end{figure}
+
+
+
+
+\begin{figure}[H]
+    \caption{The effect of choice between fee-commitment and status quo}
+    \label{fc_pro4}
+    \begin{center}
+    \begin{subfigure}{0.45\textwidth}
+        \caption{Financial cost}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/fc_te_pro_4.pdf}
+    \end{subfigure}
+        \begin{subfigure}{0.45\textwidth}
+        \caption{Financial Cost (quantile reg)}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/fc_quantile_pro_4.pdf}
+    \end{subfigure}
+    \begin{subfigure}{0.5\textwidth}
+    
+        \bigskip
+        \bigskip
+    
+        \caption{Lost Pawn}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/def_te_pro_4.pdf}
+    \end{subfigure}
+    \end{center}
+        \scriptsize
+        This figure is analogous to Figure \ref{fc_pro2}. It measures the effect of being given \textit{choice} between the frequent payment commitment contract with fees and the status-quo contract, versus being \textit{``forced''} into the status-quo contract (control). Again it focuses our two main outcomes: financial cost and an indicator for losing the pawn. Circles present the treatment effects. The figures also presents differences in these two outcomes for those who chose the frequent payment commitment contract versus the whole control group (squares-NSQ), and also for those who chose the status quo contract versus the whole control group (triangles-SQ). Note that these two comparisons are not pure causal effects since people who chose the frequent payment commitment contract are different from those that do not. That is: the squares and triangles combine selection and treatment effects. Finally, for comparison purposes, the blue diamond displays the effects of forcing them into the frequent payment commitment contract and are just transcribed from Figure \ref{fc_pro2} above. 
+      %\textit{Do file: }  \texttt{fc\_te\_choice\_dec.do, def\_te\_choice\_dec.do, fc\_quantilereg\_choice\_dec.do}
+\end{figure}
+
+
+
+
+
+\begin{figure}[H]
+        \caption{Distribution of Overconfidence}
+    \label{oc_hist}
+    \begin{center}
+        \centering
+        \includegraphics[width=0.55\textwidth]{Figuras/oc_hist.pdf}
+    \end{center}
+    \scriptsize
+     In the baseline survey at the branch, before the client knew the contract of had the pawn appraised, they were asked from 0 to 100, how likely is that they would be able to recover their pawn if pawned. We generate a variable we call overconfidence (OC) defined as the reported subjective probability of recovery minus the predicted probability ($P^s_i-\widehat{P_i(X_i)}$). We predict $\widehat{P_i(X_i)}$ using LASSO as explained in the text. This figure uses all observations for which we have data on $P^s_i$ and $X_i$ from the baseline survey.
+     %\textit{Do file: }  \texttt{oc.do}
+     
+\end{figure}
+
+
+
+
+
+
+\begin{figure}[H]
+    \caption{Choice of contracts and treatment effects}
+    \label{choose_wrong}
+    \begin{center}
+        \begin{subfigure}{0.45\textwidth}
+        \caption{Chose wrong}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/line_cw_fc_te_cf.pdf}
+        
+    \end{subfigure}
+        \begin{subfigure}{0.45\textwidth}
+        \caption{By overconfidence/naivete}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/line_cw_fc_te_cf_OC_fee.pdf}
+
+    \bigskip
+        
+    \end{subfigure}
+        \begin{subfigure}{0.45\textwidth}
+        \caption{\% better when forced to fee-commitment}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/line_better_forceall_fc_te_cf.pdf}
+        
+    \end{subfigure}
+        \begin{subfigure}{0.45\textwidth}
+        \caption{\footnotesize{Effect of losing pawn vs predicted take-up}}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/takeuppr_def.pdf}
+    \end{subfigure}
+    
+    \end{center}
+        \scriptsize
+        In Panel (a) we estimate what the treatment effect of the commitment contract \textit{would have been} for all subjects in the choice arm if they had been forced into the fee-commitment contract. To do this we proceed in two steps. First, we estimate treatment effects in the forcing arm by comparing the fee-forcing arm against the status quo arm. We let these effects be heterogeneous as a function of our $x$'s using \cite{atheygrf}'s methodology of causal forests. Second, we extrapolate these treatment effects based on the choice arm using the same $x$'s. Once we have personalized counterfactual treatment effects in the choice we calculate what fraction of subjects in the choice arm incurred in financial costs that are  $> z$\% than if they had chosen the opposite contract of what they actually chose, were $z$\% is defined as a fraction of the loan. $z$\% is a level of tolerance we can vary and we plot it in the X-axis. The left Y-axis measures the fraction of subjects that would have been better by a margin of $z$\% if they changed their choice, and the right Y-axis measures the amount of money ``left on the table''. The thinly dotted lines represent 90\% confidence intervals.  Panel (b) is analogous to Panel (a) except that it does the exercise separately for clients we classified as overconfident ($OC_i:=\mathbbm{1}(P^s_i-\widehat{P_i(X_i)}>0))$ and those we classified as not overconfident. Panel (c) simulates what percentage would be better by at least $z$ if we forced everybody of those in the fee-choice arm into the fee-commitment contract. Panel (d) asks whether it is the case that people with larger causal savings from the fee-forcing contract would be more likely to select that contract. To do this we proceed in two steps as well. First we estimate a flexible model of take-up of the fee commitment contract \textit{in the choice arm} using random forests, and from this model obtain a probability $P(x_i)$ of choosing the fee-forcing contract for a client with characteristics $x_i$. We extrapolate this model to clients in the fee-forcing arm to estimate what would they have chosen if we had given them choice. Figure (d) plots $\widehat{P(x_i)}$ in the X-axis using a binscatter that splits the X-axis in 100 percentile bins. The Y-axis plots the heterogeneous treatment effects of the fee forcing contract on the probability of losing the pawns (more negative means then more likely to recover it), averaged for the respective x-axis bin. Positive assortative selection would mean a negative relationship: those who benefit more by treatment and lose the pawn less are more likely to choose it.  Using all bins we estimate a slope of zero in the relationship. Using the 80 right most points, we estimate a \textit{positive} relationship.
+        %\textit{Do file: }  \texttt{effect\_contr\_takeup.do, choose\_wrong\_quant\_wrong.do, choose\_wrong\_quant\_wrong\_decomposition.do}
+\end{figure}
+
+
+
+
+
+
+\begin{figure}[H]
+    \caption{The effect of promises}
+    \label{fc_pro5}
+    \begin{center}
+    
+
+        \begin{subfigure}{0.45\textwidth}
+        \caption{Financial cost -- Choice}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/fc_te_pro_5.pdf}
+    \end{subfigure}
+        %\begin{subfigure}{0.45\textwidth}
+        %\caption{Quantile regression}
+        %\centering
+        %\includegraphics[width=\textwidth]{Figuras/fc_quantile_pro_5.pdf}
+    %\end{subfigure}
+    \begin{subfigure}{0.45\textwidth}
+        \caption{Losing Pawn -- Choice}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/def_te_pro_5.pdf}
+    \end{subfigure}
+    
+    \bigskip
+    \bigskip
+    
+        \begin{subfigure}{0.45\textwidth}
+        \caption{Financial cost -- Promise-forcing}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/fc_te_pro_3.pdf}
+    \end{subfigure}
+    \begin{subfigure}{0.45\textwidth}
+        \caption{Losing Pawn -- Promise-forcing}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/def_te_pro_3.pdf}
+    \end{subfigure}
+    
+
+    
+    
+    \end{center}
+    \scriptsize
+    Panels (a) and (b) in this figure show the estimated treatment effects of ``forcing'' the frequent payment commitment contract using promises, compared to the status-quo (control) for financial cost (Panel a), and for an indicator of losing the pawn (Panel b). Panels (c) and (d) are analogous but focus on the effect of giving choice between frequent payment commitment contract using promises and the status quo contract. In Panel (a) each dot represents the estimated treatment effect for a different definition of financing cost, or for a different sub-population, and its 95\% confidence interval. From left to right, the first effect corresponds to using the gold value of the pawned piece in the definition of financial cost and discounting the payments to present value using a 7\% monthly rate; the second uses the subjective value of the pawn; the third is analogous to the second but adds transaction cost (transport+1 day's wage) per visit; and the fourth conditions on the population that paid any positive amount towards recovery of their pawn. Panel (b) plots the effect of not recovering the pawn: the leftmost coefficients compares all those assigned to the promise-forcing arm vs all those in the status quo contract, where the dependent variable=1 if the client has not recovered the pawn 230 days after pawning. The next coefficient defines the dependent variable=1 if the client has not recovered the pawn 120 days after pawning. The third coefficient conditions on paying a positive amount, and the fourth conditions on paying at least 30\% of the loan.   Panels (b) and (c) measure the effect of being given \textit{choice} between the frequent payment commitment contract with promise and the status-quo contract, versus being \textit{``forced''} into the status-quo contract (control). Again it focuses our two main outcomes: financial cost and an indicator for losing the pawn. Circles present the treatment effects. The figures also presents differences in these two outcomes for those who chose the frequent payment commitment contract versus the whole control group (squares-NSQ), and also for those who chose the status quo contract versus the whole control group (triangles-SQ). That is: the squares and triangles combine selection and treatment effects.
+      %\footnotesize{ } \textit{Do file: }  \texttt{fc\_te\_choice\_dec.do, def\_te\_choice\_dec.do, fc\_te.do, def\_te.do }
+\end{figure}
+
+
+
+
+%\begin{figure}[H]
+%    \caption{The effect of the promise-forcing treatment}
+%    \label{fc_pro3}
+%    \begin{center}
+%        \begin{subfigure}{0.45\textwidth}
+%        \caption{Quantile regression}
+%        \centering
+%        \includegraphics[width=\textwidth]{Figuras/fc_quantile_pro_3.pdf}
+%    \end{subfigure}
+%    
+%    \end{center}
+%             \footnotesize \textit{Notes: } 
+%      \footnotesize{ } \textit{Do file: }  \texttt{fc\_te.do, def\_te.do, fc\_quantilereg.do}
+%\end{figure}
+
+
+
+
+
+
+
+
+\newpage
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% APPENDIX 
+
+\setcounter{table}{0}
+\renewcommand{\thetable}{A\arabic{table}}
+
+\setcounter{figure}{0}
+\renewcommand{\thefigure}{A\arabic{figure}}
+
+\setcounter{section}{0}
+\setcounter{subsection}{0}
+\renewcommand\thesection{A\arabic{section}}
+\renewcommand\thesubsection{\thesection\arabic{subsection}}
+
+\appendix
+
+\section{APPENDIX}
+
+
+
+\subsection{Some materials}
+
+\vspace{.1in}
+\begin{figure}[H]
+     \caption{Contract Terms Summary, and Promise Slip}
+    \label{PaperSlip}
+    \begin{center}
+    \begin{subfigure}{0.65\textwidth}
+    \caption{Receipt for client}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/TicketLenderP.png}
+    \end{subfigure}
+    
+    \vspace{3ex}
+    \begin{subfigure}{0.65\textwidth}
+    \caption{Personal promise signed by client}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/Personal Promise2.png}
+    \end{subfigure}
+    \end{center}
+    \scriptsize
+        The top of this figure is a sample receipt that was given to clients that got assigned to the fee-forcing contract (the font and format were changed to protect Lender's P identity). We want to highlight the salience of some items. First the title clearly indicated which contract the client has (arrow 1). Second, in the case of the fee contract it clearly indicates that there is a fee for paying late equivalent to 4\% of the value of the monthly payment (arrow 2). Third, there is a calendar for payments clearly specifying the dates and amounts to pay each month. The bottom panel of the figure shows a ``promise slip'', the paper that those who were assigned (or chose) to the monthly payment with promise had to sign to make the promise salient. It emphasizes that the client is giving his word, and that the promise is not a legal document.
+\end{figure}
+
+
+
+\subsection{Pictures}
+
+\begin{figure}[H]
+     \caption{Some Pawnshops}
+    \label{PawnshopPicture}
+    \begin{center}
+    \begin{subfigure}{0.42\textwidth}
+    \caption{Appraiser/tellers inside a pawnshop}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/empenio9.png}
+    \end{subfigure}
+        \begin{subfigure}{0.45\textwidth}
+    \caption{Pawnshop}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/empenio11.png}
+    \end{subfigure}
+    
+        \vspace{3ex}
+
+    \begin{subfigure}{0.45\textwidth}
+    \caption{Pawnshop}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/empenio2.png}
+    \end{subfigure}
+    \begin{subfigure}{0.42\textwidth}
+    \caption{Lost pawns which are for sale}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/empenio3.png}
+    \end{subfigure}
+       
+
+    
+    \end{center}
+    \scriptsize
+        This figure  shows pictures of pawnshops in Mexico city. They do not necessarily coincide with Lender P for confidentiality. 
+\end{figure}
+
+
+
+\vspace{.1in}
+\begin{figure}[H]
+     \caption{Gold buyers next to pawnshops}
+    \label{GoldBuyers}
+    \begin{center}
+    \begin{subfigure}{.49\textwidth}
+    \caption{Gold buyer next to pawnshop 1}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/empenio7.png}
+    \end{subfigure}
+    \begin{subfigure}{.49\textwidth}
+    \caption{Gold buyer next to pawnshop 1}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/empenio8.png}
+    \end{subfigure}
+       \vspace{3ex}
+       
+    \end{center}
+    \scriptsize
+        This figure shows pictures of gold buyers next to pawnshops in Mexico city. They do not necessarily coincide with Lender P for confidentiality. 
+\end{figure}
+
+
+
+
+%\begin{figure}[H]
+%        \caption{Booklet with product information}
+%    \label{micas}
+%    \begin{center}
+%        \centering
+%        \includegraphics[width=\textwidth]{micas.pdf}
+%    \end{center}
+%     \footnotesize \textit{Notes: } 
+%      \footnotesize{ }
+%\end{figure}
+
+
+%\begin{figure}[H]
+%     \caption{Booklet with product information translated}
+%    \label{booklet_translate2}
+%    \begin{center}
+%    \begin{subfigure}{.9\textwidth}
+%        \centering
+%        \includegraphics[width=\textwidth]{Figuras/MP_F.pdf}
+%    \end{subfigure}
+    %\begin{subfigure}{0.55\textwidth}
+    %   \centering
+    %  \includegraphics[width=\textwidth]{Figuras/MP_2.pdf}
+    %\end{subfigure}
+%    \end{center}
+%\end{figure}
+
+
+
+\subsection{Surveys}
+\afterpage{
+\begin{table}[H]
+\caption{Baseline survey}
+\label{baseline_survey}
+\begin{center}
+\scriptsize{\input{./Tables/transcribed.tex}}
+\end{center}
+\end{table}
+}
+
+
+\begin{table}[H]
+\caption{Survey's non-response balance}
+\label{balance_response}
+\begin{center}
+\scriptsize{\input{./Tables/balance_response.tex}}
+\end{center}
+ \scriptsize This table shows whether the means of variables in the administrative dataset are different for those that respond the baseline survey vs those that do not. We use this as an assessment of external validity. Internal validity is guaranteed because the baseline survey was implemented before treatment assignment and therefore response rates are orthogonal to treatment assignments. Panel A studies the baseline survey, while Panel B focuses on the exit survey. The columns labeled ``p-values'' report p-values for the test that the means of the respective variable are the same for those that responded did not respond the survey.
+%\textit{Do file: } \texttt{balance\_response.do}
+\end{table}
+
+
+
+
+\begin{comment}
+\begin{table}[H]
+\caption{Reincidence SS}
+\label{tab_reincidence}
+\begin{center}
+\scriptsize{\input{./Tables/tab_reincidence.tex}}
+\end{center}
+ \scriptsize
+%\textit{Do file: } \texttt{tab\_reincidence.do}
+\end{table}
+
+
+\begin{table}[H]
+\caption{Summary statistics (exit survey)}
+\label{SS_exit}
+\begin{center}
+\scriptsize{\input{./Tables/SS_exit.tex}}
+\end{center}
+ \scriptsize We carried out an exit survey. It had a small response rate and we don't use it in the paper. Here it shows that the characteristics of those that responded it are balanced across arms (Panel B). Panel A reports outcomes.
+%\textit{Do file: } \texttt{ss.do}
+\end{table}
+\end{comment}
+
+
+\newpage
+\subsection{Some more evidence of overconfidence}
+
+\vspace{.2in}
+\begin{figure}[H]
+    \caption{Behavior of those who lost pawn}
+    \label{proxy_naive}
+    \begin{center}
+    \begin{subfigure}{0.40\textwidth}
+        \caption{Elapsed days to first payment}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/hist_firstdays_default.pdf}
+    \end{subfigure}
+    \begin{subfigure}{0.40\textwidth}
+        \caption{Elapsed days to last payment}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/hist_days_default.pdf}
+    \end{subfigure}
+        \begin{subfigure}{0.40\textwidth}
+        \caption{Payments as \% of loan}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/hist_percpay_default.pdf}
+    \end{subfigure}
+    \begin{subfigure}{0.40\textwidth}
+        \caption{Number of payments}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/hist_numpay_default.pdf}
+    \end{subfigure}
+    \end{center}
+        \scriptsize 
+        This figure describes behavior for the subsample of clients whose pawn was not recovered (in the control group).  Panel (a) shows days elapsed from the pawn to the first payment, while panel (b) displays the days elapsed to last payment. Some people pay after the day 105 when the grace period ends because the can ``restart'' the loan if they pay all interest owed. It amounts to starting a new loan with the same conditions and same pawn. Panel (c) shows the fraction of the loan that they paid (even when they ended up losing the pawn). Panel (d) displays the number of times they went to the branch to pay.      
+      %\textit{Do file: }  \texttt{hist\_den\_default.do}
+\end{figure}
+
+
+\newpage
+\subsection{Main treatment effects: Additional material}
+
+\vspace{.2in}
+\begin{figure}[H]
+        \caption{Financial cost effect: charging all fees}
+    \label{fc_allfee}
+    \begin{center}
+        \centering
+        \includegraphics[width=0.50\textwidth]{Figuras/fc_allfee_quantile_pro_2.pdf}
+    \end{center}
+    \scriptsize
+     This figure is the analogous to Figure \ref{fc_pro2}(b), except that for the fee-forcing contract we pretend that all clients incurred in their late fees, and therefore inflate the financial cost by summing those fees. This is intended as a kind of worse case scenario for the financial cost of the fee-forcing contract. The circles indicate the quantile treatment effects, while the cross is the (OLS) mean. We still find that the financial cost of will be smaller under the fee-forcing contract in spite of artificially inflating it.
+     %\texttt{fc\_all\_fee.do}
+\end{figure}
+
+
+
+
+
+\begin{figure}[H]
+        \caption{FC as \% of loan - treatment effect}
+    \label{fc_perc}
+    \begin{center}
+        \centering
+        \includegraphics[width=0.50\textwidth]{Figuras/fc_perc_te_allarms.pdf}
+    \end{center}
+     \scriptsize This figure shows the estimated treatment effect of all arms against the status quo, but normalizing the dependent variable by the value of the loan.
+     %\textit{Do file: }  \texttt{fc\_perc\_allarms.do}
+\end{figure}
+
+
+
+
+\begin{figure}[H]
+    \caption{Relationship between treatment effects}
+    \label{induced_to_pay_early}
+    \begin{center}
+    \begin{subfigure}{0.45\textwidth}
+        \caption{\footnotesize{Induced to pay earlier vs Induced Lower FC}}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/binscatter_fc_days_pro_2.pdf}
+    \end{subfigure}
+        \begin{subfigure}{0.45\textwidth}
+        \caption{\footnotesize{Induced to pay earlier vs Induced Recovery}}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/binscatter_def_days_pro_2.pdf}
+    \end{subfigure}
+    \end{center}
+       \scriptsize 
+       This figure plots relationships between \textit{treatment effects}. Both Panels (a) an (b) have the same X-axis, which displays the estimated heterogeneous treatment effect on the outcome ``elapsed days of first payment'', that is how many days elapsed from the day the loan was awarded to the first payment the client made. The treatments effects were calculated using \cite{atheygrf}. In Panel (a) the Y-axis is the \textit{treatment effect} on financial cost. In Panel (b) the Y-axis is the \textit{treatment effect} on losing their pawn. Panel (a) shows that those induced to pay earlier are also those that have larger savings in financial cost as a result of ``forcing'' the frequent payment commitment contract compared to the status-quo (control). Panel (b) shows that those induced to pay earlier are also those that have a larger increase in recovery.
+      %\textit{Do file: }  \texttt{binscatter\_hte.do}
+\end{figure}
+
+
+\newpage
+
+\begin{table}[H]
+\caption{Intermediate outcomes}
+\label{mechanisms}
+\begin{center}
+\scriptsize{\input{./Tables/mechanism.tex}}
+\end{center}
+ \scriptsize
+This table explores treatment effects in ``intermediate variables''. Each column represents a different dependent variable in an OLS regression, and each panel represents a different treatment arm-control comparison. All regressions include fixed effects for branch, day of week fixed effects, number of pawns at the time of pawning this particular one, number of different treatment arms experienced before pawning this particular one. $R^2$ are not reported, they were less than 0.04 for all but the last column which had $R^2$'s close to 0.6. The last row shows the mean of the dependent variable for the control group. Dependent variables are as follows: Column (1) measures the number of days elapsed from the pawning date to the first payment done. Column (2) records the number of payments done within 230 days of the pawn. Column (3) is the average size of the payments for each client in pesos. Column (4) is self-reported cost to get to the branch plus the imputed loss of a whole day of salary (using the minimum wage in Mexico) multiplied by the number of visits to the branch. Column (5) measures the number of days it took to recover the pawn, conditional on recovering. The dependent variable in Column (6) is a dummy =1 if the client paid any positive amount within 230 days of the pawn. For Columns (7) and (8) the dependent variable it is the sum of total payments done within 230 days of the pawn divided by the size of the loan, but column (8) includes as regressors a dummy=1 if the client recovered her pawn, and its interaction with treatment.
+
+%\textit{Do file: } \texttt{mechanisms.do}
+\end{table}
+
+
+
+
+
+
+\newpage
+\subsection{FOSD: fee forcing vs status quo financial cost distributions}
+
+
+\vspace{.2in}
+\begin{figure}[H]
+        \caption{Empirical CDF of Financial Cost: fee-focing vs status-quo}
+    \label{ecdf_fc}
+    \begin{center}
+        \centering
+        \includegraphics[width=0.65\textwidth]{Figuras/cdf_fc_pro_2.pdf}
+    \end{center}
+    \scriptsize This figure plots the empirical cumulative distribution of financial cost. It does this separately for the fee-forcing contract and for the status-quo contract. The doted line at the bottom is the difference of the status-quo CDF minus the fee-focing CDF. It shows that the CDF of the status quo contract is always below that of the fee-forcing (and this difference is significant for the points indicated by the blue line), and therefore that the former first-order stochastically dominates the later for weakly decreasing utility functions; see Proposition \ref{eq_fosd}.
+    % \texttt{ecdf\_fc.do}}
+\end{figure}
+
+
+
+\vspace{.2in}
+\begin{table}[H]
+\caption{Clients who should prefer fee-forcing financial cost distribution}
+\label{stochastic_dominance}
+\begin{center}
+\scriptsize{\input{./Tables/dominance.tex}}
+\end{center}
+ \footnotesize
+This table does two things. First, it tests whether the observed empirical distribution of financial cost is well approximated by a log normal. It does this using two tests, the Anderson-Darling and the Kolmogorov-Smirnoff tests. Second, it fits a log normal distribution by maximum likelihood to observed empirical distribution of financial cost, separately for the fee-forcing arm and the status-quo arm. Using the fitted log normal, it tests whether the fee-forcing financial cost distribution would be preferred by any expected utility agent using Proposition \ref{lognormal_fosd} below. The different rows of the table do this for different sub-populations.  The first row of the table does it for every client in the fee forcing and status quo arms. The ``*'' show that we cannot reject at the 5\% level that both distribution are log normal for any of the two tests. The column entitled ``Dominance'' shows whether any client that dislikes higher cost would prefer the fee-forcing cost distribution over the status quo one, with $\succeq_{1}$ meaning he should (with $\succeq_{1}^*$ indicating the difference is statistically significant). It turns out to be the case that for the overwhelming majority of sub-populations, the conditions of preferring the fee-forcing distribution hold.
+%\textit{Do file: } \texttt{stoch\_dominance.do}
+\end{table}
+
+
+\vspace{.2in}
+\begin{prop}
+\label{lognormal_fosd}
+\footnotesize{
+Let $F$ and $G$ be the cumulative distributions of two alternative log-normal prospects. The following are equivalent:
+
+\begin{enumerate}[(a)]
+    \item For every weakly decreasing utility function $u$: $E_{F}(u(FC))\leq E_G(u(FC))$
+    \item $E_F \log(FC)\geq E_G\log(FC)$ and $Var_F \log(FC)= Var_G\log(FC)$
+\end{enumerate}
+}
+\end{prop}
+
+\begin{proof}
+\footnotesize{
+See Theorem 4 in \cite{lognormal_dominance}.
+}
+\end{proof}
+
+\newpage
+
+\vspace{.1in}
+\begin{prop}
+\label{eq_fosd}
+\footnotesize{
+This is a standard result. 
+\\
+\vspace{.1in}
+The following are equivalent:
+\begin{enumerate}[(a)]
+    \item For every weakly decreasing utility function $u$: $E_{sq}(u(FC))\leq E_{fee}(u(FC))$
+    \item $F_{sq}(FC)\leq F_{fee}(FC)$ 
+\end{enumerate}
+}
+\end{prop}
+\begin{proof} \;
+\footnotesize{
+
+[$(a)\Longrightarrow (b)$] Suppose  $(b)$ does not hold. So there exists $FC^*$ such that $F_{sq}(FC^*)>F_{fee}(FC^*)$, Define $u:=\mathds{1}_{FC\leq FC^*}$. Then
+\[E_{sq}(u(FC)) = \int u(FC)dF_{sq} = F_{sq}(FC^*)>F_{fee}(FC^*)= \int u(FC)dF_{fee} =E_{fee}(u(FC))\]
+which contradicts $(a)$.\\
+
+[$(a)\Longleftarrow (b)$] On the other hand for $u$ weakly decreasing,
+
+\[\int u(y(FC))dF_{sq}(y(FC)) = \int u(y(FC))dF_{fee}(FC) \leq \int u(FC)dF_{fee}(FC)\]
+with $y(FC) = F_{sq}^{-1}F_{fee}(FC)$.
+}
+\end{proof}
+\footnotesize{
+Note the proof was done in the case of absolutely continuous and strictly increasing distribution functions $F_{sq}$ and $F_{fee}$.
+}
+
+
+
+
+\newpage
+\subsection{Causal Random Forest and HTE}
+
+\vspace{.3in}
+\begin{figure}[H]
+        \caption{Honest causal tree for the fee forcing contract heterogenous treatment effects}
+    \label{casual_tree}
+    \begin{center}
+        \centering
+        \includegraphics[width=.8\textwidth]{Figuras/crf_pro_2_fc_admin_disc.pdf}
+    \end{center}
+    \footnotesize 
+    This is one(it is chosen such that it minimizes the pruned cost, that is it is the tree with the smallest root-node impurity) of the honest causal trees in the random forest we use for the estimation of the heterogeneous treatment effect of the fee-forcing contract. It is meant only as an example of how these trees look like. The forest was such that there are as many estimated treatment effects as there are clients.
+     %\footnotesize{ \textit{RScript: }  \texttt{grf.R}
+\end{figure}
+
+We use \cite{atheygrf} \texttt{causal\_forest} of the \texttt{grf} library in $R$. The parameters used were:
+\scriptsize{\textit{causal\_forest(
+  X, 
+  Y, 
+  W, 
+  Y.hat = NULL, 
+  W.hat = NULL, 
+  num.trees = 2000, 
+  sample.weights = NULL, 
+  clusters = NULL, 
+  equalize.cluster.weights = FALSE, 
+  sample.fraction = 0.5, 
+  mtry = min(ceiling(sqrt(ncol(X)) + 20),ncol(X)), 
+  min.node.size = 5, 
+  honesty = TRUE, 
+  honesty.fraction = 0.5, 
+  honesty.prune.leaves = TRUE, 
+  alpha = 0.05, 
+  imbalance.penalty = 0, 
+  stabilize.splits = TRUE, 
+  ci.group.size = 2, 
+  tune.parameters = "none", 
+  tune.num.trees = 200, 
+  tune.num.reps = 50, 
+  tune.num.draws = 1000, 
+  compute.oob.predictions = TRUE, 
+  orthog.boosting = FALSE, 
+  num.threads = NULL)}}
+
+
+
+\begin{figure}[H]
+    \caption{Heterogeneous Treatment Effect: Fee-forcing contract}
+    \label{HTE_fee_forcing}
+    \begin{center}
+    %\begin{subfigure}{0.4\textwidth}
+    %    \caption{Financial cost}
+    %    \centering
+    %    \includegraphics[width=\textwidth]{Figuras/he_dist_fc_admin_disc_pro_2.pdf}
+    %\end{subfigure}
+    \begin{subfigure}{0.7\textwidth}
+        \caption{Determinants of effects}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/HE/he_int_vertical_fc_admin_disc_pro_2.pdf}
+    \end{subfigure}
+    
+    %\begin{subfigure}{0.4\textwidth}
+    %    \caption{Losing Pawn}
+    %    \centering
+    %    \includegraphics[width=\textwidth]{Figuras/he_dist_def_c_pro_2.pdf}
+    %\end{subfigure}
+    %\begin{subfigure}{0.4\textwidth}
+    %    \caption*{}
+    %    \centering
+    %    \includegraphics[width=\textwidth]{Figuras/HE/he_int_vertical_def_c_pro_2.pdf}
+    %\end{subfigure}
+    \end{center}
+     \scriptsize  This figure estimates bivariate regressions of the estimated client-level heterogeneous treatment effects against the respective covariate from the baseline survey  $\widehat{hte_i} = \alpha + \beta \: X_i + \epsilon_i$. The regressors $X_i$ include (e.g if the family asks for money, if they have savings, if they are overconfident using the definition the text, etc. See this appendix for a transcription of the survey).
+      %\footnotesize{ \textit{Do file: }  \texttt{analyze\_grf\_single\_arm.do}}
+\end{figure}
+
+
+
+\begin{comment}
+\begin{figure}[H]
+    \caption{Heterogeneous Treatment Effect: Promise-forcing contract}
+    \label{heterogeneous_te_3}
+    \begin{center}
+    \begin{subfigure}{0.4\textwidth}
+        \caption{Financial cost}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/he_dist_fc_admin_disc_pro_3.pdf}
+    \end{subfigure}
+    \begin{subfigure}{0.4\textwidth}
+        \caption*{}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/HE/he_int_vertical_fc_admin_disc_pro_3.pdf}
+    \end{subfigure}
+    
+    \begin{subfigure}{0.4\textwidth}
+        \caption{Losing Pawn}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/he_dist_def_c_pro_3.pdf}
+    \end{subfigure}
+    \begin{subfigure}{0.4\textwidth}
+        \caption*{}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/HE/he_int_vertical_def_c_pro_3.pdf}
+    \end{subfigure}
+    \end{center}
+     \scriptsize
+      %\footnotesize{ \textit{Do file: }  \texttt{analyze\_grf\_single\_arm.do}}
+\end{figure}
+\end{comment}
+
+
+
+
+
+\begin{comment}
+
+\begin{figure}[H]
+    \caption{Heterogeneous Treatment Effect - Choice/Fee}
+    \label{heterogeneous_te_4}
+    \begin{center}
+    \begin{subfigure}{0.4\textwidth}
+        \caption{Financial cost}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/he_dist_fc_admin_disc_pro_4.pdf}
+    \end{subfigure}
+    \begin{subfigure}{0.4\textwidth}
+        \caption*{}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/HE/he_int_vertical_fc_admin_disc_pro_4.pdf}
+    \end{subfigure}
+    
+    \begin{subfigure}{0.4\textwidth}
+        \caption{Losing Pawn}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/he_dist_def_c_pro_4.pdf}
+    \end{subfigure}
+    \begin{subfigure}{0.4\textwidth}
+        \caption*{}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/HE/he_int_vertical_def_c_pro_4.pdf}
+    \end{subfigure}
+    \end{center}
+     \footnotesize \textit{Notes: } The distribution plots the FC treatment effect for the interval $[\mu-2\sigma,\mu+2\sigma]$ to ignore the outliers.
+      \footnotesize{ \textit{Do file: }  \texttt{analyze\_grf\_single\_arm.do}}
+\end{figure}
+
+
+
+
+\begin{figure}[H]
+    \caption{Heterogeneous Treatment Effect - Choice/Promise}
+    \label{heterogeneous_te_5}
+    \begin{center}
+    \begin{subfigure}{0.4\textwidth}
+        \caption{Financial cost}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/he_dist_fc_admin_disc_pro_5.pdf}
+    \end{subfigure}
+    \begin{subfigure}{0.4\textwidth}
+        \caption*{}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/HE/he_int_vertical_fc_admin_disc_pro_5.pdf}
+    \end{subfigure}
+    \begin{subfigure}{0.4\textwidth}
+        \caption{Losing Pawn}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/he_dist_def_c_pro_5.pdf}
+    \end{subfigure}
+    \begin{subfigure}{0.4\textwidth}
+        \caption*{}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/HE/he_int_vertical_def_c_pro_5.pdf}
+    \end{subfigure}
+    \end{center}
+     \footnotesize \textit{Notes: } 
+      \footnotesize{ \textit{Do file: }  \texttt{analyze\_grf\_single\_arm.do}}
+\end{figure}
+
+\end{comment}
+
+
+
+
+
+
+
+%\begin{figure}[H]
+%    \caption{Heterogeneous Treatment Effect (FC survey) - All arms}
+%    \label{heterogeneous_te_fcsurvey_all}
+%    \begin{center}
+%    \begin{subfigure}{0.4\textwidth}
+%        \caption{Forcing/Fee}
+%        \centering
+%        \includegraphics[width=\textwidth]{Figuras/he_dist_fc_survey_disc_pro_2.pdf}
+%    \end{subfigure}
+%    \begin{subfigure}{0.4\textwidth}
+%        \caption{Forcing/Promise}
+%        \centering
+%        \includegraphics[width=\textwidth]{Figuras/he_dist_fc_survey_disc_pro_3.pdf}
+%    \end{subfigure}
+    
+%    \begin{subfigure}{0.4\textwidth}
+%        \caption{Choice/Fee}
+%        \centering
+%        \includegraphics[width=\textwidth]{Figuras/he_dist_fc_survey_disc_pro_4.pdf}
+%    \end{subfigure}
+%    \begin{subfigure}{0.4\textwidth}
+%        \caption{Choice/Promise}
+%        \centering
+%        \includegraphics[width=\textwidth]{Figuras/he_dist_fc_survey_disc_pro_5.pdf}
+%    \end{subfigure}
+%    \end{center}
+%     \footnotesize \textit{Notes: } 
+%      \footnotesize{ \textit{Do file: }  \texttt{analyze\_grf\_single\_arm.do}}
+%\end{figure}
+
+
+
+\subsection{Take up}
+
+
+\begin{table}[H]
+    \caption{Predicting Take-up: Goodness-of-Fit}
+    \label{Table_compliance}
+    %\begin{subtable}{1\textwidth}
+    % \centering
+    %    \caption{Take up}
+    %    \scriptsize{\input{./Tables/oos_pago_frec_vol.tex}}
+    %\end{subtable}%
+    
+    %\bigskip
+     \begin{subtable}{1\textwidth}
+      \centering
+        \caption{Take up: Choice-fee Arm}
+        \scriptsize{\input{./Tables/oos_pago_frec_vol_fee.tex}}
+    \end{subtable}
+    
+      \bigskip
+    \begin{subtable}{1\textwidth}
+      \centering
+        \caption{Take up: Choice-promise Arm}
+        \scriptsize{\input{./Tables/oos_pago_frec_vol_promise.tex}}
+    \end{subtable}
+            \scriptsize
+           \\
+           \\
+           \\
+    
+     %\textit{Scripts: } \texttt{pred\_take\_up.do, pfv\_pred.R}
+\end{table}
+
+
+
+
+\vspace{.1in}
+\begin{figure}[H]
+    \caption{Out of sample ROC curve}
+    \label{roc_curve}
+    \begin{center}
+    \begin{subfigure}{0.45\textwidth}
+        \caption{Take-up in Fee Arm}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/Boost/ROC_curve_outsample_pago_frec_vol_fee.pdf}
+    \end{subfigure}
+    \begin{subfigure}{0.45\textwidth}
+        \caption{Take-up in Promise Arm}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/Boost/ROC_curve_outsample_pago_frec_vol_promise.pdf}
+    \end{subfigure}
+    \end{center}
+     \scriptsize 
+  %\footnotesize{ \textit{Do file: }  \texttt{pred\_take\_up.do}}
+\end{figure}
+
+
+
+\begin{figure}[H]
+    \caption{Predictors of commitment contract take-up}
+    \label{interactions_takeup}
+    \begin{center}
+    \begin{subfigure}{0.45\textwidth}
+        \caption{with Fee Arm}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/pago_frec_vol_fee_interactions_rf.pdf}
+    \end{subfigure}
+    \begin{subfigure}{0.45\textwidth}
+        \caption{with Promise Arm}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/pago_frec_vol_promise_interactions_rf.pdf}
+    \end{subfigure}
+    \end{center}
+     \scriptsize
+      %\footnotesize{ \textit{Do file: }  \texttt{analyze\_fvp.do}}
+\end{figure}
+
+
+\scriptsize {
+\noindent This figure reports bivariate regressions of the form $\widehat{TakeUp} = \alpha + \beta \: X_i + \epsilon_i$, where $\widehat{TakeUp}$ is the prediction using random forests. The figure reports the $\beta$ coefficients for different $X_i$'s along with 95\% confidence intervals. Panel (a) focuses on take up in the arm where clients could chose among the fee-commitment contract and the status quo contract. Panel (b) focuses on the arm where clients could chose among the promise-commitment contract and the status quo contract. Using random forests we can predict who takes up the fee-forcing contract with 85\% accuracy out of sample.\footnote{Correcting for the fact that most chose the status-quo contract using the method of SMOTE, \cite{smote} we find an accuracy rate of 75\%.} Which suggests that choice among contracts is not purely random. This figure shows that the more educated, those that report that their family typically asks for money, those that make a monthly budget of expenses, and those that ask for a remainder of their due payments (and marginally those we classify as present-biased) are more likely to chose the fee-commitment contract if given the choice. The opposite holds for clients that are more economically vulnerable (can barely pay for food, electricity, etc) and those that report being more stressed.
+}
+
+
+
+
+%\begin{figure}[H]
+%    \caption{Exit Survey: reasons to pawn or not again with monthly payments}
+%    \label{reasons}
+%    \begin{center}
+%    \begin{subfigure}{0.5\textwidth}
+%        \caption{Pawn again because:}
+%        \centering
+%        \includegraphics[width=\textwidth]{Figuras/razones_si.pdf}
+%    \end{subfigure}
+%    \begin{subfigure}{0.5\textwidth}
+%        \caption{Not pawn because:}
+%        \centering
+%        \includegraphics[width=\textwidth]{Figuras/razones_no.pdf}
+%    \end{subfigure}
+%    \end{center}
+%     \footnotesize \textit{Notes: } 
+%      \footnotesize{ \textit{Do file: }  \texttt{ss.do}}
+%\end{figure}
+
+
+
+
+
+%\begin{figure}[H]
+%    \caption{Decomposition of the mistakes by `Overconfidence' for Promise Arms}
+%    \label{Promise_errors}
+%    \begin{center}
+%    \begin{subfigure}{0.6\textwidth}
+%        \caption{Promise}
+%        \centering
+%        \includegraphics[width=\textwidth]{Figuras/line_cw_fc_te_cf_OC_promise.pdf}
+%    \end{subfigure}
+%    \end{center}
+%     \footnotesize 
+%     \textit{Notes: }  Decomposition of the percentage of mistakes by overconfidence. 
+%       \textit{Do file: }  \texttt{choose\_wrong\_quant\_wrong\_decomposition.do}
+%\end{figure}
+
+
+
+
+\begin{comment}
+\begin{figure}[H]
+        \caption{Histogram of payments}
+    \label{HistPayments}
+    \begin{center}
+    \begin{subfigure}{.31\textwidth}
+    \caption{Control}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/hist_payments_pro_1.pdf}
+    \end{subfigure}
+    \begin{subfigure}{.31\textwidth}
+    \caption{Forcing - fee}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/hist_payments_pro_2.pdf}
+    \end{subfigure}   
+     \begin{subfigure}{.31\textwidth}
+    \caption{Forcing - promise}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/hist_payments_pro_3.pdf}
+    \end{subfigure}  
+     \begin{subfigure}{.31\textwidth}
+    \caption{Choice - fee}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/hist_payments_pro_4.pdf}
+    \end{subfigure}  
+     \begin{subfigure}{.31\textwidth}
+    \caption{Choice - fee - SQ}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/hist_payments_pro_6.pdf}
+    \end{subfigure}    
+     \begin{subfigure}{.31\textwidth}
+    \caption{Choice - fee - NSQ}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/hist_payments_pro_7.pdf}
+    \end{subfigure}    
+     \begin{subfigure}{.31\textwidth}
+    \caption{Choice - promise}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/hist_payments_pro_5.pdf}
+    \end{subfigure}  
+     \begin{subfigure}{.31\textwidth}
+    \caption{Choice - promise - SQ}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/hist_payments_pro_8.pdf}
+    \end{subfigure}    
+     \begin{subfigure}{.31\textwidth}
+    \caption{Choice - promise - NSQ}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/hist_payments_pro_9.pdf}    
+    \end{subfigure}        
+    \end{center}
+     \footnotesize \textit{Notes: } The x-axis shows the elapsed days between initial date and current movement.
+      \footnotesize{ \textit{Do file: }  \texttt{hist\_payments.do}}
+\end{figure}
+\end{comment}
+
+%\begin{figure}[H]
+%        \caption{Types of agents that incur in different FC}
+%    \label{components_fc}
+%    \begin{center}
+%        \centering
+%        \includegraphics[width=\textwidth]{Figuras/scatter_fc_pay.pdf}
+%    \end{center}
+%     \footnotesize \textit{Notes: } 
+%      \footnotesize{ \textit{Do file: }  \texttt{hist\_fc.do}}
+%\end{figure}
+
+
+
+\begin{comment}
+\begin{figure}[H]
+        \caption{Percentage of payments}
+    \label{perc_payments}
+    \begin{center}
+    \begin{subfigure}{.31\textwidth}
+    \caption{Control}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/hist_porc_pay_pro_1.pdf}
+    \end{subfigure}
+    \begin{subfigure}{.31\textwidth}
+    \caption{Forcing - fee}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/hist_porc_pay_pro_2.pdf}
+    \end{subfigure}   
+     \begin{subfigure}{.31\textwidth}
+    \caption{Forcing - promise}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/hist_porc_pay_pro_3.pdf}
+    \end{subfigure}  
+     \begin{subfigure}{.31\textwidth}
+    \caption{Choice - fee}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/hist_porc_pay_pro_4.pdf}
+    \end{subfigure}  
+     \begin{subfigure}{.31\textwidth}
+    \caption{Choice - fee - SQ}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/hist_porc_pay_pro_6.pdf}
+    \end{subfigure}    
+     \begin{subfigure}{.31\textwidth}
+    \caption{Choice - fee - NSQ}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/hist_porc_pay_pro_7.pdf}
+    \end{subfigure}    
+     \begin{subfigure}{.31\textwidth}
+    \caption{Choice - promise}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/hist_porc_pay_pro_5.pdf}
+    \end{subfigure}  
+     \begin{subfigure}{.31\textwidth}
+    \caption{Choice - promise - SQ}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/hist_porc_pay_pro_8.pdf}
+    \end{subfigure}    
+     \begin{subfigure}{.31\textwidth}
+    \caption{Choice - promise - NSQ}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/hist_porc_pay_pro_9.pdf}    
+    \end{subfigure}        
+    \end{center}
+     \footnotesize \textit{Notes: } 
+      \footnotesize{ \textit{Do file: }  \texttt{hist\_payments.do}}
+\end{figure}
+
+
+
+
+\begin{figure}[H]
+        \caption{Percentage of payment conditional on positive payment and Losing Pawn}
+    \label{perc_payments_conditional}
+    \begin{center}
+    \begin{subfigure}{.31\textwidth}
+    \caption{Control}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/hist_porc_pay_cond_pro_1.pdf}
+    \end{subfigure}
+    \begin{subfigure}{.31\textwidth}
+    \caption{Forcing - fee}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/hist_porc_pay_cond_pro_2.pdf}
+    \end{subfigure}   
+     \begin{subfigure}{.31\textwidth}
+    \caption{Forcing - promise}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/hist_porc_pay_cond_pro_3.pdf}
+    \end{subfigure}  
+     \begin{subfigure}{.31\textwidth}
+    \caption{Choice - fee}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/hist_porc_pay_cond_pro_4.pdf}
+    \end{subfigure}  
+     \begin{subfigure}{.31\textwidth}
+    \caption{Choice - fee - SQ}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/hist_porc_pay_cond_pro_6.pdf}
+    \end{subfigure}    
+     \begin{subfigure}{.31\textwidth}
+    \caption{Choice - fee - NSQ}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/hist_porc_pay_cond_pro_7.pdf}
+    \end{subfigure}    
+     \begin{subfigure}{.31\textwidth}
+    \caption{Choice - promise}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/hist_porc_pay_cond_pro_5.pdf}
+    \end{subfigure}  
+     \begin{subfigure}{.31\textwidth}
+    \caption{Choice - promise - SQ}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/hist_porc_pay_cond_pro_8.pdf}
+    \end{subfigure}    
+     \begin{subfigure}{.31\textwidth}
+    \caption{Choice - promise - NSQ}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/hist_porc_pay_cond_pro_9.pdf}    
+    \end{subfigure}        
+    \end{center}
+     \footnotesize \textit{Notes: } 
+      \footnotesize{ \textit{Do file: }  \texttt{hist\_payments.do}}
+\end{figure}
+\end{comment}
+
+
+%\begin{figure}[H]
+%    \caption{Evolution of payment}
+%    \label{Evolution payment}
+%    \begin{center}
+%    \begin{subfigure}{0.49\textwidth}
+%        \caption{Paid loans}
+%        \centering
+%        \includegraphics[width=\textwidth]{Figuras/desempeno_evol.pdf}
+%    \end{subfigure}
+%     \begin{subfigure}{0.49\textwidth}
+%      \caption*{}
+%        \centering
+%        \includegraphics[width=\textwidth]{Figuras/desempeno_evol_choice.pdf}
+%    \end{subfigure}
+    
+%     \begin{subfigure}{0.49\textwidth}
+%        \caption{Average percentage of paid loans}
+%        \centering
+%        \includegraphics[width=\textwidth]{Figuras/sum_porc_evol.pdf}
+%    \end{subfigure}
+%     \begin{subfigure}{0.49\textwidth}
+%      \caption*{}
+%        \centering
+%        \includegraphics[width=\textwidth]{Figuras/sum_porc_evol_choice.pdf}
+%    \end{subfigure}
+    
+%   \begin{subfigure}{0.49\textwidth}
+%        \caption{Average percentage of paid loans | paid}
+%        \centering
+%        \includegraphics[width=\textwidth]{Figuras/sum_porc_cond_evol.pdf}
+%    \end{subfigure}
+%     \begin{subfigure}{0.49\textwidth}
+%      \caption*{}
+%        \centering
+%        \includegraphics[width=\textwidth]{Figuras/sum_porc_cond_evol_choice.pdf}
+%    \end{subfigure}
+%    \end{center}
+%     \footnotesize \textit{Notes: } 
+%      \footnotesize{ \textit{Do file: }  \texttt{evol\_payment.do}}
+%\end{figure}
+
+
+
+
+
+\begin{comment}
+
+\begin{figure}[H]
+        \caption{FC effect for different discount rates}
+    \label{oc_hist}
+    \begin{center}
+        \centering
+        \includegraphics[width=0.50\textwidth]{Figuras/discount_effect.pdf}
+    \end{center}
+    \footnotesize \textit{Notes: } 
+     \footnotesize{ \textit{Do file: }  \texttt{discounted\_noeffect.do}}
+\end{figure}
+\end{comment}
+
+
+
+\end{document}
