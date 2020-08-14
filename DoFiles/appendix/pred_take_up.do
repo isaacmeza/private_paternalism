@@ -31,17 +31,17 @@ global profiler=0
 foreach var in pago_frec_vol pago_frec_vol_fee pago_frec_vol_promise {
 
 	*Dependent variable
-	global takeup_var `var'
+	global depvar `var'
 
 	*Random Forest take-up prediction (created in pfv_pred.R)
-	import delimited "$directorio\_aux\pred_${takeup_var}.csv", clear
+	import delimited "$directorio\_aux\pred_${depvar}.csv", clear
 
 		
 	********************************************************************************
 	*Summary statistics for independent variables
-	su $takeup_var $ind_var if insample==1
+	su $depvar $ind_var if insample==1
 
-
+	global oos "oos"
 	********************************************************************************
 	do "$directorio\DoFiles\appendix\prediction_oos_stata.do"
 	********************************************************************************

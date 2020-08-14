@@ -56,5 +56,5 @@ estadd scalar DepVarMean = `r(mean)'
 
 
 
-esttab using "$directorio/Tables/reg_results/oc_reg.csv", se r2 star(* 0.1 ** 0.05 *** 0.01) b(a2) ///
+esttab using "$directorio/Tables/reg_results/oc_reg.csv", se r2 ${star} b(a2) ///
 		scalars("DepVarMean Dep. Var. Mean") replace 

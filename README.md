@@ -1,4 +1,4 @@
-# Private paternalism and the limits of self commitment
+# The limits of self-commitment and private paternalism
 
 ---
 
@@ -22,7 +22,7 @@ Analysis of the data and econometrics is done with STATA. However, the HTE (done
 	master_cleaning.do
 
 3) Data processing for further analysis	(to be done in R)
-	processing.do
+	master_processing.do
 
 4) The main results are run through
 	master_main.do

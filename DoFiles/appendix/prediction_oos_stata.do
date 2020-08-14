@@ -5,7 +5,7 @@
 capture drop logit_pred logit_pred2
 capture profiler clear 
 profiler on
-logistic $takeup_var $ind_var  if insample==1
+logistic $depvar $ind_var  if insample==1
 profiler off
 if $profiler ==1 { 
 	profiler report 
@@ -14,7 +14,7 @@ if $profiler ==1 {
 predict logit_pred 
 cap drop perc
 xtile perc = logit_pred, nq(100)
-qui su $takeup_var if insample==0
+qui su $depvar if insample==0
 gen logit_pred2 = (perc>=(100*(1-`r(mean)')))
 
 ********************************************************************************
@@ -25,7 +25,7 @@ gen logit_pred2 = (perc>=(100*(1-`r(mean)')))
 capture drop swlogit_pred swlogit_pred2
 capture profiler clear 
 profiler on
-sw logistic  $takeup_var $ind_var  if insample==1 , pr(0.15)  
+sw logistic  $depvar $ind_var  if insample==1 , pr(0.15)  
 profiler off
 if $profiler ==1 { 
 	profiler report 
@@ -34,7 +34,7 @@ if $profiler ==1 {
 predict swlogit_pred 
 cap drop perc
 xtile perc = swlogit_pred, nq(100)
-qui su $takeup_var if insample==0
+qui su $depvar if insample==0
 gen swlogit_pred2 = (perc>=(100*(1-`r(mean)')))
 
 
@@ -45,7 +45,7 @@ gen swlogit_pred2 = (perc>=(100*(1-`r(mean)')))
 
 cap drop perc
 xtile perc = rf_pred, nq(100)
-qui su $takeup_var if insample==0
+qui su $depvar if insample==0
 gen rf_pred2 = (perc>=(100*(1-`r(mean)')))
 
 
@@ -62,10 +62,10 @@ local maxiter=750
 capture profiler clear 
 profiler on
 local tempiter=`maxiter'
-foreach inter of numlist 1/6 8 10 15 20 {
+foreach inter of numlist 1 2 4 7 10 {
 	local i=`i'+1
     replace myinter= `inter' in `i'
-	boost $takeup_var $ind_var if insample==1, dist(logistic) train($trainf) maxiter(`tempiter') ///
+	boost $depvar $ind_var if insample==1, dist(logistic) train($trainf) maxiter(`tempiter') ///
 		bag(0.5) interaction(`inter') shrink(0.1) 
 	local maxiter=e(bestiter) 
 	replace maxiter=`tempiter' in `i'
@@ -88,7 +88,7 @@ if $profiler ==1 {
 rename myinter interaction
 twoway connected Rsquared inter, xtitle("Number of interactions") ///
 	ytitle("R-squared") scheme(s2mono) graphregion(color(white)) 
-graph export "$plot\boost_Rsquared_${takeup_var}.png", replace	width(1500)
+graph export "$plot\boost_Rsquared_${depvar}.png", replace	width(1500)
 
 
 ********************************************************************************
@@ -120,7 +120,7 @@ local shrink=0.05       	/*Lower shrinkage values usually improve the test R2 bu
 capture drop boost_pred boost_pred2
 capture profiler clear
 profiler on
-boost $takeup_var $ind_var if insample==1, dist(logistic) train($trainf) maxiter(`miter') bag(0.5) ///
+boost $depvar $ind_var if insample==1, dist(logistic) train($trainf) maxiter(`miter') bag(0.5) ///
 	interaction(`opt_int') shrink(`shrink') pred("boost_pred") influence 
 profiler off
 if $profiler ==1 { 
@@ -129,7 +129,7 @@ if $profiler ==1 {
 	
 cap drop perc
 xtile perc = boost_pred, nq(100)
-qui su $takeup_var if insample==0
+qui su $depvar if insample==0
 gen boost_pred2 = (perc>=(100*(1-`r(mean)')))
  
 matrix influence = e(influence)
@@ -139,10 +139,10 @@ matrix influence = e(influence)
 
 ********************************************************************************
 *Classification*
-tab $takeup_var
+tab $depvar
 
 *Classification for the test data
-tab $takeup_var if insample==0
+tab $depvar if insample==0
 
 ********************************************************************************
 
@@ -152,62 +152,62 @@ foreach method in logit swlogit rf boost {
 	local Col=substr(c(ALPHA),2*`t'+1,1)
 	*Expected value of predicted values
 	su `method'_pred  if insample==0 , d
-	qui putexcel `Col'14=(`r(mean)') using "$directorio\Tables\oos.xlsx", ///
-		sheet("oos_${takeup_var}") modify
+	qui putexcel `Col'14=(`r(mean)') using "$directorio\Tables\\${oos}.xlsx", ///
+		sheet("oos_${depvar}") modify
 		
 	*MAE	
-	qui gen error_`method'=abs(`method'_pred- $takeup_var) 
+	qui gen error_`method'=abs(`method'_pred- $depvar) 
 	su error_`method' if insample==0
-	qui putexcel `Col'4=(`r(mean)') using "$directorio\Tables\oos.xlsx", ///
-		sheet("oos_${takeup_var}") modify
+	qui putexcel `Col'4=(`r(mean)') using "$directorio\Tables\\${oos}.xlsx", ///
+		sheet("oos_${depvar}") modify
 		
 	*Accuracy
-	tab `method'_pred2 $takeup_var if insample==0, matcell(tb)
+	tab `method'_pred2 $depvar if insample==0, matcell(tb)
 	local acc = (tb[1,1]+tb[2,2])/(tb[1,1]+tb[2,2]+tb[1,2]+tb[2,1])
-	qui putexcel `Col'10=(`acc') using "$directorio\Tables\oos.xlsx", ///
-		sheet("oos_${takeup_var}") modify
+	qui putexcel `Col'10=(`acc') using "$directorio\Tables\\${oos}.xlsx", ///
+		sheet("oos_${depvar}") modify
 	
 	*Correlation 0-1
-	corr $takeup_var `method'_pred2 if insample==0
-	qui putexcel `Col'11=(`r(rho)') using "$directorio\Tables\oos.xlsx", ///
-		sheet("oos_${takeup_var}") modify
+	corr $depvar `method'_pred2 if insample==0
+	qui putexcel `Col'11=(`r(rho)') using "$directorio\Tables\\${oos}.xlsx", ///
+		sheet("oos_${depvar}") modify
 		
 	*Correlation predicted val
-	corr $takeup_var `method'_pred if insample==0
-	qui putexcel `Col'12=(`r(rho)') using "$directorio\Tables\oos.xlsx", ///
-		sheet("oos_${takeup_var}") modify	
+	corr $depvar `method'_pred if insample==0
+	qui putexcel `Col'12=(`r(rho)') using "$directorio\Tables\\${oos}.xlsx", ///
+		sheet("oos_${depvar}") modify	
 	
 	*MSE
-	gen `method'_eps=${takeup_var}-`method'_pred 
+	gen `method'_eps=${depvar}-`method'_pred 
 	gen `method'_eps2= `method'_eps*`method'_eps 
 	replace `method'_eps2=0 if insample==1
 	gen `method'_ss=sum(`method'_eps2)
 	count if insample==0
 	local mse=`method'_ss[_N] / (`r(N)')
-	qui putexcel `Col'5=(`mse') using "$directorio\Tables\oos.xlsx", ///
-		sheet("oos_${takeup_var}") modify
+	qui putexcel `Col'5=(`mse') using "$directorio\Tables\\${oos}.xlsx", ///
+		sheet("oos_${depvar}") modify
 	
-	sum $takeup_var if insample==0
+	sum $depvar if insample==0
 	local var=r(Var)
 	
 	*R2
 	local r2= (`var'-`mse')/`var'
-	qui putexcel `Col'13=(`r2') using "$directorio\Tables\oos.xlsx", ///
-		sheet("oos_${takeup_var}") modify
+	qui putexcel `Col'13=(`r2') using "$directorio\Tables\\${oos}.xlsx", ///
+		sheet("oos_${depvar}") modify
 
 	*AUC (oos)
-	roctab $takeup_var `method'_pred if insample==0
-	qui putexcel `Col'6=(`r(area)') using "$directorio\Tables\oos.xlsx", ///
-		sheet("oos_${takeup_var}") modify	 
-	qui putexcel `Col'7=(`r(se)') using "$directorio\Tables\oos.xlsx", ///
-		sheet("oos_${takeup_var}") modify	
+	roctab $depvar `method'_pred if insample==0
+	qui putexcel `Col'6=(`r(area)') using "$directorio\Tables\\${oos}.xlsx", ///
+		sheet("oos_${depvar}") modify	 
+	qui putexcel `Col'7=(`r(se)') using "$directorio\Tables\\${oos}.xlsx", ///
+		sheet("oos_${depvar}") modify	
 		
 	*AUC (in sample)
-	roctab $takeup_var `method'_pred if insample==1
-	qui putexcel `Col'8=(`r(area)') using "$directorio\Tables\oos.xlsx", ///
-		sheet("oos_${takeup_var}") modify	 
-	qui putexcel `Col'9=(`r(se)') using "$directorio\Tables\oos.xlsx", ///
-		sheet("oos_${takeup_var}") modify	
+	roctab $depvar `method'_pred if insample==1
+	qui putexcel `Col'8=(`r(area)') using "$directorio\Tables\\${oos}.xlsx", ///
+		sheet("oos_${depvar}") modify	 
+	qui putexcel `Col'9=(`r(se)') using "$directorio\Tables\\${oos}.xlsx", ///
+		sheet("oos_${depvar}") modify	
 		
 		
 	local t = `t'+1	
@@ -221,29 +221,29 @@ foreach method in logit swlogit rf boost {
 
 ********************************************************************************
 * Calibration plot
-* scatter plot of predicted versus actual values of $takeup_var
+* scatter plot of predicted versus actual values of $depvar
 * a straight line would indicate a perfect fit
 local trainm1=$trainn +1
 qui count
 gen straight=.
-replace straight=$takeup_var
-twoway  (lowess $takeup_var  logit_pred  if insample==1, bwidth(0.2) clpattern(dot)) ///
-		(lowess $takeup_var boost_pred if insample==1 , bwidth(0.2) clpattern(dash)) ///
-		(lowess $takeup_var  rf_pred  if insample==1, bwidth(0.2) clpattern(dash_dot)) ///
-		(lfit straight $takeup_var)  , xtitle("Fitted Values") ///
+replace straight=$depvar
+twoway  (lowess $depvar  logit_pred  if insample==1, bwidth(0.2) clpattern(dot)) ///
+		(lowess $depvar boost_pred if insample==1 , bwidth(0.2) clpattern(dash)) ///
+		(lowess $depvar  rf_pred  if insample==1, bwidth(0.2) clpattern(dash_dot)) ///
+		(lfit straight $depvar)  , xtitle("Fitted Values") ///
 		legend(label(1 "Logistic Regression") label(2 "Boosting") label(3 "RF") ///
 		label(4 "Fitted Values=Actual Values") )  graphregion(color(white))
-graph export "$plot\boost_calibration_insample_${takeup_var}.png", replace	width(1500)		
+graph export "$plot\boost_calibration_insample_${depvar}.png", replace	width(1500)		
 
 local trainm1=$trainn +1
 qui count		
-twoway  (lowess $takeup_var  logit_pred  if insample==0, bwidth(0.2) clpattern(dot)) ///
-        (lowess $takeup_var boost_pred if insample==0 , bwidth(0.2) clpattern(dash)) ///
-		(lowess $takeup_var  rf_pred  if insample==0, bwidth(0.2) clpattern(dash_dot)) ///
-		(lfit straight $takeup_var)  , xtitle("Fitted Values") ///
+twoway  (lowess $depvar  logit_pred  if insample==0, bwidth(0.2) clpattern(dot)) ///
+        (lowess $depvar boost_pred if insample==0 , bwidth(0.2) clpattern(dash)) ///
+		(lowess $depvar  rf_pred  if insample==0, bwidth(0.2) clpattern(dash_dot)) ///
+		(lfit straight $depvar)  , xtitle("Fitted Values") ///
 		legend(label(1 "Logistic Regression") label(2 "Boosting") label(3 "RF") ///
 		label(4 "Fitted Values=Actual Values") )  graphregion(color(white))
-graph export "$plot\boost_calibration_outsample_${takeup_var}.png", replace	width(1500)
+graph export "$plot\boost_calibration_outsample_${depvar}.png", replace	width(1500)
 ********************************************************************************
 
 
@@ -257,7 +257,7 @@ replace id=. if missing(influence)
 
 graph bar (mean) influence, over(id) ytitle(Percentage Influence) ///
 	scheme(s2mono) graphregion(color(white))
-graph export "$plot\boost_influence_${takeup_var}.png", replace	width(1500)
+graph export "$plot\boost_influence_${depvar}.png", replace	width(1500)
 
 ********************************************************************************
 
@@ -265,36 +265,37 @@ graph export "$plot\boost_influence_${takeup_var}.png", replace	width(1500)
 ********************************************************************************
 *ROC curve
 preserve
-local sm=99
+discard
+local sm=45
 sample `sm'
 
 capture profiler clear
 profiler on
 	*In sample
-roccomp $takeup_var logit_pred swlogit_pred rf_pred boost_pred  if insample==1 , graph summary ///
+cap roccomp $depvar logit_pred swlogit_pred rf_pred boost_pred  if insample==1 , graph summary ///
 	legend(label(1 "Logit") label(2 "SW Logit") label(3 "RF") ///
 		label(4 "Boosting") label(5 "Reference"))  graphregion(color(white))
 profiler off
 if $profiler ==1 { 
 	profiler report 
 	}  
-graph export "$plot\ROC_curve_insample_${takeup_var}.png", replace	width(1500)
+cap graph export "$plot\ROC_curve_insample_${depvar}.png", replace	width(1500)
 
 capture profiler clear
 profiler on
 	*Out of sample
-roccomp $takeup_var logit_pred swlogit_pred rf_pred boost_pred if insample==0 , graph summary ///
+cap roccomp $depvar logit_pred swlogit_pred rf_pred boost_pred if insample==0 , graph summary ///
 	legend(label(1 "Logit") label(2 "SW Logit") label(3 "RF") ///
 		label(4 "Boosting") label(5 "Reference"))  graphregion(color(white))
 profiler off
 if $profiler ==1 { 
 	profiler report 
 	}  
-graph export "$plot\ROC_curve_outsample_${takeup_var}.pdf", replace	
+cap graph export "$plot\ROC_curve_outsample_${depvar}.pdf", replace	
 restore
 ********************************************************************************
 
 
 
-save "$directorio\DB\boost_${takeup_var}.dta", replace
+save "$directorio\DB\boost_${depvar}.dta", replace
 

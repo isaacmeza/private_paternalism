@@ -4,7 +4,7 @@ library(ggplot2)
 library(DMwR)
 
 # SET WORKING DIRECTORY
-setwd('C:/Users/xps-seira/Dropbox/Apps/ShareLaTeX/Donde2019')
+setwd('C:/Users/xps-seira/Dropbox/Apps/ShareLaTeX/Donde2020')
 set.seed(5289374)
 
 

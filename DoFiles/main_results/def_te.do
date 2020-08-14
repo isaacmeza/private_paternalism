@@ -123,7 +123,7 @@ foreach arm of varlist pro_2 pro_3 {
 	restore
 	graph export "$directorio\Figuras\def_te_`arm'.pdf", replace
 	
-	esttab using "$directorio/Tables/reg_results/def_te_`arm'.csv", se r2 star(* 0.1 ** 0.05 *** 0.01) b(a2) ///
+	esttab using "$directorio/Tables/reg_results/def_te_`arm'.csv", se r2 ${star} b(a2) ///
 		scalars("ContrMean Control Mean") replace 
 	}		
 			

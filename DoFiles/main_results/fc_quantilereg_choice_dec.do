@@ -182,6 +182,6 @@ graph twoway
 	restore
 	graph export "$directorio\Figuras\fc_quantile_`arm'.pdf", replace
 	
-	esttab using "$directorio/Tables/reg_results/fc_quantile_`arm'.csv", se r2 star(* 0.1 ** 0.05 *** 0.01) b(a2) ///
+	esttab using "$directorio/Tables/reg_results/fc_quantile_`arm'.csv", se r2 ${star} b(a2) ///
 		scalars("ContrMean Control Mean") replace 	
 	}

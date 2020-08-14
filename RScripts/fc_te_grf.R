@@ -3,7 +3,7 @@ library(grf)
 library(ggplot2)
 
 # SET WORKING DIRECTORY
-setwd('C:/Users/xps-seira/Dropbox/Apps/ShareLaTeX/Donde2019')
+setwd('C:/Users/xps-seira/Dropbox/Apps/ShareLaTeX/Donde2020')
 #setwd("C:\\Users\\Ricardo\\Documents\\SEIRA\\donde2019")
 set.seed(5289374)
 

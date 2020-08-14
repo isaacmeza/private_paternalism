@@ -76,6 +76,9 @@ replace fc_trans = fc_trans + val_pren if des_c != 1
 	*transport fc (disc)
 gen fc_trans_disc = sum_pdisc_c + (c_trans + 62.33)*num_p + val_pren
 replace fc_trans_disc = fc_trans_disc - val_pren/((1+0.00225783)^dias_al_desempenyo) if des_c == 1
+	*transport fc (disc)
+gen fc_trans_disc_admin = sum_pdisc_c + (c_trans + 62.33)*num_p + prestamo
+replace fc_trans_disc_admin = fc_trans_disc_admin - prestamo/((1+0.00225783)^dias_al_desempenyo) if des_c == 1
 	*trans cost
 gen trans_cost = (c_trans + 62.33)*num_p	
 

@@ -4,7 +4,7 @@
 
 
 Master do file for main tables and figures of the paper
-	Private paternalism and the limits of self commitment
+	The limits of self-commitment and private paternalism
 	
 Data first need to be processed with the main_cleaning.do & processing.do dofiles.	
 For further details see the notes in the paper and the dofile itself.	

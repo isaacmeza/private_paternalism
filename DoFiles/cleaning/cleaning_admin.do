@@ -191,6 +191,7 @@ bysort prenda: replace clave_movimiento=5 if clave_movimiento==3 & sum_p<prestam
 gen desempeno=(clave_movimiento==3)
 gen abono=(clave_movimiento==1)
 gen refrendo=(clave_movimiento==5)
+gen refrendo_90=(clave_movimiento==5 & dias_inicio<=90)
 gen ventabillete=(clave_movimiento==2)
 gen pasealmoneda=(clave_movimiento==6)
 
@@ -229,6 +230,19 @@ gen aux_reincidence = (fecha_inicial >	first_visit + 75 & ///
 	(inrange(prestamo,first_loan_value*0.975,first_loan_value*1.025)!=1 | first_dias_des>=75)) ///
 	if !missing(first_product)	
 bysort NombrePignorante : egen reincidence = max(aux_reincidence)
+
+*Dummy indicating if customer returned after first visit BEFORE 30/60/75 days
+foreach dy in 30 60 75 {
+gen aux_reincidence_bef`dy' = inrange(fecha_inicial, first_visit + 1, first_visit + `dy') ///
+	if !missing(first_product)	
+bysort NombrePignorante : egen reincidence_bef`dy' = max(aux_reincidence_bef`dy')
+}
+
+*Dummy indicating if customer returned after first visit & having recovered first piece
+gen aux_reincidence_rec = (fecha_inicial >	first_visit + first_dias_des & ///
+	first_dias_des<75) ///
+	if !missing(first_product)	
+bysort NombrePignorante : egen reincidence_rec = max(aux_reincidence_rec)
 
 *Dummy indicating if customer returned after first visit to pawn second piece
 *when first one is NOT recovered yet
@@ -298,6 +312,7 @@ replace choose_same = 2 if missing(choose_same)
 bysort prenda: egen des_c=max(desempeno)
 gen def_c = 1-des_c
 bysort prenda: egen ref_c=max(refrendo)
+bysort prenda: egen ref_90_c=max(refrendo_90)
 bysort prenda: egen abo_c=max(abono)
 bysort prenda: egen vbi_c = max(ventabillete)
 bysort prenda: egen sum_p_c=max(sum_p)
@@ -355,6 +370,7 @@ label var des_c "Un-pledge"
 label var def_c "Default"
 label var def_120 "Default (120)"
 label var ref_c "Refrendum"
+label var ref_90_c "Refrendum 90 days"
 label var abo_c "Payment to principal"
 label var vbi_c "Venta con Billete"
 label var sum_p_c "Cum (total) payments"
