@@ -6,7 +6,7 @@
 \graphicspath{{./Figuras/}}
 
 \usepackage{makecell}
-\usepackage[margin=1.0in]{geometry}
+\usepackage[margin=1.25in]{geometry}
 \usepackage{float}                
 \usepackage{amsmath}
 \usepackage{amscd}
@@ -29,6 +29,10 @@
 \usepackage{svg}
 \usepackage{dsfont}
 \usepackage{amsthm}
+\usepackage{tocloft}
+\usepackage{etoc}
+\usepackage{lmodern}
+
 
 \epstopdfDeclareGraphicsRule{.tiff}{png}{.png}{convert #1 \OutputFile}
 \AppendGraphicsExtensions{.tiff}
@@ -83,3 +87,11 @@
 \DeclareRobustCommand{\hlgr}[1]{{\sethlcolor{green}\hl{#1}}}
 
 
+\usepackage{comment}
+%para esconder columnas en tablas (enrique)
+\usepackage{array}
+\newcolumntype{H}{>{\setbox0=\hbox\bgroup}c<{\egroup}@{}}
+\linespread{1.25}
+
+\newcommand{\wh}{\widehat}
+\usepackage{anyfontsize}

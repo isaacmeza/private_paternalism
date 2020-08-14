@@ -1,7 +1,6 @@
- \documentclass[11pt]{article}
+ \documentclass[oneside,11pt]{article}
 
 \input{preamble.tex}
-\usepackage{anyfontsize}
 %%% HELPER CODE FOR DEALING WITH EXTERNAL REFERENCES
 \usepackage{xr}
 \makeatletter
@@ -18,19 +17,6 @@
     \addFileDependency{#1.tex}
     \addFileDependency{#1.aux}
 }
-
-\usepackage{lmodern} 
-\usepackage{amsmath}
-\usepackage{amssymb}
-\newcommand{\wh}{\widehat}
-\onehalfspacing
-
-\usepackage{comment}
-\usepackage{subcaption,graphicx}
-
-%para esconder columnas en tablas (enrique)
-\usepackage{array}
-\newcolumntype{H}{>{\setbox0=\hbox\bgroup}c<{\egroup}@{}}
 
 %\myexternaldocument{OA}
 
@@ -67,6 +53,10 @@ In the context of pawnbroker lending, we show that forcing people into commitmen
 \newpage
 
 \pagenumbering{arabic}
+\etocdepthtag.toc{mtchapter}
+\etocsettagdepth{mtchapter}{subsection}
+\etocsettagdepth{mtappendix}{none}
+
 
 %NO MORAL HAZARD IN THE CONTRACT SINCE FULLY COLLATERALIZED
 %DOUBLE FAILURE: DEMAND LOW, AND DOES NOT WORK BY PEOPLE WHO TAKE IT.
@@ -83,7 +73,8 @@ In the context of pawnbroker lending, we show that forcing people into commitmen
 %DEEP BEHAVIORAL PAPER -- CAN WE REALLY PREDICT?
 
 
-\section{Introduction}
+
+% \section{Introduction}
 
 Many institutions ---firms, schools, financial contracts--- restrict choice using built-in commitment mechanisms which help workers, students, borrowers overcome self-control problems. For instance, mortgages restrict choice ``with a fixed repayment stream and mandatory principal repayment \citep{Laibson2018}''.\footnote{\cite{Laibson2018} also mentions that ``Firms do limit their workers' freedom with intermediate deadlines, progress reports, production targets'', and schools with ``pop quizzes, classroom attendance requirements, cold calling, graded problem sets, deadlines''.} At the same time  these same firms shroud these forcing mechanisms and don't market their commitment features, presumably because students, workers and borrowers ``don't welcome these paternalistic restrictions'' (\cite{Laibson2018}). \cite{Laibson2018} argues that this presents an important commitment puzzle: if clients were present biased and sophisticated about their self control problem they should appreciate commitment features and firms should be eager to market them. That this is not so suggests some clients may be naive about their self control problems, and that private paternalism may be beneficial.\footnote{\cite{Laibson2018} defines paternalism as a policy that advances an individual's interests by restricting his or her freedom, and private paternalism as paternalism implemented by private institutions. In this paper we will study the effect of restricting freedom of choice on pawn recovery and financing cost, not overall welfare.} 
 
@@ -203,7 +194,7 @@ Our main dependent variables are loan default and financial cost incurred by the
 some clients renew the loan.\footnote{Figure \ref{fc_pro_2_115} reports results using the first 115 days only finding similar results.} Of those who renew 83\% lose the pawn. Figure \ref{fc_hist}(a) suggest that financial cost is significant, even for those that do recover their pawn. Panel (b) normalizes the cost by loan size. It shows that as a percentage of their pawn, most of the cost comes from clients that do not recover their pawn. For them the cost is between 140\% and 250\% of the loan value. %\hl{The difference between panel (a) and (b) arises since clients who lose their pawn tend to be those that pledge cheaper pieces.} 
 We calculate an APR of 218\% on average for the control group.\footnote{The Annual Percentage Rate (for pawn $j$) is calculated as the internal rate of return $i$ such that $\sum_t \frac{P_{jt}}{(1+i)^t} + \frac{\text{I}(Default \: Pawn_j) \times Pawn \: Value_j}{(1+i)^T} - Pawn \: Value_j = 0$, where $T$ is the date the pawn was lost.}
 
-\newpage
+
 \section{Experiment} \label{Experiment}
 
 \subsection{Treatment arms and randomization}
@@ -305,7 +296,7 @@ those that report being stressed, women, those take more time to go to the branc
 
 All clients are more likely to recover their pawn and almost all of them incur in a lower financial cost when assigned to a monthly payment commitment contract. This however does not necessarily show that they benefited in utility terms, and this is hard to show directly. If ---as suggested by \cite{Laibson2018}--- consumers used ``experienced utility'' as a guide to make future purchases, we conjecture that clients in the fee-forcing contract would be more likely to be repeat costumers vis-a-vis those that got status quo contract. This is indeed what we find. 
 
-Figure \ref{reincidence} presents results of equation (\ref{basic_reg}) where the dependent variable is a dummy for the client being a repeat costumer. We define a client as a repeat costumer if, after experiencing at least 75 days of the respective treatment arm, she came back and pawned a \textit{different} piece.\footnote{Results are robust to using number of days experiencing the contract larger than 75. We know its a different piece from it having a different weight/value.}  The left most coefficient shows that the causal effect of the fee-forcing contract on repeat pawning is an increase of 5 percentage points in the probability of being a repeat costumer, this is 55\% increase on a mean re-incidence with respect to those that got the status-quo contract. This effect is not explained by clients recovering their first pawn with higher probability in the fee-forcing contract and re-pawning this same one since we make sure it is another piece (only 16\% recover their piece in the fist 75 days in the fee forcing contract). The second coefficient restricts the sample in the regression to those that had not recovered their pawn in the first 75 days and finds similar result. The third coefficient conditions on clients who recovered the pawn in both arms. The fourth coefficient focuses on the subsample who had or would have had a financial cost savings treatment effect above the median treatment effect in their first pawn. It shows that for these clients the likelihood of coming back is twice as large (although imprecise). That is, those that benefit more from the fee-forcing contract are more likely to repeat.\footnote{The second and third estimate must be interpreted with care as we are conditioning on a variable that may be affected by treatment. We view these as suggestive correlations. The fourth coefficient does not have that problem as it conditions on clients that by their pre-determined covariates are predicted to have above the median treatment effects (in both arms).} Experience with the frequent payment contract seems to be necessary as there is no effect of the monthly payment contract on repeat pawning in the first 30 or 60 days of the contract (see Figure \ref{reincidence_before} in the Appendix. %We also implemented an exit survey which clients filled when recovering their piece. Unfortunately it had low response rate (7\%), and we take its results with a grain of salt. In this survey 63\% of clients said they liked the frequent payment contract more than the status-quo one, and that it allowed them to avoid unnecessary expenses. %The coefficient on repeat pawning is just as big when we focus only 2nd pawns happening after the first was recovered (third coefficient ``fnr'').  This is consistent with \cite{Laibson2018}'s conjecture that clients could be making decisions based on experienced utility.\footnote{The third coefficient conditions on the subsample that did recover their first pawn in both arms and finds a coefficient of 4pp. This is not a causal estimate as recovery is influenced by treatment, but we found it telling that the differences were similar to the causal estimate for the full sample.}
+Figure \ref{reincidence} presents results of equation (\ref{basic_reg}) where the dependent variable is a dummy for the client being a repeat costumer. We define a client as a repeat costumer if, after experiencing at least 75 days of the respective treatment arm, she came back and pawned a \textit{different} piece.\footnote{Results are robust to using number of days experiencing the contract larger than 75. We know its a different piece from it having a different weight/value.}  The left most coefficient shows that the causal effect of the fee-forcing contract on repeat pawning is an increase of 5 percentage points in the probability of being a repeat costumer, this is 55\% increase on a mean re-incidence with respect to those that got the status-quo contract. This effect is not explained by clients recovering their first pawn with higher probability in the fee-forcing contract and re-pawning this same one since we make sure it is another piece (only 16\% recover their piece in the fist 75 days in the fee forcing contract). The second coefficient restricts the sample in the regression to those that had not recovered their pawn in the first 75 days and finds similar result. The third coefficient conditions on clients who recovered the pawn in both arms. The fourth coefficient focuses on the subsample who had or would have had a financial cost savings treatment effect above the median treatment effect in their first pawn. It shows that for these clients the likelihood of coming back is twice as large (although imprecise). That is, those that benefit more from the fee-forcing contract are more likely to repeat.\footnote{The second and third estimate must be interpreted with care as we are conditioning on a variable that may be affected by treatment. We view these as suggestive correlations. The fourth coefficient does not have that problem as it conditions on clients that by their pre-determined covariates are predicted to have above the median treatment effects (in both arms).} Experience with the frequent payment contract seems to be necessary as there is no effect of the monthly payment contract on repeat pawning in the first 30 or 60 days of the contract (see Figure \ref{reincidence_before} in the Appendix). %We also implemented an exit survey which clients filled when recovering their piece. Unfortunately it had low response rate (7\%), and we take its results with a grain of salt. In this survey 63\% of clients said they liked the frequent payment contract more than the status-quo one, and that it allowed them to avoid unnecessary expenses. %The coefficient on repeat pawning is just as big when we focus only 2nd pawns happening after the first was recovered (third coefficient ``fnr'').  This is consistent with \cite{Laibson2018}'s conjecture that clients could be making decisions based on experienced utility.\footnote{The third coefficient conditions on the subsample that did recover their first pawn in both arms and finds a coefficient of 4pp. This is not a causal estimate as recovery is influenced by treatment, but we found it telling that the differences were similar to the causal estimate for the full sample.}
 
 We view this result as strong evidence that after experiencing the contract demand for it increases, consistent with \cite{Alcohol}'s conjecture that demand for commitment increases with experience with it. However there is an alternative explanation for this result, namely that forcing frequent payments effectively means awarding a smaller loan, and thus that clients may pawn again to compensate for the smaller loan. We are skeptical about this interpretation for several reasons. %First, typically the emergencies that trigger a pawn are short lived (e.g. needing to go to the hospital), and it is unclear why clients in the frequent payment arm wait for several months to re-pawn -- there is no effect of the monthly payment contract on repeat pawning in the first 30 or 60 days of the contract, (see Figure \ref{reincidence_before} in Appendix). 
 First,  there are many alternatives lenders in this market, and if they did not like frequent payments why do they come back to Lender $P$ for another loan? Second, the fee is really small at 2\% of 1/3 of the value of the loan. The transaction costs of obtaining another loan are likely larger than incurring in this fee. So of the monthly payment makes the current loan ``smaller'' it is probably better to skip the monthly payment and incur in a fee than to get an additional loan. Third, we find larger effects of repeat buying for clients that experienced larger treatment effects, which the alternative explanation cannot explain. Fifth, the effect is present if we condition on clients that recovered their pawn (so its not driven by pawn recovery)\footnote{This in effect conditions on treatment and control clients that recovered their pawn. We are aware that we are conditioning on an endogenous variable and this must be interpreted as a correlation only.}. Finally, we were able to obtain observational data for all Lender $P$'s branches for the period January 2016 to May 2020, during which Lender $P$ expanded the new frequent payment contract. Using an instrumental variable strategy that exploits the expansion and availability of the frequent payment contract across branches, we show that being exposed to the frequent payment contract leads to an increase of 50 percentage points in the likelihood that in the subsequent pawn the frequent payment contract is chosen when both the status-quo one and the frequent payment contract are available  (see Appendix \ref{appendix_b}). This choice cannot be explained by the need of another loan, since it is about \textit{which specific type} of loan the clients chooses conditional on getting one.
@@ -583,7 +574,7 @@ This table presents balance tests for the administrative data (Panel A) and surv
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\newpage
+
 \section{Figures}
 
 
@@ -591,12 +582,12 @@ This table presents balance tests for the administrative data (Panel A) and surv
      \caption{Experiment description}
     \label{exp_description}
     \begin{center}
-    \begin{subfigure}{.50\textwidth}
+    \begin{subfigure}{.40\textwidth}
       \caption{Timeline of the experiment}
         \centering
         \includegraphics[width=\textwidth]{Figuras/timeline_suc_exp_extended.pdf}
     \end{subfigure}
-    \begin{subfigure}{0.45\textwidth}
+    \begin{subfigure}{0.40\textwidth}
     \caption{Experiment arms}
        \centering
       \includegraphics[width=\textwidth]{Figuras/exp_arms.PNG}
@@ -870,32 +861,65 @@ This table presents balance tests for the administrative data (Panel A) and surv
 
 
 
-
-
-
-
-
 \newpage
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % APPENDIX 
-
 \setcounter{table}{0}
-\renewcommand{\thetable}{\thesection.\arabic{table}}
-
 \setcounter{figure}{0}
-\renewcommand{\thefigure}{\thesection.\arabic{figure}}
-
 \setcounter{section}{0}
-\setcounter{subsection}{0}
-\renewcommand\thesection{A\arabic{section}}
-\renewcommand\thesubsection{\thesection\arabic{subsection}}
+\pagenumbering{gobble}
 
-\appendix
 
-\section{APPENDIX A}
+\begin{center}
+	\LARGE The limits of self-commitment and private paternalism \\[0.5em]
+	\Large{Appendix $-$ For Online Publication} \\[1em]
+	\large \author{Isaac Meza \and Joyce Sadka \and Enrique Seira}
+\end{center}
+
+
+
+
+%\renewcommand{\cftparskip}{0em} % NOT NEEDED
+\renewcommand\cftsecdotsep{\cftdotsep}
+\renewcommand\cftsubsecdotsep{\cftnodots}
+\renewcommand{\cftsecnumwidth}{6em}
+ \renewcommand{\cftpnumalign}{r}
+%\renewcommand{\cftsecleader}{\normalfont\cftdotfill{\cftsecdotsep}}
+
+
+\renewcommand{\cftsecleader}{\cftdotfill{\cftsecdotsep}\hspace{1.8em}}
+%\renewcommand{\cftsecpagefont}{20em}
+%\renewcommand{\cftfignumwidth}{6em}
+%\renewcommand{\cfttabnumwidth}{3.3em}
+
+%\tableofcontents
+\etocdepthtag.toc{mtappendix}
+\etocsettagdepth{mtchapter}{none}
+\etocsettagdepth{mtappendix}{subsection}
+
+\setstretch{0.9}
+%\renewcommand\contentsname{} % the empty name
+
+\begingroup
+\let\clearpage\relax
+%\vspace{-1.5em} % the removed space. Set as appropriate
+\tableofcontents
+\endgroup
+
+
+\newpage
+\pagenumbering{arabic}
+\renewcommand\thefigure{OA-\arabic{figure}}
+\renewcommand\thetable{OA-\arabic{table}}
+\renewcommand*{\thepage}{OA - \arabic{page}}
+\renewcommand\thesection{Appendix \Alph{section}.}
+\renewcommand\thesubsection{\Alph{section}.\arabic{subsection}}
+
+
+\section{ Further results}
 \vspace{.2in}
 
 
@@ -1192,18 +1216,18 @@ This table presents balance tests for the administrative data (Panel A) and surv
 \begin{center}
 \scriptsize{\input{./Tables/mechanism.tex}}
 \end{center}
- \scriptsize
-This table explores treatment effects in ``intermediate variables''. Each column represents a different dependent variable in an OLS regression, and each panel represents a different treatment arm-control comparison. All regressions include fixed effects for branch, day of week fixed effects, number of pawns at the time of pawning this particular one, number of different treatment arms experienced before pawning this particular one. $R^2$ are not reported, they were less than 0.04 for all but the last column which had $R^2$'s close to 0.6. The last row shows the mean of the dependent variable for the control group. Dependent variables are as follows: Column (1) measures the number of days elapsed from the pawning date to the first payment done. Column (2) records the number of payments done within 230 days of the pawn. Column (3) is the average size of the payments for each client in pesos. Column (4) is self-reported cost to get to the branch plus the imputed loss of a whole day of salary (using the minimum wage in Mexico) multiplied by the number of visits to the branch. Column (5) measures the number of days it took to recover the pawn, conditional on recovering. The dependent variable in Column (6) is a dummy =1 if the client paid any positive amount within 230 days of the pawn. For Columns (7) and (8) the dependent variable it is the sum of total payments done within 230 days of the pawn divided by the size of the loan, but column (8) includes as regressors a dummy=1 if the client recovered her pawn, and its interaction with treatment.
 
 %\textit{Do file: } \texttt{mechanisms.do}
 \end{table}
 
+\scriptsize {
+\noindent This table explores treatment effects in ``intermediate variables''. Each column represents a different dependent variable in an OLS regression, and each panel represents a different treatment arm-control comparison. All regressions include fixed effects for branch, day of week fixed effects, number of pawns at the time of pawning this particular one, number of different treatment arms experienced before pawning this particular one. $R^2$ are not reported, they were less than 0.04 for all but the last column which had $R^2$'s close to 0.6. The last row shows the mean of the dependent variable for the control group. Dependent variables are as follows: Column (1) measures the number of days elapsed from the pawning date to the first payment done. Column (2) records the number of payments done within 230 days of the pawn. Column (3) is the average size of the payments for each client in pesos. Column (4) is self-reported cost to get to the branch plus the imputed loss of a whole day of salary (using the minimum wage in Mexico) multiplied by the number of visits to the branch. Column (5) measures the number of days it took to recover the pawn, conditional on recovering. The dependent variable in Column (6) is a dummy =1 if the client paid any positive amount within 230 days of the pawn. For Columns (7) and (8) the dependent variable it is the sum of total payments done within 230 days of the pawn divided by the size of the loan, but column (8) includes as regressors a dummy=1 if the client recovered her pawn, and its interaction with treatment.
+}
 
+\vspace{3ex}
 
+\vspace{.3in}
 
-
-
-\newpage
 \subsection{FOSD: fee forcing vs status quo financial cost distributions}
 
 
@@ -1881,14 +1905,13 @@ We use \cite{atheygrf} \texttt{causal\_forest} of the \texttt{grf} library in $R
 
 
 % APPENDIX B
-\setcounter{table}{0}
-\setcounter{figure}{0}
 
 \newpage
-\section{APPENDIX B: Observational analysis}
+\section{ Observational analysis}
 \label{appendix_b}
 \vspace{.2in}
 \normalsize
+\linespread{1.25}
 
 
 The objective of this appendix is to conduct one test aiming to assess if there is learning in choosing the frequent payment FP) contract. In particular if being endogenously induced to have a FP contract causes the client to chose a FP in subsequent pawn. The identification strategy is not as strong as in a randomized control trial ---having to rely on an instrumental variable strategy using changes in the supply of the FP contract-- and this is why we chose to locate it in a separate appendix. However we believe we find a strong case for learning causing higher demand for the FP contract.
@@ -1911,9 +1934,9 @@ To show the reader a glimpse of this variation in availability of the contract w
     \label{variation_pf_suc}
     \begin{center}
         \centering
-        \includegraphics[width=\textwidth]{Figuras/active_pf_suc.pdf}
+        \includegraphics[width=0.9\textwidth]{Figuras/active_pf_suc.pdf}
     \end{center}
-     \scriptsize This Figure shows the presence of the frequent payment (FP) contract in 20 randomly chosen branches of Lender $P$ for a span of more than 4 years. A y value =1 means that in that month the FP contract was available in that branch. 
+     \scriptsize This Figure shows the presence of the frequent payment (FP) contract in 20 randomly chosen branches of Lender $P$ for a span of more than 4 years. A $y$ value $=1$ means that in that month the FP contract was available in that branch. 
      %\textit{Do file: }  \texttt{active\_pf\_suc.do}
 \end{figure}
 \vspace{.1in}
@@ -1974,7 +1997,8 @@ The exclusion restriction for an instrument is untestable, but note that we are 
 Table \ref{iv_pf} shows the first and the second stage regressions for equation \ref{eqn:IV}. All columns have client, branch, and calendar month fixed effects as well as the controls explained above. Columns 1 and 3 show strong first stages (t-stats above 50). The availability and unavailability of the FP contract has an incidence on its use. Under our identification assumptions, Columns 2 and 4 show strong causal effects: having  been induced by the instrument to have a FP contract in the previous loan causes the client to a FP for her subsequent pawn by 50 percentage points (column 4). The difference between the first two and last two columns is the time period considered. Columns 1 and 2 define $\mathbbm{1}(\text{Had FP previously})_{ij't'}$ as having it in the previous 6 weeks, while columns 3 and 4 define it using the previous 12 weeks. 
 
 
-\vspace{.2in}
+
+
 \begin{table}[H]
 \caption{Experience with frequent payment contract raises future demand for it}
 \label{iv_pf}
@@ -1985,6 +2009,7 @@ Table \ref{iv_pf} shows the first and the second stage regressions for equation 
 This table shows resulting estimates of variants of equation  \ref{eqn:IV} above. They regress a dummy for the client choosing a frequent payment contract (when both the traditional one and the FP are available) on whether the previous loan was under a FP contract. All columns have client, branch, and calendar month fixed effects. All of them control for the number of times the client has pawned in the 12 months previous to the current pawn, as well as a dummy for the having pawned in the period $t'$ to $t$. The main regressor of interest is having had a FP loan in the past from $t'$ to $t$  which measures experiencing a FP contract recently. Column 1 reports the result of first stage where the supply side instrument is an indicator for the branch having had a FP available when the client showed to pawn the previous pawn. Column 2 presents the two-stage least square estimate. Columns 3 and 4 are analogous, but instead of looking clients who pawned in the 6 weeks previous, it looks at those that had pawned in the previous 12 months. We do not report the exact number of observations to keep Lender $P$ identity confidential and instead give a lower bound. 
 %\textit{Do file: } \texttt{iv\_reg\_demand\_pf.do}
 \end{table}
+
 
 
 

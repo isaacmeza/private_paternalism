@@ -139,14 +139,8 @@ eststo clear
 *2SLS (IV)
 foreach wk in 6  12 {
 
-*OLS-FE
-eststo: areg pago_fijo demand_past_imm`wk' visit_past`wk' i.num_pawns_52 i.month if pf_suc==1 & event2==1, absorb(idcliente) vce(robust)
-su pago_fijo if e(sample) 
-estadd scalar DepVarMean = `r(mean)'
-
-
 	*FS
-eststo: areg demand_past_imm`wk' active_past`wk' visit_past`wk' i.num_pawns_52 i.month if pf_suc==1 & event2==1, absorb(idcliente) vce(robust)
+eststo: areg demand_past_imm`wk' active_past`wk' visit_past`wk' i.num_pawns_52 i.month if pf_suc==1 , absorb(idcliente) vce(robust)
 su demand_past_imm`wk' if e(sample) 
 estadd scalar DepVarMean = `r(mean)'
 
