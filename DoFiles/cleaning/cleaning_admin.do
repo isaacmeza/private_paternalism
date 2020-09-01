@@ -38,7 +38,7 @@ label define lab_suc ///
 	42 "Insurgentes"  ///
 	78 "Jose Marti"   ///
 	80 "San Cosme"    ///
-	104 "San Simon"    ///
+	104 "San Simon"    
 
 
 label define lab_mov      ///
@@ -57,16 +57,6 @@ label var clave_movimiento "Movement type"
 label values suc lab_suc
 label values clave_movimiento lab_mov
 
-*Base Auxiliar para la linea de tiempo*
-preserve
-*bysort suc: egen min_fecha_suc = min(fecha_inicial)
-*bysort suc: egen max_fecha_suc = max(fecha_movimiento)
-
-collapse (min) min_fecha_suc = fecha_inicial /// 
-(max) max_fecha_suc = fecha_movimiento max_fecha2 = fecha_inicial, by(suc)
-
-save "$directorio/_aux/time_line_aux.dta", replace
-restore
 
 *Days passed between movement date and initial date
 gen dias_inicio = fecha_movimiento - fecha_inicial
@@ -84,16 +74,54 @@ drop prestamo_real
 
 gen log_prestamo = log(prestamo)
 
-*Start of randomization
-keep if  fecha_inicial>=date("06/09/2012","DMY")  
-
-
-
 *Drop negative pledges
 bysort prenda: egen aux=min(MontoPrstamoActualizado)
 bysort prenda importe: drop if(importe[_n-1]<0)
 drop if importe<0
 drop aux
+
+
+*Auxiliar dataset for number of pawns by branch-day
+preserve
+*Number of pledges by suc and day
+bysort fecha_inicial suc : gen aux_uno=1 if clave_movimiento == 4 
+bysort fecha_inicial suc : gen num_empenio_sucdia=sum(aux_uno) if clave_movimiento == 4 
+bysort fecha_inicial suc : egen aux_num_emp=sum(aux_uno) if clave_movimiento == 4 
+bysort fecha_inicial suc : replace num_empenio_sucdia=. if num_empenio_sucdia!=aux_num_emp &  clave_movimiento == 4 
+
+keep if !missing(num_empenio_sucdia)
+keep fecha_inicial  suc num_empenio prenda
+save "$directorio/_aux/num_pawns_suc_dia.dta", replace 
+restore
+
+*Auxiliar dataset for timeline
+preserve 
+collapse (min) min_fecha_suc = fecha_inicial /// 
+(max) max_fecha_suc = fecha_movimiento max_fecha2 = fecha_inicial, by(suc)
+save "$directorio/_aux/time_line_aux.dta", replace
+restore
+
+
+*pre-randomization
+preserve
+keep if fecha_inicial<date("06/09/2012","DMY")  
+sort prenda fecha_inicial fecha_movimiento 
+by prenda fecha_inicial: keep if _n==1
+
+merge 1:1 prenda fecha_inicial using "$directorio/_aux/num_pawns_suc_dia.dta", nogen keep(1 3)
+rename num_empenio_sucdia num_empenio
+
+*Number of pledges by suc and day
+gen dow=dow(fecha_inicial)
+gen monday=(dow==1)
+
+keep fecha_inicial suc prenda prestamo monday num_empenio
+save "$directorio/_aux/pre_experiment_admin.dta", replace
+
+restore
+
+*Start of randomization
+keep if  fecha_inicial>=date("06/09/2012","DMY")  
 
 						
 *Identify type of product
@@ -435,7 +463,7 @@ egen suc_x_dia=group(suc fecha_inicial)
 
 *Number of pledges by suc and day
 gen dow=dow(fecha_inicial)
-gen monday_tuesday=(dow==1)
+gen monday=(dow==1)
 preserve
 *Pledges only
 keep if clave_movimiento == 4 
@@ -458,8 +486,8 @@ merge m:1 prenda using `temp_emp', nogen
 *******************************************************************
 *Panel data
 save "$directorio/DB/Base_Boleta_230dias_Seguimiento_Ago2013_Grandota_2", replace
-
-bysort prenda fecha_inicial: keep if _n==1
+sort prenda fecha_inicial fecha_movimiento t_prod
+by prenda fecha_inicial: keep if _n==1
 *Final Cross-section
 save "$directorio/DB/Base_Boleta_230dias_Seguimiento_Ago2013_ByPrenda_2", replace
 	

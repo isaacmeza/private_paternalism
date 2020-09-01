@@ -109,6 +109,39 @@ bysort NombrePignorante : gen flag = _n
 tab flag
 restore
 
+*To this end we estimated the regression\footnote{We cluster the standard errors by branch.} $Pawns \: per \: day_{jt} = \alpha_j + \gamma f(t) + \beta_b \mathbbm{1}(t \in MB)_{t} +\beta_a \mathbbm{1}(t \in MA)_{t}$
+preserve
+
+use "$directorio/_aux/num_pawns_suc_dia.dta", clear
+
+gen before = inrange(fecha_inicial,date("08/05/2012","MDY"),date("09/05/2012","MDY"))
+replace before = . if fecha_inicial<date("08/05/2012","MDY")
+
+gen after = .
+
+replace after = inrange(fecha_inicial,date("09/30/2012","MDY"),date("10/30/2012","MDY")) ///
+	if suc==3 & fecha_inicial<=date("10/30/2012","MDY")
+
+replace after = inrange(fecha_inicial,date("10/2/2012","MDY"),date("11/2/2012","MDY")) ///
+	if suc==5 & fecha_inicial<=date("11/2/2012","MDY")
+	
+replace after = inrange(fecha_inicial,date("12/23/2012","MDY"),date("1/23/2013","MDY")) ///
+	if suc==42 & fecha_inicial<=date("1/23/2013","MDY")
+	
+replace after = inrange(fecha_inicial,date("12/25/2012","MDY"),date("1/25/2013","MDY")) ///
+	if suc==78 & fecha_inicial<=date("1/25/2013","MDY")
+	
+replace after = inrange(fecha_inicial,date("12/25/2012","MDY"),date("1/25/2013","MDY")) ///
+	if suc==80 & fecha_inicial<=date("1/25/2013","MDY")
+	
+replace after = inrange(fecha_inicial,date("12/25/2012","MDY"),date("1/25/2013","MDY")) ///
+	if suc==104 & fecha_inicial<=date("1/25/2013","MDY")
+
+	
+reg num_empenio_sucdia before after c.fecha_inicial##c.fecha_inicial##c.fecha_inicial i.suc , cluster(suc)
+
+restore
+
 
 *the financing cost the client incurred, of 9.5\% (\hl{\$304}) in the fist definition and 13.3\% (\hl{\$478})
 reg fc_admin_disc  pro_2 ${C0} , r cluster(suc_x_dia) 
@@ -158,3 +191,5 @@ su pb
 *Even among those that recover their pawn, only 42\% pay before the 90$^{th}$ day
 count if des_c & pro_2==0
 count if des_c & pro_2==0 & dias_al_desempenyo<=90
+
+

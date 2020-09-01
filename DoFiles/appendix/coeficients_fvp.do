@@ -167,7 +167,7 @@ local plotregion plotregion(margin(sides) fcolor(white) lstyle(none) lcolor(whit
 
 mat rownames family =  "Fam asks" "Common asks"
 mat rownames income = "Income index" "Savings"
-mat rownames selfc = "OC" "Present bias"  "Makes budget" "Tempt" "Reminder"
+mat rownames selfc =  "Present bias"  "Makes budget" "Tempt" "Reminder"
 mat rownames experience = "Pawn before" "Rosca" "Prob recovery" "Visits"
 mat rownames other =  "Age"  "Gender" ///
 	"More high school" "Stressed" "Low time" "Low cost"	
@@ -178,6 +178,6 @@ mat rownames other =  "Age"  "Gender" ///
 	(matrix(experience[,2]), ci((experience[,5] experience[,6])) `options4' ciopts(lcolor(gs6))) ///
 	(matrix(other[,2]), ci((other[,5] other[,6])) `options5' ciopts(lcolor(gs4))), ///
 	headings("Fam asks" = "{bf:Family}" "Income index" = "{bf:Income}" ///
-	"OC" = "{bf:Self Control}" "Pawn before" = "{bf:Experience}" "Age" = "{bf:Other}",labsize(medium)) ///
+	"Present bias" = "{bf:Self Control}" "Pawn before" = "{bf:Experience}" "Age" = "{bf:Other}",labsize(medium)) ///
 	legend(off) offset(0) xline(0) `graphregion' `plotregion'  
 graph export "$directorio\Figuras\\`depvar'_interactions_rf.pdf", replace

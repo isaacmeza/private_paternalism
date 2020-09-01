@@ -18,11 +18,10 @@ if "`var'"!="prenda"{
 	drop aux
 	
 	}
-	
 }
 
 *Variable elimination
-drop prod suc regalo pres_fundacion ledara AW AX question_miss question_miss1 question_miss2 Mprep
+drop prod regalo pres_fundacion ledara AW AX question_miss question_miss1 question_miss2 Mprep
 
 *How many people repeat the survey?
 bysort prenda: gen aux = _N

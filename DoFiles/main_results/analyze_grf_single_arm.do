@@ -55,7 +55,7 @@ foreach depvar in def_c fc_admin_disc  {
 	*Lists of variables according to its clasification
 		local familia fam_pide fam_comun 
 		local ingreso faltas ahorros
-		local self_control oc pb hace_presupuesto tentado rec_cel
+		local self_control pb hace_presupuesto tentado rec_cel
 		local experiencia pres_antes cta_tanda pr_recup visit_number
 		local otros  edad genero masqueprepa estresado_seguido low_cost low_time
 		

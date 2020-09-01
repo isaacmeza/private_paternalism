@@ -12,7 +12,7 @@ set more off
 use "$directorio/DB/master.dta", clear
 
 *Response survey dummy
-gen response = !missing(genero)
+gen response = !missing(f_encuesta) if !missing(t_prod)
 
 *by response
 drop if missing(t_prod)
