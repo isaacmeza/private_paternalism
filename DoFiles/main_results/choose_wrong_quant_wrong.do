@@ -13,17 +13,21 @@ Who makes mistakes?
 import delimited "$directorio/_aux/fc_te_grf.csv", clear
 merge 1:1 prenda using "$directorio/DB/Master.dta", nogen keep(3)
 
+*drop observations with high variance
+su tau_hat_oobvarianceestimates, d
+drop if tau_hat_oobvarianceestimates>`r(p99)'
+
 *Counterfactuals estimates
 	
 	*Causal forest on nochoice/fee-vs-control
 	*we put the negative of it to 'normalize' it to a positive scale
 gen fc_te_cf =  -tau_hat_oobpr/prestamo*100	
 *CI - 95%
-gen fc_te_cf_h95 = fc_te_cf + invnorm(0.975)*sqrt(tau_hat_oob_fullvarianceestimate)*100/prestamo
-gen fc_te_cf_l95 = fc_te_cf - invnorm(0.975)*sqrt(tau_hat_oob_fullvarianceestimate)*100/prestamo
+gen fc_te_cf_ub95 = fc_te_cf + invnorm(0.975)*sqrt(tau_hat_oob_fullvarianceestimate)*100/prestamo
+gen fc_te_cf_lb95 = fc_te_cf - invnorm(0.975)*sqrt(tau_hat_oob_fullvarianceestimate)*100/prestamo
 *CI - 90%
-gen fc_te_cf_h90 = fc_te_cf + invnorm(0.95)*sqrt(tau_hat_oob_fullvarianceestimate)*100/prestamo
-gen fc_te_cf_l90 = fc_te_cf - invnorm(0.95)*sqrt(tau_hat_oob_fullvarianceestimate)*100/prestamo
+gen fc_te_cf_ub90 = fc_te_cf + invnorm(0.95)*sqrt(tau_hat_oob_fullvarianceestimate)*100/prestamo
+gen fc_te_cf_lb90 = fc_te_cf - invnorm(0.95)*sqrt(tau_hat_oob_fullvarianceestimate)*100/prestamo
 
 
 *Histogram of FC treatment effect on the treated
@@ -36,146 +40,160 @@ foreach var of varlist fc_te_cf {
 	}
 
 ********************************************************************************
+gen tau_sim = . 
 gen choose_wrong_fee = .
 gen choose_wrong_promise = .
 gen quant_wrong_fee = .
 gen quant_wrong_promise = .
 
-gen better_forceall = .
-gen bfa_h95 = .
-gen bfa_l95 = .
-gen bfa_h90 = .
-gen bfa_l90 = .
+gen better_forceall = 0
 
-gen cwf = .
-gen cwf_h95 = .
-gen cwf_l95 = .
-gen cwf_h90 = .
-gen cwf_l90 = .
+gen cwf = 0
+gen cwf_ub95 = .
+gen cwf_lb95 = .
+gen cwf_ub90 = .
+gen cwf_lb90 = .
 
-gen cwp = .
-gen cwp_h95 = .
-gen cwp_l95 = .
-gen cwp_h90 = .
-gen cwp_l90 = .
+gen cwf_normal_l = .
+gen cwf_normal_h = .
+gen bfa_normal_l = .
+gen bfa_normal_h = .
 
-gen qwf = .
-gen qwf_h95 = .
-gen qwf_l95 = .
-gen qwf_h90 = .
-gen qwf_l90 = .
-gen qwp = .
-gen qbfa = . 
+forvalues i = 0/16 {
+	gen cwf_normal_l`i' = .
+	gen cwf_normal_h`i' = .
+	gen bfa_normal_l`i' = .
+	gen bfa_normal_h`i' = .
+	}
+
+gen cwp = 0
+gen qwf = 0
+gen qwp = 0
+gen qbfa = 0 
 
 gen threshold = _n-1 if _n<=16
 
+forvalues i = 0/16 {
+	di "`i'"
+	qui {
+	*A la Manski Bounds
+	foreach ci in 95 90  {
+		replace choose_wrong_fee = ((fc_te_cf_lb`ci'>`i' & pro_6==1) | (fc_te_cf_ub`ci'<-`i' & pro_7==1)) if !missing(fc_te_cf) & t_prod==4
+		su choose_wrong_fee
+		replace cwf_lb`ci' = `r(mean)'*100 in `=`i'+1'
+		
+		replace choose_wrong_fee = ((fc_te_cf_ub`ci'>`i' & pro_6==1) | (fc_te_cf_lb`ci'<-`i' & pro_7==1)) if !missing(fc_te_cf) & t_prod==4
+		su choose_wrong_fee
+		replace cwf_ub`ci' = `r(mean)'*100 in `=`i'+1'	
+		}
+		}	
+	}
+
+local rep_num = 500
+forvalues rep = 1/`rep_num' {
+di "`rep'"
+*Draw random effect from normal distribution with standard error according to Athey
+replace tau_sim = rnormal(-tau_hat_oobpredictions, sqrt(tau_hat_oob_fullvarianceestimate))/prestamo*100	
+
 *Computation of people that makes mistakes in the choice arm according to estimated counterfactual
-foreach var of varlist fc_te_cf {
-	forvalues i = 0/200 {
-		di "`i'"
+foreach var of varlist tau_sim {
+	forvalues i = 0/16 {
 		qui {
 		*Classify the percentage of wrong decisions
 		* (`var'>`i' & pro_6==1) : positive (in the sense of beneficial)
 		* treatment effect with fee but choose no fee
 		replace choose_wrong_fee = ((`var'>`i' & pro_6==1) | (`var'<-`i' & pro_7==1)) if !missing(`var') & t_prod==4
-		su choose_wrong_fee
-		replace cwf = `r(mean)'*100 in `=`i'+1'
-		
+		bootstrap r(mean),  reps(100) level(99): su choose_wrong_fee
+		estat bootstrap, all
+		mat point_estimate = e(b)
+		replace cwf = cwf + point_estimate[1,1]*100 in `=`i'+1'
+		*Confidence interval
+			mat confidence_int = e(ci_normal) 
+			replace cwf_normal_l`i' =  confidence_int[1,1]*100 in `rep'
+			replace cwf_normal_h`i' =  confidence_int[2,1]*100 in `rep'
+			
+			
 		*Quantification in $
 		replace quant_wrong_fee = .
 		replace quant_wrong_fee = abs(`var')*prestamo/100 if choose_wrong_fee==1
 		su quant_wrong_fee
-		cap replace qwf = `r(mean)' in `=`i'+1'
+		cap replace qwf = qwf + `r(mean)' in `=`i'+1'
 		
 		*If we were to force everyone to the FEE contract, how many would be
 		* benefited from this policy?
 		replace choose_wrong_fee = (`var'>`i') if !missing(`var') & t_prod==4
-		su choose_wrong_fee
-		replace better_forceall = `r(mean)'*100 in `=`i'+1'
+		bootstrap r(mean),  reps(100) level(99): su choose_wrong_fee
+		estat bootstrap, all
+		mat point_estimate = e(b)
+		replace better_forceall = better_forceall + point_estimate[1,1]*100 in `=`i'+1'
+		*Confidence interval
+			mat confidence_int = e(ci_normal) 
+			replace bfa_normal_l`i' =  confidence_int[1,1]*100 in `rep'
+			replace bfa_normal_h`i' =  confidence_int[2,1]*100 in `rep'
+		
 		
 		*Quantification in $
 		replace quant_wrong_fee = .
 		replace quant_wrong_fee = abs(`var')*prestamo/100 if choose_wrong_fee==1
 		su quant_wrong_fee
-		cap replace qbfa = `r(mean)' in `=`i'+1'
-		
-		*Confidence interval
-		foreach ci in 95 90  {
-			replace choose_wrong_fee = ((`var'_l`ci'>`i' & pro_6==1) | (`var'_h`ci'<-`i' & pro_7==1)) if !missing(`var') & t_prod==4
-			su choose_wrong_fee
-			replace cwf_l`ci' = `r(mean)'*100 in `=`i'+1'
-			
-			replace quant_wrong_fee = .
-			replace quant_wrong_fee = abs(`var'_l`ci')*prestamo/100 if choose_wrong_fee==1
-			su quant_wrong_fee
-			cap replace qwf_l`ci' = `r(mean)' in `=`i'+1'
-			
-			replace choose_wrong_fee = ((`var'_h`ci'>`i' & pro_6==1) | (`var'_l`ci'<-`i' & pro_7==1)) if !missing(`var') & t_prod==4
-			su choose_wrong_fee
-			replace cwf_h`ci' = `r(mean)'*100 in `=`i'+1'	
-			
-			replace quant_wrong_fee = .
-			replace quant_wrong_fee = abs(`var'_h`ci')*prestamo/100 if choose_wrong_fee==1
-			su quant_wrong_fee
-			cap replace qwf_h`ci' = `r(mean)' in `=`i'+1'
-			
-			replace choose_wrong_fee = (`var'_l`ci'>`i') if !missing(`var') & t_prod==4
-			su choose_wrong_fee
-			replace bfa_l`ci' = `r(mean)'*100 in `=`i'+1'
-			
-			replace choose_wrong_fee = (`var'_h`ci'>`i') if !missing(`var') & t_prod==4
-			su choose_wrong_fee
-			replace bfa_h`ci' = `r(mean)'*100 in `=`i'+1'
-
-			}		
-		
+		cap replace qbfa = qbfa + `r(mean)' in `=`i'+1'
 		
 			*promise
 		replace choose_wrong_promise = ((`var'>`i' & pro_8==1) | (`var'<-`i' & pro_9==1)) if !missing(`var') & t_prod==5
 		su choose_wrong_promise
-		replace cwp = `r(mean)'*100 in `=`i'+1'
+		replace cwp = cwp + `r(mean)'*100 in `=`i'+1'
 		
 		*quantification	
 		replace quant_wrong_promise = .
 		replace quant_wrong_promise = abs(`var')*prestamo/100 if choose_wrong_promise==1
 		su quant_wrong_promise
-		cap replace qwp = `r(mean)' in `=`i'+1'
-		
-		*Confidence interval
-		foreach ci in 95 90  {
-			replace choose_wrong_promise = ((`var'_l`ci'>`i' & pro_8==1) | (`var'_h`ci'<-`i' & pro_9==1)) if !missing(`var') & t_prod==5
-			su choose_wrong_promise
-			replace cwp_l`ci' = `r(mean)'*100 in `=`i'+1'
-			
-			replace choose_wrong_promise = ((`var'_h`ci'>`i' & pro_8==1) | (`var'_l`ci'<-`i' & pro_9==1)) if !missing(`var') & t_prod==5
-			su choose_wrong_promise
-			replace cwp_h`ci' = `r(mean)'*100 in `=`i'+1'			
-			}	
+		cap replace qwp = qwp + `r(mean)' in `=`i'+1'
 		
 		}
 		}
+	}
+	}	
 
+*Recover the means
+foreach var of varlist better_forceall cwf cwp qwf qwp qbfa {
+	replace `var' = `var'/`rep_num'
+	}
+	
 
-	twoway 	(line cwf threshold, lpattern(solid) lwidth(medthick) lcolor(navy)) ///
-			(line cwf_h90 threshold, lpattern(dot) lwidth(medthick) lcolor(navy)) ///
-			(line cwf_l90 threshold, lpattern(dot) lwidth(medthick) lcolor(navy)) ///
+*Distribution of the CI
+forvalues i = 0/16 {
+	su cwf_normal_l`i', d
+	replace cwf_normal_l = `r(p5)' in `=`i'+1'
+	su cwf_normal_h`i', d
+	replace cwf_normal_h = `r(p95)' in `=`i'+1'
+	
+	su bfa_normal_l`i', d
+	replace bfa_normal_l = `r(p5)' in `=`i'+1'
+	su bfa_normal_h`i', d
+	replace bfa_normal_h = `r(p95)' in `=`i'+1'
+	}
+	
+	twoway 	(rarea cwf_normal_l cwf_normal_h threshold, fcolor(navy) fintensity(40)) ///
+			(line cwf threshold, lpattern(solid) lwidth(medthick) lcolor(navy)) ///
+			(line cwf_normal_h threshold, lpattern(dot) lwidth(medthick) lcolor(blue)) ///
 			(scatter cwf threshold,  msymbol(x) color(navy) ) ///
 			(scatter qwf threshold,  msymbol(x) color(red) yaxis(2)) ///
-			, legend(order(1 "Fee arm"  ///
+			, legend(order(2 "Fee arm"  ///
 				5 "Money (fee)" ))  scheme(s2mono) ///
 			graphregion(color(white)) xtitle("Threshold (as % of loan)") ///
 			ytitle("Percentage mistakes", axis(1)) ///
 			ytitle("Money (in pesos)",axis(2)) ylabel(0(10)100, axis(1)) 
-	graph export "$directorio/Figuras/line_cw_`var'.pdf", replace
+	graph export "$directorio/Figuras/line_cw_fc_te_cf.pdf", replace
 	
-		twoway 	(line better_forceall threshold, lpattern(solid) lwidth(medthick) lcolor(navy)) ///
+	twoway 	(rarea bfa_normal_l bfa_normal_h threshold, fcolor(navy) fintensity(40)) ///
+			(line better_forceall threshold, lpattern(solid) lwidth(medthick) lcolor(navy)) ///
 			(scatter better_forceall threshold,  msymbol(x) color(navy) ) ///
 			, legend(off) scheme(s2mono) ///
 			graphregion(color(white)) xtitle("Threshold (as % of loan)") ///
 			ytitle("Percentage", axis(1)) ///
 			ylabel(0(10)100, axis(1)) 
-	graph export "$directorio/Figuras/line_better_forceall_`var'.pdf", replace
+	graph export "$directorio/Figuras/line_better_forceall_fc_te_cf.pdf", replace
 
 	
-	}
+	
 
