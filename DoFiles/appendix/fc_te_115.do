@@ -33,7 +33,7 @@ use "$directorio/DB/Master.dta", clear
 keep if dias_inicio<=115
 
 *Dependent variables
-gen fc_survey_pospay = fc_survey_disc if pagos>0
+gen fc_survey_pospay = fc_survey_disc if sum_p_c>0
 gen fc_survey_fee = fc_survey_disc if fee==1 | prod==1
 
 
@@ -51,8 +51,8 @@ gen fc_survey_fee = fc_survey_disc if fee==1 | prod==1
 		local nv = `nv'+1
 		}
 		
-	matrix results = J(`nv', 4, .) // empty matrix for results
-	//  4 cols are: (1) Treatment arm, (2) beta, (3) std error, (4) pvalue
+	matrix results = J(`nv', 5, .) // empty matrix for results
+	//  5 cols are: (1) Treatment arm, (2) beta, (3) std error, (4) df, (5) pvalue
 
 	local row = 1	
 	foreach depvar of varlist `vrlist' {
@@ -65,14 +65,16 @@ gen fc_survey_fee = fc_survey_disc if fee==1 | prod==1
 		matrix results[`row',2] = _b[pro_2]
 		// Standard error
 		matrix results[`row',3] = _se[pro_2]
+		// deg freedom
+		matrix results[`row',4] = `df'
 		// P-value
-		matrix results[`row',4] = 2*ttail(`df', abs(_b[pro_2]/_se[pro_2]))
+		matrix results[`row',5] = 2*ttail(`df', abs(_b[pro_2]/_se[pro_2]))
 		
 		local row = `row' + 1
 		}
 		
 
-	matrix colnames results = "k" "beta" "se" "p"
+	matrix colnames results = "k" "beta" "se" "df" "p"
 	matlist results
 		
 		
@@ -97,8 +99,8 @@ gen fc_survey_fee = fc_survey_disc if fee==1 | prod==1
 
 	// Confidence intervals (95%)
 	local alpha = .05 // for 95% confidence intervals
-	gen rcap_lo = beta - invttail(`df',`=`alpha'/2')*se
-	gen rcap_hi = beta + invttail(`df',`=`alpha'/2')*se
+	gen rcap_lo = beta - invttail(df,`=`alpha'/2')*se
+	gen rcap_hi = beta + invttail(df,`=`alpha'/2')*se
 
 	// GRAPH
 	#delimit ;

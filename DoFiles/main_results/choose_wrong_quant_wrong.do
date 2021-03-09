@@ -21,13 +21,13 @@ drop if tau_hat_oobvarianceestimates>`r(p99)'
 	
 	*Causal forest on nochoice/fee-vs-control
 	*we put the negative of it to 'normalize' it to a positive scale
-gen fc_te_cf =  -tau_hat_oobpr/prestamo*100	
+gen fc_te_cf =  -tau_hat_oobpredictions/prestamo*100	
 *CI - 95%
-gen fc_te_cf_ub95 = fc_te_cf + invnorm(0.975)*sqrt(tau_hat_oob_fullvarianceestimate)*100/prestamo
-gen fc_te_cf_lb95 = fc_te_cf - invnorm(0.975)*sqrt(tau_hat_oob_fullvarianceestimate)*100/prestamo
+gen fc_te_cf_ub95 = fc_te_cf + invnorm(0.975)*sqrt(tau_hat_oobvarianceestimates)*100/prestamo
+gen fc_te_cf_lb95 = fc_te_cf - invnorm(0.975)*sqrt(tau_hat_oobvarianceestimates)*100/prestamo
 *CI - 90%
-gen fc_te_cf_ub90 = fc_te_cf + invnorm(0.95)*sqrt(tau_hat_oob_fullvarianceestimate)*100/prestamo
-gen fc_te_cf_lb90 = fc_te_cf - invnorm(0.95)*sqrt(tau_hat_oob_fullvarianceestimate)*100/prestamo
+gen fc_te_cf_ub90 = fc_te_cf + invnorm(0.95)*sqrt(tau_hat_oobvarianceestimates)*100/prestamo
+gen fc_te_cf_lb90 = fc_te_cf - invnorm(0.95)*sqrt(tau_hat_oobvarianceestimates)*100/prestamo
 
 
 *Histogram of FC treatment effect on the treated
@@ -93,7 +93,7 @@ local rep_num = 500
 forvalues rep = 1/`rep_num' {
 di "`rep'"
 *Draw random effect from normal distribution with standard error according to Athey
-replace tau_sim = rnormal(-tau_hat_oobpredictions, sqrt(tau_hat_oob_fullvarianceestimate))/prestamo*100	
+replace tau_sim = rnormal(-tau_hat_oobpredictions, sqrt(tau_hat_oobvarianceestimates))/prestamo*100	
 
 *Computation of people that makes mistakes in the choice arm according to estimated counterfactual
 foreach var of varlist tau_sim {
@@ -103,7 +103,7 @@ foreach var of varlist tau_sim {
 		* (`var'>`i' & pro_6==1) : positive (in the sense of beneficial)
 		* treatment effect with fee but choose no fee
 		replace choose_wrong_fee = ((`var'>`i' & pro_6==1) | (`var'<-`i' & pro_7==1)) if !missing(`var') & t_prod==4
-		bootstrap r(mean),  reps(100) level(99): su choose_wrong_fee
+		bootstrap r(mean),  reps(25) level(99): su choose_wrong_fee
 		estat bootstrap, all
 		mat point_estimate = e(b)
 		replace cwf = cwf + point_estimate[1,1]*100 in `=`i'+1'
@@ -122,7 +122,7 @@ foreach var of varlist tau_sim {
 		*If we were to force everyone to the FEE contract, how many would be
 		* benefited from this policy?
 		replace choose_wrong_fee = (`var'>`i') if !missing(`var') & t_prod==4
-		bootstrap r(mean),  reps(100) level(99): su choose_wrong_fee
+		bootstrap r(mean),  reps(25) level(99): su choose_wrong_fee
 		estat bootstrap, all
 		mat point_estimate = e(b)
 		replace better_forceall = better_forceall + point_estimate[1,1]*100 in `=`i'+1'

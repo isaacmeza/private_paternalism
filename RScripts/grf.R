@@ -6,12 +6,12 @@ library(DiagrammeRsvg)
 library(gdata)
 
 # SET WORKING DIRECTORY
-setwd('C:/Users/xps-seira/Dropbox/Apps/ShareLaTeX/Donde2020')
+setwd('C:/Users/isaac/Dropbox/Apps/ShareLaTeX/Donde2020')
 set.seed(5289374)
 
 source("./RScripts/best_tree.R")
 
-heterogeneity_effect <- function(data_in,treatment_var,outcome_var,writedata) {
+heterogeneity_effect <- function(data_in,treatment_var,outcome_var,writedata,extendedsample) {
   
 require("dplyr")
 data_frame <- data_in %>%
@@ -60,23 +60,28 @@ print(average_treatment_effect(tau.forest, target.sample = "treated"))
 print(average_treatment_effect(tau.forest, target.sample = "control"))
 
 #Write data
-data.out <- add_column(data_frame,tau_hat_oob$predictions,tau_hat_oob$variance.estimates, propensity_score)
-filename <- paste("_aux/grf_", treatment_var,"_",outcome_var, ".csv", sep="") 
 if (writedata == 1) {
+  data.out <- add_column(data_frame,tau_hat_oob$predictions,tau_hat_oob$variance.estimates, propensity_score)
+  if (extendedsample == 1) {
+    filename <- paste("_aux/grf_extended_", treatment_var,"_",outcome_var, ".csv", sep="") 
+  } else {
+    filename <- paste("_aux/grf_", treatment_var,"_",outcome_var, ".csv", sep="") 
+  }
   write_csv(data.out,filename)
-}
-if (writedata == 0) {
+} else {
   # Tree Plot
   tree.plot = plot(get_tree(tau.forest, best_tree_info$best_tree))
   filename_pl <- paste("Figuras/crf_", treatment_var,"_",outcome_var, ".svg", sep="") 
   cat(DiagrammeRsvg::export_svg(tree.plot), file=filename_pl)
 }
+
 }
 #####################################################
 
 # READ DATASET
 # Prenda level
 data <- read_csv('./_aux/heterogeneity_grf.csv')
+data_extended <- read_csv('./_aux/heterogeneity_te.csv')
 # Data with names in english
 data_copy <- data
 data_copy <- rename.vars(data_copy, c(
@@ -171,10 +176,11 @@ c(
 #Heterogeneous Effects
 
 for (dep in c("fc_admin_disc", "def_c")){
-  heterogeneity_effect(data,"pro_2",dep,1) 
-  heterogeneity_effect(data,"pro_3",dep,1) 
-  heterogeneity_effect(data,"pro_4",dep,1) 
-  heterogeneity_effect(data,"pro_5",dep,1) 
+  heterogeneity_effect(data_extended,"pro_2",dep,1,1) 
+  heterogeneity_effect(data,"pro_2",dep,1,0) 
+  heterogeneity_effect(data,"pro_3",dep,1,0) 
+  heterogeneity_effect(data,"pro_4",dep,1,0) 
+  heterogeneity_effect(data,"pro_5",dep,1,0) 
 }
 
 

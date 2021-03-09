@@ -13,7 +13,7 @@ For further details see the notes in the paper and the dofile itself.
 
 *********************************** TABLES *************************************
 
-*Table OA-1. : Survey’s non-response balance
+*Table OA-1. : Survey's non-response balance
 do "$directorio\DoFiles\appendix\balance_response.do"
 
 *Table OA-3. : Intermediate outcomes

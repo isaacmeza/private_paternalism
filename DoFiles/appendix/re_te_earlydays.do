@@ -36,8 +36,8 @@ collapse reincidence_bef* prestamo $C1  pro_2 ///
 sort NombrePignorante fecha_inicial
 bysort NombrePignorante : keep if _n==1
 
-matrix results = J(2, 4, .) // empty matrix for results
-	//  4 cols are: (1) Treatment arm, (2) beta, (3) std error, (4) pvalue	
+matrix results = J(2, 5, .) // empty matrix for results
+	//  5 cols are: (1) Treatment arm, (2) beta, (3) std error, (4) df, (5) pvalue	
 	
 local row = 1	
 
@@ -50,12 +50,14 @@ foreach var of varlist reincidence_bef30 reincidence_bef60 {
 	matrix results[`row',2] = _b[pro_2]
 	// Standard error
 	matrix results[`row',3] = _se[pro_2]
+	// deg freedom
+	matrix results[`row',4] = `df'
 	// P-value
-	matrix results[`row',4] = 2*ttail(`df', abs(_b[pro_2]/_se[pro_2]))
+	matrix results[`row',5] = 2*ttail(`df', abs(_b[pro_2]/_se[pro_2]))
 	local row = `row' + 1
 	}
 	
-matrix colnames results = "k" "beta" "se" "p"
+matrix colnames results = "k" "beta" "se" "df" "p"
 matlist results
 		
 clear
@@ -64,8 +66,9 @@ svmat results, names(col)
 
 // Confidence intervals (95%)
 local alpha = .05 // for 95% confidence intervals
-gen rcap_lo = beta - invnorm(`=`alpha'/2')*se
-gen rcap_hi = beta + invnorm(`=`alpha'/2')*se
+gen rcap_lo = beta - invttail(df,`=`alpha'/2')*se
+gen rcap_hi = beta + invttail(df,`=`alpha'/2')*se
+
 
 // GRAPH
 

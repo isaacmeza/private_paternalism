@@ -25,9 +25,7 @@ local rcap_options_95 lcolor(black) lwidth(thin)
 
 
 
-eststo : reg `var'  i.t_prod `C', r cluster(suc_x_dia) 
-su `var' if e(sample)
-estadd scalar DepVarMean = `r(mean)'
+reg `var'  i.t_prod `C', r cluster(suc_x_dia) 
 local df = e(df_r)	
 	
 matrix results = J(8, 4, .) // empty matrix for results
@@ -42,7 +40,7 @@ forval row = 1/4 {
 	matrix results[`row',4] = 2*ttail(`df', abs(_b[`=`row'+1'.t_prod]/_se[`=`row'+1'.t_prod]))
 	}
 	
-eststo : reg `var' i.producto `C', r cluster(suc_x_dia)
+reg `var' i.producto `C', r cluster(suc_x_dia)
 local df = e(df_r)	
 	
 //  4 cols are: (1) Treatment arm (voluntary), (2) beta, (3) std error, (4) pvalue
@@ -104,5 +102,5 @@ graph twoway
 ;
 
 #delimit cr
-graph export "$directorio\Figuras\te_graph_`var'.pdf", replace
+graph export "$directorio\Figuras\te_allarms_`var'.pdf", replace
 restore

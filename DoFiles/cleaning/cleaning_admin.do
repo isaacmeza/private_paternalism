@@ -60,6 +60,8 @@ label values clave_movimiento lab_mov
 
 *Days passed between movement date and initial date
 gen dias_inicio = fecha_movimiento - fecha_inicial
+su fecha_movimiento
+drop if fecha_inicial>`r(max)'-230
 drop if dias_inicio>230 | dias_inicio<0
 label var dias_inicio  "Days passed between movement date and initial date"
 *Days of first payment
@@ -102,7 +104,7 @@ save "$directorio/_aux/time_line_aux.dta", replace
 restore
 
 
-*pre-randomization
+*pre-randomization date
 preserve
 keep if fecha_inicial<date("06/09/2012","DMY")  
 sort prenda fecha_inicial fecha_movimiento 
@@ -160,43 +162,145 @@ drop drp aux
 
 sort prenda fecha_movimiento
 *'pagos' indicate deposits from the customers, i.e. refrendo, desempeno, venta con billete, abono al capital.
-gen pagos=importe if clave_movimiento <= 3 | clave_movimiento==5
+*Filter those that indicate payments
+gen pagos=importe if inlist(clave_movimiento, 1,3,5)
 replace pagos=0 if pagos==.
-
 label var pagos "Client deposits"
 
-*'pagos' indicate deposits from the customers, i.e. refrendo, desempeno, venta con billete, abono al capital.
+*Payed interests
+gen intereses = importe if inlist(clave_movimiento, 5)
+replace intereses = intereses + importe-prestamo if clave_movimiento==3
+label var intereses "Interests"
+
+*Credit has ended, menaing eithet 'desempeno' or 'pase al moneda'
+gen concluyo = inlist(clave_movimiento,3,6)
+bysort prenda : egen concluyo_c = max(concluyo)
+
+*Incurred interests
+preserve
+drop if clave_movimiento==2
+collapse (mean) prestamo (sum) importe (mean) dias_inicio (mean) concluyo_c (mean) producto, by(prenda fecha_movimiento)
+sort prenda fecha_movimiento
+
+gen incurred_int = .
+gen fee_strong = .
+gen capital = prestamo 
+bysort prenda : gen num_mov = _N
+su num_mov
+forvalues i = 2/`r(max)' {
+	*Interests
+	bysort prenda : replace incurred_int = capital[_n-1]*((1+0.002257833358012379025857)^(dias_inicio-dias_inicio[_n-1])-1) if _n==`i'
+	*Fee
+	bysort prenda : replace fee_strong = .02*capital[_n-1]/3*(ceil(dias_inicio/30)-ceil(dias_inicio[_n-1]/30)-1+(importe<=capital/3)) if _n==`i'
+	bysort prenda : replace capital = capital[_n-1] - (importe-incurred_int-fee_strong) if _n==`i'
+	}	
+bysort prenda : replace incurred_int = incurred_int + capital*((1+0.002257833358012379025857)^(230-dias_inicio)-1) if concluyo_c==0 & _n==_N
+
+keep prenda fecha_movimiento incurred_int fee_strong capital
+tempfile temp_int
+save `temp_int'
+restore
+
+merge m:1 prenda fecha_movimiento using `temp_int', nogen
+*Drop duplicates by prenda-date
+foreach var of varlist incurred_int fee_strong {
+	bysort prenda fecha_mov : replace `var' = . if _n!=1
+	}
+	
+*Payed fees
+gen payed_fees = fee_strong if pagos>0 & inlist(producto,2,5)
+	
+label var incurred_int "Incurred interests"
+label var fee_strong "Incurred fees"
+label var payed_fees "Payed fees"
+
+	
+*'sum_p' is the cumulative sum of payments
+sort prenda fecha_movimiento
+by prenda: gen sum_p=sum(pagos)
+label var sum_p "Cumulative sum of payments"
+
+*'sum_int' is the cumulative sum of interest
+sort prenda fecha_movimiento
+by prenda: gen sum_int=sum(intereses)
+label var sum_int "Cumulative sum of interests"
+
+*'sum_incurred_int' is the cumulative sum of incurred interest
+sort prenda fecha_movimiento
+by prenda: gen sum_inc_int=sum(incurred_int)
+label var sum_inc_int "Cumulative sum of incurred interests"
+
+*'sum_incurred_fee' is the cumulative sum of incurred fees
+sort prenda fecha_movimiento
+by prenda: gen sum_inc_fee=sum(fee_strong)
+label var sum_inc_fee "Cumulative sum of incurred fees"
+
+*'sum_pay_fee' is the cumulative sum of payed fees
+sort prenda fecha_movimiento
+by prenda: gen sum_pay_fee=sum(payed_fees)
+label var sum_pay_fee "Cumulative sum of payed fees"
+
+*Var correction (desempeno)
+bysort prenda: replace clave_movimiento=5 if clave_movimiento==3 & sum_p-sum_int<prestamo
+
+*'pagos_disc' indicate deposits from the customers, i.e. refrendo, desempeno, venta con billete, abono al capital.
 * DISCOUNTED with daily interest rate equivalent to a 7% monthly rate.
 save "$directorio/_aux/pre_admin.dta", replace /*save for discounted_noeffect.do*/	
-gen pagos_disc=importe/((1+0.00225783)^dias_inicio) if clave_movimiento <= 3 | clave_movimiento==5
+gen pagos_disc=importe/((1+0.002257833358012379025857)^dias_inicio) if clave_movimiento <= 3 | clave_movimiento==5
 replace pagos_disc=0 if pagos_disc==.
-
 label var pagos_disc "Client deposits (discounted)"
 
 *'porc_pagos' is the percentage of payments wrt the loan
 gen porc_pagos=pagos/prestamo
 su  porc_pagos
 su  porc_pagos if clave_movimiento!=3 , d 
-
 label var porc_pagos "Payment percentage wrt to loan"
 
-*'sum_p' is the cumulative sum of payments
-sort prenda fecha_movimiento
-by prenda: gen sum_p=sum(pagos)
+*'porc_int' is the percentage of interest wrt the loan
+gen porc_int=intereses/prestamo
+label var porc_int "Interest percentage wrt to loan"
 
-label var sum_p "Cumulative sum of payments"
+*'porc_inc_int' is the percentage of incurred interest wrt the loan
+gen porc_inc_int=incurred_int/prestamo
+label var porc_inc_int "Incurred interest percentage wrt to loan"
+
+*'porc_inc_fee' is the percentage of incurred fee wrt the loan
+gen porc_inc_fee=fee_strong/prestamo
+label var porc_inc_fee "Incurred fee percentage wrt to loan"
+
+*'porc_pay_fee' is the percentage of payed fee wrt the loan
+gen porc_pay_fee=payed_fees/prestamo
+label var porc_pay_fee "Payed fee percentage wrt to loan"
 
 *'sum_p_disc' is the cumulative discounted sum of payments
 sort prenda fecha_movimiento
 by prenda: gen sum_p_disc=sum(pagos_disc)
-
 label var sum_p_disc "Cumulative discounted sum of payments"
 
 *'sum_porc_p' is the percentage of the cumulative sum of the payments wrt to the loan
 sort prenda fecha_movimiento
 by prenda: gen sum_porc_p=sum_p/prestamo
-
 label var sum_porc_p "Percentage of the cumulative sum of payments"
+
+*'sum_porc_int' is the percentage of the cumulative sum of the interest wrt to the loan
+sort prenda fecha_movimiento
+by prenda: gen sum_porc_int=sum_int/prestamo
+label var sum_porc_int "Percentage of the cumulative sum of interest"
+
+*'sum_porc_inc_int' is the percentage of the cumulative sum of the incurred interest wrt to the loan
+sort prenda fecha_movimiento
+by prenda: gen sum_porc_inc_int=sum_inc_int/prestamo
+label var sum_porc_inc_int "Percentage of the cumulative sum of incurred interest"
+
+*'sum_porc_inc_fee' is the percentage of the cumulative sum of the incurred fee wrt to the loan
+sort prenda fecha_movimiento
+by prenda: gen sum_porc_inc_fee=sum_inc_fee/prestamo
+label var sum_porc_inc_fee "Percentage of the cumulative sum of incurred fee"
+
+*'sum_porc_pay_fee' is the percentage of the cumulative sum of the payed fee wrt to the loan
+sort prenda fecha_movimiento
+by prenda: gen sum_porc_pay_fee=sum_pay_fee/prestamo
+label var sum_porc_pay_fee "Percentage of the cumulative sum of payed fee"
 
 *Number of payments at current date
 gen dum_pago=(pagos!=0 & pagos!=.)
@@ -209,10 +313,6 @@ drop dum_pago
 
 label var sum_np "Number of payments at current date"
 label var sum_visit "Number of visits at current date"
-
-
-*Var correction (desempeno)
-bysort prenda: replace clave_movimiento=5 if clave_movimiento==3 & sum_p<prestamo
 
 
 *Dummy variables indicating the type of movement
@@ -344,11 +444,19 @@ bysort prenda: egen ref_90_c=max(refrendo_90)
 bysort prenda: egen abo_c=max(abono)
 bysort prenda: egen vbi_c = max(ventabillete)
 bysort prenda: egen sum_p_c=max(sum_p)
+bysort prenda: egen sum_int_c=max(sum_int)
+bysort prenda: egen sum_inc_int_c=max(sum_inc_int)
+bysort prenda: egen sum_inc_fee_c=max(sum_inc_fee)
+bysort prenda: egen sum_pay_fee_c=max(sum_pay_fee)
 bysort prenda: gen pays_c=(sum_p_c>0) if !missing(sum_p_c)
 bysort prenda: egen sum_pdisc_c=max(sum_p_disc)
 bysort prenda: egen mn_p_c=mean(sum_p)
 bysort prenda: egen mn_pdisc_c=mean(sum_p_disc)
 bysort prenda: egen sum_porcp_c=max(sum_porc_p)
+bysort prenda: egen sum_porc_int_c=max(sum_porc_int)
+bysort prenda: egen sum_porc_inc_int_c=max(sum_porc_inc_int)
+bysort prenda: egen sum_porc_inc_fee_c=max(sum_porc_inc_fee)
+bysort prenda: egen sum_porc_pay_fee_c=max(sum_porc_pay_fee)
 bysort prenda: egen num_p=max(sum_np)
 bysort prenda: egen num_v=max(sum_visit)
 bysort prenda: egen pam_c=max(pasealmoneda)
@@ -358,6 +466,8 @@ gen dias_inicio_d=dias_inicio if des_c
 bysort prenda: egen dias_al_desempenyo=max(dias_inicio_d)
 replace dias_al_desempenyo = 1 if dias_al_desempenyo==0
 replace dias_inicio = 1 if dias_inicio==0 & des_c==1
+
+
 cap drop dias_inicio_d
 
 * `Naiveness' variables (item-level)
@@ -402,11 +512,19 @@ label var ref_90_c "Refrendum 90 days"
 label var abo_c "Payment to principal"
 label var vbi_c "Venta con Billete"
 label var sum_p_c "Cum (total) payments"
+label var sum_int_c "Cum (total) interest"
+label var sum_inc_int_c "Cum (total) incurred interest"
+label var sum_inc_fee_c "Cum (total) incurred fees"
+label var sum_pay_fee_c "Cum (total) payed fees"
 label var pays_c "Dummy of payment>0"
 label var sum_pdisc_c "Cum (total)(discounted) payments"
 label var mn_p_c "Mean of payments"
 label var mn_pdisc_c "Mean of (discounted) payments"
 label var sum_porcp_c "Percentage of payment"
+label var sum_porc_int_c "Percentage of interest"
+label var sum_porc_inc_int_c "Percentage of incurred interest"
+label var sum_porc_inc_fee_c "Percentage of incurred fees"
+label var sum_porc_pay_fee_c "Percentage of payed fees"
 label var num_p "Number of payment"
 label var pam_c "Pase al moneda"
 label var ref_default "Refrendum but default"
@@ -415,30 +533,9 @@ label var pos_pay_120_def_c "Positive payment (after 120dd) but default"
 label var zero_pay_default "Selled pawn"
 label var pay_30_default "Payment of at least 30pp but default"
 
-*Dummy indicating if a fee was charged (late payment)		
-	*Payment in each cylce
-bysort prenda : gen ppc = inrange(fecha_movimiento, fecha_inicial, fecha_inicial+30) if pagos>0
-bysort prenda : egen pago_primer_ciclo = max(ppc) 
-replace pago_primer_ciclo = 0 if missing(pago_primer_ciclo)
-	*recover in first cycle
-bysort prenda : gen rpc = inrange(ultima_fecha, fecha_inicial, fecha_inicial+30) if des_c==1
 
-bysort prenda : gen psc = inrange(fecha_movimiento, fecha_inicial+31, fecha_inicial+60) if pagos>0 & rpc!=1
-bysort prenda : egen pago_seg_ciclo = max(psc) 
-replace pago_seg_ciclo = 0 if missing(pago_seg_ciclo)
-replace pago_seg_ciclo = 1 if rpc==1
-
-bysort prenda : gen rsc = inrange(ultima_fecha, fecha_inicial+31, fecha_inicial+60) if des_c==1
-
-bysort prenda : gen ptc = inrange(fecha_movimiento, fecha_inicial+61, fecha_inicial+90) if pagos>0 & rpc!=1 & rsc!=1
-bysort prenda : egen pago_ter_ciclo = max(ptc) 
-replace pago_ter_ciclo = 0 if missing(pago_ter_ciclo)
-replace pago_ter_ciclo = 1 if rpc==1 | rsc==1
-
-	*Fee dummy (late payment)
-gen fee = 1-(pago_primer_ciclo & pago_seg_ciclo & pago_ter_ciclo)	
-replace fee = 0 if prod==1
-replace fee = . if !inlist(prod,2,5)
+	*Fee dummy 
+gen fee = (sum_porc_pay_fee_c>0) if inlist(producto,2,5)
 label var fee "Charged late fee - dummy"
 
 
@@ -455,8 +552,13 @@ replace fc_admin = fc_admin - prestamo/(0.7) if des_c == 1
 gen log_fc_admin = log(1+fc_admin)
 	*discounted
 gen fc_admin_disc = sum_pdisc_c + prestamo/(0.7)
-replace fc_admin_disc = fc_admin_disc - prestamo/(0.7*(1+0.00225783)^dias_al_desempenyo) if des_c == 1
+replace fc_admin_disc = fc_admin_disc - prestamo/(0.7*(1+0.002257833358012379025857)^dias_al_desempenyo) if des_c == 1
 gen log_fc_admin_disc = log(1+fc_admin_disc)
+	*cost of losing pawn
+gen cost_losing_pawn = prestamo/(0.7)
+replace cost_losing_pawn = cost_losing_pawn - prestamo/(0.7*(1+0.002257833358012379025857)^dias_al_desempenyo) if des_c == 1
+
+
 
 *Suc by day
 egen suc_x_dia=group(suc fecha_inicial)

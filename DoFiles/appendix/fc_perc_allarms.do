@@ -38,8 +38,8 @@ use "$directorio/DB/Master.dta", clear
 
 gen fc_admin_perc = fc_admin_disc/prestamo
 
-matrix results = J(4, 4, .) // empty matrix for results
-//  4 cols are: (1) Treatment arm, (2) beta, (3) std error, (4) pvalue
+matrix results = J(4, 5, .) // empty matrix for results
+//  5 cols are: (1) Treatment arm, (2) beta, (3) std error, (4) df, (5) pvalue
 
 local row = 1	
 foreach arm of varlist pro_2 pro_3 pro_4 pro_5 {
@@ -52,14 +52,16 @@ foreach arm of varlist pro_2 pro_3 pro_4 pro_5 {
 		matrix results[`row',2] = _b[`arm']
 		// Standard error
 		matrix results[`row',3] = _se[`arm']
+		// deg freedom
+		matrix results[`row',4] = `df'
 		// P-value
-		matrix results[`row',4] = 2*ttail(`df', abs(_b[`arm']/_se[`arm']))
+		matrix results[`row',5] = 2*ttail(`df', abs(_b[`arm']/_se[`arm']))
 		
 		local row = `row' + 1
 	}
 		
 
-	matrix colnames results = "k" "beta" "se" "p"
+	matrix colnames results = "k" "beta" "se" "df" "p"
 	matlist results
 		
 		
@@ -69,8 +71,8 @@ foreach arm of varlist pro_2 pro_3 pro_4 pro_5 {
 
 	// Confidence intervals (95%)
 	local alpha = .05 // for 95% confidence intervals
-	gen rcap_lo = beta - invttail(`df',`=`alpha'/2')*se
-	gen rcap_hi = beta + invttail(`df',`=`alpha'/2')*se
+	gen rcap_lo = beta - invttail(df,`=`alpha'/2')*se
+	gen rcap_hi = beta + invttail(df,`=`alpha'/2')*se
 
 	// GRAPH
 	#delimit ;

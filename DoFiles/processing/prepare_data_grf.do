@@ -29,3 +29,25 @@ order def_c fc_admin_disc fc_survey_disc fc_admin fc_survey dias_primer_pago ///
 	
 export delimited "$directorio/_aux/heterogeneity_grf.csv", replace nolabel
 
+
+********************************************************************************
+
+
+use "$directorio/DB/Master.dta", clear
+
+
+sort NombrePignorante fecha_inicial
+
+*Covariates - Randomization - Outcomes
+keep def_c fc_admin_disc fc_survey_disc fc_admin fc_survey dias_primer_pago  /// *Dependent variables
+	pro_* fee NombrePignorante prenda fecha_inicial /// *Admin variables
+	$C0 /* *Controls */
+	
+order def_c fc_admin_disc fc_survey_disc fc_admin fc_survey dias_primer_pago  /// *Dependent variables
+	pro_* fee NombrePignorante prenda fecha_inicial /// *Admin variables
+	$C0 /* *Controls */
+	
+
+	
+export delimited "$directorio/_aux/heterogeneity_te.csv", replace nolabel
+

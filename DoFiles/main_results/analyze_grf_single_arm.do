@@ -5,10 +5,10 @@ local arm pro_2
 
 set more off
 graph drop _all
-foreach depvar in def_c fc_admin_disc  {
+foreach depvar in  def_c fc_admin_disc  {
 
-	*Load data with heterogeneous predictions & propensities
-	import delimited "$directorio/_aux/grf_`arm'_`depvar'.csv", clear
+	*Load data with heterogeneous predictions & propensities (extended)
+	import delimited "$directorio/_aux/grf_extended_`arm'_`depvar'.csv", clear
 	
 		
 	*Overlap assumption	
@@ -21,24 +21,35 @@ foreach depvar in def_c fc_admin_disc  {
 		
 	*Heterogeneous effect distributions
 	if strpos("`depvar'","fc")!=0 {
-		kdensity tau_hat_oobpredictions, generate(pts den) nograph
-		su tau_hat_oobpredictions
-		twoway (line den pts if ///
-			inrange(pts, ` r(mean)'-2*`r(sd)',` r(mean)'+1*`r(sd)') ///
-			& !missing(`arm'), lwidth(medthick)) ///
-				, ///
-			scheme(s2mono) graphregion(color(white)) ytitle("Density") xtitle("Effect") 
+		cap drop esample
+		su tau_hat_oobpredictions, d
+		gen esample = inrange(tau_hat_oobpredictions, `r(p1)', `r(p99)')
+		qui kdensity tau_hat_oobpredictions if esample==1,  nograph 
+		local width =  `r(bwidth)'
 		}
+
 	else {
-		kdensity tau_hat_oobpredictions, generate(pts den) nograph
-		su tau_hat_oobpredictions
-		twoway (line den pts if !missing(`arm'), lwidth(medthick)) ///
-				, ///
-			scheme(s2mono) graphregion(color(white)) ytitle("Density") xtitle("Effect") ///
-			legend(off)	
-		}	
+		cap drop esample
+		gen esample = 1
+		qui kdensity tau_hat_oobpredictions if esample==1,  nograph 
+		local width =  `r(bwidth)'
+		}
+		
+	do "$directorio\DoFiles\main_results\yaxis_kdensity.do" ///
+		 "tau_hat_oobpredictions" "`width'" "esample" "uno"
+		 
+	twoway (hist tau_hat_oobpredictions if esample==1, xline(0, lpattern(dot) lwidth(thick)) yaxis(1) ytitle("Percent", axis(1)) w(`width') percent lcolor(white) fcolor(none) ) ///		
+		(kdensity tau_hat_oobpredictions if esample==1, yaxis(2) ylab(${uno}, notick nolab axis(2)) ///
+						ytitle(" ", axis(2)) xtitle("Effect")  ///
+						lcolor(black) lwidth(thick) lpattern(solid) ///
+						legend(off) scheme(s2mono) graphregion(color(white))) 	
 	graph export "$directorio\Figuras\he_dist_`depvar'_`arm'.pdf", replace
-			
+	
+	****************************************************************************
+	
+	*Load data with heterogeneous predictions & propensities 
+	import delimited "$directorio/_aux/grf_`arm'_`depvar'.csv", clear
+	
 	*Variable interaction results
 		
 

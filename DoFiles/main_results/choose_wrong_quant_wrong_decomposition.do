@@ -44,11 +44,11 @@ forvalues j=0/1 {
 
 gen threshold = _n-1 if _n<=16
 
-local rep_num = 1000
+local rep_num = 500
 forvalues rep = 1/`rep_num' {
 di "`rep'"
 *Draw random effect from normal distribution with standard error according to Athey
-replace tau_sim = rnormal(-tau_hat_oobpredictions, sqrt(tau_hat_oob_fullvarianceestimate))/prestamo*100	
+replace tau_sim = rnormal(-tau_hat_oobpredictions, sqrt(tau_hat_oobvarianceestimates))/prestamo*100	
 *Computation of people that makes mistakes in the choice arm according to estimated counterfactual
 foreach var of varlist tau_sim {
 	forvalues i = 0/16 {
@@ -57,7 +57,7 @@ foreach var of varlist tau_sim {
 		* (`var'>`i' & pro_6==1) : positive (in the sense of beneficial)
 		* treatment effect with fee but choose no fee
 		replace choose_wrong_fee = ((`var'>`i' & pro_6==1) | (`var'<-`i' & pro_7==1)) if !missing(`var') & t_prod==4
-		bootstrap r(mean),  reps(50) level(95): su choose_wrong_fee if `binary'==1
+		bootstrap r(mean),  reps(20) level(95): su choose_wrong_fee if `binary'==1
 		estat bootstrap, all
 		mat point_estimate = e(b)
 		replace cwf_1 = cwf_1 + point_estimate[1,1]*100 in `=`i'+1'
@@ -66,7 +66,7 @@ foreach var of varlist tau_sim {
 			replace cwf_normal_l_1`i' =  confidence_int[1,1]*100 in `rep'
 			replace cwf_normal_h_1`i' =  confidence_int[2,1]*100 in `rep'
 			
-		bootstrap r(mean),  reps(50) level(95): su choose_wrong_fee if `binary'==0
+		bootstrap r(mean),  reps(20) level(95): su choose_wrong_fee if `binary'==0
 		estat bootstrap, all
 		mat point_estimate = e(b)
 		replace cwf_0 = cwf_0 + point_estimate[1,1]*100 in `=`i'+1'
@@ -111,14 +111,12 @@ forvalues i = 0/16 {
 			(line cwf_normal_l_1 threshold, lpattern(dot) lwidth(medthick) lcolor(red)) ///	
 			(line cwf_normal_h_1 threshold, lpattern(dot) lwidth(medthick) lcolor(red)) ///	
 			(line cwf_0 threshold, lpattern(dash) lwidth(medthick) lcolor(navy)) ///
-			(line cwf_normal_l_0 threshold, lpattern(dot) lwidth(medthick) lcolor(navy)) ///	
-			(line cwf_normal_h_0 threshold, lpattern(dot) lwidth(medthick) lcolor(navy)) ///				
 			(scatter cwf_1 threshold,  msymbol(x) color(red) ) ///
 			(scatter cwf_0 threshold, msymbol(x) color(navy) ) ///
 			(scatter qwf_1 threshold,  msymbol(x) color(red) yaxis(2)) ///
 			(scatter qwf_0 threshold, msymbol(x) color(navy) yaxis(2)) ///
 			, legend(order(1 "`binary'" 4 "no `binary'" ///
-				9 "Money (`binary')" 10 "Money (no `binary')"))  scheme(s2mono) ///
+				5 "Money (`binary')" 8 "Money (no `binary')"))  scheme(s2mono) ///
 			graphregion(color(white)) xtitle("Threshold (as % of loan)") ///
 			ytitle("Percentage mistake", axis(1)) ///
 			ytitle("Money (in pesos)",axis(2)) ylabel(0(10)100, axis(1)) 

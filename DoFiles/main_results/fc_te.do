@@ -31,8 +31,11 @@ set more off
 use "$directorio/DB/Master.dta", clear
 
 *Dependent variables
-gen fc_survey_pospay = fc_survey_disc if pagos>0
+gen fc_survey_pospay = fc_survey_disc if sum_p_c>0
 gen fc_survey_fee = fc_survey_disc if fee==1 | prod==1
+
+*Decomposition of FC
+gen payment = sum_pdisc_c-sum_pay_fee_c-sum_int_c
 
 
 ********************************************************************************
@@ -40,12 +43,12 @@ gen fc_survey_fee = fc_survey_disc if fee==1 | prod==1
 ********************************************************************************
 
 
-foreach arm of varlist pro_2 pro_3  {
+foreach arm of varlist pro_3 pro_2 {
 
 
 	if "`arm'"=="pro_2" {
-		local vrlist  fc_admin_disc fc_survey_disc  fc_trans_disc fc_survey_pospay fc_survey_fee  
-		local vrlistnames  "admin (appraised)" "subjective"  "subj + tc" "subj | pay>0" "subj | fee=1" 
+		local vrlist  payment sum_pay_fee_c sum_int_c cost_losing_pawn fc_admin_disc   fc_survey_disc  fc_trans_disc fc_survey_pospay fc_survey_fee  
+		local vrlistnames  "S" "X" "D" "T"  "admin (appraised)" "subjective"  "subj + tc" "subj | pay>0" "subj | fee=1" 
 		}
 	else {
 		local vrlist  fc_admin_disc fc_survey_disc  fc_trans_disc fc_survey_pospay   
@@ -58,8 +61,8 @@ foreach arm of varlist pro_2 pro_3  {
 		}
 		
 	eststo clear
-	matrix results = J(`nv', 4, .) // empty matrix for results
-	//  4 cols are: (1) Treatment arm, (2) beta, (3) std error, (4) pvalue
+	matrix results = J(`nv', 5, .) // empty matrix for results
+	//  5 cols are: (1) Treatment arm, (2) beta, (3) std error, (4) df, (5) pvalue
 
 	local row = 1	
 	foreach depvar of varlist `vrlist' {
@@ -74,14 +77,16 @@ foreach arm of varlist pro_2 pro_3  {
 		matrix results[`row',2] = _b[`arm']
 		// Standard error
 		matrix results[`row',3] = _se[`arm']
+		// deg freedom
+		matrix results[`row',4] = `df'	
 		// P-value
-		matrix results[`row',4] = 2*ttail(`df', abs(_b[`arm']/_se[`arm']))
+		matrix results[`row',5] = 2*ttail(`df', abs(_b[`arm']/_se[`arm']))
 		
 		local row = `row' + 1
 		}
 		
 
-	matrix colnames results = "k" "beta" "se" "p"
+	matrix colnames results = "k" "beta" "se" "df" "p"
 	matlist results
 		
 		
@@ -106,18 +111,40 @@ foreach arm of varlist pro_2 pro_3  {
 
 	// Confidence intervals (95%)
 	local alpha = .05 // for 95% confidence intervals
-	gen rcap_lo = beta - invttail(`df',`=`alpha'/2')*se
-	gen rcap_hi = beta + invttail(`df',`=`alpha'/2')*se
+	gen rcap_lo = beta - invttail(df,`=`alpha'/2')*se
+	gen rcap_hi = beta + invttail(df,`=`alpha'/2')*se
 
 	// GRAPH
+	local st = 1
+	if "`arm'"=="pro_2" {
+		replace k = 4.5 in 1
+		replace k = 4.6 in 2
+		replace k = 4.7 in 3
+		replace k = 4.8 in 4
+		local st = 5
+		}
+		
 	#delimit ;
 	graph twoway 
-				(scatter beta k if p<0.05 ,           `estimate_options_95') 
-				(scatter beta k if p>=0.05 & p<0.10 , `estimate_options_90') 
-				(scatter beta k if p>=0.10 ,          `estimate_options_0' )
-				(rcap rcap_hi rcap_lo k if p<0.05,           `rcap_options_95')
-				(rcap rcap_hi rcap_lo k if p>=0.05 & p<0.10, `rcap_options_90')
-				(rcap rcap_hi rcap_lo k if p>=0.10,          `rcap_options_0' )		
+				(scatter beta k if p<0.05 & !inlist(varname,"S","T","X","D") , `estimate_options_95') 
+				(scatter beta k if p>=0.05 & p<0.10 & !inlist(varname,"S","T","X","D"), `estimate_options_90') 
+				(scatter beta k if p>=0.10 & !inlist(varname,"S","T","X","D") ,`estimate_options_0' )
+				(scatter beta k if p<0.05 & varname=="S", msymbol(S) color(ltblue)) 
+				(scatter beta k if p>=0.05 & p<0.10 & varname=="S" , msymbol(S) color(ltblue)) 
+				(scatter beta k if p>=0.10 & varname=="S" , msymbol(S) color(ltblue))
+				(scatter beta k if p<0.05 & varname=="D", msymbol(D) color(ltblue)) 
+				(scatter beta k if p>=0.05 & p<0.10 & varname=="D" , msymbol(D) color(ltblue)) 
+				(scatter beta k if p>=0.10 & varname=="D" , msymbol(D) color(ltblue))	
+				(scatter beta k if p<0.05 & varname=="X", msymbol(X) color(ltblue)) 
+				(scatter beta k if p>=0.05 & p<0.10 & varname=="X" , msymbol(X) color(ltblue)) 
+				(scatter beta k if p>=0.10 & varname=="X" , msymbol(X) color(ltblue))	
+				(scatter beta k if p<0.05 & varname=="T", msymbol(T) color(ltblue)) 
+				(scatter beta k if p>=0.05 & p<0.10 & varname=="T" , msymbol(T) color(ltblue)) 
+				(scatter beta k if p>=0.10 & varname=="T" , msymbol(T) color(ltblue))					
+				(rcap rcap_hi rcap_lo k if p<0.05 & !inlist(varname,"S","T","X","D"),           `rcap_options_95')
+				(rcap rcap_hi rcap_lo k if p>=0.05 & p<0.10 & !inlist(varname,"S","T","X","D"), `rcap_options_90')
+				(rcap rcap_hi rcap_lo k if p>=0.10 & !inlist(varname,"S","T","X","D"),          `rcap_options_0' )	
+				(rcap rcap_hi rcap_lo k if inlist(varname,"S","T","X","D"), color(ltblue))
 				, 
 				title(" ", `title_options')
 				yline(0, `manual_axis')
@@ -126,10 +153,10 @@ foreach arm of varlist pro_2 pro_3  {
 				xscale(noline) /* because manual axis at 0 with yline above) */
 				`plotregion' `graphregion'  
 				legend(off)
-				xlabel(1(1)`nv', valuelabel angle(vertical) labsize(small))
+				xlabel(`st'(1)`nv', valuelabel angle(vertical) labsize(small))
 				;
-
 	#delimit cr
+
 	restore
 	graph export "$directorio\Figuras\fc_te_`arm'.pdf", replace
 	

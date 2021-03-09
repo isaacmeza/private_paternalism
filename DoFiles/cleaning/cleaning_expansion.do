@@ -37,4 +37,9 @@ label define pago_fijo 1 "Pagos Fijos " 0 "Tradicional "
 encode linea1, gen(pago_fijo) label(pago_fijo)
 encode linea4, gen(periodicidad) 
 
+*Filter valid dates
+su fechaaltadelprestamo
+drop if fechavencimiento>`r(max)'
+drop if fechaaltadelultimodetalle>fechavencimiento
+
 save  "${directorio}\DB\base_expansion.dta", replace
