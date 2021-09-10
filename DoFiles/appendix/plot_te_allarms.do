@@ -98,10 +98,7 @@ graph twoway
 	xscale(noline) /* because manual axis at 0 with yline above) */
 	`plotregion' `graphregion'  
 	legend(order(4 "SQ" 7 "NSQ"))
-	xlabel(1 "Fee-forcing"
-			2 "Promise-forcing"
-			3 "Choice-fee"
-			4 "Choice-promise"
+	xlabel(1 "Force/Fee" 2 "Promise/Fee" 3 "Choice/Fee" 4 "Choice/Promise"
 			, angle(vertical))
 ;
 

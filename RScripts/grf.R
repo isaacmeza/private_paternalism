@@ -13,68 +13,68 @@ source("./RScripts/best_tree.R")
 
 heterogeneity_effect <- function(data_in,treatment_var,outcome_var,writedata,extendedsample) {
   
-require("dplyr")
-data_frame <- data_in %>%
-  filter(data_in[,treatment_var] == 1 | data_in[,treatment_var] == 0) %>%
-  select(-c( pro_2, pro_3, pro_4, pro_5, pro_6, pro_7, pro_8, pro_9, fee, fecha_inicial,
-             def_c, fc_admin_disc, fc_survey_disc, fc_admin, fc_survey, dias_primer_pago), 
-         treatment_var, outcome_var ) %>%
-  drop_na()  
-
-
-# PREPARE VARIABLES
-X <- select(data_frame,-c(outcome_var, treatment_var,NombrePignorante, prenda))
-Y <- select(data_frame,outcome_var)
-W <- as.numeric(data_frame[,treatment_var] == 1)
-
-# ESTIMATE MODEL
-tau.forest = causal_forest(
-  X = model.matrix(~., data = X), 
-  Y = data.matrix(Y), 
-  W = W,
-  honesty = TRUE)
-
-if (writedata == 0) {
-  # BEST TREE
-  best_tree_info <- find_best_tree(tau.forest, "causal")
-}
-
-# OVERLAP ASSUMPTION
-propensity.forest = regression_forest(X, W)
-propensity_score = predict(propensity.forest)$predictions
-hist(propensity_score, xlab = "propensity score")
-
-# Estimate treatment effects for the training data using out-of-bag prediction.
-tau_hat_oob = predict(tau.forest, estimate.variance = TRUE)
-hist(tau_hat_oob$predictions)
-
-# Estimate the conditional average treatment effect on the full sample (CATE).
-print(average_treatment_effect(tau.forest, target.sample = "all"))
-
-# Estimate the conditional average treatment effect on the treated sample (CATT).
-# Here, we don't expect much difference between the CATE and the CATT, since
-# treatment assignment was randomized.
-print(average_treatment_effect(tau.forest, target.sample = "treated"))
-
-#The (conditional) average treatment effect on the controls 
-print(average_treatment_effect(tau.forest, target.sample = "control"))
-
-#Write data
-if (writedata == 1) {
-  data.out <- add_column(data_frame,tau_hat_oob$predictions,tau_hat_oob$variance.estimates, propensity_score)
-  if (extendedsample == 1) {
-    filename <- paste("_aux/grf_extended_", treatment_var,"_",outcome_var, ".csv", sep="") 
-  } else {
-    filename <- paste("_aux/grf_", treatment_var,"_",outcome_var, ".csv", sep="") 
+  require("dplyr")
+  data_frame <- data_in %>%
+    filter(data_in[,treatment_var] == 1 | data_in[,treatment_var] == 0) %>%
+    select(-c( pro_2, pro_3, pro_4, pro_5, pro_6, pro_7, pro_8, pro_9, fee, fecha_inicial,
+               eff_cost_loan, def_c, fc_admin_disc, fc_survey_disc, fc_admin, fc_survey, dias_primer_pago), 
+           treatment_var, outcome_var ) %>%
+    drop_na()  
+  
+  
+  # PREPARE VARIABLES
+  X <- select(data_frame,-c(outcome_var, treatment_var,NombrePignorante, prenda))
+  Y <- select(data_frame,outcome_var)
+  W <- as.numeric(data_frame[,treatment_var] == 1)
+  
+  # ESTIMATE MODEL
+  tau.forest = causal_forest(
+    X = model.matrix(~., data = X), 
+    Y = data.matrix(Y), 
+    W = W,
+    honesty = TRUE)
+  
+  if (writedata == 0) {
+    # BEST TREE
+    best_tree_info <- find_best_tree(tau.forest, "causal")
   }
-  write_csv(data.out,filename)
-} else {
-  # Tree Plot
-  tree.plot = plot(get_tree(tau.forest, best_tree_info$best_tree))
-  filename_pl <- paste("Figuras/crf_", treatment_var,"_",outcome_var, ".svg", sep="") 
-  cat(DiagrammeRsvg::export_svg(tree.plot), file=filename_pl)
-}
-
+  
+  # OVERLAP ASSUMPTION
+  propensity.forest = regression_forest(X, W)
+  propensity_score = predict(propensity.forest)$predictions
+  hist(propensity_score, xlab = "propensity score")
+  
+  # Estimate treatment effects for the training data using out-of-bag prediction.
+  tau_hat_oob = predict(tau.forest, estimate.variance = TRUE)
+  hist(tau_hat_oob$predictions)
+  
+  # Estimate the conditional average treatment effect on the full sample (CATE).
+  print(average_treatment_effect(tau.forest, target.sample = "all"))
+  
+  # Estimate the conditional average treatment effect on the treated sample (CATT).
+  # Here, we don't expect much difference between the CATE and the CATT, since
+  # treatment assignment was randomized.
+  print(average_treatment_effect(tau.forest, target.sample = "treated"))
+  
+  #The (conditional) average treatment effect on the controls 
+  print(average_treatment_effect(tau.forest, target.sample = "control"))
+  
+  #Write data
+  if (writedata == 1) {
+    data.out <- add_column(data_frame,tau_hat_oob$predictions,tau_hat_oob$variance.estimates, propensity_score)
+    if (extendedsample == 1) {
+      filename <- paste("_aux/grf_extended_", treatment_var,"_",outcome_var, ".csv", sep="") 
+    } else {
+      filename <- paste("_aux/grf_", treatment_var,"_",outcome_var, ".csv", sep="") 
+    }
+    write_csv(data.out,filename)
+  } else {
+    # Tree Plot
+    tree.plot = plot(get_tree(tau.forest, best_tree_info$best_tree))
+    filename_pl <- paste("Figuras/crf_", treatment_var,"_",outcome_var, ".svg", sep="") 
+    cat(DiagrammeRsvg::export_svg(tree.plot), file=filename_pl)
+  }
+  
 }
 #####################################################
 
@@ -175,17 +175,14 @@ c(
 
 #Heterogeneous Effects
 
-for (dep in c("fc_admin_disc", "def_c")){
-  heterogeneity_effect(data_extended,"pro_2",dep,1,1) 
-  heterogeneity_effect(data,"pro_2",dep,1,0) 
-  heterogeneity_effect(data,"pro_3",dep,1,0) 
-  heterogeneity_effect(data,"pro_4",dep,1,0) 
-  heterogeneity_effect(data,"pro_5",dep,1,0) 
+for (dep in c("fc_admin", "def_c", "eff_cost_loan" )){
+  for (arm in c("pro_2","pro_3","pro_4","pro_5","pro_6","pro_7","pro_8","pro_9")){
+    heterogeneity_effect(data_extended,arm,dep,1,1) 
+    heterogeneity_effect(data,arm,dep,1,0) 
+  }
 }
 
 
-  heterogeneity_effect(data,"pro_2","dias_primer_pago",1) 
-
-  # Plot tree with names in english
-  heterogeneity_effect(data_copy,"pro_2","fc_admin_disc",0) 
-
+# Plot tree with names in english
+heterogeneity_effect(data_copy,"pro_2","fc_admin_disc",0,0) 
+heterogeneity_effect(data_copy,"pro_2","eff_cost_loan",0,0) 

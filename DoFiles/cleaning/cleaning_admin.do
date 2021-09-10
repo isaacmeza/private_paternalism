@@ -15,8 +15,8 @@ rename ClaveMovimiento clave_movimiento
 rename Valuador valuador
 rename FechaMovimiento fecha_movimiento
 rename FechaIngreso fecha_inicial
-rename NmPrenda prenda
-rename MontoPrstamo prestamo
+rename NúmPrenda prenda
+rename MontoPréstamo prestamo
 rename ImporteMovimiento importe
 
 
@@ -77,7 +77,7 @@ drop prestamo_real
 gen log_prestamo = log(prestamo)
 
 *Drop negative pledges
-bysort prenda: egen aux=min(MontoPrstamoActualizado)
+bysort prenda: egen aux=min(MontoPréstamoActualizado)
 bysort prenda importe: drop if(importe[_n-1]<0)
 drop if importe<0
 drop aux
@@ -172,11 +172,11 @@ gen intereses = importe if inlist(clave_movimiento, 5)
 replace intereses = intereses + importe-prestamo if clave_movimiento==3
 label var intereses "Interests"
 
-*Credit has ended, menaing eithet 'desempeno' or 'pase al moneda'
+*Credit has ended, meaning either 'desempeno' or 'pase al moneda'
 gen concluyo = inlist(clave_movimiento,3,6)
 bysort prenda : egen concluyo_c = max(concluyo)
 
-*Incurred interests
+*Incurred interests/fee
 preserve
 drop if clave_movimiento==2
 collapse (mean) prestamo (sum) importe (mean) dias_inicio (mean) concluyo_c (mean) producto, by(prenda fecha_movimiento)
@@ -550,6 +550,8 @@ foreach var of varlist sum_porcp_c sum_p_c sum_pdisc_c {
 gen fc_admin = sum_p_c + prestamo/(0.7)
 replace fc_admin = fc_admin - prestamo/(0.7) if des_c == 1
 gen log_fc_admin = log(1+fc_admin)
+label var fc_admin "Financial cost"
+
 	*discounted
 gen fc_admin_disc = sum_pdisc_c + prestamo/(0.7)
 replace fc_admin_disc = fc_admin_disc - prestamo/(0.7*(1+0.002257833358012379025857)^dias_al_desempenyo) if des_c == 1
@@ -559,6 +561,19 @@ gen cost_losing_pawn = prestamo/(0.7)
 replace cost_losing_pawn = cost_losing_pawn - prestamo/(0.7*(1+0.002257833358012379025857)^dias_al_desempenyo) if des_c == 1
 
 
+*Effective cost/loan ratio
+gen eff_cost_loan = sum_porcp_c + 1/0.7
+replace eff_cost_loan = eff_cost_loan - 1/0.7 if des_c == 1
+label var eff_cost_loan "Effective cost-loan ratio"
+
+*Calculate a version of this that doesn't include the interest that is mechanically saved by paying early since this is the piece of the forced-fee contract that has a foregone liquidity cost for the borrower.
+gen eff_cost_loan_noint = sum_porcp_c - sum_porc_int_c + 1/0.7
+replace eff_cost_loan_noint = eff_cost_loan_noint - 1/0.7 if des_c == 1
+label var eff_cost_loan_noint "Effective cost-loan ratio without interests"
+
+*Calculate a version of this that is only based on saved collateral since this has nothing to do with the early payment other than how it helps you repay.
+
+*--------
 
 *Suc by day
 egen suc_x_dia=group(suc fecha_inicial)

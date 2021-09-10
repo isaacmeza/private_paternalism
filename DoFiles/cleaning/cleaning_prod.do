@@ -1,7 +1,7 @@
 
 import excel "$directorio/Raw/BASEMAESTRA-19-06-2013.xlsx", sheet("Base") firstrow clear
 	
-rename NmPrenda prenda
+rename NúmPrenda prenda
 keep ProductoLetra Producto prenda
 
 *TIPO DE PRODUCTO

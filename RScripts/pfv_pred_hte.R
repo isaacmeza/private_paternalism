@@ -3,7 +3,7 @@ library(grf)
 library(ggplot2)
 
 # SET WORKING DIRECTORY
-setwd('C:/Users/xps-seira/Dropbox/Apps/ShareLaTeX/Donde2020')
+setwd('C:/Users/isaac/Dropbox/Apps/ShareLaTeX/Donde2020')
 set.seed(5289374)
 options(digits=18)
 
@@ -42,7 +42,7 @@ rf_predict <- function(data_in,take.up,nme) {
 #RF Predictions of no-choice arm
 for (arm in c("pro_2")) {
   for (pred in c("pago_frec_vol_fee")) {
-    for (effect in c("def_c", "fc_admin_disc")) {
+    for (effect in c("def_c")) {
       filename <- paste("_aux/",arm,"_",pred,"_",effect,".csv", sep="")
       data <- read_csv(filename)
       outname <- paste(arm,"_",pred,"_",effect,sep="")

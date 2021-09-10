@@ -5,7 +5,7 @@ Empirical Financial cost cumulative distribution
 use "$directorio/DB/Master.dta", clear
 
 *Variable gen
-gen fc_prestamo = (fc_admin_disc/prestamo)*100
+gen fc_prestamo = (fc_admin/prestamo)*100
 
 *Histograms of financial cost
 xtile perc_a_d = fc_admin_d, nq(100)
@@ -13,14 +13,14 @@ xtile perc_a_d = fc_admin_d, nq(100)
 *cumulative distribution of "realized financial cost" 
 *for the sq contract and the fee-forcing contract
 *ECDF
-cumul fc_admin_disc if perc_a_d<=99 & pro_2==1, gen(fc_cdf_1)
-cumul fc_admin_disc if perc_a_d<=99 & pro_2==0, gen(fc_cdf_0)
+cumul fc_admin if perc_a_d<=99 & pro_2==1, gen(fc_cdf_1)
+cumul fc_admin if perc_a_d<=99 & pro_2==0, gen(fc_cdf_0)
 *Function to obtain significance difference region
-distcomp fc_admin_disc if perc_a_d<=99 , by(pro_2) alpha(0.1) p noplot
+distcomp fc_admin if perc_a_d<=99 , by(pro_2) alpha(0.1) p noplot
 mat ranges = r(rej_ranges)
 
 *To plot both ECDF
-stack  fc_cdf_1 fc_admin_disc  fc_cdf_0 fc_admin_disc, into(c fc) ///
+stack  fc_cdf_1 fc_admin  fc_cdf_0 fc_admin, into(c fc) ///
 	wide clear
 keep if !missing(fc_cdf_1) | !missing(fc_cdf_0)
 tempfile temp

@@ -33,7 +33,7 @@ gen fc_te_cf_lb90 = fc_te_cf - invnorm(0.95)*sqrt(tau_hat_oobvarianceestimates)*
 *Histogram of FC treatment effect on the treated
 foreach var of varlist fc_te_cf {
 	twoway (hist `var' if pro_6==1 | pro_7==1, percent w(10) lcolor(blue) color(blue)) ///
-		(hist `var' if pro_8==1 | pro_9==1, percent w(10)lcolor(black) color(none)), ///
+		(hist `var' if pro_8==1 | pro_9==1, percent w(10) lcolor(black) color(none)), ///
 		scheme(s2mono) graphregion(color(white)) ///
 		legend(order(1 "Fee" 2 "Promise")) xtitle("Estimated regret")
 	graph export "$directorio/Figuras/hist_regret_`var'.pdf", replace

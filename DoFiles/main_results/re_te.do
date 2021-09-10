@@ -38,7 +38,7 @@ matrix results = J(12, 5, .) // empty matrix for results
 	
 foreach arm in pro_2 pro_3 {
 	*ADMIN DATA
-	import delimited "$directorio/_aux/grf_`arm'_fc_admin_disc.csv", clear
+	import delimited "$directorio/_aux/grf_`arm'_eff_cost_loan.csv", clear
 	keep prenda tau_hat_oobpredictions
 	tempfile temp_hte
 	save `temp_hte'

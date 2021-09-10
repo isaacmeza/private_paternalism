@@ -5,7 +5,7 @@ local arm pro_2
 
 set more off
 graph drop _all
-foreach depvar in  def_c fc_admin_disc  {
+foreach depvar in  def_c fc_admin_disc eff_cost_loan {
 
 	*Load data with heterogeneous predictions & propensities (extended)
 	import delimited "$directorio/_aux/grf_extended_`arm'_`depvar'.csv", clear

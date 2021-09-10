@@ -40,7 +40,7 @@ do "$directorio\DoFiles\appendix\iv_reg_demand_pf.do"
 *Figure OA-4. : Behavior of those who lost pawn
 do "$directorio\DoFiles\appendix\hist_den_default.do"
 
-*Figure OA-5. : FC as % of loan - treatment effect
+*Figure OA-5. : FC conditional on first 115 days - treatment effect
 do "$directorio\DoFiles\appendix\fc_te_115.do"
 
 *Figure OA-6. :  Financial cost effect: charging all fees

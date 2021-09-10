@@ -149,6 +149,12 @@ local temp =`r(N)'
 count if !missing(prod) & dias_ultimo_mov>105 & def_c
 di `r(N)'/`temp'
 
+*Our measure of overconfidence has a correlation of XXX with a dummy for renewing and losing the pawn.
+cap drop renew_losing
+gen renew_losing = (dias_ultimo_mov>105 & def_c) if !missing(prod) 
+tab renew_losing
+reg renew_losing OC, r
+
 *APR of xxx\% on average for the control group.
 preserve
 use "$directorio/_aux/apr.dta", clear

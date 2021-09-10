@@ -152,30 +152,27 @@ foreach method in logit swlogit rf boost {
 	local Col=substr(c(ALPHA),2*`t'+1,1)
 	*Expected value of predicted values
 	su `method'_pred  if insample==0 , d
-	qui putexcel `Col'14=(`r(mean)') using "$directorio\Tables\\${oos}.xlsx", ///
+	qui putexcel set "$directorio\Tables\\${oos}.xlsx", ///
 		sheet("oos_${depvar}") modify
+	qui putexcel `Col'14=(`r(mean)')  
 		
 	*MAE	
 	qui gen error_`method'=abs(`method'_pred- $depvar) 
 	su error_`method' if insample==0
-	qui putexcel `Col'4=(`r(mean)') using "$directorio\Tables\\${oos}.xlsx", ///
-		sheet("oos_${depvar}") modify
+	qui putexcel `Col'4=(`r(mean)')
 		
 	*Accuracy
 	tab `method'_pred2 $depvar if insample==0, matcell(tb)
 	local acc = (tb[1,1]+tb[2,2])/(tb[1,1]+tb[2,2]+tb[1,2]+tb[2,1])
-	qui putexcel `Col'10=(`acc') using "$directorio\Tables\\${oos}.xlsx", ///
-		sheet("oos_${depvar}") modify
+	qui putexcel `Col'10=(`acc')
 	
 	*Correlation 0-1
 	corr $depvar `method'_pred2 if insample==0
-	qui putexcel `Col'11=(`r(rho)') using "$directorio\Tables\\${oos}.xlsx", ///
-		sheet("oos_${depvar}") modify
+	qui putexcel `Col'11=(`r(rho)') 
 		
 	*Correlation predicted val
 	corr $depvar `method'_pred if insample==0
-	qui putexcel `Col'12=(`r(rho)') using "$directorio\Tables\\${oos}.xlsx", ///
-		sheet("oos_${depvar}") modify	
+	qui putexcel `Col'12=(`r(rho)') 	
 	
 	*MSE
 	gen `method'_eps=${depvar}-`method'_pred 
@@ -184,30 +181,24 @@ foreach method in logit swlogit rf boost {
 	gen `method'_ss=sum(`method'_eps2)
 	count if insample==0
 	local mse=`method'_ss[_N] / (`r(N)')
-	qui putexcel `Col'5=(`mse') using "$directorio\Tables\\${oos}.xlsx", ///
-		sheet("oos_${depvar}") modify
+	qui putexcel `Col'5=(`mse') 
 	
 	sum $depvar if insample==0
 	local var=r(Var)
 	
 	*R2
 	local r2= (`var'-`mse')/`var'
-	qui putexcel `Col'13=(`r2') using "$directorio\Tables\\${oos}.xlsx", ///
-		sheet("oos_${depvar}") modify
+	qui putexcel `Col'13=(`r2') 
 
 	*AUC (oos)
 	roctab $depvar `method'_pred if insample==0
-	qui putexcel `Col'6=(`r(area)') using "$directorio\Tables\\${oos}.xlsx", ///
-		sheet("oos_${depvar}") modify	 
-	qui putexcel `Col'7=(`r(se)') using "$directorio\Tables\\${oos}.xlsx", ///
-		sheet("oos_${depvar}") modify	
+	qui putexcel `Col'6=(`r(area)') 	 
+	qui putexcel `Col'7=(`r(se)') 	
 		
 	*AUC (in sample)
 	roctab $depvar `method'_pred if insample==1
-	qui putexcel `Col'8=(`r(area)') using "$directorio\Tables\\${oos}.xlsx", ///
-		sheet("oos_${depvar}") modify	 
-	qui putexcel `Col'9=(`r(se)') using "$directorio\Tables\\${oos}.xlsx", ///
-		sheet("oos_${depvar}") modify	
+	qui putexcel `Col'8=(`r(area)')  
+	qui putexcel `Col'9=(`r(se)') 	
 		
 		
 	local t = `t'+1	

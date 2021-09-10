@@ -37,7 +37,7 @@ estadd scalar DepVarMean = `r(mean)'
 
 ************************************HTE*****************************************
 ********************************************************************************
-import delimited "$directorio/_aux/grf_pro_2_fc_admin_disc.csv", clear
+import delimited "$directorio/_aux/grf_pro_2_fc_admin.csv", clear
 merge 1:1 prenda using "$directorio/DB/Master.dta", nogen keep(3)
 
 

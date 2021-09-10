@@ -44,7 +44,7 @@ matrix results = J(6, 5, .) // empty matrix for results
 
 
 
-foreach arm of varlist pro_2 pro_3 {
+foreach arm of varlist pro_3 pro_2 {
 
 	eststo clear
 	local row = 1	

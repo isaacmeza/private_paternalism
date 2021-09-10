@@ -8,7 +8,7 @@ use "$directorio/DB/Master.dta", clear
 sort NombrePignorante fecha_inicial
 
 *Covariates - Randomization - Outcomes
-keep def_c fc_admin_disc fc_survey_disc fc_admin fc_survey dias_primer_pago /// *Dependent variables
+keep eff_cost_loan def_c fc_admin_disc fc_survey_disc fc_admin fc_survey dias_primer_pago /// *Dependent variables
 	pro_* fee NombrePignorante prenda fecha_inicial /// *Admin variables
 	dummy_dow* dummy_suc* /// *Controls
 	prestamo pr_recup  edad visit_number num_arms faltas /// *Continuous covariates
@@ -17,7 +17,7 @@ keep def_c fc_admin_disc fc_survey_disc fc_admin fc_survey dias_primer_pago /// 
 	masqueprepa estresado_seguido OC pb fb hace_presupuesto tentado low_cost low_time rec_cel
 	
 	
-order def_c fc_admin_disc fc_survey_disc fc_admin fc_survey dias_primer_pago /// *Dependent variables
+order eff_cost_loan def_c fc_admin_disc fc_survey_disc fc_admin fc_survey dias_primer_pago /// *Dependent variables
 	pro_* fee NombrePignorante prenda fecha_inicial /// *Admin variables
 	dummy_dow* dummy_suc* /// *Controls
 	prestamo pr_recup  edad visit_number num_arms faltas /// *Continuous covariates
@@ -39,11 +39,11 @@ use "$directorio/DB/Master.dta", clear
 sort NombrePignorante fecha_inicial
 
 *Covariates - Randomization - Outcomes
-keep def_c fc_admin_disc fc_survey_disc fc_admin fc_survey dias_primer_pago  /// *Dependent variables
+keep eff_cost_loan def_c fc_admin_disc fc_survey_disc fc_admin fc_survey dias_primer_pago  /// *Dependent variables
 	pro_* fee NombrePignorante prenda fecha_inicial /// *Admin variables
 	$C0 /* *Controls */
 	
-order def_c fc_admin_disc fc_survey_disc fc_admin fc_survey dias_primer_pago  /// *Dependent variables
+order eff_cost_loan def_c fc_admin_disc fc_survey_disc fc_admin fc_survey dias_primer_pago  /// *Dependent variables
 	pro_* fee NombrePignorante prenda fecha_inicial /// *Admin variables
 	$C0 /* *Controls */
 	

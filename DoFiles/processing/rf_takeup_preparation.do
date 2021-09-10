@@ -42,9 +42,10 @@ foreach takeup_var in pago_frec_vol pago_frec_vol_fee pago_frec_vol_promise {
 		sort u
 		}
 	qui count
+	local obs = `r(N)'
 	drop u
 
-	global trainn= round($trainf *`r(N)'+1)	
+	global trainn= round($trainf *`obs'+1)	
 	gen insample=1 in 1/$trainn
 	replace insample=0 if missing(insample)
 

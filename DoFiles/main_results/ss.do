@@ -36,18 +36,28 @@ foreach var of varlist  monday num_empenio {
 drop if missing(t_prod)
 orth_out prestamo monday num_empenio nvals, by(t_prod) overall count se  vce(cluster suc_x_dia)  ///
 	 bdec(2) 
-	
-qui putexcel B2=matrix(r(matrix)) using "$directorio\Tables\SS.xlsx", sheet("SS_admin") modify
+	 
+qui putexcel set  "$directorio\Tables\SS.xlsx", sheet("SS_admin") modify	
+qui putexcel B2=matrix(r(matrix)) 
 	
 local i = 2	
 foreach var of varlist prestamo monday num_empenio {
 	qui reg `var' i.t_prod, r cluster(suc_x_dia)
 	test 1.t_prod==2.t_prod==3.t_prod==4.t_prod==5.t_prod
 	local p_val = `r(p)'
-	qui putexcel J`i'=matrix(`p_val') using "$directorio\Tables\SS.xlsx", sheet("SS_admin") modify
+	qui putexcel set "$directorio\Tables\SS.xlsx", sheet("SS_admin") modify
+	qui putexcel J`i'=matrix(`p_val')  
 	local i = `i'+2
 	}
-
+	
+*Test overall with pre-experiment
+gen overall = inlist(t_prod,1,2,3,4,5) if !missing(t_prod)	
+foreach var of varlist prestamo monday num_empenio {
+	qui reg `var' i.overall, r cluster(suc_x_dia)
+	test 1.overall
+	local p_val = `r(p)'
+	local i = `i'+2
+	}
 ********************************************************************************
 	
 *SURVEY DATA (ENTRY) 
@@ -125,31 +135,7 @@ gen takeup = (_merge==3) if inlist(_merge,1,3)
 * Drop irrelevant observations  (important for correct # obs count)
 drop if missing(t_prod)
 
-**********************************CONDITIONAL on pawning************************
 
-orth_out genero edad  val_pren pres_antes pr_recup masqueprepa response ///
-	if inlist(_merge,2,3) & inlist(t_prod,1,2,3,4,5) , by(t_prod)  overall se  vce(cluster suc_x_dia) ///
-	bdec(2) 
-	
-qui putexcel B2=matrix(r(matrix)) using "$directorio\Tables\SS.xlsx", sheet("SS_survey") modify
-
-*Count number of surveys
-forvalues t = 1/5 {
-	count if !missing(f_encuesta) & t_prod==`t' & inlist(_merge,2,3)
-	local obs = `r(N)'
-	local Col=substr(c(ALPHA),2*`t'+1,1)
-	qui putexcel `Col'16=matrix(`obs') using "$directorio\Tables\SS.xlsx", sheet("SS_survey") modify
-	}
-
-	*F-tests
-local i = 2	
-foreach var of varlist genero edad  val_pren pres_antes pr_recup masqueprepa response {
-	qui reg `var' i.t_prod if inlist(_merge,2,3) & inlist(t_prod,1,2,3,4,5), r cluster(suc_x_dia)
-	test 1.t_prod==2.t_prod==3.t_prod==4.t_prod==5.t_prod
-	local p_val = `r(p)'
-	qui putexcel I`i'=matrix(`p_val') using "$directorio\Tables\SS.xlsx", sheet("SS_survey") modify
-	local i = `i'+2
-	}
 	
 *********************************UN-CONDITIONAL sample**************************
 
@@ -157,14 +143,16 @@ orth_out genero edad  val_pren pres_antes pr_recup masqueprepa takeup ///
 	if inlist(_merge,1,2,3), by(t_prod) overall se  vce(cluster suc_x_dia) ///
 	bdec(2) 
 	
-qui putexcel B2=matrix(r(matrix)) using "$directorio\Tables\SS.xlsx", sheet("SS_survey_uncond") modify
+qui putexcel set "$directorio\Tables\SS.xlsx", sheet("SS_survey_uncond") modify	
+qui putexcel B2=matrix(r(matrix))  
 
 *Count number of surveys
 forvalues t = 1/6 {
 	count if !missing(f_encuesta) & t_prod==`t' & inlist(_merge,1,2,3)
 	local obs = `r(N)'
 	local Col=substr(c(ALPHA),2*`t'+1,1)
-	qui putexcel `Col'16=matrix(`obs') using "$directorio\Tables\SS.xlsx", sheet("SS_survey_uncond") modify
+	qui putexcel set "$directorio\Tables\SS.xlsx", sheet("SS_survey_uncond") modify
+	qui putexcel `Col'16=matrix(`obs')  
 	}
 
 	*F-tests
@@ -173,11 +161,12 @@ foreach var of varlist genero edad  val_pren pres_antes pr_recup masqueprepa  {
 	qui reg `var' i.t_prod if inlist(_merge,1,2,3) , r cluster(suc_x_dia)
 	test 1.t_prod==2.t_prod==3.t_prod==4.t_prod==5.t_prod==6.t_prod
 	local p_val = `r(p)'
-	qui putexcel J`i'=matrix(`p_val') using "$directorio\Tables\SS.xlsx", sheet("SS_survey_uncond") modify
+	qui putexcel set "$directorio\Tables\SS.xlsx", sheet("SS_survey_uncond") modify
+	qui putexcel J`i'=matrix(`p_val')  
 	local i = `i'+2
 	}
 	qui reg takeup i.t_prod if inlist(_merge,1,2,3), r cluster(suc_x_dia)
 	test 1.t_prod==2.t_prod==3.t_prod==4.t_prod==5.t_prod
 	local p_val = `r(p)'
-	qui putexcel J`i'=matrix(`p_val') using "$directorio\Tables\SS.xlsx", sheet("SS_survey_uncond") modify
-	
+	qui putexcel set "$directorio\Tables\SS.xlsx", sheet("SS_survey_uncond") modify
+	qui putexcel J`i'=matrix(`p_val')  
