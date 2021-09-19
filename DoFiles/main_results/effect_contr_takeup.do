@@ -1,8 +1,6 @@
 /*
 Effect in default for different propensity of take up predicted (using a RF)
 probabilities
-
-Author : Isaac Meza
 */
 
 
