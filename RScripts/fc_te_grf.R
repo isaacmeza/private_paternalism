@@ -22,8 +22,6 @@ set.seed(5289374)
   
   data_test <- data_in %>% 
     select(-c(fc_admin_disc, fee_arms, prenda, insample))
-  data_test_tau <- data_in %>% 
-    select(-c(fc_admin_disc, prenda, insample))
   
   ###################################################################  
   ###################################################################  
@@ -66,7 +64,7 @@ set.seed(5289374)
   pred.forest.nofee = regression_forest(X_nofee, Y_nofee)
 
   # Estimate treatment effects for the training data using out-of-bag prediction.
-  tau_hat_oob = predict(tau.forest, data_test_tau, estimate.variance = TRUE)
+  tau_hat_oob = predict(tau.forest, model.matrix(~., data = data_test), estimate.variance = TRUE)
   hist(tau_hat_oob$predictions)
   tau_hat_oob_full = predict(tau.forest.full, estimate.variance = TRUE)
   hist(tau_hat_oob_full$predictions)

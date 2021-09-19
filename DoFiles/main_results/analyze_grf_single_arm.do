@@ -22,15 +22,15 @@ foreach depvar in  def_c fc_admin_disc eff_cost_loan {
 	*Heterogeneous effect distributions
 	if strpos("`depvar'","fc")!=0 {
 		cap drop esample
-		su tau_hat_oobpredictions, d
-		gen esample = inrange(tau_hat_oobpredictions, `r(p1)', `r(p99)')
+		su tau_hat_oobpredictions if `arm'==1 , d
+		gen esample = inrange(tau_hat_oobpredictions, `r(p1)', `r(p99)') if `arm'==1
 		qui kdensity tau_hat_oobpredictions if esample==1,  nograph 
 		local width =  `r(bwidth)'
 		}
 
 	else {
 		cap drop esample
-		gen esample = 1
+		gen esample = 1 if `arm'==1
 		qui kdensity tau_hat_oobpredictions if esample==1,  nograph 
 		local width =  `r(bwidth)'
 		}

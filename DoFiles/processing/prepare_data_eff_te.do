@@ -5,7 +5,7 @@ Creation of dataset for the effective cost/loan ratio HTE
 use "$directorio/DB/Master.dta", clear
 
 
-gen fee_arms = inlist(prod, 2 ,5) & !missing(prod)
+gen fee_arms = inlist(prod, 2 , 3, 4 , 5 , 6, 7) & !missing(prod)
 gen insample = !missing(pro_2)
 
 *Covariates 

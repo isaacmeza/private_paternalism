@@ -9,7 +9,7 @@ set.seed(5289374)
 
 
 
-data_in <- read_csv('./_aux/eff_te_heterogeneity.csv')
+data_in <- read_csv('./_aux/sumporcp_te_heterogeneity.csv')
 
 
 require("dplyr")
@@ -21,25 +21,25 @@ data_train_nofee <- subset(data_train, data_train$fee_arms == 0)
 
 
 data_test <- data_in %>% 
-  select(-c(eff_cost_loan, fee_arms, prenda, insample))
+  select(-c(sum_porcp_c, fee_arms, prenda, insample))
 
 ###################################################################  
 ###################################################################  
 
 
 # PREPARE VARIABLES
-X <- select(data_train,-c(eff_cost_loan, fee_arms, prenda, insample))
-Y <- select(data_train,eff_cost_loan)
+X <- select(data_train,-c(sum_porcp_c, fee_arms, prenda, insample))
+Y <- select(data_train,sum_porcp_c)
 W <- as.numeric(data_train$fee_arms == 1)
 
-X_full <- select(data_in,-c(eff_cost_loan, fee_arms, prenda, insample))
-Y_full <- select(data_in,eff_cost_loan)
+X_full <- select(data_in,-c(sum_porcp_c, fee_arms, prenda, insample))
+Y_full <- select(data_in,sum_porcp_c)
 W_full <- as.numeric(data_in$fee_arms == 1)
 
-X_fee <- select(data_train_fee,-c(eff_cost_loan, fee_arms, prenda, insample))
-Y_fee <- as.numeric(data_train_fee$eff_cost_loan)
-X_nofee <- select(data_train_nofee,-c(eff_cost_loan, fee_arms, prenda, insample))
-Y_nofee <- as.numeric(data_train_nofee$eff_cost_loan)
+X_fee <- select(data_train_fee,-c(sum_porcp_c, fee_arms, prenda, insample))
+Y_fee <- as.numeric(data_train_fee$sum_porcp_c)
+X_nofee <- select(data_train_nofee,-c(sum_porcp_c, fee_arms, prenda, insample))
+Y_nofee <- as.numeric(data_train_nofee$sum_porcp_c)
 
 ###################################################################  
 ###################################################################  
@@ -78,7 +78,5 @@ hist(rf_pred_nofee)
 data.out <- add_column(data_in, rf_pred_fee, rf_pred_nofee, 
                        tau_hat_oob$predictions, tau_hat_oob$variance.estimates,
                        tau_hat_oob_full$predictions, tau_hat_oob_full$variance.estimates)
-filename <- paste("_aux/eff_te_grf",".csv", sep="") 
+filename <- paste("_aux/sumporcp_te_grf",".csv", sep="") 
 write_csv(data.out,filename)
-
-
