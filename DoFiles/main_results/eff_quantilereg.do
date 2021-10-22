@@ -1,6 +1,24 @@
 /*
-Quantile reg eff c/l
+********************
+version 17.0
+********************
+ 
+/*******************************************************************************
+* Name of file:	
+* Author:	Isaac M
+* Machine:	Isaac M 											
+* Date of creation:	October. 10, 2021
+* Last date of modification:   
+* Modifications:		
+* Files used:     
+		- Master.dta
+* Files created:  
+
+* Purpose: Quantile reg eff c/l
+
+*******************************************************************************/
 */
+
 
 
 // GRAPH FORMATTING
@@ -30,13 +48,12 @@ set more off
 *ADMIN DATA
 use "$directorio/DB/Master.dta", clear
 
-
 ********************************************************************************
 *****************************Effective cost/loan********************************
 ********************************************************************************
 
 *Dependent variables
-local qlist  0.15 0.25 0.47 0.75 0.85 
+local qlist  0.15 0.25 0.53 0.75 0.85 
 local qlistnames "15%"  "25%" "50%" "75%" "85%"
 	
 matrix results = J(6, 5, .) // empty matrix for results

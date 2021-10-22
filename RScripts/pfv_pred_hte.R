@@ -42,7 +42,7 @@ rf_predict <- function(data_in,take.up,nme) {
 #RF Predictions of no-choice arm
 for (arm in c("pro_2")) {
   for (pred in c("pago_frec_vol_fee")) {
-    for (effect in c("def_c")) {
+    for (effect in c("def_c", "des_c")) {
       filename <- paste("_aux/",arm,"_",pred,"_",effect,".csv", sep="")
       data <- read_csv(filename)
       outname <- paste(arm,"_",pred,"_",effect,sep="")

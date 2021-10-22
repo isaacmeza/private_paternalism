@@ -1,5 +1,22 @@
 /*
-Treatment effect with all arms
+********************
+version 17.0
+********************
+ 
+/*******************************************************************************
+* Name of file:	
+* Author:	Isaac M
+* Machine:	Isaac M 											
+* Date of creation:	October. 5, 2021
+* Last date of modification:   
+* Modifications:		
+* Files used:     
+		- Master.dta
+* Files created:  
+
+* Purpose: Treatment effect with all arms
+
+*******************************************************************************/
 */
 
 

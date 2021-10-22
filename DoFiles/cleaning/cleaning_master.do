@@ -57,7 +57,8 @@ replace val_pren = 3*prestamo if val_pren>3*prestamo & !missing(val_pren)
 reg val_pren prestamo i.prenda_tipo i.razon, r
 predict val_pren_pr
 replace val_pren = val_pren_pr if missing(val_pren)
-
+su val_pren_pr 
+gen val_pren_std = (val_pren_pr-r(mean))/r(sd)
 
 *Financial cost
 	*survey fc
@@ -84,6 +85,7 @@ gen trans_cost = (c_trans + 62.33)*num_p
 gen masqueprepa=(educacion>=3) if educacion!=.
 gen estresado_seguido=(f_estres<3) if f_estres!=.
 gen log_val_pren = log(val_pren)
+gen plan_gasto_bin = (plan_gasto>1) if !missing(plan_gasto)
 
 gen pb=(t_consis1==0 & t_consis2==1) if t_consis2!=. & t_consis1!=.
 gen fb=(t_consis1==1 & t_consis2==0) if t_consis2!=. & t_consis1!=.
@@ -137,3 +139,4 @@ gen cont_OC = pr_recup-pr_prob if (!missing(pr_recup) & !missing(pr_prob))
 
 
 save "$directorio/DB/Master.dta", replace	
+export delimited using "$directorio/DB/Master.csv", replace quote nolabel

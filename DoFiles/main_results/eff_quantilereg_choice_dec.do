@@ -1,6 +1,24 @@
 /*
-Quantile reg effective cost/loan ratio - decomposed by choice selection
+********************
+version 17.0
+********************
+ 
+/*******************************************************************************
+* Name of file:	
+* Author:	Isaac M
+* Machine:	Isaac M 											
+* Date of creation:	October. 10, 2021
+* Last date of modification:   
+* Modifications:		
+* Files used:     
+		- Master.dta
+* Files created:  
+
+* Purpose: Quantile reg effective cost/loan ratio - decomposed by choice selection
+
+*******************************************************************************/
 */
+
 
 
 // GRAPH FORMATTING
@@ -35,10 +53,6 @@ use "$directorio/DB/Master.dta", clear
 *****************************Effective cost/loan********************************
 ********************************************************************************
 
-*Dependent variables
-local qlist  0.15 0.25 0.51 0.75 0.85 
-local qlistnames "15%"  "25%" "50%" "75%" "85%"
-	
 
 matrix results = J(20, 5, .) // empty matrix for results
 //  5 cols are: (1) Treatment arm, (2) beta, (3) std error, (4) df, (5) pvalue
@@ -49,11 +63,17 @@ foreach arm of varlist pro_4 pro_5  {
 
 
 	if "`arm'"=="pro_4" {
+		*Dependent variables
+		local qlist  0.15 0.25 0.49 0.75 0.85 
+		local qlistnames "15%"  "25%" "50%" "75%" "85%"
 		local contrarm pro_2
 		local arm_dec_sq pro_6
 		local arm_dec_nsq pro_7
 		}
 	else {
+		*Dependent variables
+		local qlist  0.15 0.25 0.51 0.75 0.85 
+		local qlistnames "15%"  "25%" "50%" "75%" "85%"
 		local contrarm pro_3	
 		local arm_dec_sq pro_8
 		local arm_dec_nsq pro_9

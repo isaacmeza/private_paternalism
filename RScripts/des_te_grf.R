@@ -4,12 +4,12 @@ library(ggplot2)
 
 # SET WORKING DIRECTORY
 setwd('C:/Users/isaac/Dropbox/Apps/ShareLaTeX/Donde2020')
-#setwd("C:\\Users\\Ricardo\\Documents\\SEIRA\\donde2019")
 set.seed(5289374)
 
 
 
-data_in <- read_csv('./_aux/des_te_heterogeneity.csv')
+data_in <- read_csv('./_aux/des_te_heterogeneity.csv') %>%
+  mutate_all(~ifelse(is.na(.), median(., na.rm = TRUE), .))
 
 
 require("dplyr")

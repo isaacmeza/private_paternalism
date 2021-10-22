@@ -1,5 +1,22 @@
 /*
-Reincidence treatment effect
+********************
+version 17.0
+********************
+ 
+/*******************************************************************************
+* Name of file:	
+* Author:	Isaac M
+* Machine:	Isaac M 											
+* Date of creation:	October. 5, 2021
+* Last date of modification:   
+* Modifications:		
+* Files used:     
+		- 
+* Files created:  
+
+* Purpose: Reincidence Treatment Effect
+
+*******************************************************************************/
 */
 
 
@@ -49,7 +66,7 @@ foreach arm in pro_2 pro_3 {
 
 	*Variable creation
 	su tau_hat_oobpredictions, d
-	gen above_med_effect = (tau_hat_oobpredictions<=`r(p50)')
+	gen above_med_effect = (tau_hat_oobpredictions>=`r(p50)')
 
 	********************************************************************************
 	***********************************Reincidence**********************************

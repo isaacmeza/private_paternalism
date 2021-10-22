@@ -1,0 +1,407 @@
+ \documentclass[oneside,11pt]{article}
+
+\input{preamble.tex}
+%%% HELPER CODE FOR DEALING WITH EXTERNAL REFERENCES
+\usepackage{xr}
+\makeatletter
+\newcommand*{\addFileDependency}[1]{
+  \typeout{(#1)}
+  \@addtofilelist{#1}
+  \IfFileExists{#1}{}{\typeout{No file #1.}}
+}
+\makeatother
+
+
+\newcommand*{\myexternaldocument}[1]{
+    \externaldocument{#1}
+    \addFileDependency{#1.tex}
+    \addFileDependency{#1.aux}
+}
+
+%\myexternaldocument{OA}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% DOCUMENT
+\begin{document}
+
+We investigate the relation between choice (commitment) and benefit. First, we compute the Treatment Effect benefit in the control vs fee arm. Then, we calculate a propensity to choose commitment, and analyze the correlation between this two variables. 
+
+
+
+
+\begin{figure}[H]
+    \caption{}
+    \label{}
+    \begin{center}
+    %\begin{subfigure}{0.4\textwidth}
+    %    \caption{Financial cost}
+    %    \centering
+    %    \includegraphics[width=\textwidth]{Figuras/he_dist_fc_admin_disc_pro_2.pdf}
+    %\end{subfigure}
+    \begin{subfigure}{0.475\textwidth}
+        \caption{Effective cost/loan benefit}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/benefit_choice.pdf}
+    \end{subfigure}
+    \begin{subfigure}{0.475\textwidth}
+        \caption{Repayment}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/benefit_choice_des.pdf}
+    \end{subfigure}
+  
+    \end{center}
+     \scriptsize    Binscatter of propensity to choose commitment vs treatment effect of frequent payments.
+          %\footnotesize{ \textit{Do file: }  \texttt{benefit\_choice.do}}
+\end{figure}
+
+
+
+We estimate demand for commitment with a Gradient Boosted Classification algorithm (accuracy 97\% in-sample and 90\% out-of-sample).
+
+
+Now we want to identify who are the ones who benefit more from being forced, and those who would demand commitment.
+
+
+\begin{figure}[H]
+    \caption{}
+    \label{}
+    \begin{center}
+    %\begin{subfigure}{0.4\textwidth}
+    %    \caption{Financial cost}
+    %    \centering
+    %    \includegraphics[width=\textwidth]{Figuras/he_dist_fc_admin_disc_pro_2.pdf}
+    %\end{subfigure}
+    \begin{subfigure}{0.475\textwidth}
+        \caption{Determinants of HTE}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/HE/he_int_vertical_eff_cost_loan_pro_2.pdf}
+    \end{subfigure}
+    \begin{subfigure}{0.475\textwidth}
+        \caption{Determinants of PS}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/HE/ps_int_vertical_pr_gbc_1.pdf}
+    \end{subfigure}
+  
+    \end{center}
+     \scriptsize  (a): This figure estimates bivariate regressions of the estimated client-level heterogeneous treatment effects against the respective covariate from the baseline survey  $\widehat{hte_i} = \alpha + \beta \: X_i + \epsilon_i$. The regressors $X_i$ include (e.g if the family asks for money, if they have savings, if they are overconfident using the definition the text, etc. See this Appendix for a transcription of the survey). \\
+     (b) :  
+      %\footnotesize{ \textit{Do file: }  \texttt{analyze\_grf\_single\_arm.do}} \texttt{benefit\_choice.do}}
+\end{figure}
+
+
+\subsection{Are the people who benefit most from commitment, the ones who demand it?}
+
+We estimate the following model
+
+We would like to make a distinction of the people that benefit most from being forced. Our conjecture is that this are the naive individuals. 
+
+We assume the following structural model. 
+
+
+Each individual $i$ is of type  $k\in\{1, 2\}$ with probability $\alpha_{i,k}$. We assume it follows a logit distribution:
+\begin{align*}
+\label{dist_alpha}
+    \alpha_{i,k} = \Pr(\text{Type}_i = k \;|\; \mathbf{W}_{i}) = \frac{e^{\gamma_{k}\mathbf{W}_i}}{\sum_{j=1}^{K} e^{\gamma_{j}\mathbf{W}_i}}
+\end{align*}
+
+where $\mathbf{W}_i$ are observable characteristics. This characteristics include choice for commitment, present bias, subjective probability of recovery, etc, which might be indicators of naivete vs sophistication.  
+
+Now, given their type, each individual makes a choice to default or not $c_{i,k} \in \{1,2\}$, based on other set of observable characteristics $\mathbf{X}_i$ (subjective \& objective value of the loan). We will assume there is a continuous latent variable $Y_{i,k,c}$ distributed as
+\[Y_{i,k,c} = \beta_{c,k}\mathbf{X}_{i} +\epsilon_{c,k}\]
+with\footnote{We can impose other errors, and even impose a covariance structure, for instance if $(\epsilon_{c,k})_{c}\sim\mathcal{N}(0,\Sigma_k)$, we arrive to the Multinomial Probit.} $\epsilon_{c;k}\sim\operatorname{EV}(0,1)$. This latent variable can be thought of as the utility associated with individual $i$, being type $k$, making choice $c$. 
+
+
+
+Thus, the density for each individual $i$ being type $k$ is
+\[f(c_i,\mathbf{X}_i; \bm\beta_{k}) = \prod_{c=1}^4\left(\frac{e^{\beta_{c,k} \mathbf{X}_i}}{\sum_{j=1}^{4} e^{\beta_{j,k}  \mathbf{X}_i}}\right)^{[c_i=4]}\]
+
+Finally, the generative model is then a mixture model with density given by,
+\begin{align*}
+    f(c_i ,\mathbf{W}_i, \mathbf{X}_i; \bm{\gamma},\bm{\beta}) &= \sum_{k=1}^K \alpha_k f(c_i,\mathbf{X}_i; \bm\beta_{k}) \\
+    &= \sum_{k=1}^K \alpha_k \prod_{c=1}^4\left(\frac{e^{\beta_{c,k} \mathbf{X}_i}}{\sum_{j=1}^{4} e^{\beta_{j,k}  \mathbf{X}_i}}\right)^{[c_i=c]} 
+\end{align*}
+
+
+
+where $\alpha\sim \operatorname{Categorical}$, and $\gamma_{K} = \beta_{4,k}=0$ for identification purposes. 
+
+Then the (incomplete) log-likelihood function is
+\begin{align*}
+    \ell(\bm{\gamma}, \bm{\beta}; c, \mathbf{W},  \mathbf{X}) = \sum_{i=1}^n \log\sum_{k=1}^K \alpha_k \prod_{c=1}^4\left(\frac{e^{\beta_{c,k} \mathbf{X}_i}}{\sum_{j=1}^{4} e^{\beta_{j,k}  \mathbf{X}_i}}\right)^{[c_i=c]} 
+\end{align*}
+
+, thus we estimate parameters $(\bm{\gamma}, \bm{\beta})$ with an EM algorithm using choice (default)
+\& observable characteristics: $(c_i,\mathbf{W}_i,\mathbf{X}_i)$.
+
+The results are the following:
+
+\begin{table}[H]
+\caption{FMM}
+\label{iv_pf}
+\begin{center}
+\scriptsize{\input{./Tables/fmm_types.tex}}
+\end{center}
+ \scriptsize
+
+%\textit{Do file: } \texttt{fmm.do}
+\end{table}
+
+
+
+The class (type) which is positively correlated with demand for commitment might be identified with the \emph{sophisticated} individuals (Type 2). The hypothesis is that this class is the less benefit from being forced, and so (Type 1) individuals are the most benefited from being forced.
+
+\begin{figure}[H]
+    \caption{Probability of being Type 1 vs HTE}
+    \label{}
+    \begin{center}
+    \begin{subfigure}{0.475\textwidth}
+        \caption{Prior Probability}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/binscatter_tau_classpr.pdf}
+    \end{subfigure}
+    \begin{subfigure}{0.475\textwidth}
+        \caption{Posterior Probability}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/binscatter_tau_classpost.pdf}
+    \end{subfigure}
+  
+    \end{center}
+     \scriptsize 
+      %\footnotesize{ \textit{Do file: }  \texttt{fmm.do}} 
+\end{figure}
+
+A negative relation indicates that being Type 1 has more benefits from being forced.
+
+
+\begin{figure}[H]
+    \caption{Type 1 class vs HTE}
+    \label{}
+    \begin{center}
+    \begin{subfigure}{0.475\textwidth}
+        \caption{Prior Probability}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/benefit_type1.pdf}
+    \end{subfigure}
+    \begin{subfigure}{0.475\textwidth}
+        \caption{Posterior Probability}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/benefit_type1p.pdf}
+    \end{subfigure}
+  
+    \end{center}
+     \scriptsize 
+      %\footnotesize{ \textit{Do file: }  \texttt{fmm.do}} 
+\end{figure}
+
+
+
+Moreover we find a strong correlation between the Type 1 individuals and the individuals that ``choose wrong" according to Figure 8 \ref{choose_wrong}.\\
+
+\emph{This exercise is stronger in the sense that when we divide by type, choice is the core divider.} This emphasizes how important choice is as a segregator.
+
+
+\subsection{Observational Study}
+
+Paternalism  with learning : We generate more learning through forcing than through choice.
+
+It is possible that the wrong people choose and they learn not through choosing, but rather through not choosing (and it did not work). We then partition our sample in the observational study, based on whether you committed the first time, and we want to show that learning happened in the "wrong group" : not choosers.
+
+We want to show that the TE is localized within one of the groups in that endogenous split. 
+
+We then estimate the following two-stage specification.
+
+
+\begin{equation}
+    \mathbbm{1}(\text{Had FP})_{ijt} = \alpha_i + \gamma_t + \beta \mathbbm{1}(\text{FP Avail})_{ijt}  + \epsilon_{ijt}
+    \label{eqn:fs}
+\end{equation}
+
+
+\begin{equation}
+    \mathbbm{1}(\text{Has FP})_{ijt} = \widehat{\alpha_i }+ \widehat{\gamma_t} + \widehat{\beta }(\widehat{\text{Had FP }})_{ijt}  + \epsilon_{ijt}
+    \label{eqn:2s}
+\end{equation}
+
+
+
+where $i,j,t$ index client, branch, and week respectively. $\mathbbm{1}(\text{Has FP})_{ijt}$ is an indicator for client $i$ pawning in branch $j$ in week $t$ using a FP contract, given that both FP and traditional contracts were available at the branch at the time of pawning, so that there is a choice to be made among these. We instrument $\mathbbm{1}(\text{Had FP previously})_{ijt}$ with the \textit{availability} of the contract in branch $j$  when the client previously went to pawn the immediately prior pawn with respect to $t$, $\mathbbm{1}(\text{FP Avail})_{ijt}$. However, the second stage only uses the subsample of the not choosers. 
+
+
+
+\begin{table}[H]
+\caption{Outcome in 2S : Choose FP contract}
+\label{iv_pf}
+\begin{center}
+\scriptsize{\input{./Tables/iv_reg_demand_pf_notchoosing.tex}}
+\end{center}
+ \scriptsize
+
+%\textit{Do file: } \texttt{iv\_reg\_demand\_pf\_notchoosing.do}
+\end{table}
+
+Thus the learning mechanism is due to the not choosers having failed. 
+
+
+
+
+
+\begin{table}[H]
+\caption{Outcome in 2S : Default}
+\label{iv_def}
+\begin{center}
+\scriptsize{\input{./Tables/iv_reg_def_notchoosing.tex}}
+\end{center}
+ \scriptsize
+
+%\textit{Do file: } \texttt{iv\_reg\_demand\_pf\_notchoosing.do}
+\end{table}
+
+\begin{table}[H]
+\caption{Outcome in 2S : Default}
+\label{iv_def_decomp}
+\begin{center}
+\scriptsize{\input{./Tables/iv_reg_def_nc_nr.tex}}
+\end{center}
+ \scriptsize
+
+%\textit{Do file: } \texttt{iv\_reg\_demand\_pf\_notchoosing.do}
+\end{table}
+
+\section{LATE}
+
+\begin{table}[H]
+\caption{}
+\label{tot_tut}
+\begin{center}
+\scriptsize{\input{./Tables/tot_tut_iv.tex}}
+\end{center}
+ \scriptsize
+%\textit{Do file: } \texttt{tot\_tut.do}
+\end{table}
+
+
+\begin{figure}[H]
+     \caption{TOT-TUT Histogram}
+    \label{}
+    \begin{center}
+    \begin{subfigure}{0.75\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/dif_tot_tut.pdf}
+    \end{subfigure}
+    \end{center}
+    \scriptsize
+        Histogram for the difference of the conditional (heterogeneous) TOT-TUT
+          %\footnotesize{ \textit{Do file: }  \texttt{tot\_tut\_insforest.do}}
+\end{figure}
+
+
+\begin{figure}[H]
+     \caption{TOT-TUT CDF}
+    \label{ExplanatoryMaterial}
+    \begin{center}
+    \begin{subfigure}{0.75\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/cdf_tot_tut.pdf}
+    \end{subfigure}
+    \end{center}
+    \scriptsize
+        ECDF of the conditional (heterogeneous) TOT \& TUT, alogn with the difference and a test for the difference in means (which is significant).
+          %\footnotesize{ \textit{Do file: }  \texttt{tot\_tut\_insforest.do}}
+\end{figure}
+
+
+\newpage
+\section{Appendix : Mixture Model}
+Mixing distributions and mixture models are able to approximate the density function of any unknown distribution to arbitrary degrees of accuracy, provided that the mixing or mixture distribution  is  sufficiently  complex \cite{nguyen}. In fact, \cite{mcfadden} demonstrated that any random utility model can be approximated to any degree of accuracy by a mixed logit with the appropriate specification of variables and mixing distribution. We follow the approach by \cite{TRAIN200840}.\\
+
+
+
+\subsection{Estimation}
+
+The EM algorithm following \cite{em,em_seq} but most importantly \cite{TRAIN200840}, is in our setting :
+
+\begin{algorithm}[H]
+\SetKwInOut{Input}{input}\SetKwInOut{Output}{output}
+
+\caption{EM}\label{EM}
+\small{
+\Input{$(c_i, \mathbf{W}_i,  \mathbf{X}_i)$}
+\Output{$\hat{\bm\gamma}, \hat{\bm{\beta}}, \widetilde{\alpha_{i,k}}, \widetilde{\alpha_{k}}$}
+\BlankLine
+Initialize $\gamma_{k}^{(0)}, \beta_k^{(0)}$
+
+Update the predicted probability (weight) for individual $i$, type $k$: \;
+$\widehat{\alpha_{i,k}^{(0)}} = \frac{e^{\gamma_{k}^{(0)}\mathbf{W}_i}}{\sum_{j=1}^{K} e^{\gamma_{j}^{(0)}\mathbf{W}_i}} $
+% $\alpha_{i}^{(0)}\sim \operatorname{Categorical}$, following (\ref{dist_alpha})
+
+Update the shares of types:\;
+$\widehat{\alpha_k^{(0)}} = \frac{\sum_{i=1}^n\widehat{\alpha_{i,k}^{(0)}}}{\sum_{k=1}^{K}\sum_{i=1}^n\widehat{\alpha_{i,k}^{(0)}}}$\;
+
+\textbf{E-step :}
+
+Compute predicted posterior probability  for the $k$ type: \;
+$\widetilde{\alpha_{i,k}^{(0)}} = \frac{\widehat{\alpha_k^{(0)}}f(c_i,\mathbf{X}_i; \bm\beta_{k}^{(0)})}{\sum_{k=1}^K\widehat{\alpha_k^{(0)}}f(c_i,\mathbf{X}_i; \bm\beta_{k}^{(0)})}$\;
+
+
+\While{$||(\bm\gamma^{(t)},\bm\beta^{(t)})-(\bm\gamma^{(t-1)},\bm\beta^{(t-1)})||>\operatorname{tol}$}{
+
+
+\textbf{M-step :}
+
+
+$\bm\beta_{k}^{(t+1)}  = \operatorname{argmax}_{\bm\beta_{k}} \sum_{i=1}^n \widetilde{\alpha_{i,k}^{(t)}} \log \prod_{c=1}^4\left(\frac{e^{\beta_{c,k} \mathbf{X}_i}}{\sum_{j=1}^{4} e^{\beta_{j,k}  \mathbf{X}_i}}\right)^{[c_i=c]} $\;
+\scriptsize{(Run a multinomial-logit model with weighted observations, with weights given by the conditional probabilities of type membership)}\;
+\small
+
+$\bm\gamma_{k}^{(t+1)} = \operatorname{argmax}_{\bm\gamma_{k}} \sum_{i=1}^n\sum_{k=1}^K \widetilde{\alpha_{i,k}^{(t)}} \log \left(\frac{e^{\gamma_{k}\mathbf{W}_i}}{\sum_{j=1}^{K} e^{\gamma_{j}\mathbf{W}_i}}\right) $\;
+
+\scriptsize{(Grouped-data log likelihood, where we have used a multinomial-logit specification)}\;
+
+\small
+
+Update the predicted probability (weight) for individual $i$, type $k$: \;
+$\widehat{\alpha_{i,k}^{(t+1)}} = \frac{e^{\gamma_{k}^{(t+1)}\mathbf{W}_i}}{\sum_{j=1}^{K} e^{\gamma_{j}^{(t+1)}\mathbf{W}_i}} $
+% $\alpha_{i}^{(0)}\sim \operatorname{Categorical}$, following (\ref{dist_alpha})
+
+Update the shares of types:\;
+$\widehat{\alpha_k^{(t+1)}} = \frac{\sum_{i=1}^n\widehat{\alpha_{i,k}^{(t+1)}}}{\sum_{k=1}^{K}\sum_{i=1}^n\widehat{\alpha_{i,k}^{(t+1)}}}$\;
+
+
+\textbf{E-step :}
+
+Compute predicted posterior probability  for the $k$ type: \;
+$\widetilde{\alpha_{i,k}^{(t+1)}} = \frac{\widehat{\alpha_k^{(t+1)}}f(c_i,\mathbf{X}_i; \bm\beta_{k}^{(t+1)})}{\sum_{k=1}^K\widehat{\alpha_k^{(t+1)}}f(c_i,\mathbf{X}_i; \bm\beta_{k}^{(t+1)})}$\;
+
+
+}
+Update the posterior shares of types:\;
+$\widetilde{\alpha_k^{(t+1)}} = \frac{\sum_{i=1}^n\widetilde{\alpha_{i,k}^{(t+1)}}}{\sum_{k=1}^{K}\sum_{i=1}^n\widetilde{\alpha_{i,k}^{(t+1)}}}$\;
+}
+\end{algorithm}
+
+
+\subsection{Extensions}
+
+A stochastic version\footnote{See \cite{nielsen}.} of the estimation above consists, at iteration $t$, in replacing the probability of the unknown types $k$ by a sequence sampled from a Categorical distribution
+\[\widehat{\alpha_{i}^{(t)}}\sim \operatorname{Categorical}\left(\frac{\widehat{\alpha_k^{(t+1)}}f(c_i,\mathbf{X}_i; \bm\beta_{k}^{(t+1)})}{\sum_{k=1}^K\widehat{\alpha_k^{(t+1)}}f(c_i,\mathbf{X}_i; \bm\beta_{k}^{(t+1)})}\right)\] 
+We call this the \textbf{SE-step}. We can then use these sampled labels for updating the estimation in the \textbf{M-step} by maximizing the \emph{complete} maximum likelihood. 
+ 
+ 
+\subsubsection{Degrees of naivete}
+We can model degrees of naivete assuming every individual $i$ has a (continuous) propensity of being of each type. We model this by making the predicted probability of each individual follow a Dirichlet regression $\alpha_{i} \sim \operatorname{DirichletReg}$.
+
+
+\subsection{Identifiability}
+\cite{grun} analyze the identifiability of a general class of finite mixtures of multinomial logits.
+
+
+
+\newpage
+\clearpage
+\bibliographystyle{authordate1}
+%\bibliographystyle{amsalpha}
+%\bibliographystyle{AER}
+
+\bibliography{References_aux.bib}
+
+
+\end{document}

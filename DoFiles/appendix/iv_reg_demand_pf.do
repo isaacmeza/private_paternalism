@@ -1,7 +1,26 @@
+/*
+********************
+version 17.0
+********************
+ 
+/*******************************************************************************
+* Name of file:	
+* Author:	Isaac M
+* Machine:	Isaac M 											
+* Date of creation:	
+* Last date of modification:  October. 19, 2021 
+* Modifications: Changed FE regression with command reghdfe		
+* Files used:     
+		- 
+* Files created:  
+
+* Purpose: What types of contracts the client chooses later conditional on pawning (learning that they like FP contracts) - IV Regressions
+
+*******************************************************************************/
+*/
+
 clear all
 
-*What types of contracts the client chooses later conditional on pawning (learning that they like FP contracts)
-*IV Regressions
 
 use  "${directorio}\DB\base_expansion.dta", clear
 keep if linea2==" Alhajas "
@@ -186,35 +205,34 @@ tab porc_clients_ppf if f_idcliente==1 & num_clients_3m==1
 
 eststo clear
 ********************************************
-xtset idcliente
 
 *2SLS (IV)
 foreach wk in n /*2 4 6 8 10 12 15*/ {
 	foreach wkc in  0 1  {
 	
 		*FS 
-	eststo: reg demand_past_imm`wk' active_past`wk' i.date_opening   ///
-		if pf_suc==1 & previous_credit_closed_`wkc'==1 ,  vce(cluster idcliente)
+	eststo: reghdfe demand_past_imm`wk' active_past`wk'    ///
+		if pf_suc==1 & previous_credit_closed_`wkc'==1 , absorb(date_opening) vce(cluster idcliente)
 	cap drop esample
 	gen esample = e(sample)
 	su demand_past_imm`wk' if e(sample) 
 	estadd scalar DepVarMean = `r(mean)'
-
+	
 	cap drop pr
 	predict pr
 	cap drop residual
 	gen residual = demand_past_imm`wk' - pr 
 
 		*IV -OLS
-	eststo: reg pago_fijo demand_past_imm`wk' residual  i.date_opening  if esample,  vce(cluster idcliente)
+	eststo: reghdfe pago_fijo demand_past_imm`wk' residual  if esample, absorb(date_opening) vce(cluster idcliente)
 	su pago_fijo if e(sample) 
 	estadd scalar DepVarMean = `r(mean)'
 
-	
+*-----------------------------------------------------------	
 	
 		*FS -FE
-	eststo: xtreg demand_past_imm`wk' active_past`wk' i.date_opening   ///
-		if pf_suc==1 & previous_credit_closed_`wkc'==1 , fe vce(cluster idcliente)
+	eststo: reghdfe demand_past_imm`wk' active_past`wk'    ///
+		if pf_suc==1 & previous_credit_closed_`wkc'==1 , absorb(idcliente date_opening) vce(cluster idcliente)
 	cap drop esample
 	gen esample = e(sample)
 	su demand_past_imm`wk' if e(sample) 
@@ -226,12 +244,11 @@ foreach wk in n /*2 4 6 8 10 12 15*/ {
 	gen residual = demand_past_imm`wk' - pr 
 
 		*IV
-	eststo: xtreg pago_fijo demand_past_imm`wk' residual  i.date_opening  if esample, fe vce(cluster idcliente)
+	eststo: reghdfe pago_fijo demand_past_imm`wk' residual   if esample, absorb(idcliente date_opening) vce(cluster idcliente)
 	su pago_fijo if e(sample) 
 	estadd scalar DepVarMean = `r(mean)'
 
 	}
-
 }
 	
 	

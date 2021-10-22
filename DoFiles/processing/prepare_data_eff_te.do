@@ -1,6 +1,24 @@
 /*
-Creation of dataset for the effective cost/loan ratio HTE
+********************
+version 17.0
+********************
+ 
+/*******************************************************************************
+* Name of file:	
+* Author:	Isaac M
+* Machine:	Isaac M 											
+* Date of creation:	
+* Last date of modification:  October. 19, 2021
+* Modifications: 		
+* Files used:     
+		- 
+* Files created:  
+
+* Purpose: Creation of dataset for the effective cost/loan ratio HTE
+
+*******************************************************************************/
 */
+
 
 use "$directorio/DB/Master.dta", clear
 
@@ -9,18 +27,23 @@ gen fee_arms = inlist(prod, 2 , 3, 4 , 5 , 6, 7) & !missing(prod)
 gen insample = !missing(pro_2)
 
 *Covariates 
-keep eff_cost_loan genero edad val_pren_pr masqueprepa faltas ${C0} ///
-	prenda fee_arms insample
-
-*Drop missing values
-foreach var of varlist $C0 eff_cost_loan genero edad val_pren_pr masqueprepa faltas ///
-	prenda fee_arms insample { 
-	drop if missing(`var')
-	}
+keep eff_cost_loan fee_arms ///
+	$C0 /// *Controls
+	edad  faltas val_pren_std /// *Continuous covariates
+	genero masqueprepa /// *Dummy variables
+	prenda insample 
 
 *order 
-order eff_cost_loan fee_arms edad genero val_pren_pr masqueprepa faltas ${C0} ///
+order eff_cost_loan fee_arms ///
+	$C0 /// *Controls
+	edad  faltas val_pren_std /// *Continuous covariates
+	genero masqueprepa /// *Dummy variables
 	prenda insample 
+	
+*Drop individuals without observables
+foreach var of varlist edad  faltas val_pren_std genero masqueprepa { 
+	drop if missing(`var') 
+	}
 	
 export delimited "$directorio/_aux/eff_te_heterogeneity.csv", replace nolabel
 

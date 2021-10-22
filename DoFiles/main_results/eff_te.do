@@ -1,6 +1,27 @@
 /*
-Effective cost/loan ratio treatment effect
+********************
+version 17.0
+********************
+ 
+/*******************************************************************************
+* Name of file:	
+* Author:	Isaac M
+* Machine:	Isaac M 											
+* Date of creation:	October. 10, 2021
+* Last date of modification: October. 10, 2021  
+* Modifications: Redefinition of cost/loan benefit (switch of sign).
+
+* Files used:     
+		- Master.dta
+* Files created:  
+
+* Purpose: Effective cost/loan ratio treatment effect
+
+
+
+*******************************************************************************/
 */
+
 
 
 // GRAPH FORMATTING
@@ -33,7 +54,7 @@ use "$directorio/DB/Master.dta", clear
 *Dependent variables
 gen eff_pospay = eff_cost_loan if sum_p_c>0
 gen eff_fee = eff_cost_loan if fee==1 | prod==1
-gen eff_tc = eff_cost_loan + trans_cost/prestamo
+gen eff_tc = eff_cost_loan - trans_cost/prestamo
 
 *Decomposition of effecive cost-loan ratio
 gen payment = sum_porcp_c-sum_porc_pay_fee_c-sum_porc_int_c
@@ -49,11 +70,11 @@ foreach arm of varlist  pro_3 pro_2 {
 
 	if "`arm'"=="pro_2" {
 		local vrlist  payment sum_porc_pay_fee_c sum_porc_int_c  eff_cost_loan   eff_tc  eff_pospay  eff_fee  
-		local vrlistnames  "S" "X" "D"  "effective cost/loan"  "cost/loan + tc" "cost/loan | pay>0" "cost/loan | fee=1" 
+		local vrlistnames  "S" "X" "D"  "effective cost/loan benefit"  "cost/loan - tc" "cost/loan | pay>0" "cost/loan | fee=1" 
 		}
 	else {
 		local vrlist  eff_cost_loan  eff_tc  eff_pospay   
-		local vrlistnames  "admin (appraised)"  "subj + tc" "subj | pay>0"  
+		local vrlistnames  "cost/loan benefit"  "cost/loan - tc" "cost/loan | pay>0"  
 		}
 
 	local nv = 0	

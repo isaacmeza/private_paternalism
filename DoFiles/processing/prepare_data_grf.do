@@ -1,6 +1,25 @@
 /*
-Creation of dataset for the HTE for main variables
+********************
+version 17.0
+********************
+ 
+/*******************************************************************************
+* Name of file:	
+* Author:	Isaac M
+* Machine:	Isaac M 											
+* Date of creation:	October. 5, 2021
+* Last date of modification: October. 19, 2021
+* Modifications: 		
+* Files used:     
+		- Master.dta
+* Files created:  
+		- heterogeneity_grf.csv
+		- heterogeneity_te.csv
+* Purpose: Creation of dataset for the HTE for main variables
+
+*******************************************************************************/
 */
+
 
 use "$directorio/DB/Master.dta", clear
 
@@ -8,23 +27,20 @@ use "$directorio/DB/Master.dta", clear
 sort NombrePignorante fecha_inicial
 
 *Covariates - Randomization - Outcomes
-keep eff_cost_loan def_c fc_admin_disc fc_survey_disc fc_admin fc_survey dias_primer_pago /// *Dependent variables
-	pro_* fee NombrePignorante prenda fecha_inicial /// *Admin variables
-	dummy_dow* dummy_suc* /// *Controls
-	prestamo pr_recup  edad visit_number num_arms faltas /// *Continuous covariates
-	genero pres_antes fam_pide fam_comun ahorros cta_tanda /// *Dummy variables
-	renta comida medicina luz gas telefono agua  /// 
-	masqueprepa estresado_seguido OC pb fb hace_presupuesto tentado low_cost low_time rec_cel
+keep eff_cost_loan def_c des_c fc_admin_disc fc_survey_disc fc_admin fc_survey dias_primer_pago /// *Dependent variables
+	pro_* fee NombrePignorante prenda fecha_inicial  /// *Admin variables
+	$C0 /// *Controls
+	log_prestamo pr_recup  edad  faltas val_pren_std /// *Continuous covariates
+	genero pres_antes plan_gasto_bin /// *Dummy variables
+	masqueprepa  pb 
 	
 	
-order eff_cost_loan def_c fc_admin_disc fc_survey_disc fc_admin fc_survey dias_primer_pago /// *Dependent variables
-	pro_* fee NombrePignorante prenda fecha_inicial /// *Admin variables
-	dummy_dow* dummy_suc* /// *Controls
-	prestamo pr_recup  edad visit_number num_arms faltas /// *Continuous covariates
-	genero pres_antes fam_pide fam_comun ahorros cta_tanda /// *Dummy variables
-	renta comida medicina luz gas telefono agua ///
-	masqueprepa estresado_seguido OC pb fb hace_presupuesto tentado low_cost low_time rec_cel
-
+order eff_cost_loan def_c des_c fc_admin_disc fc_survey_disc fc_admin fc_survey dias_primer_pago /// *Dependent variables
+	pro_* fee NombrePignorante prenda fecha_inicial  /// *Admin variables
+	$C0 /// *Controls
+	log_prestamo pr_recup  edad  faltas val_pren_std /// *Continuous covariates
+	genero pres_antes plan_gasto_bin /// *Dummy variables
+	masqueprepa  pb 
 	
 	
 export delimited "$directorio/_aux/heterogeneity_grf.csv", replace nolabel
@@ -39,15 +55,14 @@ use "$directorio/DB/Master.dta", clear
 sort NombrePignorante fecha_inicial
 
 *Covariates - Randomization - Outcomes
-keep eff_cost_loan def_c fc_admin_disc fc_survey_disc fc_admin fc_survey dias_primer_pago  /// *Dependent variables
-	pro_* fee NombrePignorante prenda fecha_inicial /// *Admin variables
+keep eff_cost_loan def_c des_c fc_admin_disc fc_survey_disc fc_admin fc_survey dias_primer_pago  /// *Dependent variables
+	pro_* fee NombrePignorante prenda fecha_inicial  /// *Admin variables
 	$C0 /* *Controls */
 	
-order eff_cost_loan def_c fc_admin_disc fc_survey_disc fc_admin fc_survey dias_primer_pago  /// *Dependent variables
-	pro_* fee NombrePignorante prenda fecha_inicial /// *Admin variables
+order eff_cost_loan def_c des_c fc_admin_disc fc_survey_disc fc_admin fc_survey dias_primer_pago  /// *Dependent variables
+	pro_* fee NombrePignorante prenda fecha_inicial  /// *Admin variables
 	$C0 /* *Controls */
 	
 
-	
 export delimited "$directorio/_aux/heterogeneity_te.csv", replace nolabel
 

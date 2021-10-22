@@ -1,6 +1,23 @@
 /*
-Effect in default for different propensity of take up predicted (using a RF)
+********************
+version 17.0
+********************
+ 
+/*******************************************************************************
+* Name of file:	
+* Author:	Isaac M
+* Machine:	Isaac M 											
+* Date of creation:	October. 5, 2021
+* Last date of modification:   
+* Modifications:		
+* Files used:     
+		- 
+* Files created:  
+
+* Purpose: Effect in default for different propensity of take up predicted (using a RF)
 probabilities
+
+*******************************************************************************/
 */
 
 

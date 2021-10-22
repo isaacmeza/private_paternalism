@@ -1,7 +1,23 @@
 /*
-Effective cost/loan treatment effect
-*/
+********************
+version 17.0
+********************
+ 
+/*******************************************************************************
+* Name of file:	
+* Author:	Isaac M
+* Machine:	Isaac M 											
+* Date of creation:	October. 5, 2021
+* Last date of modification:   
+* Modifications:		
+* Files used:     
+		- Master.dta
+* Files created:  
 
+* Purpose: Effective cost/loan treatment effect
+
+*******************************************************************************/
+*/
 
 // GRAPH FORMATTING
 // For graphs:
@@ -35,7 +51,7 @@ keep if dias_inicio<=115
 *Dependent variables
 gen eff_pospay = eff_cost_loan if sum_p_c>0
 gen eff_fee = eff_cost_loan if fee==1 | prod==1
-gen eff_tc = eff_cost_loan + trans_cost/prestamo
+gen eff_tc = eff_cost_loan - trans_cost/prestamo
 
 ********************************************************************************
 **********************************Financial cost********************************
@@ -44,7 +60,7 @@ gen eff_tc = eff_cost_loan + trans_cost/prestamo
 
 
 	local vrlist  eff_cost_loan   eff_tc  eff_pospay  eff_fee   
-	local vrlistnames  "effective cost/loan"  "cost/loan + tc" "cost/loan | pay>0" "cost/loan | fee=1" 
+	local vrlistnames  "effective cost/loan benefit"  "cost/loan - tc" "cost/loan | pay>0" "cost/loan | fee=1" 
 
 	local nv = 0	
 	foreach var of varlist `vrlist' {

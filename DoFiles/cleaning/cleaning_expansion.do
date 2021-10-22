@@ -42,4 +42,10 @@ su fechaaltadelprestamo
 drop if fechavencimiento>`r(max)'
 drop if fechaaltadelultimodetalle>fechavencimiento
 
+*Default
+gen def = !missing(fechacva) 
+*Not refrendums
+gen nref = (tipooperacion=="ALT")
+
+
 save  "${directorio}\DB\base_expansion.dta", replace

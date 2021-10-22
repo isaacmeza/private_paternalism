@@ -1,6 +1,25 @@
 /*
-Effective cost/loan ratio treatment effect - decomposed by choice selection
+********************
+version 17.0
+********************
+ 
+/*******************************************************************************
+* Name of file:	
+* Author:	Isaac M
+* Machine:	Isaac M 											
+* Date of creation:	October. 10, 2021
+* Last date of modification:   
+* Modifications:		
+* Files used:     
+		- Master.dta
+* Files created:  
+
+* Purpose: Effective cost/loan ratio treatment effect - decomposed by choice selection
+
+
+*******************************************************************************/
 */
+
 
 // GRAPH FORMATTING
 // For graphs:
@@ -30,10 +49,10 @@ set more off
 use "$directorio/DB/Master.dta", clear
 *Dependent variables
 gen eff_pospay = eff_cost_loan if sum_p_c>0
-gen eff_tc = eff_cost_loan + trans_cost/prestamo
+gen eff_tc = eff_cost_loan - trans_cost/prestamo
 
 local vrlist  eff_cost_loan  eff_tc eff_pospay  
-local vrlistnames  "effective cost/loan"  "cost/loan + tc" "cost/loan | pay>0" 
+local vrlistnames  "effective cost/loan benefit"  "cost/loan - tc" "cost/loan | pay>0" 
 
 ********************************************************************************
 *****************************Effective cost/loan********************************

@@ -40,3 +40,19 @@ vignettes/*.pdf
 *.utf8.md
 *.knit.md
 
+# Data files
+/Raw/
+/Raw/**
+
+/DB/
+/DB/**
+
+/_aux/
+/_aux/**
+
+# Individual files
+IsaacMeza-donde2019-54d6b0d43053ricardo.zip
+
+/oldrepo/**
+/oldrepo/**
+

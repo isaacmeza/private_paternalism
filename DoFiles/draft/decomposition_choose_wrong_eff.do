@@ -1,7 +1,22 @@
 /*
-Who makes mistakes?
-		
-Author : Isaac Meza
+********************
+version 17.0
+********************
+ 
+/*******************************************************************************
+* Name of file:	
+* Author:	Isaac M
+* Machine:	Isaac M 											
+* Date of creation:	October. 5, 2021
+* Last date of modification:   
+* Modifications:		
+* Files used:     
+		- 
+* Files created:  
+
+* Purpose: Who makes mistakes? - Decomposition
+
+*******************************************************************************/
 */
 
 ********************************************************************************
@@ -40,10 +55,6 @@ merge 1:1 prenda using `temp_def', nogen keep(3)
 merge 1:1 prenda using `temp_sum', nogen keep(3)
 
 
-*drop observations with high variance
-su var_eff, d
-drop if var_eff>`r(p99)'
-
 *Linear decomposition
 reg tau_eff tau_sum tau_def, r nocons	
 predict tau_pre
@@ -71,12 +82,12 @@ forvalues i = 1/4 {
 
 gen threshold = _n-1 if _n<=16
 	
-local rep_num = 200
+local rep_num = 100
 forvalues rep = 1/`rep_num' {
 di "`rep'"
 *Draw random effect from normal distribution with standard error according to Athey
-replace tau_sim1 = rnormal(-tau_eff, sqrt(var_eff))*100	
-replace tau_sim2 = rnormal(-tau_pre, sqrt(var_pre))*100	
+replace tau_sim1 = rnormal(tau_eff, sqrt(var_eff))*100	
+replace tau_sim2 = rnormal(tau_pre, sqrt(var_pre))*100	
 replace tau_sim3 = rnormal(-tau_def, sqrt(var_def))*100	
 replace tau_sim4 = rnormal(-tau_sum, sqrt(var_sum))*100	
 
@@ -123,17 +134,14 @@ forvalues k = 1/4 {
 	twoway 	(rarea cwf_normal_l1 cwf_normal_h1 threshold, fcolor(navy) fintensity(40)) ///
 			(line cwf1 threshold, lpattern(solid) lwidth(medthick) lcolor(navy)) ///
 			(scatter cwf1 threshold,  msymbol(x) color(navy) ) ///
-			(rarea cwf_normal_l2 cwf_normal_h2 threshold, fcolor(blue) fintensity(30)) ///
-			(line cwf2 threshold, lpattern(solid) lwidth(medthick) lcolor(blue%60)) ///
-			(scatter cwf2 threshold,  msymbol(x) color(blue%60) ) ///
 			(rarea cwf_normal_l3 cwf_normal_h3 threshold, fcolor(red) fintensity(20)) ///
 			(line cwf3 threshold, lpattern(solid) lwidth(medthick) lcolor(red%60)) ///
 			(scatter cwf3 threshold,  msymbol(x) color(red%60) ) ///
 			(rarea cwf_normal_l4 cwf_normal_h4 threshold, fcolor(green) fintensity(20)) ///
 			(line cwf4 threshold, lpattern(solid) lwidth(medthick) lcolor(green%60)) ///
 			(scatter cwf4 threshold,  msymbol(x) color(green%60) ) ///
-			, legend(order(2 "Effective cost/loan"  5 "Predicted" ///
-				8 "Default" 11 "Sum of Payments"))  scheme(s2mono) ///
+			, legend(order(2 "Effective cost/loan benefit"  ///
+				5 "Default" 8 "Sum of Payments"))  scheme(s2mono) ///
 			graphregion(color(white)) xtitle("Threshold (as % of loan)") ///
 			ytitle("Percentage mistakes", axis(1)) 
 	graph export "$directorio/Figuras/line_cw_eff_decomposition_te_cf.pdf", replace

@@ -1,5 +1,22 @@
 /*
-Who makes mistakes? - Decomposition by a binary variable
+********************
+version 17.0
+********************
+ 
+/*******************************************************************************
+* Name of file:	
+* Author:	Isaac M
+* Machine:	Isaac M 											
+* Date of creation:	October. 5, 2021
+* Last date of modification:   
+* Modifications:		
+* Files used:     
+		- 
+* Files created:  
+
+* Purpose: Who makes mistakes? - Decomposition by a binary variable
+
+*******************************************************************************/
 */
 
 ********************************************************************************
@@ -13,9 +30,7 @@ Who makes mistakes? - Decomposition by a binary variable
 import delimited "$directorio/_aux/eff_te_grf.csv", clear
 merge 1:1 prenda using "$directorio/DB/Master.dta", nogen keep(3)
 
-*drop observations with high variance
-su tau_hat_oobvarianceestimates, d
-drop if tau_hat_oobvarianceestimates>`r(p99)'
+
 
 **********************************Binary variable*******************************
 
@@ -44,11 +59,11 @@ forvalues j=0/1 {
 
 gen threshold = _n-1 if _n<=16
 
-local rep_num = 500
+local rep_num = 50
 forvalues rep = 1/`rep_num' {
 di "`rep'"
 *Draw random effect from normal distribution with standard error according to Athey
-replace tau_sim = rnormal(-tau_hat_oobpredictions, sqrt(tau_hat_oobvarianceestimates))*100	
+replace tau_sim = rnormal(tau_hat_oobpredictions, sqrt(tau_hat_oobvarianceestimates))*100	
 *Computation of people that makes mistakes in the choice arm according to estimated counterfactual
 foreach var of varlist tau_sim {
 	forvalues i = 0/16 {

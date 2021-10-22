@@ -148,7 +148,11 @@ label var pro_5 "C-Promise"
 label var pro_6 "C-Fee-SQ"	
 label var pro_7 "C-Fee-NSQ"	
 label var pro_8 "C-Promise-SQ"	
-label var pro_9 "C-Promise-NSQ"				
+label var pro_9 "C-Promise-NSQ"		
+
+*Choose commitment variable
+gen choose_commitment =  (producto==5 | producto==7) if inlist(producto, 4, 5, 6, 7)
+		
 
 *Verify if loan remains constant in the voucher
 bysort prenda: gen aux = 1 if prestamo[_n]~=prestamo[_n-1]
@@ -561,15 +565,18 @@ gen cost_losing_pawn = prestamo/(0.7)
 replace cost_losing_pawn = cost_losing_pawn - prestamo/(0.7*(1+0.002257833358012379025857)^dias_al_desempenyo) if des_c == 1
 
 
-*Effective cost/loan ratio
+*Effective cost/loan benefit ratio 
 gen eff_cost_loan = sum_porcp_c + 1/0.7
 replace eff_cost_loan = eff_cost_loan - 1/0.7 if des_c == 1
-label var eff_cost_loan "Effective cost-loan ratio"
+replace eff_cost_loan = -eff_cost_loan
+drop if missing(eff_cost_loan)
+label var eff_cost_loan "Effective cost-loan benefit ratio"
 
 *Calculate a version of this that doesn't include the interest that is mechanically saved by paying early since this is the piece of the forced-fee contract that has a foregone liquidity cost for the borrower.
 gen eff_cost_loan_noint = sum_porcp_c - sum_porc_int_c + 1/0.7
 replace eff_cost_loan_noint = eff_cost_loan_noint - 1/0.7 if des_c == 1
-label var eff_cost_loan_noint "Effective cost-loan ratio without interests"
+replace eff_cost_loan_noint = -eff_cost_loan_noint
+label var eff_cost_loan_noint "Effective cost-loan benefit ratio without interests"
 
 *Calculate a version of this that is only based on saved collateral since this has nothing to do with the early payment other than how it helps you repay.
 

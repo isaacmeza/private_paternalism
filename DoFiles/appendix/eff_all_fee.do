@@ -1,6 +1,24 @@
 /*
-Quantile reg effective c/l (all fees) 
+********************
+version 17.0
+********************
+ 
+/*******************************************************************************
+* Name of file:	
+* Author:	Isaac M
+* Machine:	Isaac M 											
+* Date of creation:	October. 5, 2021
+* Last date of modification:   
+* Modifications:		
+* Files used:     
+		- Master.dta
+* Files created:  
+
+* Purpose: Quantile reg effective c/l (all fees) 
+
+*******************************************************************************/
 */
+
 
 
 // GRAPH FORMATTING
@@ -32,14 +50,14 @@ use "$directorio/DB/Master.dta", clear
 
 *Sum all possible fees (worst-case scenario)
 gen eff_all_fee = eff_cost_loan 
-replace eff_all_fee = eff_all_fee + 0.02*(ceil(dias_ultimo_mov/30))/3 if  pro_2==1
+replace eff_all_fee = eff_all_fee - 0.02*(ceil(dias_ultimo_mov/30))/3 if  pro_2==1
 
 ********************************************************************************
 **********************************Financial cost********************************
 ********************************************************************************
 
 *Dependent variables
-local qlist  0.15 0.25 0.47 0.75 0.84 
+local qlist  0.15 0.25 0.53 0.75 0.84 
 local qlistnames "15%"  "25%" "50%" "75%" "85%"
 	
 matrix results = J(6, 5, .) // empty matrix for results

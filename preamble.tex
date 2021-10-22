@@ -33,7 +33,7 @@
 \usepackage{tocloft}
 \usepackage{etoc}
 \usepackage{lmodern}
-
+\usepackage{bm}
 
 \epstopdfDeclareGraphicsRule{.tiff}{png}{.png}{convert #1 \OutputFile}
 \AppendGraphicsExtensions{.tiff}
@@ -96,3 +96,8 @@
 
 \newcommand{\wh}{\widehat}
 \usepackage{anyfontsize}
+
+\usepackage[linesnumbered,vlined,ruled,commentsnumbered]{algorithm2e}
+
+\DontPrintSemicolon
+\newcommand{\To}{\mbox{\upshape\bfseries to}}
