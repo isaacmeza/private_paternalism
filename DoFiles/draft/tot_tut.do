@@ -57,7 +57,7 @@ preserve
 
 keep if t_prod==4
 keep tau_eff tau_des choose_commitment  $C0
-/*
+
 foreach var of varlist tau_eff  {
 	ritest choose_commitment _b[choose_commitment], rep(1000) : reg `var' choose_commitment ,  r
 	local rp = r(p)[1,1]
@@ -73,7 +73,7 @@ foreach var of varlist tau_eff  {
 	estadd scalar DepVarMean = `r(mean)'
 	estadd scalar ri_p = `rp'
 	}
-*/
+
 restore
 
 *-------------------------------------------------------------------------------
@@ -119,6 +119,6 @@ foreach var of varlist eff_cost_loan  {
 	}
 	
 
-*Save results	
-*esttab using "$directorio/Tables/reg_results/tot_tut.csv", se r2 ${star} b(a2) ///
-*		scalars("DepVarMean DepVarMean" "ri_p ri_p") replace 
+Save results	
+esttab using "$directorio/Tables/reg_results/tot_tut.csv", se r2 ${star} b(a2) ///
+		scalars("DepVarMean DepVarMean" "ri_p ri_p") replace 
