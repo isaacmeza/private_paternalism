@@ -8,8 +8,9 @@ version 17.0
 * Author:	Isaac M
 * Machine:	Isaac M 											
 * Date of creation:	
-* Last date of modification:  October. 19, 2021 
+* Last date of modification:  November. 4, 2021 
 * Modifications: Changed FE regression with command reghdfe		
+				Cleaned duplicates in regressions
 * Files used:     
 		- 
 * Files created:  
@@ -201,9 +202,10 @@ tab porc_clients_ppf if f_idcliente==1 & num_clients_3m==1
 ********************************************
 *				REGRESSIONS				   *
 ********************************************
+duplicates drop idcliente idsucursal date_opening pf_suc pago_fijo demand_past_immn active_pastn previous_credit_closed_0, force
 
 eststo clear
-********************************************
+****************************************
 
 
 *2SLS (IV)

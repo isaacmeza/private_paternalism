@@ -202,9 +202,10 @@ tab porc_clients_ppf if f_idcliente==1 & num_clients_3m==1
 ********************************************
 *				REGRESSIONS				   *
 ********************************************
+duplicates drop idcliente idsucursal date_opening pf_suc def demand_past_immn active_pastn previous_credit_closed_0, force
 gen refrendo = (nref==0)
-eststo clear
 
+eststo clear
 ********************************************
 
 *FS
@@ -220,7 +221,7 @@ cap drop residual
 gen residual = pago_fijo - pr 
 
 *IV (2S)
-eststo: reghdfe refrendo pago_fijo residual, absorb(idcliente date_opening) vce(cluster idcliente)	
+eststo: reghdfe refrendo pago_fijo residual, absorb(idcliente date_opening) vce(cluster idcliente)
 su refrendo if e(sample) 
 estadd scalar DepVarMean = `r(mean)'
 eststo: reghdfe def pago_fijo residual, absorb(idcliente date_opening) vce(cluster idcliente)
@@ -287,7 +288,7 @@ foreach wk in n /*2 4 6 8 10 12 15*/ {
 	estadd scalar DepVarMean = `r(mean)'
 	
 		*IV (conditional on not choosing)
-	eststo: reghdfe def pr1 pr2 nref if pf_suc==1 & previous_credit_closed_0==1 & demand_past_imm`wk'==0 , absorb(idcliente date_opening)  vce(cluster idcliente)	
+	eststo: reghdfe def pr1 pr2 nref if pf_suc==1 & previous_credit_closed_0==1 & demand_past_imm`wk'==0 , absorb(idcliente date_opening)  vce(cluster idcliente)
 	su def if e(sample) 
 	estadd scalar DepVarMean = `r(mean)'
 	
