@@ -208,6 +208,9 @@ gen insample = 1 if pf_suc==1 & previous_credit_closed_0==1 & !missing(demand_pa
 sort idcliente idsuc insample date_ope
 cap drop num_learning
 by idcliente idsucursal insample : gen num_learning = _n if insample==1
+replace num_learning = 3 if num_learning>3 & !missing(num_learning)
+tab num_learning, gen(num_learning_)
+	
 cap drop coll
 by idcliente idsucursal insample : gen coll = 1 if (num_learning==1 | (pago_fijo[_n]==pago_fijo[_n-1]  & active_pastn[_n]==active_pastn[_n-1] & demand_past_immn[_n]==demand_past_immn[_n-1] & insample==1))
 *"Collapse"
@@ -459,20 +462,19 @@ foreach var of varlist pago_fijo def {
 	*###############################################################################
 	*###############################################################################	
 	*Interaction with number of learning epoch 
-	replace num_learning = 3 if num_learning>3
-	tab num_learning, gen(num_learning_)
-
+	preserve
 	eststo clear
 	*2SLS (IV)
 	foreach wk in n /*2 4 6 8 10 12 15*/ {
-		foreach wkc in  0 1  {
 		
-		*Endogenous vars
+				*Endogenous vars
 		gen demand_past`wk'_numl2 = demand_past_imm`wk'*num_learning_2
 		gen demand_past`wk'_numl3 = demand_past_imm`wk'*num_learning_3
-		*Instrumental vars
+				*Instrumental vars
 		gen active_past`wk'_numl2 = active_past`wk'*num_learning_2
 		gen active_past`wk'_numl3 = active_past`wk'*num_learning_3	
+		
+		foreach wkc in  0 1  {
 
 		*FS 
 		reghdfe demand_past_imm`wk' active_past`wk' active_past`wk'_numl2 active_past`wk'_numl3 num_learning_2 num_learning_3 if pf_suc==1 & previous_credit_closed_`wkc'==1 ,   absorb(date_opening) vce(cluster idcliente)
@@ -527,7 +529,7 @@ foreach var of varlist pago_fijo def {
 	*Save results	
 	esttab using "$directorio/Tables/reg_results/iv_reg_`var'_detailed_interact.csv", se r2 ${star} b(a2) ///
 			scalars("DepVarMean DepVarMean") replace 
-			
+	restore		
 	*###############################################################################
 	*###############################################################################	
 }
