@@ -207,6 +207,7 @@ duplicates drop idcliente idsucursal date_opening pf_suc pago_fijo demand_past_i
 gen insample = 1 if pf_suc==1 & previous_credit_closed_0==1 & !missing(demand_past_immn) & !missing(active_pastn)
 sort idcliente idsuc insample date_ope
 cap drop num_learning
+*Number of 'decision' epochs
 by idcliente idsucursal insample : gen num_learning = _n if insample==1
 replace num_learning = 3 if num_learning>3 & !missing(num_learning)
 tab num_learning, gen(num_learning_)
@@ -530,6 +531,7 @@ foreach var of varlist pago_fijo def {
 	esttab using "$directorio/Tables/reg_results/iv_reg_`var'_detailed_interact.csv", se r2 ${star} b(a2) ///
 			scalars("DepVarMean DepVarMean") replace 
 	restore		
+	
 	*###############################################################################
 	*###############################################################################	
 }
