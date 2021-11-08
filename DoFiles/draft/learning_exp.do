@@ -99,6 +99,35 @@ by NombrePignorante : gen kp = 1 if (choose_nsq!=. & (num_pr_tr==1  ///
 		| (num_pr_tr==4 & num_pr_tr==min_numl & prod[_n-1]==prod[_n-2] & prod[_n-2]==prod[_n-3] & prod[_n-3]==prod[_n-4]) ///
 		| (num_pr_tr==4 & num_pr_tr==min_numl & prod[_n-1]==prod[_n-2] & prod[_n-2]==prod[_n-3] & prod[_n-3]==prod[_n-4]  & prod[_n-4]==prod[_n-5]) ///
 		))
+
+		
+		
+********************************************************
+*			      SUMMARY STATISTICS				   *
+********************************************************
+
+su choose_nsq_fee if previous==1
+su choose_nsq_fee if previous==2
+su choose_nsq_fee if previous==4
+su choose_nsq_fee if previous==5
+
+gen partition = .
+replace partition = 1 if previous==1 & previous_def==0
+replace partition = 2 if previous==2 & previous_def==0
+replace partition = 3 if previous==4 & previous_def==0
+replace partition = 4 if previous==5 & previous_def==0
+replace partition = 5 if previous==1 & previous_def==1
+replace partition = 6 if previous==2 & previous_def==1
+replace partition = 7 if previous==4 & previous_def==1
+replace partition = 8 if previous==5 & previous_def==1
+
+putexcel set "$directorio/Tables/SS_learning.xlsx", sheet("SS_learning") modify	
+orth_out choose_nsq_fee if previous!=3, by(partition) vce(cluster suc_x_dia) bdec(3) se count prop pcompare
+putexcel L5 = matrix(r(matrix)) 
+orth_out choose_nsq_fee if previous!=3, by(previous) vce(cluster suc_x_dia) bdec(3) se count prop pcompare
+putexcel L10 = matrix(r(matrix)) 
+
+
 		
 ********************************************************
 *				LEARNING REGRESSIONS				   *
@@ -113,6 +142,33 @@ estadd scalar DepVarMean = `r(mean)'
 eststo : reghdfe choose_nsq_fee i.previous##i.num_learning, absorb(NombrePignorante)  vce(cluster suc_x_dia)
 eststo : reghdfe choose_nsq_fee i.previous##i.previous_def, absorb(NombrePignorante)  vce(cluster suc_x_dia)
 
+*Coefficients 
+putexcel M21 = (e(b)[1,2])
+putexcel N21 = (e(b)[1,4])
+putexcel O21 = (e(b)[1,5])
+putexcel L23 = (e(b)[1,7])
+putexcel M23 = (e(b)[1,7] + e(b)[1,2] + e(b)[1,11])
+putexcel N23 = (e(b)[1,7] + e(b)[1,4] + e(b)[1,15])
+putexcel O23 = (e(b)[1,7] + e(b)[1,5] + e(b)[1,17])
+*Std Errors
+putexcel M22 = (sqrt(e(V)[2,2]))
+putexcel N22 = (sqrt(e(V)[4,4]))
+putexcel O22 = (sqrt(e(V)[5,5]))
+putexcel L24 = (sqrt(e(V)[7,7]))
+putexcel M24 = (sqrt(e(V)[7,7] + e(V)[2,2] + e(V)[11,11] + 2*e(V)[7,2] + 2*e(V)[11,2] + 2*e(V)[11,7]))
+putexcel N24 = (sqrt(e(V)[7,7] + e(V)[4,4] + e(V)[15,15] + 2*e(V)[7,4] + 2*e(V)[15,4] + 2*e(V)[15,7]))
+putexcel O24 = (sqrt(e(V)[7,7] + e(V)[5,5] + e(V)[17,17] + 2*e(V)[7,5] + 2*e(V)[17,5] + 2*e(V)[17,7]))
+
+reghdfe choose_nsq_fee i.previous, absorb(NombrePignorante)  vce(cluster suc_x_dia)
+
+*Coefficients
+putexcel M25 = (e(b)[1,2])
+putexcel N25 = (e(b)[1,4])
+putexcel O25 = (e(b)[1,5])
+*Std Errors
+putexcel M26 = (sqrt(e(V)[2,2]))
+putexcel N26 = (sqrt(e(V)[4,4]))
+putexcel O26 = (sqrt(e(V)[5,5]))
 
 eststo : reghdfe choose_nsq_promise i.previous, absorb(NombrePignorante)  vce(cluster suc_x_dia)
 su choose_nsq if e(sample) 
