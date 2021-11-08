@@ -7,7 +7,7 @@ version 17.0
 * Name of file:	
 * Author:	Isaac M
 * Machine:	Isaac M 											
-* Date of creation:	November. 4, 2021 
+* Date of creation:	November. 11, 2021 
 * Last date of modification:  
 * Modifications: 
 * Files used:     
@@ -233,39 +233,32 @@ foreach var of varlist pago_fijo {
 	*###############################################################################
 	*###############################################################################	
 	*2SLS (IV)
+	preserve
 	eststo clear
 	foreach wk in n /*2 4 6 8 10 12 15*/ {
+		
+				*Endogenous vars
+		gen demand_past`wk'_def = demand_past_imm`wk'*def_past_immn
+				*Instrumental vars
+		gen active_past`wk'_def = active_past`wk'*def_past_immn
+		
 		foreach wkc in  0 1  {
 		
 			*FS 
-		eststo: reghdfe demand_past_imm`wk' active_past`wk' if pf_suc==1 & previous_credit_closed_`wkc'==1 ,   absorb(date_opening) vce(cluster idcliente)
-		cap drop esample
-		gen esample = e(sample)
-		su demand_past_imm`wk' if e(sample) 
-		estadd scalar DepVarMean = `r(mean)'
-
-		cap drop pr
-		predict pr
-		cap drop residual
-		gen residual = demand_past_imm`wk' - pr 
+		reghdfe demand_past_imm`wk' active_past`wk' active_past`wk'_def def_past_immn if pf_suc==1 & previous_credit_closed_`wkc'==1 ,   absorb(date_opening) vce(cluster idcliente)
+		cap drop pr1
+		predict pr1		
+		reghdfe demand_past`wk'_def active_past`wk' active_past`wk'_def def_past_immn if pf_suc==1 & previous_credit_closed_`wkc'==1 ,   absorb(date_opening) vce(cluster idcliente)		
+		cap drop pr2
+		predict pr2
 
 			*IV -OLS
-		eststo: reghdfe `var' demand_past_imm`wk' residual  if esample, absorb(date_opening) vce(cluster idcliente)
+		eststo: reghdfe `var' pr1 pr2 def_past_immn  if pf_suc==1 & previous_credit_closed_`wkc'==1, absorb(date_opening) vce(cluster idcliente)
 		su `var' if e(sample) 
 		estadd scalar DepVarMean = `r(mean)'
 
 			*IV -OLS (conditional on not choosing)
-		eststo: reghdfe `var'  pr  if esample & demand_past_imm`wk'==0, absorb(date_opening) vce(cluster idcliente)
-		su `var' if e(sample) 
-		estadd scalar DepVarMean = `r(mean)'
-		
-			*Reduced form 
-		eststo: reghdfe `var'  active_past`wk'  if pf_suc==1 & previous_credit_closed_`wkc'==1, absorb(date_opening) vce(cluster idcliente)
-		su `var' if e(sample) 
-		estadd scalar DepVarMean = `r(mean)'
-		
-			*Reduced form (conditional on not choosing)
-		eststo: reghdfe `var'  active_past`wk'  if pf_suc==1 & previous_credit_closed_`wkc'==1 & demand_past_imm`wk'==0, absorb(date_opening) vce(cluster idcliente)
+		eststo: reghdfe `var' pr1 pr2 def_past_immn  if pf_suc==1 & previous_credit_closed_`wkc'==1 & demand_past_imm`wk'==0, absorb(date_opening) vce(cluster idcliente)
 		su `var' if e(sample) 
 		estadd scalar DepVarMean = `r(mean)'
 		
@@ -273,37 +266,21 @@ foreach var of varlist pago_fijo {
 	*-------------------------------------------------------------------------------
 
 		
-			*FS -FE
-		eststo: reghdfe demand_past_imm`wk' active_past`wk'    ///
-			if pf_suc==1 & previous_credit_closed_`wkc'==1 , absorb(idcliente date_opening) vce(cluster idcliente)
-		cap drop esample
-		gen esample = e(sample)
-		su demand_past_imm`wk' if e(sample) 
-		estadd scalar DepVarMean = `r(mean)'
+			*FS 
+		reghdfe demand_past_imm`wk' active_past`wk' active_past`wk'_def def_past_immn if pf_suc==1 & previous_credit_closed_`wkc'==1 ,   absorb(idcliente date_opening) vce(cluster idcliente)
+		cap drop pr1
+		predict pr1		
+		reghdfe demand_past`wk'_def active_past`wk' active_past`wk'_def def_past_immn if pf_suc==1 & previous_credit_closed_`wkc'==1 ,   absorb(idcliente date_opening) vce(cluster idcliente)		
+		cap drop pr2
+		predict pr2
 
-		cap drop pr
-		predict pr
-		cap drop residual
-		gen residual = demand_past_imm`wk' - pr 
-
-			*IV
-		eststo: reghdfe `var' demand_past_imm`wk' residual  if esample, absorb(idcliente date_opening) vce(cluster idcliente)
+			*IV -OLS
+		eststo: reghdfe `var' pr1 pr2 def_past_immn  if pf_suc==1 & previous_credit_closed_`wkc'==1, absorb(idcliente date_opening) vce(cluster idcliente)
 		su `var' if e(sample) 
 		estadd scalar DepVarMean = `r(mean)'
 
-			*IV (conditional on not choosing)
-		eststo: reghdfe `var' pr    if esample & demand_past_imm`wk'==0, absorb(idcliente date_opening) vce(cluster idcliente)
-		su `var' if e(sample) 
-		estadd scalar DepVarMean = `r(mean)'
-		
-
-			*Reduced form 
-		eststo: reghdfe `var' active_past`wk' if pf_suc==1 & previous_credit_closed_`wkc'==1 , absorb(idcliente date_opening) vce(cluster idcliente)
-		su `var' if e(sample) 
-		estadd scalar DepVarMean = `r(mean)'
-		
-			*Reduced form (conditional on not choosing)
-		eststo: reghdfe `var' active_past`wk' if pf_suc==1 & previous_credit_closed_`wkc'==1 & demand_past_imm`wk'==0, absorb(idcliente date_opening) vce(cluster idcliente)
+			*IV -OLS (conditional on not choosing)
+		eststo: reghdfe `var' pr1 pr2 def_past_immn  if pf_suc==1 & previous_credit_closed_`wkc'==1 & demand_past_imm`wk'==0, absorb(idcliente date_opening) vce(cluster idcliente)
 		su `var' if e(sample) 
 		estadd scalar DepVarMean = `r(mean)'
 		
@@ -312,9 +289,9 @@ foreach var of varlist pago_fijo {
 		
 		
 	*Save results	
-	esttab using "$directorio/Tables/reg_results/iv_reg_`var'_detailed.csv", se r2 ${star} b(a2) ///
+	esttab using "$directorio/Tables/reg_results/iv_reg_`var'_def_detailed.csv", se r2 ${star} b(a2) ///
 			scalars("DepVarMean DepVarMean") replace 
-
+	restore
 			
 	*###############################################################################
 	*###############################################################################	
@@ -328,48 +305,38 @@ foreach var of varlist pago_fijo {
 	eststo clear
 	*2SLS (IV)
 	foreach wk in n /*2 4 6 8 10 12 15*/ {
+		
+				*Endogenous vars
+		gen demand_past`wk'_def = demand_past_imm`wk'*def_past_immn
+				*Instrumental vars
+		gen active_past`wk'_def = active_past`wk'*def_past_immn
+		
 		foreach wkc in  0 1  {
 		
 			*FS 
-		eststo: reghdfe demand_past_imm`wk' active_past`wk' if pf_suc==1 & previous_credit_closed_`wkc'==1 ,   absorb(date_opening) vce(cluster idcliente)
-		cap drop esample
-		gen esample = e(sample)
-		su demand_past_imm`wk' if e(sample) 
-		estadd scalar DepVarMean = `r(mean)'
-
-		cap drop pr
-		predict pr
-		cap drop residual
-		gen residual = demand_past_imm`wk' - pr 
+		reghdfe demand_past_imm`wk' active_past`wk' active_past`wk'_def def_past_immn if pf_suc==1 & previous_credit_closed_`wkc'==1 ,   absorb(date_opening) vce(cluster idcliente)
+		cap drop pr1
+		predict pr1		
+		reghdfe demand_past`wk'_def active_past`wk' active_past`wk'_def def_past_immn if pf_suc==1 & previous_credit_closed_`wkc'==1 ,   absorb(date_opening) vce(cluster idcliente)		
+		cap drop pr2
+		predict pr2
 
 			*IV -OLS
-		eststo: reghdfe `var' demand_past_imm`wk' residual  if esample, absorb(date_opening) vce(cluster idcliente)
+		eststo: reghdfe `var' pr1 pr2 def_past_immn  if pf_suc==1 & previous_credit_closed_`wkc'==1, absorb(date_opening) vce(cluster idcliente)
 		su `var' if e(sample) 
 		estadd scalar DepVarMean = `r(mean)'
 
 			*IV -OLS (conditional on not choosing)
-		eststo: reghdfe `var'  pr  if esample & demand_past_imm`wk'==0, absorb(date_opening) vce(cluster idcliente)
+		eststo: reghdfe `var' pr1 pr2 def_past_immn  if pf_suc==1 & previous_credit_closed_`wkc'==1 & demand_past_imm`wk'==0, absorb(date_opening) vce(cluster idcliente)
 		su `var' if e(sample) 
 		estadd scalar DepVarMean = `r(mean)'
-
-		
-			*Reduced form 
-		eststo: reghdfe `var'  active_past`wk'  if pf_suc==1 & previous_credit_closed_`wkc'==1, absorb(date_opening) vce(cluster idcliente)
-		su `var' if e(sample) 
-		estadd scalar DepVarMean = `r(mean)'
-		
-			*Reduced form (conditional on not choosing)
-		eststo: reghdfe `var'  active_past`wk'  if pf_suc==1 & previous_credit_closed_`wkc'==1 & demand_past_imm`wk'==0, absorb(date_opening) vce(cluster idcliente)
-		su `var' if e(sample) 
-		estadd scalar DepVarMean = `r(mean)'
-		
-			
+				
 		}
 	}
 		
 		
 	*Save results	
-	esttab using "$directorio/Tables/reg_results/iv_reg_`var'_detailed_twocases.csv", se r2 ${star} b(a2) ///
+	esttab using "$directorio/Tables/reg_results/iv_reg_`var'_def_detailed_twocases.csv", se r2 ${star} b(a2) ///
 			scalars("DepVarMean DepVarMean") replace 
 	restore
 			
@@ -385,38 +352,29 @@ foreach var of varlist pago_fijo {
 	eststo clear
 	*2SLS (IV)
 	foreach wk in n /*2 4 6 8 10 12 15*/ {
+		
+				*Endogenous vars
+		gen demand_past`wk'_def = demand_past_imm`wk'*def_past_immn
+				*Instrumental vars
+		gen active_past`wk'_def = active_past`wk'*def_past_immn
+		
 		foreach wkc in  0 1  {
 		
 			*FS 
-		eststo: reghdfe demand_past_imm`wk' active_past`wk' if pf_suc==1 & previous_credit_closed_`wkc'==1 ,   absorb(date_opening) vce(cluster idcliente)
-		cap drop esample
-		gen esample = e(sample)
-		su demand_past_imm`wk' if e(sample) 
-		estadd scalar DepVarMean = `r(mean)'
-
-		cap drop pr
-		predict pr
-		cap drop residual
-		gen residual = demand_past_imm`wk' - pr 
+		reghdfe demand_past_imm`wk' active_past`wk' active_past`wk'_def def_past_immn if pf_suc==1 & previous_credit_closed_`wkc'==1 ,   absorb(date_opening) vce(cluster idcliente)
+		cap drop pr1
+		predict pr1		
+		reghdfe demand_past`wk'_def active_past`wk' active_past`wk'_def def_past_immn if pf_suc==1 & previous_credit_closed_`wkc'==1 ,   absorb(date_opening) vce(cluster idcliente)		
+		cap drop pr2
+		predict pr2
 
 			*IV -OLS
-		eststo: reghdfe `var' demand_past_imm`wk' residual  if esample, absorb(date_opening) vce(cluster idcliente)
+		eststo: reghdfe `var' pr1 pr2 def_past_immn  if pf_suc==1 & previous_credit_closed_`wkc'==1, absorb(date_opening) vce(cluster idcliente)
 		su `var' if e(sample) 
 		estadd scalar DepVarMean = `r(mean)'
 
 			*IV -OLS (conditional on not choosing)
-		eststo: reghdfe `var'  pr  if esample & demand_past_imm`wk'==0, absorb(date_opening) vce(cluster idcliente)
-		su `var' if e(sample) 
-		estadd scalar DepVarMean = `r(mean)'
-
-		
-			*Reduced form 
-		eststo: reghdfe `var'  active_past`wk'  if pf_suc==1 & previous_credit_closed_`wkc'==1, absorb(date_opening) vce(cluster idcliente)
-		su `var' if e(sample) 
-		estadd scalar DepVarMean = `r(mean)'
-		
-			*Reduced form (conditional on not choosing)
-		eststo: reghdfe `var'  active_past`wk'  if pf_suc==1 & previous_credit_closed_`wkc'==1 & demand_past_imm`wk'==0, absorb(date_opening) vce(cluster idcliente)
+		eststo: reghdfe `var' pr1 pr2 def_past_immn  if pf_suc==1 & previous_credit_closed_`wkc'==1 & demand_past_imm`wk'==0, absorb(date_opening) vce(cluster idcliente)
 		su `var' if e(sample) 
 		estadd scalar DepVarMean = `r(mean)'
 		
@@ -424,37 +382,21 @@ foreach var of varlist pago_fijo {
 	*-------------------------------------------------------------------------------
 
 		
-			*FS -FE
-		eststo: reghdfe demand_past_imm`wk' active_past`wk'    ///
-			if pf_suc==1 & previous_credit_closed_`wkc'==1 , absorb(idcliente date_opening) vce(cluster idcliente)
-		cap drop esample
-		gen esample = e(sample)
-		su demand_past_imm`wk' if e(sample) 
-		estadd scalar DepVarMean = `r(mean)'
+			*FS 
+		reghdfe demand_past_imm`wk' active_past`wk' active_past`wk'_def def_past_immn if pf_suc==1 & previous_credit_closed_`wkc'==1 ,   absorb(idcliente date_opening) vce(cluster idcliente)
+		cap drop pr1
+		predict pr1		
+		reghdfe demand_past`wk'_def active_past`wk' active_past`wk'_def def_past_immn if pf_suc==1 & previous_credit_closed_`wkc'==1 ,   absorb(idcliente date_opening) vce(cluster idcliente)		
+		cap drop pr2
+		predict pr2
 
-		cap drop pr
-		predict pr
-		cap drop residual
-		gen residual = demand_past_imm`wk' - pr 
-
-			*IV
-		eststo: reghdfe `var' demand_past_imm`wk' residual  if esample, absorb(idcliente date_opening) vce(cluster idcliente)
+			*IV -OLS
+		eststo: reghdfe `var' pr1 pr2 def_past_immn  if pf_suc==1 & previous_credit_closed_`wkc'==1, absorb(idcliente date_opening) vce(cluster idcliente)
 		su `var' if e(sample) 
 		estadd scalar DepVarMean = `r(mean)'
 
-			*IV (conditional on not choosing)
-		eststo: reghdfe `var' pr    if esample & demand_past_imm`wk'==0, absorb(idcliente date_opening) vce(cluster idcliente)
-		su `var' if e(sample) 
-		estadd scalar DepVarMean = `r(mean)'
-		
-
-			*Reduced form 
-		eststo: reghdfe `var' active_past`wk' if pf_suc==1 & previous_credit_closed_`wkc'==1 , absorb(idcliente date_opening) vce(cluster idcliente)
-		su `var' if e(sample) 
-		estadd scalar DepVarMean = `r(mean)'
-		
-			*Reduced form (conditional on not choosing)
-		eststo: reghdfe `var' active_past`wk' if pf_suc==1 & previous_credit_closed_`wkc'==1 & demand_past_imm`wk'==0, absorb(idcliente date_opening) vce(cluster idcliente)
+			*IV -OLS (conditional on not choosing)
+		eststo: reghdfe `var' pr1 pr2 def_past_immn  if pf_suc==1 & previous_credit_closed_`wkc'==1 & demand_past_imm`wk'==0, absorb(idcliente date_opening) vce(cluster idcliente)
 		su `var' if e(sample) 
 		estadd scalar DepVarMean = `r(mean)'
 		
@@ -463,86 +405,10 @@ foreach var of varlist pago_fijo {
 		
 		
 	*Save results	
-	esttab using "$directorio/Tables/reg_results/iv_reg_`var'_detailed_collapsed.csv", se r2 ${star} b(a2) ///
+	esttab using "$directorio/Tables/reg_results/iv_reg_`var'_def_detailed_collapsed.csv", se r2 ${star} b(a2) ///
 			scalars("DepVarMean DepVarMean") replace 
 	restore
-			
-	*###############################################################################
-	*###############################################################################	
 
-
-	*###############################################################################
-	*###############################################################################	
-	*Interaction with number of learning epoch 
-	preserve
-	eststo clear
-	*2SLS (IV)
-	foreach wk in n /*2 4 6 8 10 12 15*/ {
-		
-				*Endogenous vars
-		gen demand_past`wk'_numl2 = demand_past_imm`wk'*num_learning_2
-		gen demand_past`wk'_numl3 = demand_past_imm`wk'*num_learning_3
-				*Instrumental vars
-		gen active_past`wk'_numl2 = active_past`wk'*num_learning_2
-		gen active_past`wk'_numl3 = active_past`wk'*num_learning_3	
-		
-		foreach wkc in  0 1  {
-
-		*FS 
-		reghdfe demand_past_imm`wk' active_past`wk' active_past`wk'_numl2 active_past`wk'_numl3 num_learning_2 num_learning_3 if pf_suc==1 & previous_credit_closed_`wkc'==1 ,   absorb(date_opening) vce(cluster idcliente)
-		cap drop pr1
-		predict pr1
-		reghdfe demand_past`wk'_numl2 active_past`wk' active_past`wk'_numl2 active_past`wk'_numl3 num_learning_2 num_learning_3  if pf_suc==1 & previous_credit_closed_`wkc'==1 ,   absorb(date_opening) vce(cluster idcliente)
-		cap drop pr2
-		predict pr2
-		reghdfe demand_past`wk'_numl3 active_past`wk' active_past`wk'_numl2 active_past`wk'_numl3 num_learning_2 num_learning_3  if pf_suc==1 & previous_credit_closed_`wkc'==1 ,   absorb(date_opening) vce(cluster idcliente)
-		cap drop pr3
-		predict pr3
-
-			*IV -OLS
-		eststo: reghdfe `var' pr1 pr2 pr3 num_learning_2 num_learning_3  if pf_suc==1 & previous_credit_closed_`wkc'==1, absorb(date_opening) vce(cluster idcliente)
-		su `var' if e(sample) 
-		estadd scalar DepVarMean = `r(mean)'
-
-			*IV -OLS (conditional on not choosing)
-		eststo: reghdfe `var'  pr1 pr2 pr3 num_learning_2 num_learning_3   if pf_suc==1 & previous_credit_closed_`wkc'==1 & demand_past_imm`wk'==0, absorb(date_opening) vce(cluster idcliente)
-		su `var' if e(sample) 
-		estadd scalar DepVarMean = `r(mean)'
-
-		
-	*-------------------------------------------------------------------------------
-
-		
-		*FS - FE
-		reghdfe demand_past_imm`wk' active_past`wk' active_past`wk'_numl2 active_past`wk'_numl3 num_learning_2 num_learning_3 if pf_suc==1 & previous_credit_closed_`wkc'==1 ,   absorb(idcliente date_opening) vce(cluster idcliente)
-		cap drop pr1
-		predict pr1
-		reghdfe demand_past`wk'_numl2 active_past`wk' active_past`wk'_numl2 active_past`wk'_numl3 num_learning_2 num_learning_3  if pf_suc==1 & previous_credit_closed_`wkc'==1 ,   absorb(idcliente date_opening) vce(cluster idcliente)
-		cap drop pr2
-		predict pr2
-		reghdfe demand_past`wk'_numl3 active_past`wk' active_past`wk'_numl2 active_past`wk'_numl3 num_learning_2 num_learning_3  if pf_suc==1 & previous_credit_closed_`wkc'==1 ,   absorb(idcliente date_opening) vce(cluster idcliente)
-		cap drop pr3
-		predict pr3
-
-			*IV -OLS
-		eststo: reghdfe `var' pr1 pr2 pr3 num_learning_2 num_learning_3  if pf_suc==1 & previous_credit_closed_`wkc'==1, absorb(idcliente date_opening) vce(cluster idcliente)
-		su `var' if e(sample) 
-		estadd scalar DepVarMean = `r(mean)'
-
-			*IV -OLS (conditional on not choosing)
-		eststo: reghdfe `var'  pr1 pr2 pr3 num_learning_2 num_learning_3   if pf_suc==1 & previous_credit_closed_`wkc'==1 & demand_past_imm`wk'==0, absorb(idcliente date_opening) vce(cluster idcliente)
-		su `var' if e(sample) 
-		estadd scalar DepVarMean = `r(mean)'
-
-		}
-	}
-		
-		
-	*Save results	
-	esttab using "$directorio/Tables/reg_results/iv_reg_`var'_detailed_interact.csv", se r2 ${star} b(a2) ///
-			scalars("DepVarMean DepVarMean") replace 
-	restore		
-	
 	*###############################################################################
 	*###############################################################################	
 }

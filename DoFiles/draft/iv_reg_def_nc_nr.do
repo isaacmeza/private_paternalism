@@ -202,7 +202,7 @@ tab porc_clients_ppf if f_idcliente==1 & num_clients_3m==1
 ********************************************
 *				REGRESSIONS				   *
 ********************************************
-duplicates drop idcliente idsucursal date_opening pf_suc def demand_past_immn active_pastn previous_credit_closed_0, force
+duplicates drop idcliente idsucursal date_opening pf_suc def demand_past_immn active_pastn, force
 gen refrendo = (nref==0)
 
 eststo clear
