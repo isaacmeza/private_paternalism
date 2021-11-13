@@ -190,7 +190,10 @@ heterogeneity_effect <- function(data_in,treatment_var,outcome_var,writedata,ext
   # (on held-out data) as well as the mean forest prediction as the sole two regressors.
   # A coefficient of 1 for 'mean.forest.prediction' suggests that the mean forest 
   # prediction is correct, whereas a coefficient of 1 for 'differential.forest.prediction'
-  # additionally suggests that the forest has captured heterogeneity in the underlying signal. 
+  # additionally suggests that the forest has captured heterogeneity in the underlying signal.
+  # The p-value of the ‘differential.forest.prediction‘coefficient also acts as an omnibus test 
+  # the presence of heterogeneity: If the coefficient is significantly greater than 0, 
+  # then we can reject the null of no heterogeneity.
   
   tc <- tidy(test_calibration(tau.forest))
   print(tc)

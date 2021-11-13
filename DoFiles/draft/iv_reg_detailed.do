@@ -473,7 +473,7 @@ foreach var of varlist pago_fijo {
 
 	*###############################################################################
 	*###############################################################################	
-	*Interaction with number of learning epoch 
+	*Interaction with number of decision epoch 
 	preserve
 	eststo clear
 	*2SLS (IV)

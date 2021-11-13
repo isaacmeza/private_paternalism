@@ -14,7 +14,7 @@ version 17.0
 		- 
 * Files created:  
 
-* Purpose: Learning regressions
+* Purpose: Learning regressions in the experiment
 
 *******************************************************************************/
 */
@@ -122,9 +122,9 @@ replace partition = 7 if previous==4 & previous_def==1
 replace partition = 8 if previous==5 & previous_def==1
 
 putexcel set "$directorio/Tables/SS_learning.xlsx", sheet("SS_learning") modify	
-orth_out choose_nsq_fee if previous!=3, by(partition) vce(cluster suc_x_dia) bdec(3) se count prop pcompare
+orth_out choose_nsq_fee if previous!=3 & num_learning==1, by(partition) vce(cluster suc_x_dia) bdec(3) se count prop pcompare
 putexcel L5 = matrix(r(matrix)) 
-orth_out choose_nsq_fee if previous!=3, by(previous) vce(cluster suc_x_dia) bdec(3) se count prop pcompare
+orth_out choose_nsq_fee if previous!=3 & num_learning==1, by(previous) vce(cluster suc_x_dia) bdec(3) se count prop pcompare
 putexcel L10 = matrix(r(matrix)) 
 
 
@@ -174,7 +174,7 @@ eststo : reghdfe choose_nsq_promise i.previous, absorb(NombrePignorante)  vce(cl
 su choose_nsq if e(sample) 
 estadd scalar DepVarMean = `r(mean)'
 eststo : reghdfe choose_nsq_promise i.previous##i.num_learning, absorb(NombrePignorante)  vce(cluster suc_x_dia)
-eststo : reghdfe choose_nsq_fee i.previous##i.previous_def, absorb(NombrePignorante)  vce(cluster suc_x_dia)
+eststo : reghdfe choose_nsq_promise i.previous##i.previous_def, absorb(NombrePignorante)  vce(cluster suc_x_dia)
 
 	*Save results	
 esttab using "$directorio/Tables/reg_results/learning_exp.csv", se r2 ${star} b(a2) scalars("DepVarMean DepVarMean") replace 

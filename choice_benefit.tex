@@ -40,12 +40,12 @@ We investigate the relation between choice (commitment) and benefit. First, we c
     \begin{subfigure}{0.475\textwidth}
         \caption{Effective cost/loan benefit}
         \centering
-        \includegraphics[width=\textwidth]{Figuras/benefit_choice.pdf}
+        \includegraphics[width=\textwidth]{Figuras/benefit_choice_tau_eff.pdf}
     \end{subfigure}
     \begin{subfigure}{0.475\textwidth}
         \caption{Repayment}
         \centering
-        \includegraphics[width=\textwidth]{Figuras/benefit_choice_des.pdf}
+        \includegraphics[width=\textwidth]{Figuras/benefit_choice_tau_des.pdf}
     \end{subfigure}
   
     \end{center}
@@ -60,6 +60,39 @@ We estimate demand for commitment with a Gradient Boosted Classification algorit
 
 Now we want to identify who are the ones who benefit more from being forced, and those who would demand commitment.
 
+
+
+Based of the propensity score, we predict the two categories : choosers \& non-choosers, such that the proportions match the observed data.
+
+\begin{figure}[H]
+    \caption{}
+    \label{}
+    \begin{center}
+    %\begin{subfigure}{0.4\textwidth}
+    %    \caption{Financial cost}
+    %    \centering
+    %    \includegraphics[width=\textwidth]{Figuras/he_dist_fc_admin_disc_pro_2.pdf}
+    %\end{subfigure}
+    \begin{subfigure}{0.475\textwidth}
+        \caption{Effective cost/loan benefit}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/cdf_predchoose_tau_eff.pdf}
+    \end{subfigure}
+    \begin{subfigure}{0.475\textwidth}
+        \caption{Repayment}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/cdf_predchoose_tau_des.pdf}
+    \end{subfigure}
+  
+    \end{center}
+     \scriptsize    CDF of the heterogeneous treatment effect for choosers vs non-choosers. The dotted line below indicates the points where the difference in the distributions is significant.  Instead of a single global null hypothesis (that the two CDFs are identical), there is a continuum of individual null hypotheses of CDF equality at each point. The methodology was proposed by \cite{GOLDMAN2018143}.
+
+ 
+
+          %\footnotesize{ \textit{Do file: }  \texttt{benefit\_choice.do}}
+\end{figure}
+
+We find a surprising \emh{significant} stochastic dominance between the two CDF's.
 
 \begin{figure}[H]
     \caption{}
@@ -153,12 +186,7 @@ The class (type) which is positively correlated with demand for commitment might
     \caption{Probability of being Type 1 vs HTE}
     \label{}
     \begin{center}
-    \begin{subfigure}{0.475\textwidth}
-        \caption{Prior Probability}
-        \centering
-        \includegraphics[width=\textwidth]{Figuras/binscatter_tau_classpr.pdf}
-    \end{subfigure}
-    \begin{subfigure}{0.475\textwidth}
+    \begin{subfigure}{0.7\textwidth}
         \caption{Posterior Probability}
         \centering
         \includegraphics[width=\textwidth]{Figuras/binscatter_tau_classpost.pdf}
@@ -176,12 +204,7 @@ A negative relation indicates that being Type 1 has more benefits from being for
     \caption{Type 1 class vs HTE}
     \label{}
     \begin{center}
-    \begin{subfigure}{0.475\textwidth}
-        \caption{Prior Probability}
-        \centering
-        \includegraphics[width=\textwidth]{Figuras/benefit_type1.pdf}
-    \end{subfigure}
-    \begin{subfigure}{0.475\textwidth}
+    \begin{subfigure}{0.7\textwidth}
         \caption{Posterior Probability}
         \centering
         \includegraphics[width=\textwidth]{Figuras/benefit_type1p.pdf}
@@ -231,40 +254,161 @@ where $i,j,t$ index client, branch, and week respectively. $\mathbbm{1}(\text{Ha
 \caption{Outcome in 2S : Choose FP contract}
 \label{iv_pf}
 \begin{center}
-\scriptsize{\input{./Tables/iv_reg_demand_pf_notchoosing.tex}}
+\scriptsize{\input{./Tables/iv_reg_pago_fijo_detailed.tex}}
 \end{center}
  \scriptsize
 
-%\textit{Do file: } \texttt{iv\_reg\_demand\_pf\_notchoosing.do}
+%\textit{Do file: } \texttt{iv\_reg\_detailed.do}
 \end{table}
 
 Thus the learning mechanism is due to the not choosers having failed. 
 
 
+We drop murky cases:
+
+
+\begin{table}[H]
+\caption{Keeping only first two observations}
+\begin{center}
+\scriptsize{\input{./Tables/iv_reg_pago_fijo_detailed_twoca.tex}}
+\end{center}
+ \scriptsize
+
+%\textit{Do file: } \texttt{iv\_reg\_detailed.do}
+\end{table}
+
+
+\begin{table}[H]
+\caption{Collapsing observations}
+\begin{center}
+\scriptsize{\input{./Tables/iv_reg_pago_fijo_detailed_colla.tex}}
+\end{center}
+ \scriptsize
+
+%\textit{Do file: } \texttt{iv\_reg\_detailed.do}
+\end{table}
 
 
 
 \begin{table}[H]
-\caption{Outcome in 2S : Default}
-\label{iv_def}
+\caption{Interacting with number of decision epochs}
 \begin{center}
-\scriptsize{\input{./Tables/iv_reg_def_notchoosing.tex}}
+\scriptsize{\input{./Tables/iv_reg_pago_fijo_detailed_inter.tex}}
 \end{center}
  \scriptsize
 
-%\textit{Do file: } \texttt{iv\_reg\_demand\_pf\_notchoosing.do}
+%\textit{Do file: } \texttt{iv\_reg\_detailed.do}
+\end{table}
+Learning is stronger after some experience.\\
+
+What about the impact of the previous outcome (default) on learning?
+
+We estimate the following specification:
+
+
+
+\begin{align*}
+    \mathbbm{1}(\text{Has FP})_{ijt} &= \alpha_i + \gamma_t + \beta_1\mathbbm{1}(\text{Had FP})_{ijt} \\
+    & \qquad \quad + \beta_2\mathbbm{1}(\text{Defaulted})_{ijt} \\
+    & \qquad \quad  + \beta_3\mathbbm{1}(\text{Had FP})_{ijt}\mathbbm{1}(\text{Defaulted})_{ijt}   + \epsilon_{ijt}
+\end{align*}
+
+
+
+
+\begin{table}[H]
+\caption{Interaction with default in the past}
+\begin{center}
+\scriptsize{\input{./Tables/iv_reg_pago_fijo_def_detailed.tex}}
+\end{center}
+ \scriptsize
+
+%\textit{Do file: } \texttt{iv\_reg\_intdef\_detailed.do}
+\end{table}
+
+
+
+And as before we can also get rid of the `murky' cases:
+
+
+% \begin{table}[H]
+% \caption{Keeping only first two observations}
+% \begin{center}
+% \scriptsize{\input{./Tables/iv_reg_pago_fijo_def_twocases.tex}}
+% \end{center}
+%  \scriptsize
+
+% %\textit{Do file: } \texttt{iv\_reg\_intdef\_detailed.do}
+% \end{table}
+
+
+
+\begin{table}[H]
+\caption{Collapsing}
+\begin{center}
+\scriptsize{\input{./Tables/iv_reg_pago_fijo_def_collapsed.tex}}
+\end{center}
+ \scriptsize
+
+%\textit{Do file: } \texttt{iv\_reg\_intdef\_detailed.do}
+\end{table}
+
+
+
+
+
+
+
+
+\subsection{Learning in the experiment}
+
+
+\begin{table}[H]
+\caption{Summary statistics table of learning by not doing (OLS)}
+\begin{center}
+\scriptsize{\input{./Tables/SS_learning_OLS.tex}}
+\end{center}
+ \scriptsize
+
+%\textit{Do file: } \texttt{learning\_exp.do}
+\end{table}
+ 
+The above means can be recovered from the following specification
+
+\begin{align*}
+    \text{Choose Fee}_{i} &=  \alpha +  \beta_1\mathds{1}(\text{Default past})_{i} +\sum_{j=1}^{4}\beta_{2,j}\mathds{1}(\text{Past contract}=j)_{i} \\
+   &\qquad\quad  +\sum_{j=1}^{4}\beta_{3,j}\mathds{1}(\text{Past contract}=j)_{i}\mathds{1}(\text{Default past})_{i} + \epsilon_i
+\end{align*}
+for those individuals $i$ that had the option to choose after experiencing contract $j$, this could be control, forced fee, or choice. 
+
+So what if we add fixed effects to the above? In order to capture variation within individuals in line with our previous specifications in the observational study.
+
+
+
+
+\begin{table}[H]
+\caption{Summary statistics table of learning by not doing (FE)}
+\begin{center}
+\scriptsize{\input{./Tables/SS_learning_FE.tex}}
+\end{center}
+ \scriptsize
+
+%\textit{Do file: } \texttt{learning\_exp.do}
 \end{table}
 
 \begin{table}[H]
-\caption{Outcome in 2S : Default}
-\label{iv_def_decomp}
+\caption{Learning by not doing (experimental)}
 \begin{center}
-\scriptsize{\input{./Tables/iv_reg_def_nc_nr.tex}}
+\scriptsize{\input{./Tables/learning_exp.tex}}
 \end{center}
  \scriptsize
 
-%\textit{Do file: } \texttt{iv\_reg\_demand\_pf\_notchoosing.do}
+%\textit{Do file: } \texttt{learning\_exp.do}
 \end{table}
+
+
+
+
 
 \section{LATE}
 
@@ -277,6 +421,36 @@ Thus the learning mechanism is due to the not choosers having failed.
  \scriptsize
 %\textit{Do file: } \texttt{tot\_tut.do}
 \end{table}
+
+
+
+\begin{figure}[H]
+    \caption{Bootstrap inference for the difference between TOT-TUT}
+    \label{}
+    \begin{center}
+    \begin{subfigure}{0.475\textwidth}
+        \caption{Simple}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/tot_tut_btsp1.pdf}
+    \end{subfigure}
+    \begin{subfigure}{0.475\textwidth}
+        \caption{Admin controls}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/tot_tut_btsp2.pdf}
+    \end{subfigure}
+    \begin{subfigure}{0.475\textwidth}
+        \caption{Survey controls}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/tot_tut_btsp3.pdf}
+    \end{subfigure}
+  
+    \end{center}
+     \scriptsize    Binscatter of propensity to choose commitment vs treatment effect of frequent payments.
+          %\footnotesize{ \textit{Do file: }  \texttt{tot\_tut.do}}
+\end{figure}
+
+
+
 
 
 \begin{figure}[H]
@@ -294,9 +468,11 @@ Thus the learning mechanism is due to the not choosers having failed.
 \end{figure}
 
 
+
+
+
 \begin{figure}[H]
      \caption{TOT-TUT CDF}
-    \label{ExplanatoryMaterial}
     \begin{center}
     \begin{subfigure}{0.75\textwidth}
         \centering
@@ -307,6 +483,24 @@ Thus the learning mechanism is due to the not choosers having failed.
         ECDF of the conditional (heterogeneous) TOT \& TUT, alogn with the difference and a test for the difference in means (which is significant).
           %\footnotesize{ \textit{Do file: }  \texttt{tot\_tut\_insforest.do}}
 \end{figure}
+
+
+We test the exclusion restriction
+
+\begin{figure}[H]
+     \caption{Exclusion restriction}
+    \begin{center}
+    \begin{subfigure}{0.75\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/exclusion_restriction.pdf}
+    \end{subfigure}
+    \end{center}
+    \scriptsize
+    
+          %\footnotesize{ \textit{Do file: }  \texttt{exclusion\_restriction.do}}
+\end{figure}
+
+
 
 
 \newpage

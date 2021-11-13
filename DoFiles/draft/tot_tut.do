@@ -8,8 +8,8 @@ version 17.0
 * Author:	Isaac M
 * Machine:	Isaac M 											
 * Date of creation:	October. 20, 2021
-* Last date of modification:  
-* Modifications: 
+* Last date of modification: November. 11, 2021
+* Modifications: Combine TOT & TUT in one specification and bootstrap difference
 * Files used:     
 		- 
 * Files created:  
@@ -119,6 +119,58 @@ foreach var of varlist eff_cost_loan  {
 	}
 	
 
-Save results	
+*Save results	
 esttab using "$directorio/Tables/reg_results/tot_tut.csv", se r2 ${star} b(a2) ///
 		scalars("DepVarMean DepVarMean" "ri_p ri_p") replace 
+		
+ 
+*Bootsrap difference between TOT-TUT
+keep if inlist(t_prod,1,2,4)
+*Compliance
+gen ch = prod==5 if t_prod==4
+*observed, randomly assigned experimental allocation
+cap drop z0 z1 z2
+gen z1 = t_prod==2
+gen z0 = t_prod==1
+gen z2 = t_prod==4
+
+matrix btsp = J(50000, 3, .) 
+forvalues i =1/50000 {
+	preserve
+	bsample, cluster(suc_x_dia)
+	qui su ch 
+	local rmean = `r(mean)'
+	qui reg eff_cost_loan z1 z2  z0 , nocons 
+	if (e(V)[1,1]!=0 & e(V)[2,2]!=0 & e(V)[3,3]!=0) {
+							*TOT - TUT
+		matrix btsp[`i',1] = (_b[z2]-_b[z0])/(`rmean') - (_b[z1]-_b[z2])/(1-`rmean')
+	}
+	
+	qui reg eff_cost_loan z1 z2  z0 $C0 , nocons 
+	if (e(V)[1,1]!=0 & e(V)[2,2]!=0 & e(V)[3,3]!=0) {
+		matrix btsp[`i',2] = (_b[z2]-_b[z0])/(`rmean') - (_b[z1]-_b[z2])/(1-`rmean')
+	}
+	
+	qui reg eff_cost_loan z1 z2  z0 $C0  edad  faltas val_pren_std genero masqueprepa, nocons 
+	if (e(V)[1,1]!=0 & e(V)[2,2]!=0 & e(V)[3,3]!=0) {
+		matrix btsp[`i',3] = (_b[z2]-_b[z0])/(`rmean') - (_b[z1]-_b[z2])/(1-`rmean')
+	}
+	restore
+}
+
+		
+svmat btsp
+
+foreach var of varlist btsp* {
+	cap drop low high where
+	su `var'
+	local rmean = `r(mean)'
+	gen low = r(mean) - 1.96*r(sd) 
+	gen high = r(mean) + 1.96*r(sd) 
+	gen where = -0.005
+
+	twoway (histogram `var' , xline(`rmean', lcolor(red) lwidth(thick)) color(navy%70) xtitle("TOT-TUT") ytitle("Density")) /// 
+			(rbar low high where, color(black) horiz barw(0.05)), scheme(s2mono) graphregion(color(white)) legend(off)
+	graph export "$directorio\Figuras\tot_tut_`var'.pdf", replace		
+	}
+			
