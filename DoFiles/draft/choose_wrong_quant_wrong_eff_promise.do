@@ -34,7 +34,6 @@ merge 1:1 prenda using "$directorio/DB/Master.dta", nogen keep(3)
 *Counterfactuals estimates
 	
 	*Causal forest on nochoice/fee-vs-control
-	*we put the negative of it to 'normalize' it to a positive scale
 gen eff_te_cf =  tau_hat_oobpredictions*100	
 *CI - 95%
 gen eff_te_cf_ub95 = eff_te_cf + invnorm(0.975)*sqrt(tau_hat_oobvarianceestimates)*100

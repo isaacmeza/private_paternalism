@@ -284,7 +284,7 @@ data <- read_csv('./_aux/heterogeneity_grf.csv')
 
 #Heterogeneous Effects
 for (arm in c("pro_2","pro_3")){
-  for (dep in c("eff_cost_loan", "def_c", "des_c")){
+  for (dep in c("eff_cost_loan", "def_c", "des_c", "fc_admin")){
     heterogeneity_effect(data_extended,arm,dep,1,1) 
     heterogeneity_effect(data,arm,dep,1,0) 
   }

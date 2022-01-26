@@ -65,14 +65,9 @@ Now we want to identify who are the ones who benefit more from being forced, and
 Based of the propensity score, we predict the two categories : choosers \& non-choosers, such that the proportions match the observed data.
 
 \begin{figure}[H]
-    \caption{}
-    \label{}
+    \caption{Negative selection on treatment effects}
+    \label{benefit_vs_choice_cdf}
     \begin{center}
-    %\begin{subfigure}{0.4\textwidth}
-    %    \caption{Financial cost}
-    %    \centering
-    %    \includegraphics[width=\textwidth]{Figuras/he_dist_fc_admin_disc_pro_2.pdf}
-    %\end{subfigure}
     \begin{subfigure}{0.475\textwidth}
         \caption{Effective cost/loan benefit}
         \centering
@@ -92,17 +87,12 @@ Based of the propensity score, we predict the two categories : choosers \& non-c
           %\footnotesize{ \textit{Do file: }  \texttt{benefit\_choice.do}}
 \end{figure}
 
-We find a surprising \emh{significant} stochastic dominance between the two CDF's.
+We find a surprising \emph{significant} stochastic dominance between the two CDF's.
 
 \begin{figure}[H]
     \caption{}
     \label{}
     \begin{center}
-    %\begin{subfigure}{0.4\textwidth}
-    %    \caption{Financial cost}
-    %    \centering
-    %    \includegraphics[width=\textwidth]{Figuras/he_dist_fc_admin_disc_pro_2.pdf}
-    %\end{subfigure}
     \begin{subfigure}{0.475\textwidth}
         \caption{Determinants of HTE}
         \centering
@@ -184,7 +174,7 @@ The class (type) which is positively correlated with demand for commitment might
 
 \begin{figure}[H]
     \caption{Probability of being Type 1 vs HTE}
-    \label{}
+    \label{fmm_hte}
     \begin{center}
     \begin{subfigure}{0.7\textwidth}
         \caption{Posterior Probability}
@@ -445,7 +435,7 @@ So what if we add fixed effects to the above? In order to capture variation with
     \end{subfigure}
   
     \end{center}
-     \scriptsize    Binscatter of propensity to choose commitment vs treatment effect of frequent payments.
+     \scriptsize    
           %\footnotesize{ \textit{Do file: }  \texttt{tot\_tut.do}}
 \end{figure}
 

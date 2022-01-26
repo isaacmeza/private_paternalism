@@ -8,8 +8,8 @@ version 17.0
 * Author:	Isaac M
 * Machine:	Isaac M 											
 * Date of creation:	November. 6, 2021 
-* Last date of modification:  
-* Modifications: 
+* Last date of modification: November. 22, 2021 
+* Modifications: Analysis of differential attrition & keep obs for pure randomization/experimental 
 * Files used:     
 		- 
 * Files created:  
@@ -100,8 +100,47 @@ by NombrePignorante : gen kp = 1 if (choose_nsq!=. & (num_pr_tr==1  ///
 		| (num_pr_tr==4 & num_pr_tr==min_numl & prod[_n-1]==prod[_n-2] & prod[_n-2]==prod[_n-3] & prod[_n-3]==prod[_n-4]  & prod[_n-4]==prod[_n-5]) ///
 		))
 
-		
-		
+*Differential Attrition
+*coming next
+sort NombrePignorante fecha_inicial
+preserve
+drop if missing(comb_prod)
+by NombrePignorante : gen first = comb_prod[1]
+by NombrePignorante : gen num_prods = _N
+keep NombrePignorante first num_prods
+duplicates drop
+tempfile tempfirst
+save `tempfirst'
+restore
+merge m:1 NombrePignorante using `tempfirst'
+
+sort NombrePignorante fecha_inicial
+by NombrePignorante : gen comes_next = (num_prods>1) if _n==1 & !missing(num_prods)
+
+putexcel set "$directorio/Tables/SS_learning.xlsx", sheet("SS_learning") modify	
+orth_out comes_next if !missing(comes_next) & first!=3, by(first) vce(cluster suc_x_dia) bdec(3) se count prop pcompare
+putexcel L31 = matrix(r(matrix)) 
+reg comes_next i.first if first!=3, r
+test 2.first==4.first==5.first==0
+
+*coming next and having the option to choose	
+sort NombrePignorante fecha_inicial
+by NombrePignorante : egen cnc = max(kp) 
+replace cnc = 0 if missing(cnc) 
+by NombrePignorante : gen comes_next_choose = cnc if _n==1 
+orth_out comes_next_choose if !missing(comes_next_choose) & first!=3, by(first) vce(cluster suc_x_dia) bdec(3) se count prop pcompare
+putexcel L37 = matrix(r(matrix)) 
+reg comes_next_choose i.first if first!=3, r
+test 2.first==4.first==5.first==0
+
+*Ever again takes a loan & chooses commitment (0 - if I didn't take a loan, 0 - if I took a loan and didn't choose commitment, only 1 - if took a loan and choose commtiment)
+sort NombrePignorante fecha_inicial
+by NombrePignorante : egen ecc = max(choose_nsq_fee) 
+replace ecc = 0 if missing(ecc) & !missing(comes_next_choose)
+by NombrePignorante : gen ever_chooses_commitment = ecc if _n==1 
+*Outcome in first product
+by NombrePignorante : gen fpd = def_c[1] 
+
 ********************************************************
 *			      SUMMARY STATISTICS				   *
 ********************************************************
@@ -121,13 +160,27 @@ replace partition = 6 if previous==2 & previous_def==1
 replace partition = 7 if previous==4 & previous_def==1
 replace partition = 8 if previous==5 & previous_def==1
 
-putexcel set "$directorio/Tables/SS_learning.xlsx", sheet("SS_learning") modify	
-orth_out choose_nsq_fee if previous!=3 & num_learning==1, by(partition) vce(cluster suc_x_dia) bdec(3) se count prop pcompare
+*num_learning==1 & kp==1 ----> pure randomization/experimental
+orth_out choose_nsq_fee if previous!=3 & kp==1, by(partition) vce(cluster suc_x_dia) bdec(3) se count prop pcompare
 putexcel L5 = matrix(r(matrix)) 
-orth_out choose_nsq_fee if previous!=3 & num_learning==1, by(previous) vce(cluster suc_x_dia) bdec(3) se count prop pcompare
+orth_out choose_nsq_fee if previous!=3 &  kp==1, by(previous) vce(cluster suc_x_dia) bdec(3) se count prop pcompare
 putexcel L10 = matrix(r(matrix)) 
 
+*ever again chooses commitment
+gen partition_1 = .
+replace partition_1 = 1 if first==1 & fpd==0
+replace partition_1 = 2 if first==2 & fpd==0
+replace partition_1 = 3 if first==4 & fpd==0
+replace partition_1 = 4 if first==5 & fpd==0
+replace partition_1 = 5 if first==1 & fpd==1
+replace partition_1 = 6 if first==2 & fpd==1
+replace partition_1 = 7 if first==4 & fpd==1
+replace partition_1 = 8 if first==5 & fpd==1
 
+orth_out ever_chooses_commitment if first!=3, by(partition_1) vce(cluster suc_x_dia) bdec(3) se count prop pcompare
+putexcel L46 = matrix(r(matrix)) 
+orth_out ever_chooses_commitment if first!=3, by(first) vce(cluster suc_x_dia) bdec(3) se count prop pcompare
+putexcel L51 = matrix(r(matrix)) 
 		
 ********************************************************
 *				LEARNING REGRESSIONS				   *

@@ -51,11 +51,16 @@ te_grf <- function(data_in, outcome_var, name) {
     "visit_number_d5", 
     "visit_number_d6", 
     "visit_number_d7",
+    "log_prestamo",
+    "pr_recup",
     "edad",
     "faltas",
     "val_pren_std",
     "genero",
-    "masqueprepa"
+    "pres_antes",
+    "plan_gasto_bin",
+    "masqueprepa",
+    "pb"
   ),
   c(
     "monday",
@@ -80,11 +85,16 @@ te_grf <- function(data_in, outcome_var, name) {
     "visit.number.5",
     "visit.number.6",
     "visit.number.7",
+    "log.loan",
+    "subj.pr",
     "age",
     "income.index",
     "subj.loan.value",
     "female",
-    "more.high.school"
+    "pawn.before",
+    "makes.budget",
+    "more.high.school",
+    "pb"
   ))
   
   require("dplyr")

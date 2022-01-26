@@ -400,10 +400,20 @@
         \centering
         \includegraphics[width=0.65\textwidth]{Figuras/cdf_fc_pro_2.pdf}
     \end{center}
-    \scriptsize This figure plots the empirical cumulative distribution of financial cost. It does this separately for the fee-forcing contract and for the status-quo contract. The doted line at the bottom is the difference of the status-quo CDF minus the fee-focing CDF. It shows that the CDF of the status quo contract is always below that of the fee-forcing (and this difference is significant for the points indicated by the blue line), and therefore that the former first-order stochastically dominates the later for weakly decreasing utility functions; see Proposition \ref{eq_fosd}.
+    \scriptsize This figure plots the empirical cumulative distribution of financial cost. It does this separately for the fee-forcing contract and for the status-quo contract. The doted line at the bottom is the difference of the status-quo CDF minus the fee-forcing CDF. It shows that the CDF of the status quo contract is always below that of the fee-forcing (and this difference is significant for the points indicated by the blue line), and therefore that the former first-order stochastically dominates the later for weakly decreasing utility functions; see Proposition \ref{eq_fosd}.
     % \texttt{ecdf\_fc.do}}
 \end{figure}
 
+\begin{figure}[H]
+        \caption{Empirical CDF of Financial Cost: fee-focing vs status-quo}
+    \label{ecdf_fc}
+    \begin{center}
+        \centering
+        \includegraphics[width=0.65\textwidth]{Figuras/cdf_eff_pro_2.pdf}
+    \end{center}
+    \scriptsize This figure plots the empirical cumulative distribution of financial cost. It does this separately for the fee-forcing contract and for the status-quo contract. The doted line at the bottom is the difference of the status-quo CDF minus the fee-forcing CDF. It shows that the CDF of the status quo contract is always below that of the fee-forcing (and this difference is significant for the points indicated by the blue line), and therefore that the former first-order stochastically dominates the later for weakly decreasing utility functions; see Proposition \ref{eq_fosd}.
+    % \texttt{ecdf\_fc.do}}
+\end{figure}
 
 
 \vspace{.2in}
@@ -775,6 +785,259 @@ We use \cite{atheygrf} \texttt{causal\_forest} of the \texttt{grf} library in $R
 \noindent This figure reports bivariate regressions of the form $\widehat{TakeUp} = \alpha + \beta \: X_i + \epsilon_i$, where $\widehat{TakeUp}$ is the prediction using random forests. The figure reports the $\beta$ coefficients for different $X_i$'s along with 95\% confidence intervals. Panel (a) focuses on take up in the arm where clients could chose among the fee-commitment contract and the status quo contract. Panel (b) focuses on the arm where clients could chose among the promise-commitment contract and the status quo contract. Using random forests we can predict who takes up the fee-forcing contract with 85\% accuracy out of sample.\footnote{Correcting for the fact that most chose the status-quo contract using the method of SMOTE, \cite{smote} we find an accuracy rate of 75\%.} Which suggests that choice among contracts is not purely random. This figure shows that the more educated, those that report that their family typically asks for money, those that make a monthly budget of expenses, and those that ask for a remainder of their due payments (and marginally those we classify as present-biased) are more likely to chose the fee-commitment contract if given the choice. The opposite holds for clients that are more economically vulnerable (can barely pay for food, electricity, etc) and those that report being more stressed.
 }
 
+\newpage
+
+\subsection{Selection on gains}
+
+
+\begin{figure}[H]
+    \caption{Determinants of treatment effects and probability of choosing commitment}
+    \label{determinants_ps_hte}
+    \begin{center}
+    \begin{subfigure}{0.475\textwidth}
+        \caption{Determinants of HTE}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/HE/he_int_vertical_eff_cost_loan_pro_2.pdf}
+    \end{subfigure}
+    \begin{subfigure}{0.475\textwidth}
+        \caption{Determinants of propensity score}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/HE/ps_int_vertical_pr_gbc_1.pdf}
+    \end{subfigure}
+  
+    \end{center}
+     \scriptsize   This figure estimates bivariate regressions of the estimated client-level (a) heterogeneous treatment effects, (b) propensity score, against the respective covariate from the baseline survey  $\widehat{HTE_i}, \widehat{P_i} = \alpha + \beta \: X_i + \epsilon_i$. The regressors $X_i$ include (e.g if the family asks for money, if they have savings, if they are overconfident using the definition the text, etc. See this Appendix for a transcription of the survey). \\
+      %\footnotesize{ \textit{Do file: }  \texttt{analyze\_grf\_single\_arm.do}} \texttt{benefit\_choice.do}}
+\end{figure}
+
+
+
+\subsubsection{Finite mixture model }\label{fmm_section}
+
+\vspace{.2in}
+\normalsize
+\linespread{1.25}
+
+We assume the following structural model : Each individual $i$ is of type  $k\in\{1, 2\}$ with probability $\alpha_{i,k}$. We assume it follows a logit distribution:
+\begin{align*}
+\label{dist_alpha}
+    \alpha_{i,k} = \Pr(\text{Type}_i = k \;|\; \mathbf{W}_{i}) = \frac{e^{\gamma_{k}\mathbf{W}_i}}{\sum_{j=1}^{K} e^{\gamma_{j}\mathbf{W}_i}}
+\end{align*}
+
+where $\mathbf{W}_i$ are observable characteristics. This characteristics include choice for commitment, present bias, subjective probability of recovery, etc, which might be indicators of naivete vs sophistication.  
+
+Now, given their type, each individual makes a choice to default or not $c_{i,k} \in \{1,2\}$, based on other set of observable characteristics $\mathbf{X}_i$ (subjective \& objective value of the loan). We will assume there is a continuous latent variable $Y_{i,k,c}$ distributed as
+\[Y_{i,k,c} = \beta_{c,k}\mathbf{X}_{i} +\epsilon_{c,k}\]
+with\footnote{We can impose other errors, and even impose a covariance structure, for instance if $(\epsilon_{c,k})_{c}\sim\mathcal{N}(0,\Sigma_k)$, we arrive to the Multinomial Probit.} $\epsilon_{c;k}\sim\operatorname{EV}(0,1)$. This latent variable can be thought of as the utility associated with individual $i$, being type $k$, making choice $c$. 
+
+
+
+Thus, the density for each individual $i$ being type $k$ is
+\[f(c_i,\mathbf{X}_i; \bm\beta_{k}) = \prod_{c=1}^4\left(\frac{e^{\beta_{c,k} \mathbf{X}_i}}{\sum_{j=1}^{4} e^{\beta_{j,k}  \mathbf{X}_i}}\right)^{[c_i=4]}\]
+
+Finally, the generative model is then a mixture model with density given by,
+\begin{align*}
+    f(c_i ,\mathbf{W}_i, \mathbf{X}_i; \bm{\gamma},\bm{\beta}) &= \sum_{k=1}^K \alpha_k f(c_i,\mathbf{X}_i; \bm\beta_{k}) \\
+    &= \sum_{k=1}^K \alpha_k \prod_{c=1}^4\left(\frac{e^{\beta_{c,k} \mathbf{X}_i}}{\sum_{j=1}^{4} e^{\beta_{j,k}  \mathbf{X}_i}}\right)^{[c_i=c]} 
+\end{align*}
+
+
+
+where $\alpha\sim \operatorname{Categorical}$, and $\gamma_{K} = \beta_{4,k}=0$ for identification purposes. 
+
+Then the (incomplete) log-likelihood function is
+\begin{align*}
+    \ell(\bm{\gamma}, \bm{\beta}; c, \mathbf{W},  \mathbf{X}) = \sum_{i=1}^n \log\sum_{k=1}^K \alpha_k \prod_{c=1}^4\left(\frac{e^{\beta_{c,k} \mathbf{X}_i}}{\sum_{j=1}^{4} e^{\beta_{j,k}  \mathbf{X}_i}}\right)^{[c_i=c]} 
+\end{align*}
+
+, thus we estimate parameters $(\bm{\gamma}, \bm{\beta})$ with an EM algorithm using choice (default), and observable characteristics: $(c_i,\mathbf{W}_i,\mathbf{X}_i)$.
+
+
+\begin{table}[H]
+\caption{FMM}
+\label{fmm_table}
+\begin{center}
+\scriptsize{\input{./Tables/fmm_types.tex}}
+\end{center}
+ \scriptsize
+
+%\textit{Do file: } \texttt{fmm.do}
+\end{table}
+
+
+\begin{figure}[H]
+    \caption{Treatment effect of Type 1 individuals}
+    \label{fmm_hte}
+    \begin{center}
+    \begin{subfigure}{0.475\textwidth}       
+            \caption{Probability of Type 1 vs HTE}
+            \centering
+        \includegraphics[width=\textwidth]{Figuras/binscatter_tau_classpost.pdf}
+    \end{subfigure}
+   \begin{subfigure}{0.475\textwidth}
+        \caption{Type 1 vs HTE}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/benefit_type1p.pdf}
+    \end{subfigure}
+    \end{center}
+     \scriptsize 
+     After estimating the FMM, we compute the probability for each individual of belonging to each class, the x-axis represents the probability of being Type $1$, while the y-axis shows the HTE. A positive relation indicates that Type $1$ individuals are more benefited from commitment.
+      %\footnotesize{ \textit{Do file: }  \texttt{fmm.do}} 
+\end{figure}
+
+\subsubsection{LATE: TOT \& TUT}
+\vspace{.2in}
+\normalsize
+\linespread{1.25}
+
+
+ Recall that $Z_i$ is the observed, randomly assigned experimental allocation, where $Z_i=0$ denotes the control arm, $Z_i=1$ denotes the forced-fee arm, and $Z_i=2$ is the choice arm.  Let $T_i$ be the unobserved choice type. $T_i=0$ when individual $i$ does not choose commitment  given the choice and $T_i=1$ when chooses commitment given the choice. Finally, $D_i = Z_i\times \mathds{1}(Z_i\neq 2) + T_i\times \mathds{1}(Z_i=2)$ is the observed treatment indicator, and $Y(d,z)$ is the potential outcome function for $d=0,1$, and $z=0,1,2$. 
+
+ To identify assortative selection we first need to estimate the following quantities: $\mathbb{E}(Y_1-Y_0\;|\;T=1)$ the Treatment on the Treated (TOT), and $\mathbb{E}(Y_1-Y_0\;|\;T=0)$ the Treatment on the Untreated (TUT). 
+
+ To point identify the above quantities, we make the following assumptions.
+
+ \begin{assumption}[Exclusion Restriction]
+$Z$ only affects $Y$ through its effect on $D$ : $Y(d,z) = Y(d)$
+ \end{assumption}
+
+  \begin{assumption}[Independence Assumption]
+$Z \perp (Y_0, Y_1, T)$
+ \end{assumption}
+
+The following intermediate Lemmas will help us derive that both TOT and TUT are point identified.
+
+\begin{lem}
+$\Pr(T=1) = \E[D\;|\;Z=2]$
+\end{lem}
+\begin{proof}
+Since $T\perp Z$, 
+$$\E[D\;|\;Z=2] = \E[Z\times \mathds{1}(Z\neq 2)+ T\times\mathds{1}(Z=2)\;|Z=2] = \E[T\;|\;Z=2] = \E[T] = \Pr(T=1)$$
+\end{proof}
+
+
+\begin{lem}
+$\E[Y_0] = \E[Y\;|\;Z=0]$
+\end{lem}
+\begin{proof}
+Since $Z\perp Y_0$, 
+\begin{align*}
+\E[Y\;|\;Z=0] =& \E[\mathds{1}(Z=0)Y_0+\mathds{1}(Z=1)Y_1+\mathds{1}(Z=2)\{(1-T)Y_0+TY_1\})\;|\;Z=0]\\   
+=&\E[Y_0\;|\;Z=0] = \E[Y_0]
+\end{align*}
+\end{proof}
+
+
+\begin{lem}
+$\E[Y_1] = \E[Y\;|\;Z=1]$
+\end{lem}
+\begin{proof}
+Since $Z\perp Y_1$, 
+\begin{align*}
+\E[Y\;|\;Z=1] =\E[Y_1\;|\;Z=1] = \E[Y_1]
+\end{align*}
+\end{proof}
+
+
+\begin{lem}
+$\E[Y_0\;|\;T=0] = \E[Y\;|\; D=0,Z=2]$
+\end{lem}
+\begin{proof}
+If $Z=2$, then $D=0$ if and only if $T=0$. Hence,
+\[\E[Y\;|\;D=0, Z=2] = \E[Y_0\;|\;D=0, Z=2] = E[Y_0\;|\;T=0, Z=2]=\E[Y_0\;|\;T=0]\]
+since $Y_0\perp T\;|\;Z$
+\end{proof}
+
+\begin{lem}
+$\E[Y_1\;|\;T=1] = \E[Y\;|\; D=1,Z=2]$
+\end{lem}
+\begin{proof}
+If $Z=2$, then $D=1$ if and only if $T=1$. Hence,
+\[\E[Y\;|\;D=1, Z=2] = \E[Y_1\;|\;D=1, Z=2] = E[Y_1\;|\;T=1, Z=2]=\E[Y_1\;|\;T=1]\]
+since $Y_1\perp T\;|\;Z$
+\end{proof}
+
+\begin{theorem} $\E[Y_1-Y_0\;|\; T=1]$ is point identified
+\end{theorem}
+
+\begin{proof}
+Since $\E[Y_1\;|\; T=1] = \E[Y\;|\; D=1, Z=2]$ by Lemma 5, it suffices to show that $\E[Y_1\;|\;T=0]$ is point identified. By iterated expectations:
+\[E[Y_0] = \E_T\E[Y_0\;|\;T] = (1-p)\E[Y_0\;|\;T=0]+p\E[Y_0\;|\;T=1]\]
+where $p:=\E[T]=\Pr(T=1)$, and re-arranging,
+\[\E[Y_0\;|\;T=1] = \frac{1}{p}\left(E[Y_0] -(1-p)\E[Y_0\;|\;T=0]\right)\]
+Finally, substituting the result of Lemmas 1, 2, and 4, we obtain
+\[\E[Y_0\;|\;T=1] =\frac{1}{\E[D\;|\;Z=2]}\left\{\E[Y\;|\;Z=0]-(1-\E[D\;|\;Z=2])\E[Y\;|\;D=0, Z=2]\right\}\]
+and the RHS is a function of observed data only.
+\end{proof}
+
+\begin{theorem} $\E[Y_1-Y_0\;|\; T=0]$ is point identified
+\end{theorem}
+
+\begin{proof}
+Since $\E[Y_0\;|\; T=0] = \E[Y\;|\; D=0, Z=2]$ by Lemma 4, it suffices to show that $\E[Y_0\;|\;T=1]$ is point identified. By iterated expectations:
+\[E[Y_1] = \E_T\E[Y_1\;|\;T] = (1-p)\E[Y_1\;|\;T=0]+p\E[Y_1\;|\;T=1]\]
+where $p:=\E[T]=\Pr(T=1)$, and re-arranging,
+\[\E[Y_1\;|\;T=0] = \frac{1}{1-p}\left(E[Y_1] -p\E[Y_1\;|\;T=1]\right)\]
+Finally, substituting the result of Lemmas 1, 3, and 5, we obtain
+\[\E[Y_1\;|\;T=0] =\frac{1}{1-\E[D\;|\;Z=2]}\left\{\E[Y\;|\;Z=1]-\E[D\;|\;Z=2]\E[Y\;|\;D=1, Z=2]\right\}\]
+and the RHS is a function of observed data only.
+\end{proof}
+
+
+\begin{figure}[H]
+    \caption{Bootstrap inference for the difference between TOT-TUT}
+    \label{bootstrap_tot_tut}
+    \begin{center}
+    \begin{subfigure}{0.31\textwidth}
+        \caption{Simple}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/tot_tut_btsp1.pdf}
+    \end{subfigure}
+    \begin{subfigure}{0.31\textwidth}
+        \caption{Admin controls}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/tot_tut_btsp2.pdf}
+    \end{subfigure}
+    \begin{subfigure}{0.31\textwidth}
+        \caption{Admin + Survey controls}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/tot_tut_btsp3.pdf}
+    \end{subfigure}
+  
+    \end{center}
+     \scriptsize  Given that all of the arms are effectively randomly sampled form the same pool, we can also estimate the TOT and TUT with the pooled regression: $Y_i = \beta_0\mathds{1}(Z_i=0)+\beta_1\mathds{1}(Z_i=1)+\beta_2\mathds{1}(Z_i=2)+ \epsilon_i$, and then this test statistic just becomes the F-test on $\frac{\widehat{\beta_2}-\widehat{\beta_0}}{p}$ for the TOT, $\frac{\widehat{\beta_1}-\widehat{\beta_2}}{1-p}$ for the TUT, and an F-test on the difference between these two quantities to test whether the gains are different between compliers and non-compliers. Recognizing the stochastic nature of the compliance rate, we also bootstrap this quantity before running the previous regression. The red line shows the point estimate for the difference between TOT-TUT, and the gray bar in the x-axis shows a 95\% confidence interval for this difference. Panel (a) shows the difference between the TOT and TUT without any controls, while panel (b) and (c) adds admin controls and admin + survey controls respectively.
+          %\footnotesize{ \textit{Do file: }  \texttt{tot\_tut.do}}
+\end{figure}
+
+
+\begin{figure}[H]
+     \caption{TOT-TUT CDF}
+     \label{tot_tut_ecdf}
+    \begin{center}
+    \begin{subfigure}{0.6\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/cdf_tot_tut.pdf}
+    \end{subfigure}
+    \end{center}
+    \scriptsize
+       Equipped with estimates for the TOT and TUT for each individual $i$ from an Instrumental Random Forest we compute the ECDF for this quantities. The solid line is the ECDF for the TOT, the dashed line is the ECDF for the TUT, and the dotted line plots the difference between the TOT and the TUT - the blue dashed line in the x-axis shows the points where this difference is significant. The bold black interval at the bottom of the graph is the mean for the TOT distribution (0.07), while the gray interval shows the mean for the TUT distribution (0.10).
+       
+          %\footnotesize{ \textit{Do file: }  \texttt{tot\_tut\_insforest.do}}
+\end{figure}
+
+\begin{figure}[H]
+     \caption{Exclusion restriction}
+     \label{exclusion_restriction}
+    \begin{center}
+    \begin{subfigure}{0.6\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/exclusion_restriction.pdf}
+    \end{subfigure}
+    \end{center}
+    \scriptsize This figure serves as a test for the exclusion restriction in the point identification for the TOT and the TUT. It shows the effect on the effective cost/loan ratio for the forced-fee arm and the choice arm, together with the decomposition of the choosers and non-choosers. Note that a) being forced into the treatment (Forced fee) has the same effect as choosing it (Choosers), and b) not choosing the treatment (Non chooser) has no effect with respect to the control.
+    
+          %\footnotesize{ \textit{Do file: }  \texttt{exclusion\_restriction.do}}
+\end{figure}
 
 %---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 

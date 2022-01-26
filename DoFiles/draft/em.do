@@ -30,7 +30,7 @@ global X ""
 global W "genero pb fb OC choose_commitment prestamo faltas"
 global nclasses "4"
 global niter "500"
-		global scll "0.000001"										/*percentage change of the log likelihho in order to declare convergence*/ 
+		global scll "0.000001"	/*percentage change of the log likelihood in order to declare convergence*/ 
 
 		global itermin = 10
  

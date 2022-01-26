@@ -82,9 +82,9 @@ restore
 
 
 *IV
-gen choice_nsq = (prod==5) 
-gen choice_vs_control = (t_prod==4) if inlist(t_prod,4,1)
-gen choice_nonsq = (prod!=4)
+gen choice_nsq = (prod==5) /*z=2, t=1*/
+gen choice_vs_control = (t_prod==4) if inlist(t_prod,4,1) 
+gen choice_nonsq = (prod!=4) /*z!=2, t!=0*/
 gen forced_fee_vs_choice = (t_prod==2) if inlist(t_prod,2,4)
 
 foreach var of varlist eff_cost_loan  {
