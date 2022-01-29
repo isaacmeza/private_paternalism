@@ -58,6 +58,17 @@ orth_out prestamo monday if inlist(t_prod,1,2,3,4,5,6) , by(t_prod) overall coun
 
 qui putexcel set  "$directorio\Tables\SS.xlsx", sheet("SS_admin") modify	
 qui putexcel B2=matrix(r(matrix)) 
+
+qui putexcel set "$directorio\Tables\exp_arms.xlsx", sheet("exp_arms") modify	
+*Count number of obs
+foreach t in 1 2 3 4 5  {
+	count if  t_prod==`t' 
+	local obs = `r(N)'
+	local Col=substr(c(ALPHA),2*`t'+1,1)	
+	qui putexcel `Col'16=matrix(`obs')  	
+	}
+
+qui putexcel set  "$directorio\Tables\SS.xlsx", sheet("SS_admin") modify	
 	
 local i = 2	
 foreach var of varlist prestamo monday  {
@@ -200,6 +211,9 @@ foreach t in 1 2 3 4 5 6 {
 	local obs = `r(N)'
 	local Col=substr(c(ALPHA),2*`t'+1,1)
 	qui putexcel `Col'16=matrix(`obs')  
+	qui putexcel set "$directorio\Tables\exp_arms.xlsx", sheet("exp_arms") modify		
+	qui putexcel `Col'17=matrix(`obs')  	
+	qui putexcel set "$directorio\Tables\SS.xlsx", sheet("SS_survey_uncond") modify	
 	}
 
 	*F-tests
@@ -259,6 +273,9 @@ foreach t in 1 2 3 4 5 {
 	local obs = `r(N)'
 	local Col=substr(c(ALPHA),2*`t'+1,1)
 	qui putexcel `Col'16=matrix(`obs')  
+	qui putexcel set "$directorio\Tables\exp_arms.xlsx", sheet("exp_arms") modify		
+	qui putexcel `Col'18=matrix(`obs')  	
+	qui putexcel set "$directorio\Tables\SS.xlsx", sheet("SS_survey_uncond") modify		
 	}
 
 	*F-tests
