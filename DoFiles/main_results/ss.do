@@ -1,5 +1,24 @@
 /*
-Summary statistics and balance table 
+********************
+version 17.0
+********************
+ 
+/*******************************************************************************
+* Name of file:	
+* Author:	Isaac M
+* Machine:	Isaac M 											
+* Date of creation:	-
+* Last date of modification: January. 26, 2022
+* Modifications: 
+* Files used:     
+		- 
+* Files created:  
+
+* Purpose: Summary statistics - balance table & attrition table
+
+*******************************************************************************/
+*//*
+
 */
 
 clear all
@@ -42,7 +61,7 @@ qui putexcel B2=matrix(r(matrix))
 	
 local i = 2	
 foreach var of varlist prestamo monday num_empenio {
-	qui reg `var' i.t_prod, r cluster(suc_x_dia)
+	qui reg `var' i.t_prod if inlist(t_prod,1,2,3,4,5), r cluster(suc_x_dia)
 	test 1.t_prod==2.t_prod==3.t_prod==4.t_prod==5.t_prod
 	local p_val = `r(p)'
 	qui putexcel set "$directorio\Tables\SS.xlsx", sheet("SS_admin") modify
@@ -158,14 +177,14 @@ forvalues t = 1/6 {
 	*F-tests
 local i = 2	
 foreach var of varlist genero edad  val_pren pres_antes pr_recup masqueprepa  {
-	qui reg `var' i.t_prod if inlist(_merge,1,2,3) , r cluster(suc_x_dia)
-	test 1.t_prod==2.t_prod==3.t_prod==4.t_prod==5.t_prod==6.t_prod
+	qui reg `var' i.t_prod if inlist(_merge,1,2,3) & inlist(t_prod,1,2,3,4,5), r cluster(suc_x_dia)
+	test 1.t_prod==2.t_prod==3.t_prod==4.t_prod==5.t_prod
 	local p_val = `r(p)'
 	qui putexcel set "$directorio\Tables\SS.xlsx", sheet("SS_survey_uncond") modify
 	qui putexcel J`i'=matrix(`p_val')  
 	local i = `i'+2
 	}
-	qui reg takeup i.t_prod if inlist(_merge,1,2,3), r cluster(suc_x_dia)
+	qui reg takeup i.t_prod if inlist(_merge,1,2,3) & inlist(t_prod,1,2,3,4,5), r cluster(suc_x_dia)
 	test 1.t_prod==2.t_prod==3.t_prod==4.t_prod==5.t_prod
 	local p_val = `r(p)'
 	qui putexcel set "$directorio\Tables\SS.xlsx", sheet("SS_survey_uncond") modify

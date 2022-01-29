@@ -8,8 +8,8 @@ version 17.0
 * Author:	Isaac M
 * Machine:	Isaac M 											
 * Date of creation:	October. 5, 2021
-* Last date of modification:   
-* Modifications:		
+* Last date of modification:  January. 26, 2022 
+* Modifications: Add confidence intervals for HTE distribution		
 * Files used:     
 		- 
 * Files created:  
@@ -26,12 +26,15 @@ local arm pro_2
 
 set more off
 graph drop _all
-foreach depvar in  def_c fc_admin_disc eff_cost_loan {
+foreach depvar in  eff_cost_loan  def_c   fc_admin{
 
 	*Load data with heterogeneous predictions & propensities (extended)
 	import delimited "$directorio/_aux/grf_extended_`arm'_`depvar'.csv", clear
 
-		
+	*Confidence intervals for 
+	gen lo_tau_hat = tau_hat_oobpredictions - 1.96*sqrt(tau_hat_oobvarianceestimates)
+	gen hi_tau_hat = tau_hat_oobpredictions + 1.96*sqrt(tau_hat_oobvarianceestimates)
+			
 	*Overlap assumption	
 	destring propensity_score, force replace
 	twoway (kdensity propensity_score if !missing(`arm'), lpattern(solid) lwidth(medthick)) ///
@@ -46,6 +49,10 @@ foreach depvar in  def_c fc_admin_disc eff_cost_loan {
 		cap drop esample
 		su tau_hat_oobpredictions  , d
 		gen esample = inrange(tau_hat_oobpredictions, `r(p1)', `r(p99)') 
+		su lo_tau_hat, d
+		replace lo_tau_hat = . if lo_tau_hat<=`r(p5)'
+		su hi_tau_hat, d
+		replace hi_tau_hat = . if hi_tau_hat>=`r(p95)'		
 		qui kdensity tau_hat_oobpredictions if esample==1,  nograph 
 		local width =  `r(bwidth)'
 		}
@@ -60,13 +67,15 @@ foreach depvar in  def_c fc_admin_disc eff_cost_loan {
 	do "$directorio\DoFiles\main_results\yaxis_kdensity.do" ///
 		 "tau_hat_oobpredictions" "`width'" "esample" "uno"
 		 
-	twoway (hist tau_hat_oobpredictions if esample==1, xline(0, lpattern(dot) lwidth(thick)) yaxis(1) ytitle("Percent", axis(1)) w(`width') percent lcolor(white) fcolor(none) ) ///		
-		(kdensity tau_hat_oobpredictions if esample==1, yaxis(2) ylab(${uno}, notick nolab axis(2)) ///
+	twoway (hist tau_hat_oobpredictions if esample==1, xline(0, lcolor(gs8) lwidth(thick) lpattern(dot)) yaxis(1) ytitle("Percent", axis(1)) w(`width') percent lcolor(white) fcolor(none) ) ///		
+		(kdensity tau_hat_oobpredictions if esample==1, yaxis(2) ylab(${uno}, notick nolab axis(2))  lpattern(solid) lcolor(black)) ///
+		(kdensity lo_tau_hat if esample==1, yaxis(2) ylab(${uno}, notick nolab axis(2)) lcolor(navy) lpattern(dot)) ///		
+		(kdensity hi_tau_hat if esample==1, yaxis(2) ylab(${uno}, notick nolab axis(2)) ///		
 						ytitle(" ", axis(2)) xtitle("Effect")  ///
-						lcolor(black) lwidth(thick) lpattern(solid) ///
-						legend(off) scheme(s2mono) graphregion(color(white))) 	
+						lcolor(maroon) lwidth(thick) lpattern(dot)), ///
+						legend(order(2 "HTE" 3 "Lower bound CI" 4 "Upper bound CI") rows(1))  graphregion(color(white))	
 	graph export "$directorio\Figuras\he_dist_`depvar'_`arm'.pdf", replace
-	
+
 	****************************************************************************
 	
 	*Load data with BLP

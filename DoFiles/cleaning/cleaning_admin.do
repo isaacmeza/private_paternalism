@@ -107,17 +107,16 @@ restore
 *pre-randomization date
 preserve
 keep if fecha_inicial<date("06/09/2012","DMY")  
-sort prenda fecha_inicial fecha_movimiento 
-by prenda fecha_inicial: keep if _n==1
+bysort suc fecha_inicial: keep if _n==1
 
-merge 1:1 prenda fecha_inicial using "$directorio/_aux/num_pawns_suc_dia.dta", nogen keep(1 3)
+merge 1:1 suc fecha_inicial using "$directorio/_aux/num_pawns_suc_dia.dta", nogen keep(1 3)
 rename num_empenio_sucdia num_empenio
 
 *Number of pledges by suc and day
 gen dow=dow(fecha_inicial)
 gen monday=(dow==1)
 
-keep fecha_inicial suc prenda prestamo monday num_empenio
+keep fecha_inicial suc prestamo monday num_empenio
 save "$directorio/_aux/pre_experiment_admin.dta", replace
 
 restore
@@ -568,15 +567,13 @@ replace cost_losing_pawn = cost_losing_pawn - prestamo/(0.7*(1+0.002257833358012
 *Effective cost/loan benefit ratio 
 gen eff_cost_loan = sum_porcp_c + 1/0.7
 replace eff_cost_loan = eff_cost_loan - 1/0.7 if des_c == 1
-replace eff_cost_loan = -eff_cost_loan
 drop if missing(eff_cost_loan)
-label var eff_cost_loan "Effective cost-loan benefit ratio"
+label var eff_cost_loan "Effective cost-loan ratio (APR)"
 
 *Calculate a version of this that doesn't include the interest that is mechanically saved by paying early since this is the piece of the forced-fee contract that has a foregone liquidity cost for the borrower.
 gen eff_cost_loan_noint = sum_porcp_c - sum_porc_int_c + 1/0.7
 replace eff_cost_loan_noint = eff_cost_loan_noint - 1/0.7 if des_c == 1
-replace eff_cost_loan_noint = -eff_cost_loan_noint
-label var eff_cost_loan_noint "Effective cost-loan benefit ratio without interests"
+label var eff_cost_loan_noint "Effective cost-loan ratio without interests"
 
 *Calculate a version of this that is only based on saved collateral since this has nothing to do with the early payment other than how it helps you repay.
 

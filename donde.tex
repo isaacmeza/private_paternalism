@@ -538,7 +538,7 @@ On an attempt to characterize the class that benefits more from commitment, we d
 
 \subsection{LATEs for Compliers and Non-Compliers}
 
-The prior approaches to heterogeneity analysis did not use information about the actual outcomes in the complier group in the choice arm, only assuming that the decision to choose can be modeled.  An alternate approach assumes nothing about the decision to choose (other than random sampling) and instead makes the couple of exclusion restriction-style assumptions typical of Local Average Treatment Effect (LATE) analysis.  Namely, a) the typical LATE assumption that an individual not choosing the treatment has the same potential outcome as one not offered it, then the mirror image assumption for the Forcing arm that b) an individual forced to take Commitment has the same potential outcome as an individual choosing it, and c_ no spillovers from chooser to non-choosers in the choice arm.\footnote{Figure \ref{exclusion_restriction} in the appendix tests this assumptions. \hl{For robustness we also try a Manski-type monotone IV approach with similar results.}}
+The prior approaches to heterogeneity analysis did not use information about the actual outcomes in the complier group in the choice arm, only assuming that the decision to choose can be modeled.  An alternate approach assumes nothing about the decision to choose (other than random sampling) and instead makes the couple of exclusion restriction-style assumptions typical of Local Average Treatment Effect (LATE) analysis.  Namely, a) the typical LATE assumption that an individual not choosing the treatment has the same potential outcome as one not offered it, then the mirror image assumption for the Forcing arm that b) an individual forced to take Commitment has the same potential outcome as an individual choosing it, and c) no spillovers from chooser to non-choosers in the choice arm.\footnote{Figure \ref{exclusion_restriction} in the appendix tests this assumptions. \hl{For robustness we also try a Manski-type monotone IV approach with similar results.}}
 
 
 Let $Z_i$ be the observed, randomly assigned experimental allocation, where $Z_i=0$ denotes the control arm, $Z_i=1$ denotes the forced-fee arm, and $Z_i=2$ is the choice arm.  Let $T_i$ be the unobserved choice type. $T_i=0$ when individual $i$ does not choose commitment  given the choice and $T_i=1$ when chooses commitment given the choice. Finally, $D_i = Z_i\times \mathds{1}(Z_i\neq 2) + T_i\times \mathds{1}(Z_i=2)$ is the observed treatment indicator, and $Y(d,z)$ is the potential outcome function for $d=0,1$, and $z=0,1,2$.
@@ -903,20 +903,15 @@ Our results suggest several avenues for future research. First, it would be usef
         \centering
         \includegraphics[width=\textwidth]{Figuras/hist_fc.pdf}
     \end{subfigure}
-    \begin{subfigure}{0.45\textwidth}
-    \caption{As a fraction of the loan}
-       \centering
-      \includegraphics[width=\textwidth]{Figuras/hist_fc_perc_loan.pdf}
-    \end{subfigure}
      \begin{subfigure}{0.45\textwidth}
-    \caption{Effective cost-loan ratio}
+    \caption{APR}
        \centering
       \includegraphics[width=\textwidth]{Figuras/hist_eff.pdf}
     \end{subfigure}
     \end{center}
          \scriptsize
-         Panel (a) presents a histogram of financial cost for the control group. Financial cost is defined as the sum of payments made by a client towards recovering her pawn + the cost of the pawned piece when she ends up losing it. In the paper we use different costs of losing the pawn: its value in gold, or the self reported subjective (e.g. jewelry may have sentimental value). This Figure uses the gold value. We plot separately the financial cost for those who lose the pawn (blue) and those that recover it (transparent).  Panel (b) is analogous but we normalized the financial cost, dividing it by the loan size.  %Given that the loan lasts close to 90 days, bringing payments to present value makes little difference. 
-      %\footnotesize{ } \textit{Do file: }  \texttt{hist\_eff.do}
+         Panel (a) presents a histogram of financial cost for the control group. Financial cost is defined as the sum of payments made by a client towards recovering her pawn + the cost of the pawned piece when she ends up losing it. We plot separately the financial cost for those who lose the pawn (blue) and those that recover it (transparent).  Panel (b) is analogous but we normalized the financial cost, dividing it by the loan size.  %Given that the loan lasts close to 90 days, bringing payments to present value makes little difference. 
+      %\footnotesize{ } \textit{Do file: }  \texttt{hist\_fc.do, hist\_eff.do}
 \end{figure}
 
 
@@ -925,93 +920,154 @@ Our results suggest several avenues for future research. First, it would be usef
 
 
 \begin{figure}[H]
-    \caption{The effect of the Forced Commitment treatment}
-    \label{fc_pro2}
+     \caption{Main treatment effects}
+    \label{main_te}
     \begin{center}
-    \begin{subfigure}{0.42\textwidth}
-        \caption{Financial cost (MXN)}
+    \begin{subfigure}{0.75\textwidth}
         \centering
-        \includegraphics[width=\textwidth]{Figuras/fc_te_pro_2.pdf}
+        \includegraphics[width=\textwidth]{Figuras/main_te.pdf}
     \end{subfigure}
-        \begin{subfigure}{0.42\textwidth}
-        \caption{Financial cost (quantile reg)}
-        \centering
-        \includegraphics[width=\textwidth]{Figuras/fc_quantile_pro_2.pdf}
-    \end{subfigure}
-    
-        \bigskip
-    
-    \begin{subfigure}{0.42\textwidth}
-        \caption{Financial cost (HTE)}
-        \centering
-        \includegraphics[width=\textwidth]{Figuras/he_dist_fc_admin_disc_pro_2.pdf}
-    \end{subfigure}
-    ~
-    ~
-    \bigskip
-    \begin{subfigure}{0.42\textwidth}
-        \caption{Lost pawn}
-        \centering
-        \includegraphics[width=\textwidth]{Figuras/def_te_pro_2.pdf}
-    \end{subfigure}
-    \begin{subfigure}{0.42\textwidth}
-    \caption{Losing Pawn}
-        \centering
-        \includegraphics[width=\textwidth]{Figuras/he_dist_def_c_pro_2.pdf}
-    \end{subfigure}
-
     \end{center}
-        \scriptsize 
-        
-      %\textit{Do file: }  \texttt{fc\_te.do, def\_te.do, fc\_quantilereg.do}
+    \scriptsize
+    This figure shows the estimated treatment effect of ``forcing'' the frequent payment commitment contract using fees, compared to the control, and the effect of the choice arm, compared to the control, for the main outcomes of interest. The treatment effects are indicated in standard deviations, together with 95\% confidence intervals.
 \end{figure}
-
-\scriptsize {
-\noindent This figure shows the estimated treatment effect of ``forcing'' the frequent payment commitment contract using fees, compared to the status-quo (control). In Panel (a) each dot represents the estimated treatment effect for a different definition of financing cost, or for a different sub-population, and its 95\% confidence interval. From left to right, the first effect corresponds to using the gold value of the pawned piece in the definition of financial cost and discounting the payments to present value using a 7\% monthly rate - to the left we have a decomposition of the financial cost in its four components from left to right (1) Discounted payments to capital, (2) Payed fees, (3) Payed interest, (4) Cost of losing pawn; the second uses the subjective value of the pawn; the third is analogous to the second but adds transaction cost (transport+1 day's wage) per visit; the fourth conditions on the population that paid any positive amount towards recovery of their pawn; the fifth conditions on the sub-population of the treatment group that paid a fee and compares these to all the control group. Panel (b) plots the effects on different quantiles of the distribution of financial cost (using the first definition): 15th, 25th, 50th, 75th, 85th percentile. Panel (c) plots the distribution of the heterogeneous treatment effects on financial cost, estimated using \cite{atheygrf}. Panel (d) Measures the effect of treatment on the likelihood of losing their pawn. The first coefficient compares all the treatment group vs all the control using 230 days after pawning to define the dependent variable; the second defines it using 120 days. The third coefficient from the left conditions on the population that paid any positive amount towards recovery of their pawn (which in theory may be endogenous but empirically we showed not to be affected by treatment). Finally, Panel (e) shows the distribution of heterogeneous treatment effects of the probability of losing the pawn. % the effect on ``repeat purchase''. That is likelihood of doing an additional pawn (in treatment vs control) after having been subjected to treatment for at least 75 days. The second coefficient estimates the regression conditional on recovering the pawn {in both treatment and control}, and the rightmost coefficient compares those above the median treatment effect in financial cost savings, {versus all the control group.}
-}
 
 
 \begin{figure}[H]
-    \caption{The effect of the Forced Commitment treatment}
-    \label{fc_pro2}
+     \caption{Quantile regressions}
+    \label{qregs}
     \begin{center}
-    \begin{subfigure}{0.42\textwidth}
-        \caption{Effective cost/loan ratio}
+    \begin{subfigure}{.45\textwidth}
+      \caption{Financial cost (in MXN)}
         \centering
-        \includegraphics[width=\textwidth]{Figuras/eff_te_pro_2.pdf}
+        \includegraphics[width=\textwidth]{Figuras/qreg_fc_admin.pdf}
     \end{subfigure}
-        \begin{subfigure}{0.42\textwidth}
-        \caption{Financial cost (quantile reg)}
-        \centering
-        \includegraphics[width=\textwidth]{Figuras/eff_quantile_pro_2.pdf}
+     \begin{subfigure}{0.45\textwidth}
+    \caption{APR}
+       \centering
+      \includegraphics[width=\textwidth]{Figuras/qreg_eff_cost_loan.pdf}
     \end{subfigure}
-    
-        \bigskip
-    
-     \begin{subfigure}{0.42\textwidth}
-         \caption{Financial cost (HTE)}
-         \centering
-         \includegraphics[width=\textwidth]{Figuras/he_dist_eff_cost_loan_pro_2.pdf}
-     \end{subfigure}
-    ~
-    ~
-    \bigskip
-    \begin{subfigure}{0.42\textwidth}
-        \caption{Lost pawn}
-        \centering
-        \includegraphics[width=\textwidth]{Figuras/def_te_pro_2.pdf}
-    \end{subfigure}
-    \begin{subfigure}{0.42\textwidth}
-    \caption{Losing Pawn}
-        \centering
-        \includegraphics[width=\textwidth]{Figuras/he_dist_def_c_pro_2.pdf}
-    \end{subfigure}
-
     \end{center}
-        \scriptsize 
-        
-      %\textit{Do file: }  \texttt{eff\_te.do, def\_te.do, eff\_quantilereg.do}
+         \scriptsize
+     This figure plots the effects on different quantiles (15th, 25th, 50th, 75th, 85th percentile) of the distribution of financial cost, and APR, for the Forced-fee and Choice arms.
+      %\footnotesize{ } \textit{Do file: }  \texttt{main\_qreg.do}
 \end{figure}
+
+
+\begin{figure}[H]
+     \caption{Heterogeneous Treatment Effects}
+    \label{qregs}
+    \begin{center}
+    \begin{subfigure}{.45\textwidth}
+      \caption{Financial cost (in MXN)}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/he_dist_fc_admin_pro_2.pdf}
+    \end{subfigure}
+     \begin{subfigure}{0.45\textwidth}
+    \caption{APR}
+       \centering
+      \includegraphics[width=\textwidth]{Figuras/he_dist_eff_cost_loan_pro_2.pdf}
+    \end{subfigure}
+     \begin{subfigure}{0.45\textwidth}
+    \caption{Default}
+       \centering
+      \includegraphics[width=\textwidth]{Figuras/he_dist_def_c_pro_2.pdf}
+    \end{subfigure}    
+    \end{center}
+         \scriptsize
+     plots the distribution of the heterogeneous treatment effects on financial cost, estimated using \cite{atheygrf}.
+      %\footnotesize{ } \textit{Do file: }  \texttt{analyze\_grf\_single\_arm.do}
+\end{figure}
+
+
+% \begin{figure}[H]
+%     \caption{The effect of the Forced Commitment treatment}
+%     \label{fc_pro2}
+%     \begin{center}
+%     \begin{subfigure}{0.42\textwidth}
+%         \caption{Financial cost (MXN)}
+%         \centering
+%         \includegraphics[width=\textwidth]{Figuras/fc_te_pro_2.pdf}
+%     \end{subfigure}
+%         \begin{subfigure}{0.42\textwidth}
+%         \caption{Financial cost (quantile reg)}
+%         \centering
+%         \includegraphics[width=\textwidth]{Figuras/fc_quantile_pro_2.pdf}
+%     \end{subfigure}
+    
+%         \bigskip
+    
+%     \begin{subfigure}{0.42\textwidth}
+%         \caption{Financial cost (HTE)}
+%         \centering
+%         \includegraphics[width=\textwidth]{Figuras/he_dist_fc_admin_disc_pro_2.pdf}
+%     \end{subfigure}
+%     ~
+%     ~
+%     \bigskip
+%     \begin{subfigure}{0.42\textwidth}
+%         \caption{Lost pawn}
+%         \centering
+%         \includegraphics[width=\textwidth]{Figuras/def_te_pro_2.pdf}
+%     \end{subfigure}
+%     \begin{subfigure}{0.42\textwidth}
+%     \caption{Losing Pawn}
+%         \centering
+%         \includegraphics[width=\textwidth]{Figuras/he_dist_def_c_pro_2.pdf}
+%     \end{subfigure}
+
+%     \end{center}
+%         \scriptsize 
+        
+%       %\textit{Do file: }  \texttt{fc\_te.do, def\_te.do, fc\_quantilereg.do}
+% \end{figure}
+
+% \scriptsize {
+% \noindent This figure shows the estimated treatment effect of ``forcing'' the frequent payment commitment contract using fees, compared to the status-quo (control). In Panel (a) each dot represents the estimated treatment effect for a different definition of financing cost, or for a different sub-population, and its 95\% confidence interval. From left to right, the first effect corresponds to using the gold value of the pawned piece in the definition of financial cost and discounting the payments to present value using a 7\% monthly rate - to the left we have a decomposition of the financial cost in its four components from left to right (1) Discounted payments to capital, (2) Payed fees, (3) Payed interest, (4) Cost of losing pawn; the second uses the subjective value of the pawn; the third is analogous to the second but adds transaction cost (transport+1 day's wage) per visit; the fourth conditions on the population that paid any positive amount towards recovery of their pawn; the fifth conditions on the sub-population of the treatment group that paid a fee and compares these to all the control group. Panel (b) plots the effects on different quantiles of the distribution of financial cost (using the first definition): 15th, 25th, 50th, 75th, 85th percentile. Panel (c) plots the distribution of the heterogeneous treatment effects on financial cost, estimated using \cite{atheygrf}. Panel (d) Measures the effect of treatment on the likelihood of losing their pawn. The first coefficient compares all the treatment group vs all the control using 230 days after pawning to define the dependent variable; the second defines it using 120 days. The third coefficient from the left conditions on the population that paid any positive amount towards recovery of their pawn (which in theory may be endogenous but empirically we showed not to be affected by treatment). Finally, Panel (e) shows the distribution of heterogeneous treatment effects of the probability of losing the pawn. % the effect on ``repeat purchase''. That is likelihood of doing an additional pawn (in treatment vs control) after having been subjected to treatment for at least 75 days. The second coefficient estimates the regression conditional on recovering the pawn {in both treatment and control}, and the rightmost coefficient compares those above the median treatment effect in financial cost savings, {versus all the control group.}
+% }
+
+
+% \begin{figure}[H]
+%     \caption{The effect of the Forced Commitment treatment}
+%     \label{fc_pro2}
+%     \begin{center}
+%     \begin{subfigure}{0.42\textwidth}
+%         \caption{Effective cost/loan ratio}
+%         \centering
+%         \includegraphics[width=\textwidth]{Figuras/eff_te_pro_2.pdf}
+%     \end{subfigure}
+%         \begin{subfigure}{0.42\textwidth}
+%         \caption{Financial cost (quantile reg)}
+%         \centering
+%         \includegraphics[width=\textwidth]{Figuras/eff_quantile_pro_2.pdf}
+%     \end{subfigure}
+    
+%         \bigskip
+    
+%      \begin{subfigure}{0.42\textwidth}
+%          \caption{Financial cost (HTE)}
+%          \centering
+%          \includegraphics[width=\textwidth]{Figuras/he_dist_eff_cost_loan_pro_2.pdf}
+%      \end{subfigure}
+%     ~
+%     ~
+%     \bigskip
+%     \begin{subfigure}{0.42\textwidth}
+%         \caption{Lost pawn}
+%         \centering
+%         \includegraphics[width=\textwidth]{Figuras/def_te_pro_2.pdf}
+%     \end{subfigure}
+%     \begin{subfigure}{0.42\textwidth}
+%     \caption{Losing Pawn}
+%         \centering
+%         \includegraphics[width=\textwidth]{Figuras/he_dist_def_c_pro_2.pdf}
+%     \end{subfigure}
+
+%     \end{center}
+%         \scriptsize 
+        
+%       %\textit{Do file: }  \texttt{eff\_te.do, def\_te.do, eff\_quantilereg.do}
+% \end{figure}
 
 \vspace{3ex}
 

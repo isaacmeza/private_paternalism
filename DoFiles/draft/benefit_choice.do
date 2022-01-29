@@ -98,7 +98,7 @@ foreach var of varlist tau_eff tau_des {
 
 	*Continuous plot
 	twoway (rarea hi lw x) (line s_aux x, lpattern(solid)) (lfit `var' pr_gbc_1 if sct!=2, lpattern(dot) lwidth(medthick) color(black)) (scatter `var' pr_gbc_1 if sct!=2, color(navy) msymbol(O)) ///
-			, legend(off) scheme(s2mono) graphregion(color(white)) xtitle("Probability to choose commitment") ytitle("Effective cost/loan benefit TE") 
+			, legend(off) scheme(s2mono) graphregion(color(white)) xtitle("Probability to choose commitment") ytitle("TE") 
 	graph export "$directorio\Figuras\benefit_choice_`var'.pdf", replace
 
 

@@ -52,8 +52,9 @@ use "$directorio/DB/Master.dta", clear
 *****************************Effective cost/loan********************************
 ********************************************************************************
 
+
 *Dependent variables
-local qlist  0.15 0.25 0.53 0.75 0.85 
+local qlist  0.15 0.25 0.47 0.75 0.85 
 local qlistnames "15%"  "25%" "50%" "75%" "85%"
 	
 matrix results = J(6, 5, .) // empty matrix for results

@@ -51,16 +51,11 @@ te_grf <- function(data_in, outcome_var, name) {
     "visit_number_d5", 
     "visit_number_d6", 
     "visit_number_d7",
-    "log_prestamo",
-    "pr_recup",
     "edad",
     "faltas",
     "val_pren_std",
     "genero",
-    "pres_antes",
-    "plan_gasto_bin",
-    "masqueprepa",
-    "pb"
+    "masqueprepa"
   ),
   c(
     "monday",
@@ -85,16 +80,11 @@ te_grf <- function(data_in, outcome_var, name) {
     "visit.number.5",
     "visit.number.6",
     "visit.number.7",
-    "log.loan",
-    "subj.pr",
     "age",
     "income.index",
     "subj.loan.value",
     "female",
-    "pawn.before",
-    "makes.budget",
-    "more.high.school",
-    "pb"
+    "more.high.school"
   ))
   
   require("dplyr")
@@ -257,7 +247,7 @@ te_grf <- function(data_in, outcome_var, name) {
 #####################################################
 
 # READ DATASET
-
+fc <- read_csv('./_aux/fc_te_heterogeneity.csv') 
 eff <- read_csv('./_aux/eff_te_heterogeneity.csv') 
 def <- read_csv('./_aux/def_te_heterogeneity.csv') 
 des <- read_csv('./_aux/des_te_heterogeneity.csv') 
@@ -266,6 +256,7 @@ sumporcp <- read_csv('./_aux/sumporcp_te_heterogeneity.csv')
 
 #####################################################
 
+te_grf(fc,"fc_admin","fc") 
 te_grf(eff,"eff_cost_loan","eff") 
 te_grf(def,"def_c","def") 
 te_grf(des,"des_c","des") 

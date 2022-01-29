@@ -1,0 +1,53 @@
+/*
+********************
+version 17.0
+********************
+ 
+/*******************************************************************************
+* Name of file:	
+* Author:	Isaac M
+* Machine:	Isaac M 											
+* Date of creation:	-
+* Last date of modification: January. 26, 2022
+* Modifications: 
+* Files used:     
+		- 
+* Files created:  
+
+* Purpose: Treatment effect bars measured in std deviations for main outcomes
+
+*******************************************************************************/
+*/
+
+
+set more off
+use "$directorio/DB/Master.dta", clear
+
+
+foreach var of varlist def_c fc_admin eff_cost_loan {
+		
+	*Standarize dependent variable.
+	su `var'
+	gen std_`var' = (`var'-`r(mean)')/`r(sd)'
+	
+	*OLS 
+	reg std_`var' pro_2 $C0, vce(cluster suc_x_dia)
+	estimates store `var'_2
+	
+	reg std_`var' pro_4 $C0, vce(cluster suc_x_dia)
+	estimates store `var'_4
+}
+
+
+*Beta plots
+coefplot (def_c_2, keep(pro_2) rename(pro_2 = "Default") color(navy) cismooth(color(navy)) offset(0.04)) /// 
+(fc_admin_2, keep(pro_2) rename(pro_2 = "Financial Cost") color(navy)  cismooth(color(navy))  offset(0.04)) ///
+(eff_cost_loan_2, keep(pro_2) rename(pro_2 = "APR") color(navy)  cismooth(color(navy))  offset(0.04)) ///
+(def_c_4, keep(pro_4) rename(pro_4 = "Default") color(maroon) cismooth(color(maroon))  offset(-0.04)) ///
+(fc_admin_4, keep(pro_4) rename(pro_4 = "Financial Cost")  color(maroon) cismooth(color(maroon)) offset(-0.04)) ///
+(eff_cost_loan_4, keep(pro_4) rename(pro_4 = "APR")  color(maroon) cismooth(color(maroon)) offset(-0.04)) ///
+, nooffset legend(order(51 "Forced-fee" 204 "Choice")) xline(0, lcolor(gs10))  graphregion(color(white)) xtitle("T. Effects (std deviations)")
+
+graph export "$directorio\Figuras\main_te.pdf", replace
+
+
