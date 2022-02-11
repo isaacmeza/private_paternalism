@@ -40,7 +40,7 @@ by t_prod: replace nvals = sum(nvals)
 by t_prod: replace nvals = nvals[_N] 
 
 *Re-weight pre-experiment by number of relative days
-foreach var of varlist  monday num_empenio {
+foreach var of varlist  weekday num_empenio {
 	replace `var' = `var'*6*.0515971 if suc == 3 & t_prod==6 & !missing(`var')
 	replace `var' = `var'*6*.0540541 if suc == 5 & t_prod==6 & !missing(`var')
 	replace `var' = `var'*6*.2211302 if suc == 42 & t_prod==6 & !missing(`var')
@@ -54,7 +54,7 @@ drop if missing(t_prod)
 
 **************************************SS ADMIN**********************************
 
-orth_out prestamo monday if inlist(t_prod,1,2,3,4,5,6) , by(t_prod) overall count se  vce(cluster suc_x_dia) bdec(2) 
+orth_out prestamo weekday if inlist(t_prod,1,2,3,4,5,6) , by(t_prod) overall count se  vce(cluster suc_x_dia) bdec(2) 
 
 qui putexcel set  "$directorio\Tables\SS.xlsx", sheet("SS_admin") modify	
 qui putexcel B2=matrix(r(matrix)) 
@@ -71,18 +71,21 @@ foreach t in 1 2 3 4 5  {
 qui putexcel set  "$directorio\Tables\SS.xlsx", sheet("SS_admin") modify	
 	
 local i = 2	
-foreach var of varlist prestamo monday  {
+foreach var of varlist prestamo weekday  {
 	qui reg `var' i.t_prod if inlist(t_prod,1,2,3,4,5), r cluster(suc_x_dia)
-	test 1.t_prod==2.t_prod==3.t_prod==4.t_prod==5.t_prod
+	test 1.t_prod==2.t_prod==4.t_prod
 	local p_val = `r(p)'
-	qui putexcel J`i'=matrix(`p_val')  
+	qui putexcel L`i'=matrix(`p_val')  
+	test 1.t_prod==3.t_prod==5.t_prod
+	local p_val = `r(p)'
+	qui putexcel M`i'=matrix(`p_val')  	
 	local i = `i'+2
 	}
 	
 local i = 2		
 *Test overall with pre-experiment
 gen overall = inlist(t_prod,1,2,3,4,5) if !missing(t_prod)	
-foreach var of varlist prestamo monday  {
+foreach var of varlist prestamo weekday  {
 	qui reg `var' i.overall, r cluster(suc_x_dia)
 	test 1.overall
 	local p_val = `r(p)'
@@ -100,9 +103,12 @@ qui putexcel B2=matrix(r(matrix))
 local i = 2	
 foreach var of varlist num_empenio  {
 	qui reg `var' i.t_prod if inlist(t_prod,1,2,3,4,5), r cluster(suc_x_dia)
-	test 1.t_prod==2.t_prod==3.t_prod==4.t_prod==5.t_prod
+	test 1.t_prod==2.t_prod==4.t_prod
 	local p_val = `r(p)'
-	qui putexcel J`i'=matrix(`p_val')  
+	qui putexcel L`i'=matrix(`p_val')  
+	test 1.t_prod==3.t_prod==5.t_prod
+	local p_val = `r(p)'
+	qui putexcel M`i'=matrix(`p_val')  	
 	local i = `i'+2
 	}
 
@@ -220,9 +226,12 @@ foreach t in 1 2 3 4 5 6 {
 local i = 2	
 foreach var of varlist genero edad  val_pren pres_antes pr_recup masqueprepa  {
 	qui reg `var' i.t_prod if inlist(_merge,1,2,3) & inlist(t_prod,1,2,3,4,5), r cluster(suc_x_dia)
-	test 1.t_prod==2.t_prod==3.t_prod==4.t_prod==5.t_prod
+	test 1.t_prod==2.t_prod==4.t_prod
 	local p_val = `r(p)'
-	qui putexcel J`i'=matrix(`p_val')  
+	qui putexcel L`i'=matrix(`p_val')  
+	test 1.t_prod==3.t_prod==5.t_prod
+	local p_val = `r(p)'
+	qui putexcel M`i'=matrix(`p_val')  	
 	local i = `i'+2
 	}
 	
@@ -251,9 +260,12 @@ qui putexcel B8=matrix(r(matrix))
 local i = 8	
 foreach var of varlist takeup response {
 	qui reg `var' i.t_prod if inlist(_merge,1,2,3) & inlist(t_prod,1,2,3,4,5), r cluster(suc_x_dia)
-	test 1.t_prod==2.t_prod==3.t_prod==4.t_prod==5.t_prod
+	test 1.t_prod==2.t_prod==4.t_prod
 	local p_val = `r(p)'
-	qui putexcel J`i'=matrix(`p_val')  
+	qui putexcel L`i'=matrix(`p_val')  
+	test 1.t_prod==3.t_prod==5.t_prod
+	local p_val = `r(p)'
+	qui putexcel M`i'=matrix(`p_val')  	
 	local i = `i'+2
 	} 
 	
@@ -275,16 +287,19 @@ foreach t in 1 2 3 4 5 {
 	qui putexcel `Col'16=matrix(`obs')  
 	qui putexcel set "$directorio\Tables\exp_arms.xlsx", sheet("exp_arms") modify		
 	qui putexcel `Col'18=matrix(`obs')  	
-	qui putexcel set "$directorio\Tables\SS.xlsx", sheet("SS_survey_uncond") modify		
+	qui putexcel set "$directorio\Tables\SS.xlsx", sheet("SS_survey") modify		
 	}
 
 	*F-tests
 local i = 2	
 foreach var of varlist genero edad  val_pren pres_antes pr_recup masqueprepa {
 	qui reg `var' i.t_prod if inlist(_merge,2,3) & inlist(t_prod,1,2,3,4,5), r cluster(suc_x_dia)
-	test 1.t_prod==2.t_prod==3.t_prod==4.t_prod==5.t_prod
+	test 1.t_prod==2.t_prod==4.t_prod
 	local p_val = `r(p)'
 	qui putexcel J`i'=matrix(`p_val')  
+	test 1.t_prod==3.t_prod==5.t_prod
+	local p_val = `r(p)'
+	qui putexcel K`i'=matrix(`p_val')  	
 	local i = `i'+2
 	}	
 	

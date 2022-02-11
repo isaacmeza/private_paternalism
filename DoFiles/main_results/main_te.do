@@ -1,8 +1,8 @@
-/*
+
 ********************
 version 17.0
 ********************
- 
+/* 
 /*******************************************************************************
 * Name of file:	
 * Author:	Isaac M
@@ -20,13 +20,12 @@ version 17.0
 */
 
 
-set more off
 use "$directorio/DB/Master.dta", clear
 
 
-foreach var of varlist def_c fc_admin eff_cost_loan {
+foreach var of varlist def_c fc_admin apr {
 		
-	*Standarize dependent variable.
+	* Z-score
 	su `var'
 	gen std_`var' = (`var'-`r(mean)')/`r(sd)'
 	
@@ -40,13 +39,13 @@ foreach var of varlist def_c fc_admin eff_cost_loan {
 
 
 *Beta plots
-coefplot (def_c_2, keep(pro_2) rename(pro_2 = "Default") color(navy) cismooth(color(navy)) offset(0.04)) /// 
-(fc_admin_2, keep(pro_2) rename(pro_2 = "Financial Cost") color(navy)  cismooth(color(navy))  offset(0.04)) ///
-(eff_cost_loan_2, keep(pro_2) rename(pro_2 = "APR") color(navy)  cismooth(color(navy))  offset(0.04)) ///
-(def_c_4, keep(pro_4) rename(pro_4 = "Default") color(maroon) cismooth(color(maroon))  offset(-0.04)) ///
-(fc_admin_4, keep(pro_4) rename(pro_4 = "Financial Cost")  color(maroon) cismooth(color(maroon)) offset(-0.04)) ///
-(eff_cost_loan_4, keep(pro_4) rename(pro_4 = "APR")  color(maroon) cismooth(color(maroon)) offset(-0.04)) ///
-, nooffset legend(order(51 "Forced-fee" 204 "Choice")) xline(0, lcolor(gs10))  graphregion(color(white)) xtitle("T. Effects (std deviations)")
+coefplot (def_c_2, keep(pro_2) rename(pro_2 = "Default") color(navy) cismooth(color(navy) n(10)) offset(0.04)) /// 
+(fc_admin_2, keep(pro_2) rename(pro_2 = "Financial Cost") color(navy)  cismooth(color(navy) n(10))  offset(0.04)) ///
+(apr_2, keep(pro_2) rename(pro_2 = "APR") color(navy)  cismooth(color(navy) n(10))  offset(0.04)) ///
+(def_c_4, keep(pro_4) rename(pro_4 = "Default") color(maroon) cismooth(color(maroon) n(10))  offset(-0.04)) ///
+(fc_admin_4, keep(pro_4) rename(pro_4 = "Financial Cost")  color(maroon) cismooth(color(maroon) n(10)) offset(-0.04)) ///
+(apr_4, keep(pro_4) rename(pro_4 = "APR")  color(maroon) cismooth(color(maroon) n(10)) offset(-0.04)) ///
+, nooffset legend(order(11 "Forced-commitment" 44 "Choice-commitment")) xline(0, lcolor(gs10))  graphregion(color(white)) xtitle("T. Effects (std deviations)")
 
 graph export "$directorio\Figuras\main_te.pdf", replace
 

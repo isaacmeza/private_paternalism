@@ -1,29 +1,27 @@
- \documentclass[oneside,11pt]{article}
+%  \documentclass[oneside,11pt]{article}
 
-\input{preamble.tex}
-%%% HELPER CODE FOR DEALING WITH EXTERNAL REFERENCES
-\usepackage{xr}
-\makeatletter
-\newcommand*{\addFileDependency}[1]{
-  \typeout{(#1)}
-  \@addtofilelist{#1}
-  \IfFileExists{#1}{}{\typeout{No file #1.}}
-}
-\makeatother
-
-
-\newcommand*{\myexternaldocument}[1]{
-    \externaldocument{#1}
-    \addFileDependency{#1.tex}
-    \addFileDependency{#1.aux}
-}
-
-%\myexternaldocument{OA}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% DOCUMENT
-\begin{document}
+% \input{preamble.tex}
+% %%% HELPER CODE FOR DEALING WITH EXTERNAL REFERENCES
+% \usepackage{xr}
+% \makeatletter
+% \newcommand*{\addFileDependency}[1]{
+%   \typeout{(#1)}
+%   \@addtofilelist{#1}
+%   \IfFileExists{#1}{}{\typeout{No file #1.}}
+% }
+% \makeatother
 
 
+% \newcommand*{\myexternaldocument}[1]{
+%     \externaldocument{#1}
+%     \addFileDependency{#1.tex}
+%     \addFileDependency{#1.aux}
+% }
+
+% %\myexternaldocument{OA}
+
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% DOCUMENT
+% \begin{document}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -37,7 +35,7 @@
 \begin{center}
 	\LARGE The limits of self-commitment and private paternalism \\[0.5em]
 	\Large{Appendix $-$ For Online Publication} \\[1em]
-	\large \author{Isaac Meza \and Joyce Sadka \and Enrique Seira}
+	\large \author{Craig McIntosh \and Isaac Meza \and Joyce Sadka \and Enrique Seira}
 \end{center}
 
 \appendix
@@ -1604,4 +1602,4 @@ then the fee-forcing contract would have increased welfare for the naive. That i
 
 
 
-\end{document}
+% \end{document}
