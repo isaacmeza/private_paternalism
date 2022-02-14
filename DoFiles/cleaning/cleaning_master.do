@@ -96,7 +96,7 @@ label var apr_survey "APR (subjective value)"
 *APR + tc
 gen double apr_tc = sum_porcp_c + 1/0.7 + trans_cost/prestamo
 replace apr_tc = apr_tc - 1/0.7 if des_c == 1
-replace apr_tc = apr_tc - trans_cost/prestamo if t_prod==1
+
 	*annualize *solution to : apr/3 = x(1+x)^3/((1+x)^3-1)
 replace apr_tc = apr_tc/3
 gen double sqrt3 =  (2*apr_tc^3 + 9*apr_tc^2 + 3*sqrt(3)*sqrt(3*apr_tc^4 + 14*apr_tc^3 + 27*apr_survey^2) + 27*apr_tc)^(1/3)
@@ -108,7 +108,7 @@ label var apr_tc "APR (appraised) + tc"
 *APR subjective + tc
 gen double apr_s_tc = sum_porcp_c + val_pren/prestamo + trans_cost/prestamo
 replace apr_s_tc = apr_s_tc - val_pren/prestamo if des_c == 1
-replace apr_s_tc = apr_s_tc - trans_cost/prestamo if t_prod==1
+
 	*annualize *solution to : apr/3 = x(1+x)^3/((1+x)^3-1)
 replace apr_s_tc = apr_s_tc/3
 gen double sqrt3 =  (2*apr_s_tc^3 + 9*apr_s_tc^2 + 3*sqrt(3)*sqrt(3*apr_s_tc^4 + 14*apr_s_tc^3 + 27*apr_survey^2) + 27*apr_s_tc)^(1/3)

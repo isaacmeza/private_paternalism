@@ -24,9 +24,8 @@ use "$directorio/DB/Master.dta", clear
 
 *FC + Travel cost
 gen fc_tc = fc_admin + trans_cost
-replace fc_tc = fc_tc - trans_cost if t_prod==1
 gen fc_s_tc = fc_survey + trans_cost
-replace fc_s_tc = fc_s_tc - trans_cost if t_prod==1
+
 
 
 

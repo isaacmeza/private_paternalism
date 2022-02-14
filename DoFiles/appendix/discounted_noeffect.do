@@ -1,4 +1,23 @@
 
+********************
+version 17.0
+********************
+/* 
+/*******************************************************************************
+* Name of file:	
+* Author:	Isaac M
+* Machine:	Isaac M 											
+* Date of creation:	
+* Last date of modification: February. 13, 2022  
+* Modifications:		
+* Files used:     
+		- pre_admin.dta
+* Files created:  
+
+* Purpose: Compute discount rate such that t. effect becomes 0
+
+*******************************************************************************/
+*/
 
 use "$directorio/_aux/pre_admin.dta", clear
 
@@ -37,12 +56,14 @@ merge m:1 NombrePignorante fecha_inicial using `temp_rec', nogen
 
 
 *Recover pawn
-bysort prenda: egen des_c=max(desempeno)
+sort prenda fecha_movimiento HoraMovimiento
+by prenda: gen des_c=desempeno[_N]
 
 *Days to recover
 gen dias_inicio_d=dias_inicio if des_c
-bysort prenda: egen dias_al_desempenyo=max(dias_inicio_d)
+by prenda: gen dias_al_desempenyo=dias_inicio_d[_N]
 replace dias_al_desempenyo = 1 if dias_al_desempenyo==0
+replace dias_inicio = 1 if dias_inicio==0 & des_c==1
 
 *Suc by day
 egen suc_x_dia=group(suc fecha_inicial)
@@ -61,45 +82,37 @@ foreach var of varlist dow suc /*prenda_tipo edo_civil choose_same trabajo*/  {
 drop num_arms_d1 num_arms_d2 visit_number_d1
 	
 	
-matrix results = J(101, 3, .)
+matrix results = J(1001, 4, .)
 
 local i = 1
-forvalues d = 0(1)100 {	
+forvalues d = 0(20)6000 {	
 	di `d'
 	qui {
 	preserve
-	local dd = (1+`d'/100)^(1/30)-1
+	local dd = (1+`d'/100)^(1/365)-1
 
-	* DISCOUNTED with daily interest rate equivalent to a d% monthly rate.
-	gen pagos_disc=importe/((1+`dd')^dias_inicio) if clave_movimiento <= 3 | clave_movimiento==5
+	* DISCOUNTED with daily interest rate equivalent to a d% annual rate.
+	gen pagos_disc=pagos/((1+`dd')^dias_inicio) if clave_movimiento <= 3 | clave_movimiento==5
 	replace pagos_disc=0 if pagos_disc==.
 
 	*'sum_p_disc' is the cumulative discounted sum of payments
-	sort prenda fecha_movimiento
+	sort prenda fecha_movimiento HoraMovimiento
 	by prenda: gen sum_p_disc=sum(pagos_disc)
-	bysort prenda: egen sum_pdisc_c=max(sum_p_disc)
-
-	*Trimming
-	xtile perc_sum_pdisc_c = sum_pdisc_c , nq(100)
-	replace sum_pdisc_c= . if perc_sum_pdisc_c>99
-	drop perc_sum_pdisc_c
-		
+	by prenda: gen sum_pdisc_c=sum_p_disc[_N]
+	
 	*Financial cost
 		*discounted
-	gen fc_admin_disc = sum_pdisc_c + prestamo/(0.7)
-	replace fc_admin_disc = fc_admin_disc - prestamo/(0.7*(1+`dd')^dias_al_desempenyo) if des_c == 1
+	gen fc_admin_disc = sum_pdisc_c 
+	replace fc_admin_disc = fc_admin_disc + prestamo/(0.7*(1 + `dd')^90) if des_c == 0
 
-
-	bysort prenda fecha_inicial: gen esample =  (_n==1)
-	reg fc_admin_disc pro_2  $C0 if esample , r cluster(suc_x_dia)
+	sort prenda fecha_inicial fecha_movimiento t_prod
+	by prenda fecha_inicial: keep if _n==1
+	reg fc_admin_disc pro_2  $C0 , vce(cluster suc_x_dia)
 	local df = e(df_r)	
 	matrix results[`i',1] = `d'
 	matrix results[`i',2] = _b[pro_2]
 	matrix results[`i',3] = _se[pro_2]
-	
-	*!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	*reg prestamo pro_2
-	*matrix results[`i',2] = results[`i',2] - _b[pro_2]
+	matrix results[`i',4] = `df'
 	
 	local i = `i' + 1
 	restore
@@ -107,37 +120,23 @@ forvalues d = 0(1)100 {
 	}
 
 	
-matrix colnames results = "d" "beta" "se"
+matrix colnames results = "d" "beta" "se" "df"
 clear
 svmat results, names(col) 
-gen rcap_lo_5 = beta - invttail(`df',.025)*se
-gen rcap_hi_5 = beta + invttail(`df',.025)*se	
-gen rcap_lo_10 = beta - invttail(`df',.05)*se
-gen rcap_hi_10 = beta + invttail(`df',.05)*se	
-
-
-*Exponential Fit
-gen wt = 3+1/(d+1)
-nl (beta = {c=-300} + {k=1}*log({a=1}*d+{b=1})) [iweight=wt]
-gen y = _b[/c] + _b[/k]*log(_b[/a]*d+_b[/b])
-
-nl (rcap_lo_5 = {c=-300} + {k=1}*log({a=1}*d+{b=1})) [iweight=wt]
-gen ylo5 = _b[/c] + _b[/k]*log(_b[/a]*d+_b[/b])
-
-nl (rcap_hi_5 = {c=-300} + {k=1}*log({a=1}*d+{b=1})) [iweight=wt]
-gen yhi5 = _b[/c] + _b[/k]*log(_b[/a]*d+_b[/b])
+gen rcap_lo_5 = beta - invttail(df,.025)*se
+gen rcap_hi_5 = beta + invttail(df,.025)*se	
+gen rcap_lo_10 = beta - invttail(df,.05)*se
+gen rcap_hi_10 = beta + invttail(df,.05)*se	
 
 
 
-*plot random points of beta
-gen u = (runiform()<0.2)
 
-twoway 	(line y d, lpattern(solid) lwidth(medthick) lcolor(black))  ///
-		(line ylo5 d, lpattern(dot) lwidth(medthick) lcolor(black))  ///
-		(line yhi5 d, lpattern(dot) lwidth(medthick) lcolor(black))  ///
-		(scatter beta d if u, color(ltblue)) ///
-	, scheme(s2mono) graphregion(color(white)) ///
-	xtitle("Monthly interest rate") ytitle("FC Effect") legend(off) yline(0)
+twoway 	(rarea rcap_hi_5 rcap_lo_5 d, color(navy%15))  ///
+		(rarea rcap_hi_10 rcap_lo_10 d, color(navy%30))  ///
+		(line beta d, color(navy) lwidth(thick)) ///
+	, graphregion(color(white)) ///
+	xtitle("Annual discount interest rate %") ytitle("FC Effect") legend(off) yline(0, lcolor(black)) ///
+	xline(1060 2120, lcolor(black%90) lpattern(dot)) xlabel(0(1000)6000) text(-500 1060 "1060%" -500 2120 "2120%", size(vsmall))
 graph export "$directorio\Figuras\discount_effect.pdf", replace
 	
 	

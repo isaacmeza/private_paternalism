@@ -214,20 +214,28 @@ The pawnshop therefore makes money in three ways: by reselling the jewelry left 
     
 \subsection{Measurement of the Cost to Pawning} \label{Data}
     
-We now develop the measures of net financial costs to the borrower that are used as our core pecuniary outcomes.  The two key measures are loan default, and the effective financial cost incurred by the borrower. Default is defined as losing the pawn. Let $P^c$, $P^f$, and $P^i$ the payments to principal, fees, and interest respectively. We define financial cost as the discounted sum of payments toward the loan, plus the discounted payment of fees, plus payments to interest, plus the appraised value of the pawn, and subtract the appraised value of the pawn when it is recovered: 
+We now develop the measures of net financial costs to the borrower that are used as our core pecuniary outcomes.  The two key measures are loan default, and the effective financial cost incurred by the borrower. Default is defined as losing the pawn. Let $P^c$, $P^f$, and $P^i$ the payments to principal, fees, and interest respectively. We define financial cost as the sum of payments toward the loan, plus the payment of fees, plus payments to interest, plus the appraised value of the pawn when the borrower falls into default: 
 \begin{align*}
-    Financial \; Cost_i =& \underbrace{\sum_t P^c_{it}}_{\text{Discounted payments to capital}} + \underbrace{\sum_t P^f_{it}}_{\text{Payed fees}}  +\underbrace{\sum_t P^i_{it}}_{\text{Payed interests}} \\
-    &\quad\qquad + \underbrace{Pawn \: Value_i - \text{I}(Recovered \: Pawn_i) \times Pawn \: Value_i}_{\text{Cost of losing pawn}}
+    Financial \; Cost_i =& \underbrace{\sum_t P^c_{it}}_{\text{Payments to capital}} + \underbrace{\sum_t P^f_{it}}_{\text{Payments of fees}}  +\underbrace{\sum_t P^i_{it}}_{\text{Payments to interests}} \\
+    &\quad\qquad + \underbrace{\mathds{1}(Default_i) \times Pawn \: Value_i}_{\text{Cost of losing pawn}}
 \end{align*}
 
-\noindent $t$ indexes days, $T$ is the day when the pawn is recovered, I($\cdot$) an indicator function for recovering the pawn, $r$ is a daily interest rate equivalent to a 7\% monthly interest rate.\footnote{We experimented with different interest rates with similar results. See section \ref{neoclasical}. We also report results using the subjective value of the pawn reported by the borrower in the survey again with similar results. This cost is calculated for a time period of 230 days after loan origination.}
+\noindent $t$ indexes days, and $\mathds{1}(Default_i)$ is an indicator function for defaulting\footnote{This cost is calculated for a time period of 230 days after loan origination.}. We also report results using the subjective value of the pawn reported by the borrower in place of the appraised value, and a measure of financial cost that adds the travel expense, since the main treatment involves making clients come to the branch to pay each month.
 
-%Since the main treatment involves making clients come to the branch to pay each month, the transaction costs of coming to the branch are important. The average time they take to come to the branch is 22 minutes, and the amount of money they spend in transport to do that is 11 MXN (\$0.60 USD).  
+As a second measure of cost we use the Annual Percentage Rate (APR) of the previous Financial Cost. In particular, the APR is defined to be the rate that solves the following amortization equation for a 3 period monthly payment:
 
 
-We can use the control group for the study to present summary statistics on these core measures of default and financial cost.  Figure \ref{fc_pro_2_115} reports results using only the first 115 days. Figure \ref{fc_hist}(a) plots a histogram of this financial cost in pesos for loans where the pawn was either recovered or lost. Of those who renew, 83\% lose the pawn. 
-Figure \ref{fc_hist}(a) suggest that financial cost is significant, even for those that do recover their pawn. Panel (b) normalizes the cost by loan size. It shows that as a percentage of their pawn, most of the cost comes from clients that do not recover their pawn. For them the cost is between 140\% and 250\% of the loan value. %{The difference between panel (a) and (b) arises since clients who lose their pawn tend to be those that pledge cheaper pieces.} 
-We calculate an APR of 218\% on average for the control group.%\footnote{The Annual Percentage Rate (for pawn $j$) is calculated as the internal rate of return $i$ such that $\sum_t \frac{P_{jt}}{(1+i)^t} + \frac{\text{I}(Default \: Pawn_j) \times Pawn \: Value_j}{(1+i)^T} - Pawn \: Value_j = 0$, where $T$ is the date the pawn was lost, and $P_{jt} =P_{jt}^c+P_{jt}^f+P_{jt}^i $ is the sum of all payments.}
+\begin{align*}
+    \frac{Financial\;Cost_i}{3} =& Appraised\; Value_i \times \frac{\frac{APR}{100(12)}\left(1+\frac{APR}{100(12)}\right)^3}{\left(1+\frac{APR}{100(12)}\right)^3-1}     
+\end{align*}
+
+
+
+We can use the control group for the study to present summary statistics on these core measures of default and financial cost.  Figure \ref{fc_pro_2_115} reports results using only the first 115 days. Figure \ref{fc_hist}(a) plots a histogram of this financial cost in pesos for loans where the pawn was either recovered or lost, while panel (b) shows the APR. It shows that most of the cost comes from clients that do not recover their pawn. 
+%Of those who renew, 83\% lose the pawn. Figure \ref{fc_hist}(a) suggest that financial cost is significant, even for those that do recover their pawn. Panel (b) normalizes the cost by loan size. It shows that as a percentage of their pawn, most of the cost comes from clients that do not recover their pawn. For them the cost is between 140\% and 250\% of the loan value. %{The difference between panel (a) and (b) arises since clients who lose their pawn tend to be those that pledge cheaper pieces.} 
+
+
+%We calculate an APR of 218\% on average for the control group.%\footnote{The Annual Percentage Rate (for pawn $j$) is calculated as the internal rate of return $i$ such that $\sum_t \frac{P_{jt}}{(1+i)^t} + \frac{\text{I}(Default \: Pawn_j) \times Pawn \: Value_j}{(1+i)^T} - Pawn \: Value_j = 0$, where $T$ is the date the pawn was lost, and $P_{jt} =P_{jt}^c+P_{jt}^f+P_{jt}^i $ is the sum of all payments.}
 
 
 
@@ -364,22 +372,20 @@ Panel C repeats the exercise in Panel B, but now only for those borrowers answer
 \section{Experimental Analysis} \label{experiment}
 
 
-\subsection{The Choice of Commitment}
-\label{choice_commitment}
+*\subsection{The Choice of Commitment}
+*\label{choice_commitment}
 
 %Section \ref{fee-commitment} showed that the Forced Commitment commitment contract reduced financing cost across the board, and that consumers themselves seemed to like it once they tried it. In such a case, one would expect a strong demand for it. This is not the case. We also find that clients in the choice arm achieved no better outcomes than those in the status quo group.
 
 %\subsection{Demand for the Forced Commitment commitment contract} \label{sec:demand}
 
 %\noindent \textbf{Low demand for commitment:} 
-A starting point in the analysis of commitment in pawn lending contracts is to look at the demand that manifested itself in the Commitment Choice arm.  
+We begin our empirical analysis with a comparison of the Forced Commitment and Commitment Choice arms to the control.  Before presenting experimental ITT results, 
+
 
 When preferences or income streams are heterogeneous, and consumers are neoclassical, giving choice among contracts is often a welfare increasing strategy. Consumers would choose the contract that best fits their needs. This holds also in most simple models of present bias preferences if consumers are sophisticated about their present bias. %Actually, it could be the case that the opportunity of choosing itself could affect behavior.
 But when consumers are overconfident about their ability to save to pay back the loan, free choice could be a sub-optimal policy from the point of view of the client's long run self, and could match clients with  more costly contracts. Defenders of choice make another subtler point: that even if take up of the commitment-fee contract is low, the sole fact of \textit{having} choice could potentially change behavior or welfare (\cite{Dalboetal:2010}, \cite{Sjostrometal:2018}, \cite{Tlaxcala}). 
 
-
-
-\textcolor{red}{If we are to lead with this section we need a simple 'determinants' table that looks at who chooses commitment, this section to discuss results.}
 
 
 %In spite of broadly distributed benefits of the Forced Commitment commitment contract we documented above, 90\% of clients chose \textit{not} to have it, preferring the status-quo contract. As explained above we are fairly confident this was not because a lack of understanding of the contracts. 
@@ -999,7 +1005,7 @@ Our results suggest several avenues for future research. First, it would be usef
 
 
 \begin{figure}[H]
-     \caption{Several definitions of FC}
+     \caption{Several definitions of cost}
     \label{robustness_fc}
     \begin{center}
     \begin{subfigure}{0.75\textwidth}
@@ -1009,7 +1015,7 @@ Our results suggest several avenues for future research. First, it would be usef
     \end{center}
     \scriptsize
     This figure shows treatment effects using several measures of cost. The first definition is our main definition of cost, which uses the appraised value of the pawn. The second definition uses the subjective (self-reported) value for the pawn. The third and fourth definition adds the travel cost for the treatment arms. We also compute APR versions of the above measures. 
-    Finally, `APR - interests' is a version of the APR that doesn't include the interest that is mechanically saved by paying early since this is the piece of the commitment-fee contract that has a foregone liquidity cost for the borrower. The treatment effects are indicated in standard deviations, together with 95\% confidence intervals.
+    Finally, `APR - interests' is a version of the APR that doesn't include the interest that is mechanically saved by paying early since this is the piece of the Forced-commitment contract that has a foregone liquidity cost for the borrower. The treatment effects are indicated in standard deviations, together with 95\% confidence intervals.
 \end{figure}
 
 
@@ -1115,7 +1121,7 @@ Our results suggest several avenues for future research. First, it would be usef
     \end{subfigure}
     \end{center}
          \scriptsize
-     This figure plots the effects on different quantiles (15th, 25th, 50th, 75th, 85th percentile) of the distribution of financial cost, and APR, for the Commitment-fee and Commitment-choice arms.
+     This figure plots the effects on different quantiles (15th, 25th, 50th, 75th, 85th percentile) of the distribution of financial cost, and APR, for the Forced-commitment and Choice-commitment arms.
       %\footnotesize{ } \textit{Do file: }  \texttt{main\_qreg.do}
 \end{figure}
 

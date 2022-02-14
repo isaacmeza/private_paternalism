@@ -26,9 +26,9 @@ use "$directorio/DB/Master.dta", clear
 xtile perc_apr_d = apr, nq(100)
 
 *Histograms of effective cost
-twoway (hist apr if perc_apr_d<=99 & des_c==0 , w(20) percent lwidth(medthick) lcolor(ltblue) color(ltblue)) ///
+twoway (hist apr if perc_apr_d<=99 & des_c==0 , w(20) percent lwidth(medthick) lcolor(navy) color(ltblue)) ///
 		(hist apr if perc_apr_d<=99 & des_c==1, w(20) percent lwidth(medthick) lcolor(black) color(none)), ///
-		legend(order(1 "Cond. on not rec." 2 "Cond. on rec.")) xtitle("APR") scheme(s2mono) graphregion(color(white))
+		legend(order(1 "Cond. on not rec." 2 "Cond. on rec.")) xtitle("APR %") scheme(s2mono) graphregion(color(white))
 graph export "$directorio/Figuras/hist_apr.pdf", replace
 
 

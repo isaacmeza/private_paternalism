@@ -259,12 +259,9 @@ label var sum_pay_fee "Cumulative sum of payed fees"
 *Var correction (desempeno)
 bysort prenda: replace clave_movimiento=5 if clave_movimiento==3 & sum_p-sum_int-sum_pay_fee<prestamo - 1
 
-*'pagos_disc' indicate deposits from the customers, i.e. refrendo, desempeno, venta con billete, abono al capital.
-* DISCOUNTED with daily interest rate equivalent to a 7% monthly rate.
+*For DISCOUNTED calculations
 save "$directorio/_aux/pre_admin.dta", replace /*save for discounted_noeffect.do*/	
-gen pagos_disc=importe/((1+0.002257833358012379025857)^dias_inicio) if clave_movimiento <= 3 | clave_movimiento==5
-replace pagos_disc=0 if pagos_disc==.
-label var pagos_disc "Client deposits (discounted)"
+
 
 *'porc_pagos' is the percentage of payments wrt the loan
 gen porc_pagos=pagos/prestamo
@@ -288,10 +285,6 @@ label var porc_inc_fee "Incurred fee percentage wrt to loan"
 gen porc_pay_fee=payed_fees/prestamo
 label var porc_pay_fee "Payed fee percentage wrt to loan"
 
-*'sum_p_disc' is the cumulative discounted sum of payments
-sort prenda fecha_movimiento HoraMovimiento
-by prenda: gen sum_p_disc=sum(pagos_disc)
-label var sum_p_disc "Cumulative discounted sum of payments"
 
 *'sum_porc_p' is the percentage of the cumulative sum of the payments wrt to the loan
 sort prenda fecha_movimiento HoraMovimiento
@@ -468,9 +461,7 @@ by prenda: gen sum_inc_int_c=sum_inc_int[_N]
 by prenda: gen sum_inc_fee_c=sum_inc_fee[_N]
 by prenda: gen sum_pay_fee_c=sum_pay_fee[_N]
 by prenda: gen pays_c=(sum_p_c>0) if !missing(sum_p_c)
-by prenda: gen sum_pdisc_c=sum_p_disc[_N]
 by prenda: egen mn_p_c=mean(sum_p)
-by prenda: egen mn_pdisc_c=mean(sum_p_disc)
 by prenda: gen sum_porcp_c=sum_porc_p[_N]
 by prenda: gen sum_porc_int_c=sum_porc_int[_N]
 by prenda: gen sum_porc_inc_int_c=sum_porc_inc_int[_N]
@@ -536,9 +527,7 @@ label var sum_inc_int_c "Cum (total) incurred interest"
 label var sum_inc_fee_c "Cum (total) incurred fees"
 label var sum_pay_fee_c "Cum (total) payed fees"
 label var pays_c "Dummy of payment>0"
-label var sum_pdisc_c "Cum (total)(discounted) payments"
 label var mn_p_c "Mean of payments"
-label var mn_pdisc_c "Mean of (discounted) payments"
 label var sum_porcp_c "Percentage of payment"
 label var sum_porc_int_c "Percentage of interest"
 label var sum_porc_inc_int_c "Percentage of incurred interest"
@@ -571,11 +560,6 @@ label var fc_admin "Financial cost (appraised value)"
 	*cost of losing pawn
 gen cost_losing_pawn = prestamo/(0.7)
 replace cost_losing_pawn = cost_losing_pawn - prestamo/(0.7) if des_c == 1
-
-	*discounted 
-gen fc_admin_disc = sum_pdisc_c + prestamo/(0.7)
-replace fc_admin_disc = fc_admin_disc - prestamo/(0.7*(1+0.002257833358012379025857)^dias_al_desempenyo) if des_c == 1
-gen log_fc_admin_disc = log(1+fc_admin_disc)
 
 
 *APR
