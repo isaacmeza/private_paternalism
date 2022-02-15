@@ -1,5 +1,22 @@
-/*
-Timeline of the experiment
+
+********************
+version 17.0
+********************
+/* 
+/*******************************************************************************
+* Name of file:	
+* Author:	Isaac M
+* Machine:	Isaac M 											
+* Date of creation:	-
+* Last date of modification: January. 26, 2022
+* Modifications: 
+* Files used:     
+		- 
+* Files created:  
+
+* Purpose: Timeline of the experiment
+
+*******************************************************************************/
 */
 
 use "$directorio/DB/Base_Boleta_230dias_Seguimiento_Ago2013_ByPrenda_2", clear

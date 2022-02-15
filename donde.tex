@@ -372,21 +372,22 @@ Panel C repeats the exercise in Panel B, but now only for those borrowers answer
 \section{Experimental Analysis} \label{experiment}
 
 
-*\subsection{The Choice of Commitment}
-*\label{choice_commitment}
+\subsection{Forced versus Chosen Commitment} \label{forced_vs_choice}
+
+
+
+%\subsection{The Choice of Commitment}
+%\label{choice_commitment}
 
 %Section \ref{fee-commitment} showed that the Forced Commitment commitment contract reduced financing cost across the board, and that consumers themselves seemed to like it once they tried it. In such a case, one would expect a strong demand for it. This is not the case. We also find that clients in the choice arm achieved no better outcomes than those in the status quo group.
 
 %\subsection{Demand for the Forced Commitment commitment contract} \label{sec:demand}
 
 %\noindent \textbf{Low demand for commitment:} 
-We begin our empirical analysis with a comparison of the Forced Commitment and Commitment Choice arms to the control.  Before presenting experimental ITT results, 
+We begin our empirical analysis with a comparison of the Forced Commitment and Commitment Choice arms to the control.  In the Forced arm, all individuals received the Commitment product.  In the Choice arm, 11\% of individuals offered the product selected it.  When preferences or income streams are heterogeneous, and consumers are neoclassical, giving choice among contracts is often a welfare increasing strategy. Consumers would choose the contract that best fits their needs. This holds also in most simple models of present bias preferences if consumers are sophisticated about their present bias. 
+But when consumers are overconfident about their ability to save to pay back the loan, free choice could be a sub-optimal policy from the point of view of the client's long run self, and could match clients with  more costly contracts.   In this sense, if this self-selection mechanism works perfectly (as it would in a Roy model with all hyperbolics sophisticated) then the Forced and Choice arms will have an identical effect.  Deviations between the impacts of these two arms therefore are implicitly a test of the optimality of the choices made in the choice arm.  
 
-
-When preferences or income streams are heterogeneous, and consumers are neoclassical, giving choice among contracts is often a welfare increasing strategy. Consumers would choose the contract that best fits their needs. This holds also in most simple models of present bias preferences if consumers are sophisticated about their present bias. %Actually, it could be the case that the opportunity of choosing itself could affect behavior.
-But when consumers are overconfident about their ability to save to pay back the loan, free choice could be a sub-optimal policy from the point of view of the client's long run self, and could match clients with  more costly contracts. Defenders of choice make another subtler point: that even if take up of the commitment-fee contract is low, the sole fact of \textit{having} choice could potentially change behavior or welfare (\cite{Dalboetal:2010}, \cite{Sjostrometal:2018}, \cite{Tlaxcala}). 
-
-
+%Defenders of choice make another subtler point: that even if take up of the commitment-fee contract is low, the sole fact of \textit{having} choice could potentially change behavior or welfare (\cite{Dalboetal:2010}, \cite{Sjostrometal:2018}, \cite{Tlaxcala}).
 
 %In spite of broadly distributed benefits of the Forced Commitment commitment contract we documented above, 90\% of clients chose \textit{not} to have it, preferring the status-quo contract. As explained above we are fairly confident this was not because a lack of understanding of the contracts. 
 
@@ -395,13 +396,10 @@ But when consumers are overconfident about their ability to save to pay back the
 %Although the evidence that follows undermines several explanations, the tests we can conduct given the data are not sharp enough to leave a single explanation standing. Section \ref{model} lays our a simple theory (namely present bias with partial naivete) which fits all the 6 main findings of the paper. Given its parsimony and explanatory power, we submit that it is the most suitable explanation for our results.
 
 
-\subsection{Forced versus Chosen Commitment} \label{forced_vs_choice}
-
 %Following two  paragraphs moved from old 'behavioral' choice section towards end of paper
 %\vspace{.2in}
 %\subsection{The effect of choice on pawn recovery and financial cost} \label{effect_choice}
 
-We now present the core experimental results, illustrating how the Commitment Choice and Forced Commitment arms differ from the control.  This comparison is particularly illuminating on the role of self-selection in Commitment, because if this self-selection mechanism works perfectly (as it would in a Roy model with all hyperbolics sophisticated) then the Forced and Choice arms will have an identical effect.  Deviations between the impacts of these two arms therefore are implicitly a test of the optimatlity of the choices made in the choice arm.  
 
 
 
@@ -835,20 +833,42 @@ Our results suggest several avenues for future research. First, it would be usef
 
 
 
-\begin{table}[H]
-\caption{Determinants of Choice}
-\label{det_choose}
-\begin{center}
-\scriptsize{\input{./Tables/determinants_choose.tex}}
-\end{center}
- \scriptsize
+%\begin{table}[H]
+%\caption{Determinants of Choice}
+%\label{det_choose}
+%\begin{center}
+%\scriptsize{\input{./Tables/determinants_choose.tex}}
+%\end{center}
+% \scriptsize
 
 %\textit{Do file: } \texttt{determinants\_choose.do}
-\end{table}
+%\end{table}
 
 \scriptsize {
 \noindent 
 }
+
+
+
+\newpage
+\subsection{Main treatment effects: Additional material}
+
+\vspace{.2in}
+
+\begin{table}[H]
+\caption{Decomposition of main treatment effects}
+\label{mechanisms}
+\begin{center}
+\scriptsize{\input{./Tables/decomposition_main_te.tex}}
+\end{center}
+
+%\textit{Do file: } \texttt{decomposition\_main\_te.do}
+\end{table}
+
+
+
+
+
 
 
 \vspace{.3in}
@@ -933,35 +953,49 @@ Our results suggest several avenues for future research. First, it would be usef
      \caption{Experiment description}
     \label{exp_description}
 \begin{center}
-  \begin{minipage}[b]{1.0\linewidth}
-    \subcaption{Timeline of the experiment}
-    \centering
-        \includegraphics[width=0.4\textwidth]{Figuras/timeline_suc_exp_extended.pdf}
-        \subcaption{Experiment arms}
-\centering        
-\scriptsize{\input{./Tables/exp_arms.tex}}
-  \end{minipage}
+\begin{subfigure}{\textwidth}
+        \includegraphics[width=\textwidth]{Figuras/consort.pdf}
+    \end{subfigure}
   \end{center}
-    \scriptsize Panel (a) displays in black arrows the period covered by our administrative data: from August 6th 2012 (30 days before the experiment began : pre-experiment period) to August 13th 2013. The gray lines correspond to the dates of implementation of the experiment. We finished the experiment earlier in branches 1 and 2 because we realized that we would have enough sample size with the remaining branches and wanted to save on operational costs. Panel (b) shows our 5 treatment arms. It shows the number of observations in each arm together with the observations for the surveys.
-%\textit{Do file: }  \texttt{timeline\_suc\_exp.do}
+    \scriptsize 
+%\textit{Do file: }  \texttt{ss\_att.do}
 \end{figure}
 
 
 
 \begin{figure}[H]
-     \caption{Explanatory Material: Promise-Choice Days}
+     \caption{Explanatory Material}
     \label{ExplanatoryMaterial}
     \begin{center}
-    \begin{subfigure}{0.75\textwidth}
+    \begin{subfigure}{\textwidth}
         \centering
-        \includegraphics[width=\textwidth]{Figuras/MicaChoiceDonde.png}
+        \includegraphics[width=\textwidth]{Figuras/micas.pdf}
     \end{subfigure}
     \end{center}
     \scriptsize
-        This is a (translated) sample information slide shown to clients in choice-promise days. The real ones were twice the size of this figure and were laminated. Different ones were shown for each treatment arm.
+        This is a (translated) sample information slide shown to clients. The real ones were twice the size of this figure and were laminated. Different ones were shown for each treatment arm.
 \end{figure}
 
-
+\begin{figure}[H]
+     \caption{Contract Terms Summary, and Promise Slip}
+    \label{PaperSlip}
+    \begin{center}
+    \begin{subfigure}{0.65\textwidth}
+    \caption{Receipt for client}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/TicketLenderP.png}
+    \end{subfigure}
+    
+    \vspace{3ex}
+    \begin{subfigure}{0.65\textwidth}
+    \caption{Personal promise signed by client}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/Personal Promise2.png}
+    \end{subfigure}
+    \end{center}
+    \scriptsize
+        The top of this figure is a sample receipt that was given to clients that got assigned to the fee-forcing contract (the font and format were changed to protect Lender's P identity). We want to highlight the salience of some items. First the title clearly indicated which contract the client has (arrow 1). Second, in the case of the fee contract it clearly indicates that there is a fee for paying late equivalent to 4\% of the value of the monthly payment (arrow 2). Third, there is a calendar for payments clearly specifying the dates and amounts to pay each month. The bottom panel of the figure shows a ``promise slip'', the paper that those who were assigned (or chose) to the monthly payment with promise had to sign to make the promise salient. It emphasizes that the client is giving his word, and that the promise is not a legal document.
+\end{figure}
 
 
 \vspace{.2in}

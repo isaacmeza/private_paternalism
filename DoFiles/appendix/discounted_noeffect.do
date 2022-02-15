@@ -135,7 +135,7 @@ twoway 	(rarea rcap_hi_5 rcap_lo_5 d, color(navy%15))  ///
 		(rarea rcap_hi_10 rcap_lo_10 d, color(navy%30))  ///
 		(line beta d, color(navy) lwidth(thick)) ///
 	, graphregion(color(white)) ///
-	xtitle("Annual discount interest rate %") ytitle("FC Effect") legend(off) yline(0, lcolor(black)) ///
+	xtitle("Annual discount rate %") ytitle("FC Effect") legend(off) yline(0, lcolor(black)) ///
 	xline(1060 2120, lcolor(black%90) lpattern(dot)) xlabel(0(1000)6000) text(-500 1060 "1060%" -500 2120 "2120%", size(vsmall))
 graph export "$directorio\Figuras\discount_effect.pdf", replace
 	

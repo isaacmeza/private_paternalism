@@ -1,8 +1,8 @@
-/*
+
 ********************
 version 17.0
 ********************
- 
+/* 
 /*******************************************************************************
 * Name of file:	
 * Author:	Isaac M
@@ -59,7 +59,7 @@ orth_out prestamo weekday if inlist(t_prod,1,2,3,4,5,6) , by(t_prod) overall cou
 qui putexcel set  "$directorio\Tables\SS.xlsx", sheet("SS_admin") modify	
 qui putexcel B2=matrix(r(matrix)) 
 
-qui putexcel set "$directorio\Tables\exp_arms.xlsx", sheet("exp_arms") modify	
+qui putexcel set "$directorio\Tables\consort.xlsx", sheet("exp_arms") modify	
 *Count number of obs
 foreach t in 1 2 3 4 5  {
 	count if  t_prod==`t' 
@@ -93,6 +93,41 @@ foreach var of varlist prestamo weekday  {
 	local i = `i'+2
 	}
 	
+**************************************EXP ARMS**********************************
+preserve
+*Dates of experiment
+use "$directorio/DB/Base_Boleta_230dias_Seguimiento_Ago2013_ByPrenda_2", clear
+
+*Only empenios
+keep if !missing(producto)
+keep if clave_movimiento == 4
+
+*Get min/max dates of the experiment
+collapse (min) min_fecha = fecha_inicial  (max) max_fecha = fecha_inicial, by(suc)
+
+*Extended time line
+merge 1:1 suc using "$directorio/_aux/time_line_aux.dta", nogen keepusing(min_fecha_suc max_fecha_suc)
+
+gsort -max_fecha -max_fecha_suc
+keep if _n==1
+
+mkmat min_fecha max_fecha min_fecha_suc max_fecha_suc, matrix(timeline) 
+qui putexcel set  "$directorio\Tables\consort.xlsx", sheet("exp_arms") modify	
+qui putexcel B23=matrix(timeline) 
+
+*Dates of observational data
+use  "${directorio}\DB\base_expansion.dta", clear
+keep fechaaltadelprestamo
+su fechaaltadelprestamo
+qui putexcel set  "$directorio\Tables\consort.xlsx", sheet("exp_arms") modify	
+qui putexcel F23=`r(min)'
+qui putexcel G23=`r(max)'
+restore
+
+orth_out nvals if inlist(t_prod,1,2,3,4,5), by(t_prod)  bdec(2) 	
+qui putexcel set  "$directorio\Tables\consort.xlsx", sheet("exp_arms") modify	
+qui putexcel B19=matrix(r(matrix)) 
+
 **************************************ATTRITION*********************************
 	
 orth_out num_empenio nvals if inlist(t_prod,1,2,3,4,5,6), by(t_prod) overall count se  vce(cluster suc_x_dia) bdec(2) 	
@@ -217,7 +252,7 @@ foreach t in 1 2 3 4 5 6 {
 	local obs = `r(N)'
 	local Col=substr(c(ALPHA),2*`t'+1,1)
 	qui putexcel `Col'16=matrix(`obs')  
-	qui putexcel set "$directorio\Tables\exp_arms.xlsx", sheet("exp_arms") modify		
+	qui putexcel set "$directorio\Tables\consort.xlsx", sheet("exp_arms") modify		
 	qui putexcel `Col'17=matrix(`obs')  	
 	qui putexcel set "$directorio\Tables\SS.xlsx", sheet("SS_survey_uncond") modify	
 	}
@@ -285,7 +320,7 @@ foreach t in 1 2 3 4 5 {
 	local obs = `r(N)'
 	local Col=substr(c(ALPHA),2*`t'+1,1)
 	qui putexcel `Col'16=matrix(`obs')  
-	qui putexcel set "$directorio\Tables\exp_arms.xlsx", sheet("exp_arms") modify		
+	qui putexcel set "$directorio\Tables\consort.xlsx", sheet("exp_arms") modify		
 	qui putexcel `Col'18=matrix(`obs')  	
 	qui putexcel set "$directorio\Tables\SS.xlsx", sheet("SS_survey") modify		
 	}
