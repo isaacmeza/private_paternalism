@@ -71,10 +71,6 @@ replace fc_survey = fc_survey + val_pren if des_c != 1
 gen log_fc_survey = log(1+fc_survey)
 label var fc_survey "Financial cost (subjective value)"
 
-	*discounted
-gen fc_survey_disc = sum_pdisc_c + val_pren
-replace fc_survey_disc = fc_survey_disc - val_pren/((1+0.002257833358012379025857)^dias_al_desempenyo) if des_c == 1
-gen log_fc_survey_disc = log(1+fc_survey_disc)
 
 	*travel cost
 su c_trans
@@ -83,8 +79,8 @@ gen trans_cost = (c_trans + 62.33)*num_p
 
 
 *APR subjective
-gen double apr_survey = sum_porcp_c + val_pren/prestamo
-replace apr_survey = apr_survey - val_pren/prestamo if des_c == 1
+gen double apr_survey = sum_porcp_c 
+replace apr_survey = apr_survey + val_pren/prestamo if des_c != 1
 	*annualize *solution to : apr/3 = x(1+x)^3/((1+x)^3-1)
 replace apr_survey = apr_survey/3
 gen double sqrt3 =  (2*apr_survey^3 + 9*apr_survey^2 + 3*sqrt(3)*sqrt(3*apr_survey^4 + 14*apr_survey^3 + 27*apr_survey^2) + 27*apr_survey)^(1/3)
@@ -94,29 +90,40 @@ drop sqrt3
 label var apr_survey "APR (subjective value)"
 
 *APR + tc
-gen double apr_tc = sum_porcp_c + 1/0.7 + trans_cost/prestamo
-replace apr_tc = apr_tc - 1/0.7 if des_c == 1
+gen double apr_tc = sum_porcp_c + trans_cost/prestamo
+replace apr_tc = apr_tc + 1/0.7 if des_c != 1
 
 	*annualize *solution to : apr/3 = x(1+x)^3/((1+x)^3-1)
 replace apr_tc = apr_tc/3
-gen double sqrt3 =  (2*apr_tc^3 + 9*apr_tc^2 + 3*sqrt(3)*sqrt(3*apr_tc^4 + 14*apr_tc^3 + 27*apr_survey^2) + 27*apr_tc)^(1/3)
+gen double sqrt3 =  (2*apr_tc^3 + 9*apr_tc^2 + 3*sqrt(3)*sqrt(3*apr_tc^4 + 14*apr_tc^3 + 27*apr_tc^2) + 27*apr_tc)^(1/3)
 replace apr_tc = sqrt3/(3*2^(1/3)) - (2^(1/3)*(-apr_tc^2 - 3*apr_tc))/(3*sqrt3) + (apr_tc - 3)/3
 replace apr_tc = apr_tc*12*100
 drop sqrt3
 label var apr_tc "APR (appraised) + tc"
 
 *APR subjective + tc
-gen double apr_s_tc = sum_porcp_c + val_pren/prestamo + trans_cost/prestamo
-replace apr_s_tc = apr_s_tc - val_pren/prestamo if des_c == 1
+gen double apr_s_tc = sum_porcp_c + trans_cost/prestamo
+replace apr_s_tc = apr_s_tc + val_pren/prestamo if des_c != 1
 
 	*annualize *solution to : apr/3 = x(1+x)^3/((1+x)^3-1)
 replace apr_s_tc = apr_s_tc/3
-gen double sqrt3 =  (2*apr_s_tc^3 + 9*apr_s_tc^2 + 3*sqrt(3)*sqrt(3*apr_s_tc^4 + 14*apr_s_tc^3 + 27*apr_survey^2) + 27*apr_s_tc)^(1/3)
+gen double sqrt3 =  (2*apr_s_tc^3 + 9*apr_s_tc^2 + 3*sqrt(3)*sqrt(3*apr_s_tc^4 + 14*apr_s_tc^3 + 27*apr_s_tc^2) + 27*apr_s_tc)^(1/3)
 replace apr_s_tc = sqrt3/(3*2^(1/3)) - (2^(1/3)*(-apr_s_tc^2 - 3*apr_s_tc))/(3*sqrt3) + (apr_s_tc - 3)/3
 replace apr_s_tc = apr_s_tc*12*100
 drop sqrt3
 label var apr_s_tc "APR (subjective) + tc"
 
+*APR fully adjusted (subj + tc - int)
+gen double apr_fa = sum_porcp_c + trans_cost/prestamo - sum_porc_int_c
+replace apr_fa = apr_fa + val_pren/prestamo if des_c != 1
+
+	*annualize *solution to : apr/3 = x(1+x)^3/((1+x)^3-1)
+replace apr_fa = apr_fa/3
+gen double sqrt3 =  (2*apr_fa^3 + 9*apr_fa^2 + 3*sqrt(3)*sqrt(3*apr_fa^4 + 14*apr_fa^3 + 27*apr_fa^2) + 27*apr_fa)^(1/3)
+replace apr_fa = sqrt3/(3*2^(1/3)) - (2^(1/3)*(-apr_fa^2 - 3*apr_fa))/(3*sqrt3) + (apr_fa - 3)/3
+replace apr_fa = apr_fa*12*100
+drop sqrt3
+label var apr_fa "APR (fully adjusted)"
 
 ********************************************************************************
 
