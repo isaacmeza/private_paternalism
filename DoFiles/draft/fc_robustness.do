@@ -30,8 +30,9 @@ gen fc_s_tc = fc_survey + trans_cost
 gen fc_fa = fc_s_tc - sum_int_c
 
 
-
+eststo clear
 foreach var of varlist fc_admin fc_survey fc_tc fc_s_tc fc_fa apr apr_survey apr_tc apr_s_tc apr_fa {
+	
 	* Z-score
 	su `var'
 	gen std_`var' = (`var'-`r(mean)')/`r(sd)'
@@ -100,5 +101,5 @@ coefplot (fc_admin_p, keep(2.t_producto) rename(2.t_producto = "FC (appraised va
 (apr_tc_p, keep(4.t_producto) rename(4.t_producto = "APR + travel cost") color(maroon)  cismooth(color(maroon) n(10))  offset(-0.09)) ///
 (apr_s_tc_p, keep(4.t_producto) rename(4.t_producto = "APR (subj.) + travel cost") color(maroon)  cismooth(color(maroon) n(10))  offset(-0.09)) ///
 (apr_fa_p, keep(4.t_producto) rename(4.t_producto = "APR (fully adjusted)") color(maroon)  cismooth(color(maroon) n(10))  offset(-0.09)) ///
-, headings("FC (appraised value)" = "{bf:Financial Cost}" "APR" = "{bf:APR}") nooffset legend(order(11 "Forced-commitment" 110 "Choice-commitment")) xline(0, lcolor(gs10))  graphregion(color(white)) xtitle("T. Effects (std deviations)")
+, headings("FC (appraised value)" = "{bf:Financial Cost}" "APR" = "{bf:APR}") nooffset legend(order(11 "Forced-commitment" 121 "Choice-commitment")) xline(0, lcolor(gs10))  graphregion(color(white)) xtitle("T. Effects (std deviations)")
 graph export "$directorio\Figuras\fc_robustness.pdf", replace

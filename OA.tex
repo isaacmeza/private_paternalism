@@ -192,15 +192,15 @@
 \subsection{Surveys}
 
 
-\begin{table}[H]
-\caption{Survey's non-response balance}
-\label{balance_response}
-\begin{center}
-\scriptsize{\input{./Tables/balance_response.tex}}
-\end{center}
- \scriptsize This table shows whether the means of variables in the administrative dataset are different for those that respond the baseline survey vs those that do not. We use this as an assessment of external validity. Internal validity is guaranteed because the baseline survey was implemented before treatment assignment and therefore response rates are orthogonal to treatment assignments. Panel A studies the baseline survey, while Panel B focuses on the exit survey. The columns labeled ``p-values'' report p-values for the test that the means of the respective variable are the same for those that responded did not respond the survey.
+%\begin{table}[H]
+%\caption{Survey's non-response balance}
+%\label{balance_response}
+%\begin{center}
+%\scriptsize{\input{./Tables/balance_response.tex}}
+%\end{center}
+% \scriptsize This table shows whether the means of variables in the administrative dataset are different for those that respond the baseline survey vs those that do not. We use this as an assessment of external validity. Internal validity is guaranteed because the baseline survey was implemented before treatment assignment and therefore response rates are orthogonal to treatment assignments. Panel A studies the baseline survey, while Panel B focuses on the exit survey. The columns labeled ``p-values'' report p-values for the test that the means of the respective variable are the same for those that responded did not respond the survey.
 %\textit{Do file: } \texttt{balance\_response.do}
-\end{table}
+%\end{table}
 
 
 \afterpage{
@@ -353,23 +353,7 @@
 \end{figure}
 
 
-\newpage
 
-\begin{table}[H]
-\caption{Intermediate outcomes}
-\label{mechanisms}
-\begin{center}
-\scriptsize{\input{./Tables/mechanism.tex}}
-\end{center}
-
-%\textit{Do file: } \texttt{mechanisms.do}
-\end{table}
-
-\scriptsize {
-\noindent This table explores treatment effects in ``intermediate variables''. Each column represents a different dependent variable in an OLS regression, and each panel represents a different treatment arm-control comparison. All regressions include fixed effects for branch, day of week fixed effects, number of pawns at the time of pawning this particular one, number of different treatment arms experienced before pawning this particular one. $R^2$ are not reported, they were less than 0.04 for all but the last column which had $R^2$'s close to 0.6. The last row shows the mean of the dependent variable for the control group. Dependent variables are as follows: Column (1) measures the number of days elapsed from the pawning date to the first payment done. Column (2) records the number of payments done within 230 days of the pawn. Column (3) is the average size of the payments for each client in pesos. Column (4) is self-reported cost to get to the branch plus the imputed loss of a whole day of salary (using the minimum wage in Mexico) multiplied by the number of visits to the branch. Column (5) measures the number of days it took to recover the pawn, conditional on recovering. The dependent variable in Column (6) is a dummy =1 if the client paid any positive amount within 230 days of the pawn. For Columns (7) and (8) the dependent variable it is the sum of total payments done within 230 days of the pawn divided by the size of the loan, but column (8) includes as regressors a dummy=1 if the client recovered her pawn, and its interaction with treatment.
-}
-
-\vspace{3ex}
 
 \vspace{.3in}
 
@@ -869,34 +853,34 @@ Then the (incomplete) log-likelihood function is
       %\footnotesize{ \textit{Do file: }  \texttt{fmm.do}} 
 \end{figure}
 
-\subsubsection{LATE: TOT \& TUT}
+\subsubsection{LATE: ToT \& TuT}
 \vspace{.2in}
 \normalsize
 \linespread{1.25}
 
 
- Recall that $Z_i$ is the observed, randomly assigned experimental allocation, where $Z_i=0$ denotes the control arm, $Z_i=1$ denotes the forced-fee arm, and $Z_i=2$ is the choice arm.  Let $T_i$ be the unobserved choice type. $T_i=0$ when individual $i$ does not choose commitment  given the choice and $T_i=1$ when chooses commitment given the choice. Finally, $D_i = Z_i\times \mathds{1}(Z_i\neq 2) + T_i\times \mathds{1}(Z_i=2)$ is the observed treatment indicator, and $Y(d,z)$ is the potential outcome function for $d=0,1$, and $z=0,1,2$. 
+ Recall that $Z_i$ is the observed, randomly assigned experimental allocation, where $Z_i=0$ denotes the control arm, $Z_i=1$ denotes the forced-fee arm, and $Z_i=2$ is the choice arm.  Let $C_i$ be the unobserved choice type. $C_i=0$ when individual $i$ does not choose commitment  given the choice and $C_i=1$ when chooses commitment given the choice. Finally, $D_i = Z_i\times \mathds{1}(Z_i\neq 2) + T_i\times \mathds{1}(Z_i=2)$ is the observed treatment indicator, and $Y(d,z)$ is the potential outcome function for $d=0,1$, and $z=0,1,2$. 
 
- To identify assortative selection we first need to estimate the following quantities: $\mathbb{E}(Y_1-Y_0\;|\;T=1)$ the Treatment on the Treated (TOT), and $\mathbb{E}(Y_1-Y_0\;|\;T=0)$ the Treatment on the Untreated (TUT). 
+ To identify assortative selection we first need to estimate the following quantities: $\mathbb{E}(Y_1-Y_0\;|\;C=1)$ the Treatment on the Treated (ToT), and $\mathbb{E}(Y_1-Y_0\;|\;C=0)$ the Treatment on the Untreated (TuT). 
 
  To point identify the above quantities, we make the following assumptions.
 
  \begin{assumption}[Exclusion Restriction]
-$Z$ only affects $Y$ through its effect on $D$ : $Y(d,z) = Y(d)$
+$Z$ only affects $Y$ through its effect on $D$ : $C(d,z) = C(d)$
  \end{assumption}
 
   \begin{assumption}[Independence Assumption]
-$Z \perp (Y_0, Y_1, T)$
+$Z \perp (Y_0, Y_1, C)$
  \end{assumption}
 
-The following intermediate Lemmas will help us derive that both TOT and TUT are point identified.
+The following intermediate Lemmas will help us derive that both ToT and TuT are point identified.
 
 \begin{lem}
-$\Pr(T=1) = \E[D\;|\;Z=2]$
+$\Pr(C=1) = \E[D\;|\;Z=2]$
 \end{lem}
 \begin{proof}
-Since $T\perp Z$, 
-$$\E[D\;|\;Z=2] = \E[Z\times \mathds{1}(Z\neq 2)+ T\times\mathds{1}(Z=2)\;|Z=2] = \E[T\;|\;Z=2] = \E[T] = \Pr(T=1)$$
+Since $C\perp Z$, 
+$$\E[D\;|\;Z=2] = \E[Z\times \mathds{1}(Z\neq 2)+ C\times\mathds{1}(Z=2)\;|Z=2] = \E[C\;|\;Z=2] = \E[C] = \Pr(C=1)$$
 \end{proof}
 
 
@@ -906,7 +890,7 @@ $\E[Y_0] = \E[Y\;|\;Z=0]$
 \begin{proof}
 Since $Z\perp Y_0$, 
 \begin{align*}
-\E[Y\;|\;Z=0] =& \E[\mathds{1}(Z=0)Y_0+\mathds{1}(Z=1)Y_1+\mathds{1}(Z=2)\{(1-T)Y_0+TY_1\})\;|\;Z=0]\\   
+\E[Y\;|\;Z=0] =& \E[\mathds{1}(Z=0)Y_0+\mathds{1}(Z=1)Y_1+\mathds{1}(Z=2)\{(1-C)Y_0+CY_1\})\;|\;Z=0]\\   
 =&\E[Y_0\;|\;Z=0] = \E[Y_0]
 \end{align*}
 \end{proof}
@@ -924,52 +908,52 @@ Since $Z\perp Y_1$,
 
 
 \begin{lem}
-$\E[Y_0\;|\;T=0] = \E[Y\;|\; D=0,Z=2]$
+$\E[Y_0\;|\;C=0] = \E[Y\;|\; D=0,Z=2]$
 \end{lem}
 \begin{proof}
-If $Z=2$, then $D=0$ if and only if $T=0$. Hence,
-\[\E[Y\;|\;D=0, Z=2] = \E[Y_0\;|\;D=0, Z=2] = E[Y_0\;|\;T=0, Z=2]=\E[Y_0\;|\;T=0]\]
-since $Y_0\perp T\;|\;Z$
+If $Z=2$, then $D=0$ if and only if $C=0$. Hence,
+\[\E[Y\;|\;D=0, Z=2] = \E[Y_0\;|\;D=0, Z=2] = E[Y_0\;|\;C=0, Z=2]=\E[Y_0\;|\;C=0]\]
+since $Y_0\perp C\;|\;Z$
 \end{proof}
 
 \begin{lem}
-$\E[Y_1\;|\;T=1] = \E[Y\;|\; D=1,Z=2]$
+$\E[Y_1\;|\;C=1] = \E[Y\;|\; D=1,Z=2]$
 \end{lem}
 \begin{proof}
-If $Z=2$, then $D=1$ if and only if $T=1$. Hence,
-\[\E[Y\;|\;D=1, Z=2] = \E[Y_1\;|\;D=1, Z=2] = E[Y_1\;|\;T=1, Z=2]=\E[Y_1\;|\;T=1]\]
-since $Y_1\perp T\;|\;Z$
+If $Z=2$, then $D=1$ if and only if $C=1$. Hence,
+\[\E[Y\;|\;D=1, Z=2] = \E[Y_1\;|\;D=1, Z=2] = E[Y_1\;|\;C=1, Z=2]=\E[Y_1\;|\;C=1]\]
+since $Y_1\perp C\;|\;Z$
 \end{proof}
 
-\begin{theorem} $\E[Y_1-Y_0\;|\; T=1]$ is point identified
+\begin{theorem} $\E[Y_1-Y_0\;|\; C=1]$ is point identified
 \end{theorem}
 
 \begin{proof}
-Since $\E[Y_1\;|\; T=1] = \E[Y\;|\; D=1, Z=2]$ by Lemma 5, it suffices to show that $\E[Y_1\;|\;T=0]$ is point identified. By iterated expectations:
-\[E[Y_0] = \E_T\E[Y_0\;|\;T] = (1-p)\E[Y_0\;|\;T=0]+p\E[Y_0\;|\;T=1]\]
-where $p:=\E[T]=\Pr(T=1)$, and re-arranging,
-\[\E[Y_0\;|\;T=1] = \frac{1}{p}\left(E[Y_0] -(1-p)\E[Y_0\;|\;T=0]\right)\]
+Since $\E[Y_1\;|\; C=1] = \E[Y\;|\; D=1, Z=2]$ by Lemma 5, it suffices to show that $\E[Y_1\;|\;C=0]$ is point identified. By iterated expectations:
+\[E[Y_0] = \E_C\E[Y_0\;|\;C] = (1-p)\E[Y_0\;|\;C=0]+p\E[Y_0\;|\;C=1]\]
+where $p:=\E[C]=\Pr(C=1)$, and re-arranging,
+\[\E[Y_0\;|\;C=1] = \frac{1}{p}\left(E[Y_0] -(1-p)\E[Y_0\;|\;C=0]\right)\]
 Finally, substituting the result of Lemmas 1, 2, and 4, we obtain
-\[\E[Y_0\;|\;T=1] =\frac{1}{\E[D\;|\;Z=2]}\left\{\E[Y\;|\;Z=0]-(1-\E[D\;|\;Z=2])\E[Y\;|\;D=0, Z=2]\right\}\]
+\[\E[Y_0\;|\;C=1] =\frac{1}{\E[D\;|\;Z=2]}\left\{\E[Y\;|\;Z=0]-(1-\E[D\;|\;Z=2])\E[Y\;|\;D=0, Z=2]\right\}\]
 and the RHS is a function of observed data only.
 \end{proof}
 
-\begin{theorem} $\E[Y_1-Y_0\;|\; T=0]$ is point identified
+\begin{theorem} $\E[Y_1-Y_0\;|\; C=0]$ is point identified
 \end{theorem}
 
 \begin{proof}
-Since $\E[Y_0\;|\; T=0] = \E[Y\;|\; D=0, Z=2]$ by Lemma 4, it suffices to show that $\E[Y_0\;|\;T=1]$ is point identified. By iterated expectations:
-\[E[Y_1] = \E_T\E[Y_1\;|\;T] = (1-p)\E[Y_1\;|\;T=0]+p\E[Y_1\;|\;T=1]\]
-where $p:=\E[T]=\Pr(T=1)$, and re-arranging,
-\[\E[Y_1\;|\;T=0] = \frac{1}{1-p}\left(E[Y_1] -p\E[Y_1\;|\;T=1]\right)\]
+Since $\E[Y_0\;|\; C=0] = \E[Y\;|\; D=0, Z=2]$ by Lemma 4, it suffices to show that $\E[Y_0\;|\;C=1]$ is point identified. By iterated expectations:
+\[E[Y_1] = \E_C\E[Y_1\;|\;C] = (1-p)\E[Y_1\;|\;C=0]+p\E[Y_1\;|\;C=1]\]
+where $p:=\E[C]=\Pr(C=1)$, and re-arranging,
+\[\E[Y_1\;|\;C=0] = \frac{1}{1-p}\left(E[Y_1] -p\E[Y_1\;|\;C=1]\right)\]
 Finally, substituting the result of Lemmas 1, 3, and 5, we obtain
-\[\E[Y_1\;|\;T=0] =\frac{1}{1-\E[D\;|\;Z=2]}\left\{\E[Y\;|\;Z=1]-\E[D\;|\;Z=2]\E[Y\;|\;D=1, Z=2]\right\}\]
+\[\E[Y_1\;|\;C=0] =\frac{1}{1-\E[D\;|\;Z=2]}\left\{\E[Y\;|\;Z=1]-\E[D\;|\;Z=2]\E[Y\;|\;D=1, Z=2]\right\}\]
 and the RHS is a function of observed data only.
 \end{proof}
 
 
 \begin{figure}[H]
-    \caption{Bootstrap inference for the difference between TOT-TUT}
+    \caption{Bootstrap inference for the difference between ToT-TuT}
     \label{bootstrap_tot_tut}
     \begin{center}
     \begin{subfigure}{0.31\textwidth}
@@ -989,13 +973,13 @@ and the RHS is a function of observed data only.
     \end{subfigure}
   
     \end{center}
-     \scriptsize  Given that all of the arms are effectively randomly sampled form the same pool, we can also estimate the TOT and TUT with the pooled regression: $Y_i = \beta_0\mathds{1}(Z_i=0)+\beta_1\mathds{1}(Z_i=1)+\beta_2\mathds{1}(Z_i=2)+ \epsilon_i$, and then this test statistic just becomes the F-test on $\frac{\widehat{\beta_2}-\widehat{\beta_0}}{p}$ for the TOT, $\frac{\widehat{\beta_1}-\widehat{\beta_2}}{1-p}$ for the TUT, and an F-test on the difference between these two quantities to test whether the gains are different between compliers and non-compliers. Recognizing the stochastic nature of the compliance rate, we also bootstrap this quantity before running the previous regression. The red line shows the point estimate for the difference between TOT-TUT, and the gray bar in the x-axis shows a 95\% confidence interval for this difference. Panel (a) shows the difference between the TOT and TUT without any controls, while panel (b) and (c) adds admin controls and admin + survey controls respectively.
+     \scriptsize  Given that all of the arms are effectively randomly sampled form the same pool, we can also estimate the ToT and TuT with the pooled regression: $Y_i = \beta_0\mathds{1}(Z_i=0)+\beta_1\mathds{1}(Z_i=1)+\beta_2\mathds{1}(Z_i=2)+ \epsilon_i$, and then this test statistic just becomes the F-test on $\frac{\widehat{\beta_2}-\widehat{\beta_0}}{p}$ for the ToT, $\frac{\widehat{\beta_1}-\widehat{\beta_2}}{1-p}$ for the TuT, and an F-test on the difference between these two quantities to test whether the gains are different between compliers and non-compliers. Recognizing the stochastic nature of the compliance rate, we also bootstrap this quantity before running the previous regression. The red line shows the point estimate for the difference between ToT-TuT, and the gray bar in the x-axis shows a 95\% confidence interval for this difference. Panel (a) shows the difference between the ToT and TuT without any controls, while panel (b) and (c) adds admin controls and admin + survey controls respectively.
           %\footnotesize{ \textit{Do file: }  \texttt{tot\_tut.do}}
 \end{figure}
 
 
 \begin{figure}[H]
-     \caption{TOT-TUT CDF}
+     \caption{ToT-TuT CDF}
      \label{tot_tut_ecdf}
     \begin{center}
     \begin{subfigure}{0.6\textwidth}
@@ -1004,7 +988,7 @@ and the RHS is a function of observed data only.
     \end{subfigure}
     \end{center}
     \scriptsize
-       Equipped with estimates for the TOT and TUT for each individual $i$ from an Instrumental Random Forest we compute the ECDF for this quantities. The solid line is the ECDF for the TOT, the dashed line is the ECDF for the TUT, and the dotted line plots the difference between the TOT and the TUT - the blue dashed line in the x-axis shows the points where this difference is significant. The bold black interval at the bottom of the graph is the mean for the TOT distribution (0.07), while the gray interval shows the mean for the TUT distribution (0.10).
+       Equipped with estimates for the ToT and TuT for each individual $i$ from an Instrumental Random Forest we compute the ECDF for this quantities. The solid line is the ECDF for the ToT, the dashed line is the ECDF for the TuT, and the dotted line plots the difference between the ToT and the TuT - the blue dashed line in the x-axis shows the points where this difference is significant. The bold black interval at the bottom of the graph is the mean for the ToT distribution (0.07), while the gray interval shows the mean for the TuT distribution (0.10).
        
           %\footnotesize{ \textit{Do file: }  \texttt{tot\_tut\_insforest.do}}
 \end{figure}
@@ -1018,7 +1002,7 @@ and the RHS is a function of observed data only.
         \includegraphics[width=\textwidth]{Figuras/exclusion_restriction.pdf}
     \end{subfigure}
     \end{center}
-    \scriptsize This figure serves as a test for the exclusion restriction in the point identification for the TOT and the TUT. It shows the effect on the effective cost/loan ratio for the forced-fee arm and the choice arm, together with the decomposition of the choosers and non-choosers. Note that a) being forced into the treatment (Forced fee) has the same effect as choosing it (Choosers), and b) not choosing the treatment (Non chooser) has no effect with respect to the control.
+    \scriptsize This figure serves as a test for the exclusion restriction in the point identification for the ToT and the TuT. It shows the effect on the effective cost/loan ratio for the forced-fee arm and the choice arm, together with the decomposition of the choosers and non-choosers. Note that a) being forced into the treatment (Forced fee) has the same effect as choosing it (Choosers), and b) not choosing the treatment (Non chooser) has no effect with respect to the control.
     
           %\footnotesize{ \textit{Do file: }  \texttt{exclusion\_restriction.do}}
 \end{figure}
@@ -1077,25 +1061,66 @@ and the RHS is a function of observed data only.
 \end{figure}
 
 
+% \begin{figure}[H]
+%         \caption{Frequency of renewals}
+%     \label{ref_dist}
+%     \begin{center}
+%         \centering
+%         \includegraphics[width=0.60\textwidth]{Figuras/ref_dist.pdf}
+%     \end{center}
+%      \scriptsize  This Figure shows the occurrence and frequency of renewals. It locates in time, respective to the day the loan started, when the renewal occurs for both the first and second renewal. Note that the first renewal is concentrated around 100 days, while the second is concentrated around the 200 days, corresponding to the first and second cycle. 
+%      %\textit{Do file: }  \texttt{ref_\dist.do}
+% \end{figure}
+
 \begin{figure}[H]
-        \caption{Frequency of renewals}
-    \label{ref_dist}
+    \caption{Histogram of payments}
+    \label{hist_payments}
     \begin{center}
+    \begin{subfigure}{0.31\textwidth}
+        \caption{Status-quo}
         \centering
-        \includegraphics[width=0.60\textwidth]{Figuras/ref_dist.pdf}
+        \includegraphics[width=\textwidth]{Figuras/hist_payments_sq.pdf}
+    \end{subfigure}
+    \begin{subfigure}{0.31\textwidth}
+        \caption{Forced commitment}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/hist_payments_fc.pdf}
+    \end{subfigure}
+    \begin{subfigure}{0.31\textwidth}
+        \caption{Choice commitment}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/hist_payments_cc.pdf}
+    \end{subfigure}    
+        \begin{subfigure}{0.31\textwidth}
+        \caption{Forced soft}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/hist_payments_fs.pdf}
+    \end{subfigure}
+    \begin{subfigure}{0.31\textwidth}
+        \caption{Choice soft}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/hist_payments_cs.pdf}
+    \end{subfigure} 
     \end{center}
-     \scriptsize  This Figure shows the occurrence and frequency of renewals. It locates in time, respective to the day the loan started, when the renewal occurs for both the first and second renewal. Note that the first renewal is concentrated around 100 days, while the second is concentrated around the 200 days, corresponding to the first and second cycle. 
-     %\textit{Do file: }  \texttt{ref_\dist.do}
+     \scriptsize
+      %\footnotesize{ \textit{Do file: }  \texttt{hist\_payments.do}}
 \end{figure}
 
 
-
 \begin{figure}[H]
-        \caption{Probability of recovery by arm}
+        \caption{Survival graphs}
     \label{survival_graph}
     \begin{center}
+   \begin{subfigure}{0.45\textwidth}
+        \caption{Closed contracts}
         \centering
-        \includegraphics[width=0.60\textwidth]{Figuras/survival_graph_unpledge.pdf}
+        \includegraphics[width=\textwidth]{Figuras/survival_graph_ended.pdf}
+    \end{subfigure} 
+       \begin{subfigure}{0.45\textwidth}
+        \caption{Recovery}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/survival_graph_unpledge.pdf}
+    \end{subfigure} 
     \end{center}
      \scriptsize  This Figure shows the accumulated percentage of recovery in time by treatment arm. 
      %\textit{Do file: }  \texttt{survival\_graph.do}
@@ -1143,64 +1168,6 @@ and the RHS is a function of observed data only.
 %       \textit{Do file: }  \texttt{choose\_wrong\_quant\_wrong\_decomposition.do}
 %\end{figure}
 
-
-
-
-\begin{comment}
-\begin{figure}[H]
-        \caption{Histogram of payments}
-    \label{HistPayments}
-    \begin{center}
-    \begin{subfigure}{.31\textwidth}
-    \caption{Control}
-        \centering
-        \includegraphics[width=\textwidth]{Figuras/hist_payments_pro_1.pdf}
-    \end{subfigure}
-    \begin{subfigure}{.31\textwidth}
-    \caption{Forcing - fee}
-        \centering
-        \includegraphics[width=\textwidth]{Figuras/hist_payments_pro_2.pdf}
-    \end{subfigure}   
-     \begin{subfigure}{.31\textwidth}
-    \caption{Forcing - promise}
-        \centering
-        \includegraphics[width=\textwidth]{Figuras/hist_payments_pro_3.pdf}
-    \end{subfigure}  
-     \begin{subfigure}{.31\textwidth}
-    \caption{Choice - fee}
-        \centering
-        \includegraphics[width=\textwidth]{Figuras/hist_payments_pro_4.pdf}
-    \end{subfigure}  
-     \begin{subfigure}{.31\textwidth}
-    \caption{Choice - fee - SQ}
-        \centering
-        \includegraphics[width=\textwidth]{Figuras/hist_payments_pro_6.pdf}
-    \end{subfigure}    
-     \begin{subfigure}{.31\textwidth}
-    \caption{Choice - fee - NSQ}
-        \centering
-        \includegraphics[width=\textwidth]{Figuras/hist_payments_pro_7.pdf}
-    \end{subfigure}    
-     \begin{subfigure}{.31\textwidth}
-    \caption{Choice - promise}
-        \centering
-        \includegraphics[width=\textwidth]{Figuras/hist_payments_pro_5.pdf}
-    \end{subfigure}  
-     \begin{subfigure}{.31\textwidth}
-    \caption{Choice - promise - SQ}
-        \centering
-        \includegraphics[width=\textwidth]{Figuras/hist_payments_pro_8.pdf}
-    \end{subfigure}    
-     \begin{subfigure}{.31\textwidth}
-    \caption{Choice - promise - NSQ}
-        \centering
-        \includegraphics[width=\textwidth]{Figuras/hist_payments_pro_9.pdf}    
-    \end{subfigure}        
-    \end{center}
-     \footnotesize \textit{Notes: } The x-axis shows the elapsed days between initial date and current movement.
-      \footnotesize{ \textit{Do file: }  \texttt{hist\_payments.do}}
-\end{figure}
-\end{comment}
 
 %\begin{figure}[H]
 %        \caption{Types of agents that incur in different FC}

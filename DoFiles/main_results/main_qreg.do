@@ -26,7 +26,7 @@ use "$directorio/DB/Master.dta", clear
 local qlist  0.15 0.25 0.47 0.75 0.85 
 
 
-foreach var of varlist fc_admin  apr {
+foreach var of varlist  fc_admin apr {
 	
 	local q = 1
 	foreach quant in `qlist' {
@@ -35,11 +35,11 @@ foreach var of varlist fc_admin  apr {
 		qreg `var' pro_2 $C0,  vce(robust) q(`quant')
 		estimates store `var'_`q'_2
 		
-		qreg `var' pro_4 $C0,  vce(robust) q(`quant')
+		cap qreg `var' pro_4 $C0,  vce(robust) q(`quant')
 		estimates store `var'_`q'_4
 		
 		*Q-regs (pooled)
-		qreg `var' i.t_prod $C0 if inlist(t_prod,1,2,4),  vce(robust) q(`quant')
+		qreg `var' i.t_prod $C0 if inlist(t_prod,1,2,4), vce(robust) q(`quant')
 		estimates store `var'_`q'_p		
 		local q = `q'+1
 	}

@@ -249,6 +249,7 @@ te_grf <- function(data_in, outcome_var, name) {
 # READ DATASET
 fc <- read_csv('./_aux/fc_te_heterogeneity.csv') 
 eff <- read_csv('./_aux/eff_te_heterogeneity.csv') 
+apr <- read_csv('./_aux/apr_te_heterogeneity.csv') 
 def <- read_csv('./_aux/def_te_heterogeneity.csv') 
 des <- read_csv('./_aux/des_te_heterogeneity.csv') 
 sumporcp <- read_csv('./_aux/sumporcp_te_heterogeneity.csv') 
@@ -258,6 +259,7 @@ sumporcp <- read_csv('./_aux/sumporcp_te_heterogeneity.csv')
 
 te_grf(fc,"fc_admin","fc") 
 te_grf(eff,"eff_cost_loan","eff") 
+te_grf(apr,"apr","apr") 
 te_grf(def,"def_c","def") 
 te_grf(des,"des_c","des") 
 te_grf(sumporcp,"sum_porcp_c","sumporcp") 

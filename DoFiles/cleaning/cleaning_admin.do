@@ -64,8 +64,12 @@ su fecha_movimiento
 drop if fecha_inicial>`r(max)'-230
 drop if dias_inicio>230 | dias_inicio<0
 label var dias_inicio  "Days passed between movement date and initial date"
+replace dias_inicio = . if inlist(clave_movimiento, 2)
+
+*Days of payments
+bysort prenda fecha_movimiento : gen days_payment = dias_inicio if inlist(clave_movimiento, 1,3,5) & _n==1
 *Days of first payment
-gen dpp = dias_inicio if clave_movimiento!=4
+gen dpp = dias_inicio if inlist(clave_movimiento, 1,3,5)
 
 *Variable of loan amount
 sort prenda fecha_movimiento HoraMovimiento
@@ -328,7 +332,7 @@ label var sum_visit "Number of visits at current date"
 gen desempeno=(clave_movimiento==3)
 gen abono=(clave_movimiento==1)
 gen refrendo=(clave_movimiento==5)
-gen refrendo_90=(clave_movimiento==5 & dias_inicio<=90)
+gen refrendo_90=(clave_movimiento==5 & dias_inicio>=75)
 gen ventabillete=(clave_movimiento==2)
 gen pasealmoneda=(clave_movimiento==6)
 
@@ -446,22 +450,35 @@ replace choose_same = 2 if missing(choose_same)
 *'sum_p_c' is the maximum/last cumulative payment 
 *'sum_porcp_c'is the maximum/last percentage of payment
 *'num_p' is the number of payments 
+preserve 
 sort prenda fecha_movimiento HoraMovimiento
+keep if (pagos>0)
+by prenda :  gen first_pay = pagos[1]
+duplicates drop prenda first_pay, force
+keep prenda first_pay
+tempfile temp_fp
+save `temp_fp'
+restore
+merge m:1 prenda using `temp_fp', nogen
+replace first_pay = 0 if missing(first_pay)
 
-
+sort prenda fecha_movimiento HoraMovimiento
 by prenda: gen des_c=desempeno[_N]
 gen def_c = 1-des_c
-by prenda: gen ref_c=refrendo[_N]
-by prenda: gen ref_90_c=refrendo_90[_N]
-by prenda: gen abo_c=abono[_N]
-by prenda: gen vbi_c = ventabillete[_N]
+by prenda: egen ref_c=max(refrendo)
+by prenda: egen ref_90_c=max(refrendo_90)
+by prenda: egen abo_c=max(abono)
+by prenda: egen vbi_c = max(ventabillete)
+by prenda: egen pam_c=max(pasealmoneda)
 by prenda: gen sum_p_c=sum_p[_N]
 by prenda: gen sum_int_c=sum_int[_N]
 by prenda: gen sum_inc_int_c=sum_inc_int[_N]
 by prenda: gen sum_inc_fee_c=sum_inc_fee[_N]
 by prenda: gen sum_pay_fee_c=sum_pay_fee[_N]
 by prenda: gen pays_c=(sum_p_c>0) if !missing(sum_p_c)
-by prenda: egen mn_p_c=mean(sum_p)
+by prenda: egen mn_p_=mean(pagos) if clave_movimiento!=4 & pagos!=0
+by prenda: egen mn_p_c=max(mn_p_) 
+replace mn_p_c = 0 if missing(mn_p_c)
 by prenda: gen sum_porcp_c=sum_porc_p[_N]
 by prenda: gen sum_porc_int_c=sum_porc_int[_N]
 by prenda: gen sum_porc_inc_int_c=sum_porc_inc_int[_N]
@@ -469,7 +486,6 @@ by prenda: gen sum_porc_inc_fee_c=sum_porc_inc_fee[_N]
 by prenda: gen sum_porc_pay_fee_c=sum_porc_pay_fee[_N]
 by prenda: gen num_p=sum_np[_N]
 by prenda: gen num_v=sum_visit[_N]
-by prenda: gen pam_c=pasealmoneda[_N]
 by prenda: egen dias_primer_pago = min(dpp)
 by prenda: gen dias_ultimo_mov = dias_inicio[_N]
 gen dias_inicio_d=dias_inicio if des_c
@@ -481,7 +497,7 @@ replace dias_inicio = 1 if dias_inicio==0 & des_c==1
 cap drop dias_inicio_d
 
 * `Naiveness' variables (item-level)
-bysort prenda: gen ref_default = (1-des_c)*ref_c
+bysort prenda: gen ref_default = (1-des_c)*ref_90_c
 bysort prenda: gen pos_pay_default = (1-des_c)*(sum_porcp_c>0) if !missing(sum_porcp_c)
 bysort prenda: gen pay_30_default = (1-des_c)*(sum_porcp_c>=.30) if !missing(sum_porcp_c)
 gen def_120 = def_c
@@ -618,6 +634,9 @@ merge m:1 prenda using `temp_emp', nogen
 save "$directorio/DB/Base_Boleta_230dias_Seguimiento_Ago2013_Grandota_2", replace
 sort prenda fecha_inicial fecha_movimiento t_prod
 by prenda fecha_inicial: keep if _n==1
+
+*Drop outliers
+drop if prestamo>57000
 *Final Cross-section
 save "$directorio/DB/Base_Boleta_230dias_Seguimiento_Ago2013_ByPrenda_2", replace
 	

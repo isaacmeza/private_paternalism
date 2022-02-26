@@ -1,17 +1,18 @@
-/*
+
 ********************
 version 17.0
 ********************
- 
+/* 
 /*******************************************************************************
 * Name of file:	
 * Author:	Isaac M
 * Machine:	Isaac M 											
 * Date of creation:	October. 5, 2021
-* Last date of modification:   
-* Modifications:		
+* Last date of modification: February. 21, 2022  
+* Modifications: Change outcome to effective APR. Add choosers vs non-choosers analysis & split two axis in two figures.		
 * Files used:     
-		- 
+		- eff_te_grf.csv
+		- Master.dta
 * Files created:  
 
 * Purpose: Who makes mistakes?
@@ -27,21 +28,27 @@ version 17.0
 ********************************************************************************
 
 
-*Load data with eff_te predictions (created in eff_te_grf.R)
+*Load data with *_te predictions (created in te_grf.R)
 import delimited "$directorio/_aux/eff_te_grf.csv", clear
-merge 1:1 prenda using "$directorio/DB/Master.dta", nogen keep(3)
+keep prenda tau_hat_oobvarianceestimates tau_hat_oobpredictions
+rename (tau_hat_oobvarianceestimates tau_hat_oobpredictions) (var_eff tau_eff)
+tempfile temp_eff
+save `temp_eff'
 
+import delimited "$directorio/_aux/apr_te_grf.csv", clear
+merge 1:1 prenda using "$directorio/DB/Master.dta", nogen keep(3)
+merge 1:1 prenda using `temp_eff', nogen keep(3)
 
 *Counterfactuals estimates
 	
 	*Causal forest on nochoice/fee-vs-control
-gen eff_te_cf =  tau_hat_oobpredictions*100	
+gen eff_te_cf =  tau_hat_oobpredictions
 *CI - 95%
-gen eff_te_cf_ub95 = eff_te_cf + invnorm(0.975)*sqrt(tau_hat_oobvarianceestimates)*100
-gen eff_te_cf_lb95 = eff_te_cf - invnorm(0.975)*sqrt(tau_hat_oobvarianceestimates)*100
+gen eff_te_cf_ub95 = eff_te_cf + invnorm(0.975)*sqrt(tau_hat_oobvarianceestimates)
+gen eff_te_cf_lb95 = eff_te_cf - invnorm(0.975)*sqrt(tau_hat_oobvarianceestimates)
 *CI - 90%
-gen eff_te_cf_ub90 = eff_te_cf + invnorm(0.95)*sqrt(tau_hat_oobvarianceestimates)*100
-gen eff_te_cf_lb90 = eff_te_cf - invnorm(0.95)*sqrt(tau_hat_oobvarianceestimates)*100
+gen eff_te_cf_ub90 = eff_te_cf + invnorm(0.95)*sqrt(tau_hat_oobvarianceestimates)
+gen eff_te_cf_lb90 = eff_te_cf - invnorm(0.95)*sqrt(tau_hat_oobvarianceestimates)
 
 
 *Histogram of CATE
@@ -62,150 +69,190 @@ foreach var of varlist eff_te_cf {
 
 ********************************************************************************
 gen tau_sim = . 
+gen quant_sim = .
 gen choose_wrong_fee = .
-gen choose_wrong_fee_soph = .
+gen choose_wrong_fee_choose = .
+gen choose_wrong_fee_nonchoose = .
 
 gen quant_wrong_fee = .
-gen quant_wrong_fee_soph = .
+gen quant_wrong_fee_choose = .
+gen quant_wrong_fee_nonchoose = .
 
 gen better_forceall = 0
 
 gen cwf = 0
-gen cwf_soph = 0
+gen cwf_choose = 0
+gen cwf_nonchoose = 0
 gen cwf_normal_l = .
 gen cwf_normal_h = .
+gen cwf_choose_l = .
+gen cwf_choose_h = .
+gen cwf_nonchoose_l = .
+gen cwf_nonchoose_h = .
 gen bfa_normal_l = .
 gen bfa_normal_h = .
 
-forvalues i = 0/16 {
+forvalues i = 0(5)80 {
 	gen cwf_normal_l`i' = .
 	gen cwf_normal_h`i' = .
+	gen cwf_choose_l`i' = .
+	gen cwf_choose_h`i' = .	
+	gen cwf_nonchoose_l`i' = .
+	gen cwf_nonchoose_h`i' = .	
 	gen bfa_normal_l`i' = .
 	gen bfa_normal_h`i' = .
 	}
 
 gen qwf = 0
-gen qwf_soph = 0
-gen qbfa = 0 
-
-gen threshold = _n-1 if _n<=16
+gen qwf_choose = 0
+gen qwf_nonchoose = 0
 	
-local rep_num = 100
+local rep_num = 500
 forvalues rep = 1/`rep_num' {
-di "`rep'"
-*Draw random effect from normal distribution with standard error according to Athey
-replace tau_sim = rnormal(tau_hat_oobpredictions, sqrt(tau_hat_oobvarianceestimates))*100	
-
+	di "`rep'"
+	*Draw random effect from normal distribution with standard error according to Athey
+	replace tau_sim = rnormal(tau_hat_oobpredictions, sqrt(tau_hat_oobvarianceestimates))	
+	replace quant_sim = rnormal(tau_eff, sqrt(var_eff))*100	
+	
 *Computation of people that makes mistakes in the choice arm according to estimated counterfactual
-foreach var of varlist tau_sim {
-	forvalues i = 0/16 {
+	local k = 1
+	forvalues i = 0(5)80 {
 		qui {
 		*Classify the percentage of wrong decisions
-		* (`var'>`i' & pro_6==1) : positive (in the sense of beneficial)
+		* (tau_sim>`i' & pro_6==1) : positive (in the sense of beneficial)
 		* treatment effect with fee but choose no fee
 		replace choose_wrong_fee = .
-		replace choose_wrong_fee = ((`var'>`i' & pro_6==1) | (`var'<-`i' & pro_7==1)) if !missing(`var') & t_prod==4
+		replace choose_wrong_fee = ((tau_sim>`i' & pro_6==1) | (tau_sim<-`i' & pro_7==1)) if !missing(tau_sim) & t_prod==4
 		bootstrap r(mean),  reps(25) level(99): su choose_wrong_fee
 		estat bootstrap, all
 		mat point_estimate = e(b)
-		replace cwf = cwf + point_estimate[1,1]*100 in `=`i'+1'
+		replace cwf = cwf + point_estimate[1,1]*100 in `k'
 		*Confidence interval
 			mat confidence_int = e(ci_normal) 
 			replace cwf_normal_l`i' =  confidence_int[1,1]*100 in `rep'
 			replace cwf_normal_h`i' =  confidence_int[2,1]*100 in `rep'
-			*Only consider "sophisticated"
-		replace choose_wrong_fee_soph = .	
-		replace choose_wrong_fee_soph = (`var'<-`i' & pro_7==1) if !missing(`var') & t_prod==4	
-		bootstrap r(mean),  reps(25) level(99): su choose_wrong_fee_soph
+			*Only consider "choosers"
+		replace choose_wrong_fee_choose = .	
+		replace choose_wrong_fee_choose = (tau_sim<-`i' & pro_7==1) if !missing(tau_sim) & pro_7==1	
+		bootstrap r(mean),  reps(25) level(99): su choose_wrong_fee_choose
 		estat bootstrap, all
 		mat point_estimate = e(b)
-		replace cwf_soph = cwf_soph + point_estimate[1,1]*100 in `=`i'+1'
-		
+		replace cwf_choose = cwf_choose + point_estimate[1,1]*100 in `k'
+		*Confidence interval
+			mat confidence_int = e(ci_normal) 
+			replace cwf_choose_l`i' =  confidence_int[1,1]*100 in `rep'
+			replace cwf_choose_h`i' =  confidence_int[2,1]*100 in `rep'		
+			*Only consider "non-choosers"
+		replace choose_wrong_fee_nonchoose = .	
+		replace choose_wrong_fee_nonchoose = (tau_sim>`i' & pro_6==1) if !missing(tau_sim) & pro_6==1	
+		bootstrap r(mean),  reps(25) level(99): su choose_wrong_fee_nonchoose
+		estat bootstrap, all
+		mat point_estimate = e(b)
+		replace cwf_nonchoose = cwf_nonchoose + point_estimate[1,1]*100 in `k'
+		*Confidence interval
+			mat confidence_int = e(ci_normal) 
+			replace cwf_nonchoose_l`i' =  confidence_int[1,1]*100 in `rep'
+			replace cwf_nonchoose_h`i' =  confidence_int[2,1]*100 in `rep'
+			
+			
 		*Quantification in $
 		replace quant_wrong_fee = .
-		replace quant_wrong_fee = abs(`var') if choose_wrong_fee==1
+		replace quant_wrong_fee = abs(quant_sim) if choose_wrong_fee==1
 		su quant_wrong_fee
-		cap replace qwf = qwf + `r(mean)' in `=`i'+1'
-		
-			*Only consider "sophisticated"
+		cap replace qwf = qwf + `r(mean)' in `k'		
+			*Only consider "choosers"
 		*Quantification in $
-		replace quant_wrong_fee_soph = .
-		replace quant_wrong_fee_soph = abs(`var') if choose_wrong_fee_soph==1
-		su quant_wrong_fee_soph
-		cap replace qwf_soph = qwf_soph + `r(mean)' in `=`i'+1'
+		replace quant_wrong_fee_choose = .
+		replace quant_wrong_fee_choose = abs(quant_sim) if choose_wrong_fee_choose==1
+		su quant_wrong_fee_choose
+		cap replace qwf_choose = qwf_choose + `r(mean)' in `k'
+			*Only consider "non-choosers"
+		*Quantification in $
+		replace quant_wrong_fee_nonchoose = .
+		replace quant_wrong_fee_nonchoose = abs(quant_sim) if choose_wrong_fee_nonchoose==1
+		su quant_wrong_fee_nonchoose
+		cap replace qwf_nonchoose = qwf_nonchoose + `r(mean)' in `k'		
 		
+********************************************************************************
 		
 		*If we were to force everyone to the FEE contract, how many would be
 		* benefited from this policy?
 		replace choose_wrong_fee = .
-		replace choose_wrong_fee = (`var'>`i') if !missing(`var') & t_prod==4
+		replace choose_wrong_fee = (tau_sim>`i') if !missing(tau_sim) & t_prod==4
 		bootstrap r(mean),  reps(25) level(99): su choose_wrong_fee
 		estat bootstrap, all
 		mat point_estimate = e(b)
-		replace better_forceall = better_forceall + point_estimate[1,1]*100 in `=`i'+1'
+		replace better_forceall = better_forceall + point_estimate[1,1]*100 in `k'
 		*Confidence interval
 			mat confidence_int = e(ci_normal) 
 			replace bfa_normal_l`i' =  confidence_int[1,1]*100 in `rep'
 			replace bfa_normal_h`i' =  confidence_int[2,1]*100 in `rep'
 		
-		
-		*Quantification in $
-		replace quant_wrong_fee = .
-		replace quant_wrong_fee = abs(`var') if choose_wrong_fee==1
-		su quant_wrong_fee
-		cap replace qbfa = qbfa + `r(mean)' in `=`i'+1'
-		
+		local k = `k' + 1
 		}
 		}
-	}
+
 	}	
 
 *Recover the means
-foreach var of varlist better_forceall cwf cwf_soph qwf qwf_soph qbfa {
+foreach var of varlist better_forceall cwf cwf_choose cwf_nonchoose qwf qwf_choose qwf_nonchoose {
 	replace `var' = `var'/`rep_num'
 	}
 	
 
 *Distribution of the CI
-forvalues i = 0/16 {
-	su cwf_normal_l`i', d
-	replace cwf_normal_l = `r(p5)' in `=`i'+1'
-	su cwf_normal_h`i', d
-	replace cwf_normal_h = `r(p95)' in `=`i'+1'
-	
-	su bfa_normal_l`i', d
-	replace bfa_normal_l = `r(p5)' in `=`i'+1'
-	su bfa_normal_h`i', d
-	replace bfa_normal_h = `r(p95)' in `=`i'+1'
+local k = 1
+forvalues i = 0(5)80 {
+	foreach vr in cwf_normal cwf_nonchoose cwf_choose bfa_normal {
+		su `vr'_l`i', d
+		replace `vr'_l = `r(p5)' in `k'
+		replace `vr'_l = 0 if `vr'_l < 0 & !missing(`vr'_l )
+		su `vr'_h`i', d
+		replace `vr'_h = `r(p95)' in `k'
+	}
+	local k = `k' + 1
 	}
 
+gen threshold = (_n-1)*5 if (_n-1)*5<=80
+
+
+**************************************PLOTS*************************************
 	
 	twoway 	(rarea bfa_normal_l bfa_normal_h threshold, fcolor(navy) fintensity(40)) ///
 			(line better_forceall threshold, lpattern(solid) lwidth(medthick) lcolor(navy)) ///
 			(scatter better_forceall threshold,  msymbol(x) color(navy) ) ///
 			, legend(off) scheme(s2mono) ///
 			graphregion(color(white)) xtitle("Threshold (as % of loan)") ///
-			ytitle("Percentage", axis(1)) ///
+			ytitle("% benefitted", axis(1)) ///
 			ylabel(0(10)100, axis(1)) 
-	graph export "$directorio/Figuras/line_better_forceall_eff_te_cf.pdf", replace
+	graph export "$directorio/Figuras/line_better_forceall_apr_te_cf.pdf", replace
 
 	
-	
-	twoway 	(rarea cwf_normal_l cwf_normal_h threshold, fcolor(navy) fintensity(40)) ///
+	twoway 	(rarea cwf_normal_l cwf_normal_h threshold, lcolor(navy%5) fcolor(navy) fintensity(50)) ///
 			(line cwf threshold, lpattern(solid) lwidth(medthick) lcolor(navy)) ///
-			(line cwf_normal_h threshold, lpattern(dot) lwidth(medthick) lcolor(blue)) ///
-			(scatter cwf threshold,  msymbol(x) color(navy) ) ///
-			(line cwf_soph threshold, lpattern(solid) lwidth(medthick) lcolor(blue%25)) ///
-			(scatter qwf threshold,  msymbol(x) color(red) yaxis(2)) ///
-			(scatter qwf_soph threshold,  msymbol(x) color(red%25) yaxis(2)) ///			
-			, legend(order(2 "Fee arm"  ///
-				6 "Money (Fee)" 5 "Sophisticated"  ///
-				7 "Money (Sophisticated)"))  scheme(s2mono) ///
-			graphregion(color(white)) xtitle("Threshold (as % of loan)") ///
-			ytitle("Percentage mistakes", axis(1)) ///
-			ytitle("Money (as % of loan)",axis(2)) ylabel(0(10)100, axis(1)) 
-	graph export "$directorio/Figuras/line_cw_eff_te_cf.pdf", replace
+			(scatter cwf threshold, connect(l)  msymbol(x) color(navy) ) ///
+			(rarea cwf_nonchoose_l cwf_nonchoose_h threshold, lcolor(dkgreen%5) fcolor(dkgreen%60) fintensity(40)) ///
+			(line cwf_nonchoose threshold, lpattern(solid) lwidth(medthick) lcolor(dkgreen%80)) ///
+			(scatter cwf_nonchoose threshold, connect(l) msymbol(x) color(dkgreen%80) ) ///	
+			(rarea cwf_choose_l cwf_choose_h threshold, lcolor(maroon%5) fcolor(maroon%70) fintensity(40)) ///
+			(line cwf_choose threshold, lpattern(solid) lwidth(medthick) lcolor(maroon%70)) ///
+			(scatter cwf_choose threshold, connect(l) msymbol(x) color(maroon%70) ) ///				
+			, legend(order(3 "Choice commitment"  ///
+				6 "Non-choosers" 9 "Choosers") rows(1))  ///
+			graphregion(color(white)) xtitle("APR threshold") ///
+			ytitle("% of relevant group making mistakes") ///
+			ylabel(0(10)100) 
+	graph export "$directorio/Figuras/line_cw_apr_te_cf.pdf", replace
 	
+	
+	twoway 	(scatter qwf threshold,  connect(l) jitter(4) msymbol(x) color(navy)) ///
+			(scatter qwf_nonchoose threshold, connect(l) msymbol(x) color(dkgreen%90)) ///	
+			(scatter qwf_choose threshold, connect(l)  msymbol(x) color(maroon%80)) ///				
+			, legend(order(1 "Choice commitment"  ///
+				2 "Non-choosers" 3 "Choosers")  rows(1)) ///
+			graphregion(color(white)) xtitle("APR threshold") ///
+			ytitle("Money (as % of loan)") 
+	graph export "$directorio/Figuras/money_cw_apr_te_cf.pdf", replace	
 
 	
 

@@ -75,7 +75,7 @@ label var fc_survey "Financial cost (subjective value)"
 	*travel cost
 su c_trans
 replace c_trans = `r(mean)' if missing(c_trans)
-gen trans_cost = (c_trans + 62.33)*num_p	
+gen trans_cost = (c_trans + 62.33)*num_v	
 
 
 *APR subjective
@@ -181,7 +181,6 @@ replace pr_prob = pr_prob*100
 *Overconfident
 gen OC = (pr_recup>pr_prob) if (!missing(pr_recup) & !missing(pr_prob))
 gen cont_OC = pr_recup-pr_prob if (!missing(pr_recup) & !missing(pr_prob))
-
 
 save "$directorio/DB/Master.dta", replace	
 export delimited using "$directorio/DB/Master.csv", replace quote nolabel

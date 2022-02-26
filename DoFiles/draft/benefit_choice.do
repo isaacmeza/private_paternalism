@@ -1,16 +1,18 @@
-/*
+
 ********************
 version 17.0
 ********************
- 
+/* 
 /*******************************************************************************
 * Name of file:	
 * Author:	Isaac M
 * Machine:	Isaac M 											
 * Date of creation:	October. 10, 2021
-* Last date of modification: November. 4, 2021  
+* Date of modification: November. 4, 2021  
 * Modifications: Different ways to graph choice_benefit plot	
 				Discretize predicted probability and plot CDF's to identify Stochasic Dominance
+* Last date of modification: February. 21, 2022 
+* Modifications: Analysis with effective APR instead of cost/loan ratio
 * Files used:     
 		- 
 * Files created:  
@@ -20,7 +22,7 @@ version 17.0
 *******************************************************************************/
 */
 
-*Load data with eff_te predictions (created in eff_te_grf.R)
+*Load data with eff_te predictions (created in te_grf.R)
 import delimited "$directorio/_aux/des_te_grf.csv", clear
 keep prenda tau_hat_oobvarianceestimates tau_hat_oobpredictions
 rename (tau_hat_oobvarianceestimates tau_hat_oobpredictions) (var_des tau_des)
@@ -45,6 +47,12 @@ rename (tau_hat_oobvarianceestimates tau_hat_oobpredictions) (var_eff tau_eff)
 tempfile temp_eff
 save `temp_eff'
 
+import delimited "$directorio/_aux/apr_te_grf.csv", clear
+keep prenda tau_hat_oobvarianceestimates tau_hat_oobpredictions
+rename (tau_hat_oobvarianceestimates tau_hat_oobpredictions) (var_apr tau_apr)
+tempfile temp_apr
+save `temp_apr'
+
 *Load data with propensity score (created in choice_prediction.ipynb)
 import delimited "$directorio/_aux/prop_choose.csv", clear
 
@@ -53,9 +61,11 @@ merge 1:1 prenda using `temp_des', nogen keep(3)
 merge 1:1 prenda using `temp_def', nogen keep(3)
 merge 1:1 prenda using `temp_sum', nogen keep(3)
 merge 1:1 prenda using `temp_eff', nogen keep(3)
+merge 1:1 prenda using `temp_apr', nogen keep(3)
 
 * Correlation between propensity to choose and benefit when choose forced fee.
 reg tau_eff pr_gbc_1  , r 
+reg tau_apr pr_gbc_1  , r 
 reg tau_def pr_gbc_1  , r 
 reg tau_des pr_gbc_1  , r 
 reg tau_sum pr_gbc_1  , r 
@@ -71,7 +81,7 @@ tempfile tempmaster
 save `tempmaster'
 	
 *-------------------------------------------------------------------------------
-foreach var of varlist tau_eff tau_des {
+foreach var of varlist tau_apr tau_eff tau_des {
 	binscatter `var' pr_gbc_1, nq(99) savedata("$directorio/_aux/bin_tau_pr1") replace 
 	binscatter `var' pr_gbc_1 if pr_gbc_1>0.30, nq(11) savedata("$directorio/_aux/bin_tau_pr2") replace 
 
@@ -105,7 +115,7 @@ foreach var of varlist tau_eff tau_des {
 	*Discretize predicted probability and plot CDF's to identify Stochasic Dominance
 	use `tempmaster', clear
 
-	twoway (hist `var' if predicted_choose==0, percent color(navy%70) ) (hist `var' if predicted_choose==1 ,color(none) lcolor(black) percent), xtitle("Effective cost/loan benefit TE") scheme(s2mono) graphregion(color(white)) legend(order(1 "No Choose" 2 "Choose"))
+	twoway (hist `var' if predicted_choose==1, percent color(navy%70) ) (hist `var' if predicted_choose==0 ,color(none) lcolor(black) percent), xtitle("Effective cost/loan benefit TE") scheme(s2mono) graphregion(color(white)) legend(order(1 "Choosers" 2 "Non-choosers"))
 	graph export "$directorio\Figuras\hist_predchoose_`var'.pdf", replace
 
 
@@ -148,7 +158,7 @@ foreach var of varlist tau_eff tau_des {
 	twoway (line t1 t0 inst , ///
 		sort ylab(, grid)) ///
 		(line sig_range inst , lcolor(navy)) , ///
-		legend(order(1 "Choose" 2 "No Choose") rows(1)) xtitle("T.effect") scheme(s2mono) graphregion(color(white)) 
+		legend(order(1 "Choosers" 2 "Non-choosers") rows(1)) xtitle("T.effect") scheme(s2mono) graphregion(color(white)) 
 	graph export "$directorio/Figuras/cdf_predchoose_`var'.pdf", replace
 	restore	
 }
