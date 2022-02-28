@@ -52,7 +52,12 @@ vignettes/*.pdf
 
 # Individual files
 IsaacMeza-donde2019-54d6b0d43053ricardo.zip
+oldrepo.zip
 
 /oldrepo/**
 /oldrepo/**
 
+
+# ipynb
+/.ipynb_checkpoints/
+/.ipynb_checkpoints/**
