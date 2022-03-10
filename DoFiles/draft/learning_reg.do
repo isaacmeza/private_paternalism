@@ -8,8 +8,9 @@ version 17.0
 * Author:	Isaac M
 * Machine:	Isaac M 											
 * Date of creation:	November. 6, 2021 
-* Last date of modification: November. 22, 2021 
-* Modifications: Analysis of differential attrition & keep obs for pure randomization/experimental 
+* Last date of modification: February. 28, 2022 
+* Modifications: - Analysis of differential attrition & keep obs for pure randomization/experimental 
+	- Learning by not doing in reg format
 * Files used:     
 		- 
 * Files created:  
@@ -50,16 +51,23 @@ drop if estos!=0 & tg==1 & def_c==1
 
 
 sort NombrePignorante fecha_inicial
-*Identify previous contract
+*Identify previous contract (Hard commitment)
 gen comb_prod = prod
-replace comb_prod = 4 if prod==6
-replace comb_prod = 5 if prod==7
+replace comb_prod = . if prod==6
+replace comb_prod = . if prod==7
+
+gen pt_prod = t_prod
+
 
 by NombrePignorante : gen previous = comb_prod[_n-1]
+by NombrePignorante : gen prev_t_prod = pt_prod[_n-1]
 
 *Identify previous outcomes
 by NombrePignorante : gen previous_def = def_c[_n-1]
 by NombrePignorante : gen previous_des = des_c[_n-1]
+
+*Identify previous suc_x_dia
+by NombrePignorante : gen prev_suc_x_dia = suc_x_dia[_n-1]
 
 *Identify periods where individual had option to choose after experiencing
 by NombrePignorante : gen option_choose = inlist(t_prod,4,5) if !missing(previous)
@@ -89,7 +97,6 @@ replace num_learning = num_pr_tr if missing(num_pr_tr)
 replace num_learning = 3 if num_learning>3 & !missing(num_learning)
 tab num_learning
 	
-cap drop coll
 *We look at the first time of learning, if treatment status in the previous (num_pr_tr) is unchanged we keep that obs
 by NombrePignorante : egen min_numl = min(num_pr_tr)
 cap drop kp
@@ -106,8 +113,9 @@ sort NombrePignorante fecha_inicial
 preserve
 drop if missing(comb_prod)
 by NombrePignorante : gen first = comb_prod[1]
+by NombrePignorante : gen first_suc_x_dia = suc_x_dia[1]
 by NombrePignorante : gen num_prods = _N
-keep NombrePignorante first num_prods
+keep NombrePignorante first num_prods first_suc_x_dia
 duplicates drop
 tempfile tempfirst
 save `tempfirst'
@@ -117,21 +125,23 @@ merge m:1 NombrePignorante using `tempfirst'
 sort NombrePignorante fecha_inicial
 by NombrePignorante : gen comes_next = (num_prods>1) if _n==1 & !missing(num_prods)
 
-putexcel set "$directorio/Tables/SS_learning.xlsx", sheet("SS_learning") modify	
-orth_out comes_next if !missing(comes_next) & first!=3, by(first) vce(cluster suc_x_dia) bdec(3) se count prop pcompare
-putexcel L31 = matrix(r(matrix)) 
-reg comes_next i.first if first!=3, r
-test 2.first==4.first==5.first==0
-
 *coming next and having the option to choose	
 sort NombrePignorante fecha_inicial
 by NombrePignorante : egen cnc = max(kp) 
 replace cnc = 0 if missing(cnc) 
 by NombrePignorante : gen comes_next_choose = cnc if _n==1 
-orth_out comes_next_choose if !missing(comes_next_choose) & first!=3, by(first) vce(cluster suc_x_dia) bdec(3) se count prop pcompare
-putexcel L37 = matrix(r(matrix)) 
-reg comes_next_choose i.first if first!=3, r
-test 2.first==4.first==5.first==0
+
+
+*Differential attrition regression
+eststo clear
+eststo : reg comes_next i.first if first!=3, vce(cluster first_suc_x_dia)
+su comes_next if e(sample) 
+estadd scalar DepVarMean = `r(mean)'
+eststo : reg comes_next_choose i.first if first!=3, vce(cluster first_suc_x_dia)
+su comes_next_choose if e(sample) 
+estadd scalar DepVarMean = `r(mean)'
+esttab using "$directorio/Tables/reg_results/differential_attrition.csv", se r2 ${star} b(a2)  scalars("DepVarMean DepVarMean") replace 
+
 
 *Ever again takes a loan & chooses commitment (0 - if I didn't take a loan, 0 - if I took a loan and didn't choose commitment, only 1 - if took a loan and choose commtiment)
 sort NombrePignorante fecha_inicial
@@ -141,78 +151,37 @@ by NombrePignorante : gen ever_chooses_commitment = ecc if _n==1
 *Outcome in first product
 by NombrePignorante : gen fpd = def_c[1] 
 
+
 ********************************************************
-*			      SUMMARY STATISTICS				   *
-********************************************************
-
-su choose_nsq_fee if previous==1
-su choose_nsq_fee if previous==2
-su choose_nsq_fee if previous==4
-su choose_nsq_fee if previous==5
-
-gen partition = .
-replace partition = 1 if previous==1 & previous_def==0
-replace partition = 2 if previous==2 & previous_def==0
-replace partition = 3 if previous==4 & previous_def==0
-replace partition = 4 if previous==5 & previous_def==0
-replace partition = 5 if previous==1 & previous_def==1
-replace partition = 6 if previous==2 & previous_def==1
-replace partition = 7 if previous==4 & previous_def==1
-replace partition = 8 if previous==5 & previous_def==1
-
-*num_learning==1 & kp==1 ----> pure randomization/experimental
-orth_out choose_nsq_fee if previous!=3 & kp==1, by(partition) vce(cluster suc_x_dia) bdec(3) se count prop pcompare
-putexcel L5 = matrix(r(matrix)) 
-orth_out choose_nsq_fee if previous!=3 &  kp==1, by(previous) vce(cluster suc_x_dia) bdec(3) se count prop pcompare
-putexcel L10 = matrix(r(matrix)) 
-
-*ever again chooses commitment
-gen partition_1 = .
-replace partition_1 = 1 if first==1 & fpd==0
-replace partition_1 = 2 if first==2 & fpd==0
-replace partition_1 = 3 if first==4 & fpd==0
-replace partition_1 = 4 if first==5 & fpd==0
-replace partition_1 = 5 if first==1 & fpd==1
-replace partition_1 = 6 if first==2 & fpd==1
-replace partition_1 = 7 if first==4 & fpd==1
-replace partition_1 = 8 if first==5 & fpd==1
-
-orth_out ever_chooses_commitment if first!=3, by(partition_1) vce(cluster suc_x_dia) bdec(3) se count prop pcompare
-putexcel L46 = matrix(r(matrix)) 
-orth_out ever_chooses_commitment if first!=3, by(first) vce(cluster suc_x_dia) bdec(3) se count prop pcompare
-putexcel L51 = matrix(r(matrix)) 
-		
-********************************************************
-*				LEARNING REGRESSIONS				   *
+*			      LEARNING REGRESSIONS				   *
 ********************************************************
 
-reghdfe choose_nsq_fee i.previous##i.previous_def, absorb(NombrePignorante)  vce(cluster suc_x_dia)
+eststo clear
 
-*Coefficients 
-putexcel M21 = (e(b)[1,2])
-putexcel N21 = (e(b)[1,4])
-putexcel O21 = (e(b)[1,5])
-putexcel L23 = (e(b)[1,7])
-putexcel M23 = (e(b)[1,7] + e(b)[1,2] + e(b)[1,11])
-putexcel N23 = (e(b)[1,7] + e(b)[1,4] + e(b)[1,15])
-putexcel O23 = (e(b)[1,7] + e(b)[1,5] + e(b)[1,17])
-*Std Errors
-putexcel M22 = (sqrt(e(V)[2,2]))
-putexcel N22 = (sqrt(e(V)[4,4]))
-putexcel O22 = (sqrt(e(V)[5,5]))
-putexcel L24 = (sqrt(e(V)[7,7]))
-putexcel M24 = (sqrt(e(V)[7,7] + e(V)[2,2] + e(V)[11,11] + 2*e(V)[7,2] + 2*e(V)[11,2] + 2*e(V)[11,7]))
-putexcel N24 = (sqrt(e(V)[7,7] + e(V)[4,4] + e(V)[15,15] + 2*e(V)[7,4] + 2*e(V)[15,4] + 2*e(V)[15,7]))
-putexcel O24 = (sqrt(e(V)[7,7] + e(V)[5,5] + e(V)[17,17] + 2*e(V)[7,5] + 2*e(V)[17,5] + 2*e(V)[17,7]))
+eststo : reg choose_nsq_fee i.previous if previous!=3 & kp==1, vce(cluster prev_suc_x_dia)
+su choose_nsq if e(sample) 
+estadd scalar DepVarMean = `r(mean)'
+eststo : reg choose_nsq_fee i.previous##i.previous_def if previous!=3 & kp==1, vce(cluster prev_suc_x_dia)
 
-reghdfe choose_nsq_fee i.previous, absorb(NombrePignorante)  vce(cluster suc_x_dia)
+	
+eststo : reg ever_chooses_commitment i.first if first!=3, vce(cluster first_suc_x_dia)
+su ever_chooses_commitment if e(sample) 
+estadd scalar DepVarMean = `r(mean)'
+eststo : reg ever_chooses_commitment i.first##i.fpd if first!=3, vce(cluster first_suc_x_dia)
 
-*Coefficients
-putexcel M25 = (e(b)[1,2])
-putexcel N25 = (e(b)[1,4])
-putexcel O25 = (e(b)[1,5])
-*Std Errors
-putexcel M26 = (sqrt(e(V)[2,2]))
-putexcel N26 = (sqrt(e(V)[4,4]))
-putexcel O26 = (sqrt(e(V)[5,5]))
+******
 
+eststo : reg choose_nsq_fee i.previous $C0 if previous!=3 & kp==1, vce(cluster prev_suc_x_dia)
+su choose_nsq if e(sample) 
+estadd scalar DepVarMean = `r(mean)'
+eststo : reg choose_nsq_fee i.previous##i.previous_def $C0 if previous!=3 & kp==1, vce(cluster prev_suc_x_dia)
+
+	
+eststo : reg ever_chooses_commitment i.first $C0 if first!=3, vce(cluster first_suc_x_dia)
+su ever_chooses_commitment if e(sample) 
+estadd scalar DepVarMean = `r(mean)'
+eststo : reg ever_chooses_commitment i.first##i.fpd $C0 if first!=3, vce(cluster first_suc_x_dia)
+
+
+	*Save results	
+esttab using "$directorio/Tables/reg_results/learning_exp.csv", se r2 ${star} b(a2) scalars("DepVarMean DepVarMean") replace 

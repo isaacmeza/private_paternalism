@@ -278,45 +278,45 @@
 
 
 
-\begin{figure}[H]
-        \caption{FC as \% of loan - treatment effect}
-    \label{fc_pro_2_115}
-    \begin{center}
-        \centering
-        \includegraphics[width=0.50\textwidth]{Figuras/fc_te_115_pro_2.pdf}
-    \end{center}
-     \scriptsize This figure is the same as in Figure \ref{fc_pro2} Panel (a), but with the subsample restricted to the first 115 days.
-     %\textit{Do file: }  \texttt{fc\_te\_115.do}
-\end{figure}
+% \begin{figure}[H]
+%         \caption{FC restricted to 115 days}
+%     \label{fc_pro_2_115}
+%     \begin{center}
+%         \centering
+%         \includegraphics[width=0.50\textwidth]{Figuras/fc_te_115_pro_2.pdf}
+%     \end{center}
+%      \scriptsize This figure is the same as in Figure \ref{fc_pro2} Panel (a), but with the subsample restricted to the first 115 days.
+%      %\textit{Do file: }  \texttt{fc\_te\_115.do}
+% \end{figure}
 
 
 
-\begin{figure}[H]
-        \caption{Financial cost effect: charging all fees}
-    \label{fc_allfee}
-    \begin{center}
-        \centering
-        \includegraphics[width=0.50\textwidth]{Figuras/fc_allfee_quantile_pro_2.pdf}
-    \end{center}
-    \scriptsize
-     This figure is the analogous to Figure \ref{fc_pro2}(b), except that for the fee-forcing contract we pretend that all clients incurred in their late fees, and therefore inflate the financial cost by summing those fees. This is intended as a kind of worse case scenario for the financial cost of the fee-forcing contract. The circles indicate the quantile treatment effects, while the cross is the (OLS) mean. We still find that the financial cost of will be smaller under the fee-forcing contract in spite of artificially inflating it.
-     %\texttt{fc\_all\_fee.do}
-\end{figure}
+% \begin{figure}[H]
+%         \caption{Financial cost effect: charging all fees}
+%     \label{fc_allfee}
+%     \begin{center}
+%         \centering
+%         \includegraphics[width=0.50\textwidth]{Figuras/fc_allfee_quantile_pro_2.pdf}
+%     \end{center}
+%     \scriptsize
+%      This figure is the analogous to Figure \ref{fc_pro2}(b), except that for the fee-forcing contract we pretend that all clients incurred in their late fees, and therefore inflate the financial cost by summing those fees. This is intended as a kind of worse case scenario for the financial cost of the fee-forcing contract. The circles indicate the quantile treatment effects, while the cross is the (OLS) mean. We still find that the financial cost of will be smaller under the fee-forcing contract in spite of artificially inflating it.
+%      %\texttt{fc\_all\_fee.do}
+% \end{figure}
 
 
 
 
 
-\begin{figure}[H]
-        \caption{FC as \% of loan - treatment effect}
-    \label{fc_perc}
-    \begin{center}
-        \centering
-        \includegraphics[width=0.50\textwidth]{Figuras/fc_perc_te_allarms.pdf}
-    \end{center}
-     \scriptsize This figure shows the estimated treatment effect of all arms against the status quo, but normalizing the dependent variable by the value of the loan.
-     %\textit{Do file: }  \texttt{fc\_perc\_allarms.do}
-\end{figure}
+% \begin{figure}[H]
+%         \caption{FC as \% of loan - treatment effect}
+%     \label{fc_perc}
+%     \begin{center}
+%         \centering
+%         \includegraphics[width=0.50\textwidth]{Figuras/fc_perc_te_allarms.pdf}
+%     \end{center}
+%      \scriptsize This figure shows the estimated treatment effect of all arms against the status quo, but normalizing the dependent variable by the value of the loan.
+%      %\textit{Do file: }  \texttt{fc\_perc\_allarms.do}
+% \end{figure}
 
 
 
@@ -373,7 +373,7 @@
 \end{figure}
 
 \begin{figure}[H]
-        \caption{Empirical CDF of Financial Cost: fee-focing vs status-quo}
+        \caption{Empirical CDF of APR: fee-focing vs status-quo}
     \label{ecdf_fc}
     \begin{center}
         \centering
@@ -457,11 +457,11 @@ Note the proof was done in the case of absolutely continuous and strictly increa
 
 \vspace{.3in}
 \begin{figure}[H]
-        \caption{Honest causal tree for the fee forcing contract heterogenous treatment effects}
+        \caption{Honest causal tree for the Forced-commitment contract heterogeneous treatment effects}
     \label{casual_tree}
     \begin{center}
         \centering
-        \includegraphics[width=.8\textwidth]{Figuras/crf_pro_2_fc_admin_disc.pdf}
+        \includegraphics[width=\textwidth]{Figuras/crf_pro_2_apr.pdf}
     \end{center}
     \footnotesize 
     This is one(it is chosen such that it minimizes the pruned cost, that is it is the tree with the smallest root-node impurity) of the honest causal trees in the random forest we use for the estimation of the heterogeneous treatment effect of the fee-forcing contract. It is meant only as an example of how these trees look like. The forest was such that there are as many estimated treatment effects as there are clients.
@@ -498,36 +498,49 @@ We use \cite{atheygrf} \texttt{causal\_forest} of the \texttt{grf} library in $R
   num.threads = NULL)}}
 
 
-
 \begin{figure}[H]
-    \caption{Heterogeneous Treatment Effect: Fee-forcing contract}
-    \label{HTE_fee_forcing}
+        \caption{Single causal tree for the Forced-commitment contract heterogeneous treatment effects}
+    \label{casual_tree}
     \begin{center}
-    %\begin{subfigure}{0.4\textwidth}
-    %    \caption{Financial cost}
-    %    \centering
-    %    \includegraphics[width=\textwidth]{Figuras/he_dist_fc_admin_disc_pro_2.pdf}
-    %\end{subfigure}
-    \begin{subfigure}{0.7\textwidth}
-        \caption{Determinants of effects}
         \centering
-        \includegraphics[width=\textwidth]{Figuras/HE/he_int_vertical_fc_admin_disc_pro_2.pdf}
-    \end{subfigure}
-    
-    %\begin{subfigure}{0.4\textwidth}
-    %    \caption{Losing Pawn}
-    %    \centering
-    %    \includegraphics[width=\textwidth]{Figuras/he_dist_def_c_pro_2.pdf}
-    %\end{subfigure}
-    %\begin{subfigure}{0.4\textwidth}
-    %    \caption*{}
-    %    \centering
-    %    \includegraphics[width=\textwidth]{Figuras/HE/he_int_vertical_def_c_pro_2.pdf}
-    %\end{subfigure}
+        \includegraphics[width=\textwidth]{Figuras/ct_pro_2_apr.pdf}
     \end{center}
-     \scriptsize  This figure estimates bivariate regressions of the estimated client-level heterogeneous treatment effects against the respective covariate from the baseline survey  $\widehat{hte_i} = \alpha + \beta \: X_i + \epsilon_i$. The regressors $X_i$ include (e.g if the family asks for money, if they have savings, if they are overconfident using the definition the text, etc. See this Appendix for a transcription of the survey).
-      %\footnotesize{ \textit{Do file: }  \texttt{analyze\_grf\_single\_arm.do}}
+    \footnotesize 
+   
+     %\footnotesize{ \textit{RScript: }  \texttt{grf.R}
 \end{figure}
+
+
+
+% \begin{figure}[H]
+%     \caption{Heterogeneous Treatment Effect: Fee-forcing contract}
+%     \label{HTE_fee_forcing}
+%     \begin{center}
+%     %\begin{subfigure}{0.4\textwidth}
+%     %    \caption{Financial cost}
+%     %    \centering
+%     %    \includegraphics[width=\textwidth]{Figuras/he_dist_fc_admin_disc_pro_2.pdf}
+%     %\end{subfigure}
+%     \begin{subfigure}{0.7\textwidth}
+%         \caption{Determinants of effects}
+%         \centering
+%         \includegraphics[width=\textwidth]{Figuras/HE/he_int_vertical_fc_admin_disc_pro_2.pdf}
+%     \end{subfigure}
+    
+%     %\begin{subfigure}{0.4\textwidth}
+%     %    \caption{Losing Pawn}
+%     %    \centering
+%     %    \includegraphics[width=\textwidth]{Figuras/he_dist_def_c_pro_2.pdf}
+%     %\end{subfigure}
+%     %\begin{subfigure}{0.4\textwidth}
+%     %    \caption*{}
+%     %    \centering
+%     %    \includegraphics[width=\textwidth]{Figuras/HE/he_int_vertical_def_c_pro_2.pdf}
+%     %\end{subfigure}
+%     \end{center}
+%      \scriptsize  This figure estimates bivariate regressions of the estimated client-level heterogeneous treatment effects against the respective covariate from the baseline survey  $\widehat{hte_i} = \alpha + \beta \: X_i + \epsilon_i$. The regressors $X_i$ include (e.g if the family asks for money, if they have savings, if they are overconfident using the definition the text, etc. See this Appendix for a transcription of the survey).
+%       %\footnotesize{ \textit{Do file: }  \texttt{analyze\_grf\_single\_arm.do}}
+% \end{figure}
 
 
 
@@ -765,7 +778,7 @@ We use \cite{atheygrf} \texttt{causal\_forest} of the \texttt{grf} library in $R
     \begin{subfigure}{0.475\textwidth}
         \caption{Determinants of HTE}
         \centering
-        \includegraphics[width=\textwidth]{Figuras/HE/he_int_vertical_eff_cost_loan_pro_2.pdf}
+        \includegraphics[width=\textwidth]{Figuras/HE/he_int_vertical_apr_pro_2.pdf}
     \end{subfigure}
     \begin{subfigure}{0.475\textwidth}
         \caption{Determinants of propensity score}
@@ -1025,24 +1038,24 @@ and the RHS is a function of observed data only.
 
 
 
-\begin{figure}[H]
-    \caption{Treatment effects pooling all arms}
-    \label{pooled_arms_te}
-    \begin{center}
-    \begin{subfigure}{0.45\textwidth}
-        \caption{Financial Cost}
-        \centering
-        \includegraphics[width=\textwidth]{Figuras/te_allarms_fc_admin_disc.pdf}
-    \end{subfigure}
-    \begin{subfigure}{0.45\textwidth}
-        \caption{Lost Pawn}
-        \centering
-        \includegraphics[width=\textwidth]{Figuras/te_allarms_def_c.pdf}
-    \end{subfigure}
-    \end{center}
-     \scriptsize
-      %\footnotesize{ \textit{Do file: }  \texttt{te\_allarms.do}}
-\end{figure}
+% \begin{figure}[H]
+%     \caption{Treatment effects pooling all arms}
+%     \label{pooled_arms_te}
+%     \begin{center}
+%     \begin{subfigure}{0.45\textwidth}
+%         \caption{Financial Cost}
+%         \centering
+%         \includegraphics[width=\textwidth]{Figuras/te_allarms_fc_admin_disc.pdf}
+%     \end{subfigure}
+%     \begin{subfigure}{0.45\textwidth}
+%         \caption{Lost Pawn}
+%         \centering
+%         \includegraphics[width=\textwidth]{Figuras/te_allarms_def_c.pdf}
+%     \end{subfigure}
+%     \end{center}
+%      \scriptsize
+%       %\footnotesize{ \textit{Do file: }  \texttt{te\_allarms.do}}
+% \end{figure}
 
 
 \scriptsize {

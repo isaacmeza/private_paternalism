@@ -30,7 +30,7 @@ heterogeneity_effect <- function(data_in,treatment_var,outcome_var,writedata,ext
   data_frame <- data_in %>%
     filter(data_in[,treatment_var] == 1 | data_in[,treatment_var] == 0) %>%
     select(-c( pro_2, pro_3, pro_4, pro_5, pro_6, pro_7, pro_8, pro_9, fee, fecha_inicial,
-               eff_cost_loan, def_c, des_c, fc_admin_disc, fc_survey_disc, fc_admin, fc_survey, dias_primer_pago), 
+               apr, eff_cost_loan, def_c, des_c, fc_admin), 
            treatment_var, outcome_var ) %>%
     mutate_all(~ifelse(is.na(.), median(., na.rm = TRUE), .))  
   data_copy <- data_frame
@@ -284,7 +284,7 @@ data <- read_csv('./_aux/heterogeneity_grf.csv')
 
 #Heterogeneous Effects
 for (arm in c("pro_2")){
-  for (dep in c("eff_cost_loan", "def_c", "des_c", "fc_admin")){
+  for (dep in c("apr", "eff_cost_loan", "def_c", "des_c", "fc_admin")){
     heterogeneity_effect(data_extended,arm,dep,1,1) 
     heterogeneity_effect(data,arm,dep,1,0) 
   }
@@ -292,5 +292,5 @@ for (arm in c("pro_2")){
 
 
 # Plot tree with names in english
-heterogeneity_effect(data,"pro_2","eff_cost_loan",0,0) 
+heterogeneity_effect(data,"pro_2","apr",0,0) 
 

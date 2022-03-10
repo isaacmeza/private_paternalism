@@ -1,15 +1,16 @@
-/*
+
 ********************
 version 17.0
 ********************
- 
+/* 
 /*******************************************************************************
 * Name of file:	
 * Author:	Isaac M
 * Machine:	Isaac M 											
 * Date of creation:	October. 6, 2021
-* Last date of modification: October. 10, 2021  
+* Last date of modification: February. 28, 2022 
 * Modifications: Redefinition of cost/loan to be expressed as benefit (switch signs)		
+	- Include APR
 * Files used:     
 		- 
 * Files created:  
@@ -25,7 +26,7 @@ version 17.0
 */
 
 
-*Load data with eff_te predictions (created in eff_te_grf.R)
+*Load data with eff_te predictions (created in te_grf.R)
 import delimited "$directorio/_aux/des_te_grf.csv", clear
 keep prenda tau_hat_oobvarianceestimates tau_hat_oobpredictions
 rename (tau_hat_oobvarianceestimates tau_hat_oobpredictions) (var_des tau_des)
@@ -47,11 +48,24 @@ save `temp_sum'
 import delimited "$directorio/_aux/eff_te_grf.csv", clear
 keep prenda tau_hat_oobvarianceestimates tau_hat_oobpredictions
 rename (tau_hat_oobvarianceestimates tau_hat_oobpredictions) (var_eff tau_eff)
+tempfile temp_eff
+save `temp_eff'
+
+import delimited "$directorio/_aux/apr_te_grf.csv", clear
+keep prenda tau_hat_oobvarianceestimates tau_hat_oobpredictions
+rename (tau_hat_oobvarianceestimates tau_hat_oobpredictions) (var_apr tau_apr)
+tempfile temp_apr
+save `temp_apr'
+
+*Load data with propensity score (created in choice_prediction.ipynb)
+import delimited "$directorio/_aux/prop_choose.csv", clear
 
 merge 1:1 prenda using "$directorio/DB/Master.dta", nogen keep(3)
 merge 1:1 prenda using `temp_des', nogen keep(3)
 merge 1:1 prenda using `temp_def', nogen keep(3)
 merge 1:1 prenda using `temp_sum', nogen keep(3)
+merge 1:1 prenda using `temp_eff', nogen keep(3)
+merge 1:1 prenda using `temp_apr', nogen keep(3)
 
 *-------------------------------------------------------------------------------
 
@@ -91,9 +105,9 @@ predict classpost*, classpost
 
 * Relation between the Propensity of being Type 1 & the HTE
 * A positive relation indicates that being Type 1 has less benefits from being forced
-binscatter tau_eff classpr1 if t_prod==4, xtitle("Probability of being Type 1") ytitle("Effective cost/loan benefit TE") 
+binscatter tau_apr classpr1 if t_prod==4, xtitle("Probability of being Type 1") ytitle("Effective APR benefit TE") 
 graph export "$directorio\Figuras\binscatter_tau_classpr.pdf", replace
-binscatter tau_eff classpost1 if t_prod==4, xtitle("Posterior probability of being Type 1") ytitle("Effective cost/loan benefit TE") 
+binscatter tau_apr classpost1 if t_prod==4, xtitle("Posterior probability of being Type 1") ytitle("Effective APR benefit TE") 
 graph export "$directorio\Figuras\binscatter_tau_classpost.pdf", replace
 
 
@@ -121,12 +135,12 @@ forvalues t = 10/90 {
 	su clasep_1
 	replace prop_clasep_1 = r(mean) in `t'
 	
-	qui reg tau_eff clase_1 if t_prod==4 , r 
+	qui reg tau_apr clase_1 if t_prod==4 , r 
 	replace beta = _b[clase_1] in `t'
 	replace lw = _b[clase_1] - invttail(`e(df_r)',`=`alpha'/2')*_se[clase_1] in `t'
 	replace hi = _b[clase_1] + invttail(`e(df_r)',`=`alpha'/2')*_se[clase_1] in `t'
 	
-	qui reg tau_eff clasep_1 if t_prod==4 , r 	
+	qui reg tau_apr clasep_1 if t_prod==4 , r 	
 	replace betap = _b[clasep_1] in `t'
 	replace lwp = _b[clasep_1] - invttail(`e(df_r)',`=`alpha'/2')*_se[clasep_1] in `t'
 	replace hip = _b[clasep_1] + invttail(`e(df_r)',`=`alpha'/2')*_se[clasep_1] in `t'
