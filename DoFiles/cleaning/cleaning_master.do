@@ -1,8 +1,24 @@
-/*******************************************************************************
-This do file cleans the survey data, generates relevant variables for analysis, and
-meges it with the admin data.
-*******************************************************************************/
 
+********************
+version 17.0
+********************
+/* 
+/*******************************************************************************
+* Name of file:	
+* Author:	Isaac M
+* Machine:	Isaac M 											
+* Date of creation:	-
+* Last date of modification: March. 14, 2022
+* Modifications: 
+* Files used:     
+		- 
+* Files created:  
+
+* Purpose: This do file cleans the survey data, generates relevant variables for analysis, and
+meges it with the admin data. 
+
+*******************************************************************************/
+*/
 
 clear all
 set more off
@@ -151,17 +167,12 @@ gen low_time=(t_llegar<=r(p50)) if t_llegar!=.
 *Aux Dummies (Fixed effects)
 tab num_arms, gen(num_arms_d)
 tab visit_number, gen(visit_number_d)
-tab num_arms_75, gen(num_arms_75_d)
-tab visit_number_75, gen(visit_number_75_d)
-foreach var of varlist dow suc /*prenda_tipo edo_civil choose_same trabajo*/  {
+
+foreach var of varlist dow suc  {
 	tab `var', gen(dummy_`var')
 	}
-	*for grf
-foreach var of varlist prenda_tipo edo_civil choose_same trabajo  {
-	tab `var', gen(grf_dummy_`var')
-	}	
+
 drop num_arms_d1 num_arms_d2 visit_number_d1
-drop num_arms_75_d1 num_arms_75_d2  visit_number_75_d1
 
 *Overconfidence
 	*Cross-validation LASSO

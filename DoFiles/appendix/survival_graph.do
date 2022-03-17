@@ -21,7 +21,7 @@ version 17.0
 
 use "$directorio/DB/Master.dta", clear
 
-*Survival graph (probability of recovery) by treatment arm
+*Survival graph (probability of ending) by treatment arm
 forvalues i = 1/5 {
 	cumul dias_ultimo_mov if concluyo_c==1 & t_prod==`i', gen(ecd_t`i') 
 	su concluyo_c if t_prod==`i'
@@ -31,8 +31,8 @@ forvalues i = 1/5 {
 
 *Graph
 sort t_producto dias_ultimo_mov
-twoway (line ecd_t1 dias_ultimo_mov, lwidth(medthick) lcolor(black) xline(110, lpattern(dot) lcolor(black%90))) ///
-	(line ecd_t2 dias_ultimo_mov, lwidth(medthick) lcolor(navy%90)) ///
+twoway (line ecd_t1 dias_ultimo_mov, lwidth(medthick) lcolor(black) xline(105, lpattern(dot) lcolor(gs10))) ///
+	(line ecd_t2 dias_ultimo_mov, lwidth(medthick) lcolor(navy%90) xline(30 60 90, lcolor(gs12))) ///
 	(line ecd_t4 dias_ultimo_mov, lwidth(medthick) lcolor(maroon%90)) ///
 	, graphregion(color(white)) ///
 	 xtitle("Elapsed days") ytitle("Percentage (%)") ///
@@ -50,8 +50,8 @@ forvalues i = 1/5 {
 
 *Graph	
 sort t_producto dias_al_desempenyo	
-twoway (line ecdf_t1 dias_al_desempenyo, lwidth(medthick) lcolor(black) xline(110, lpattern(dot) lcolor(black%90))) ///
-	(line ecdf_t2 dias_al_desempenyo, lwidth(medthick) lcolor(navy%90)) ///
+twoway (line ecdf_t1 dias_al_desempenyo, lwidth(medthick) lcolor(black) xline(105, lpattern(dot) lcolor(gs10))) ///
+	(line ecdf_t2 dias_al_desempenyo, lwidth(medthick) lcolor(navy%90) xline(30 60 90, lcolor(gs12))) ///
 	(line ecdf_t4 dias_al_desempenyo, lwidth(medthick) lcolor(maroon%90)) ///
 	, graphregion(color(white)) ///
 	xtitle("Elapsed days to recovery") ytitle("Percentage %") ///

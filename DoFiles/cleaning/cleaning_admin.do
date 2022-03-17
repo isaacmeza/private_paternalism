@@ -1,8 +1,26 @@
+
+********************
+version 17.0
+********************
+/* 
 /*******************************************************************************
-This do file cleans the admin data & generates relevant variables for analysis -
+* Name of file:	
+* Author:	Isaac M
+* Machine:	Isaac M 											
+* Date of creation:	-
+* Last date of modification: March. 14, 2022
+* Modifications: - Clean reincidence variables
+* Files used:     
+		- 
+* Files created:  
+
+* Purpose: This do file cleans the admin data & generates relevant variables for analysis -
 which is a panel recording all transactions
 of a given pawn. 
+
 *******************************************************************************/
+*/
+
 
 *import excel "$directorio/Raw/20131014Consilidacion_Agosto_2013.xlsx", sheet("Hoja1") firstrow clear
 *save "$directorio/Raw/20131014Consilidacion_Agosto_2013.dta",	replace
@@ -336,15 +354,12 @@ gen refrendo_90=(clave_movimiento==5 & dias_inicio>=75)
 gen ventabillete=(clave_movimiento==2)
 gen pasealmoneda=(clave_movimiento==6)
 
-*Recidivism
+*Controls $C0 for multiple loans
 preserve
-bysort prenda: egen des_c=max(desempeno)
-bysort prenda: egen dias_ultimo_mov = max(dias_inicio)
-gen dias_inicio_d=dias_inicio if des_c
-bysort prenda: egen dias_al_desempenyo=max(dias_inicio_d)
 duplicates drop NombrePignorante fecha_inicial, force
+
 sort NombrePignorante fecha_inicial
-*Number of visits to pawn 
+*Number of visits to pawnshop 
 bysort NombrePignorante: gen visit_number = _n
 qui su visit_number, d
 local tr99 = `r(p99)'
@@ -356,94 +371,87 @@ replace unique_arms = 0 if missing(t_prod)
 bysort NombrePignorante : egen num_arms = sum(unique_arms)
 gen more_one_arm = (num_arms>1)
 
+keep NombrePignorante fecha_inicial visit_number num_arms more_one_arm  
+tempfile temp_varsC0
+save  `temp_varsC0'
+restore
+
+*Recidivism
+preserve
+sort prenda fecha_movimiento HoraMovimiento
+	*Desempeno should be last movement in ticket
+by prenda: gen des_c=desempeno[_N]
+by prenda: gen dias_ultimo_mov = dias_inicio[_N]
+gen dias_inicio_d=dias_inicio if des_c==1
+by prenda: gen dias_al_desempenyo=dias_inicio_d[_N]
+replace dias_al_desempenyo = 1 if dias_al_desempenyo==0
+
+gen dias_inicio_close=dias_inicio if concluyo_c==1
+by prenda: gen dias_al_close=dias_inicio_close[_N]
+replace dias_al_close = 1 if dias_al_close==0
+
+
+*Identify borrowers with multiple branches in their first loan
+bysort NombrePignorante fecha_inicial suc: gen mb_fl = _n ==1
+bysort NombrePignorante fecha_inicial : replace mb_fl = sum(mb_fl)
+bysort NombrePignorante fecha_inicial : replace mb_fl = mb_fl[_N]
+bysort NombrePignorante : egen b_mb = max(mb_fl)
+drop if b_mb>1
+
+*Identify borrowers with multiple treatments in their first loan
+bysort NombrePignorante fecha_inicial t_prod: gen mt_fl = _n ==1
+bysort NombrePignorante fecha_inicial : replace mt_fl = sum(mt_fl)
+bysort NombrePignorante fecha_inicial : replace mt_fl = mt_fl[_N]
+bysort NombrePignorante : egen b_mt = max(mt_fl)
+drop if b_mt>1
+
+*Complete NA's
+sort NombrePignorante fecha_inicial prod
+by NombrePignorante fecha_inicial : replace prod = prod[_n-1] if missing(prod) & prod[_n-1]!=.
+by NombrePignorante fecha_inicial : replace t_prod = t_prod[_n-1] if missing(t_prod) & t_prod[_n-1]!=.
+duplicates drop NombrePignorante fecha_inicial, force
+
 *Dummy indicating if customer returned after first visit (WHEN FIRST TREATED)
-sort NombrePignorante fecha_inicial
-bysort NombrePignorante: gen first_visit = fecha_inicial[1]
-bysort NombrePignorante: gen first_product = t_producto[1]
-bysort NombrePignorante: gen first_prenda = prenda[1]
-bysort NombrePignorante: gen first_loan_value = prestamo[1]
-bysort NombrePignorante: gen first_dias_des = dias_al_desempenyo[1] if !missing(des_c)
-gen aux_reincidence_uncond = (fecha_inicial >	first_visit + 75) if !missing(first_product)	
-bysort NombrePignorante : egen reincidence_uncond = max(aux_reincidence_uncond)
+sort NombrePignorante fecha_inicial, stable
+by NombrePignorante: gen first_pawn = _n==1
 
-*Dummy indicating if customer returned after first visit to pawn ANOTHER piece
-gen aux_reincidence = (fecha_inicial >	first_visit + 75 & ///
-	(inrange(prestamo,first_loan_value*0.975,first_loan_value*1.025)!=1 | first_dias_des>=75)) ///
-	if !missing(first_product)	
-bysort NombrePignorante : egen reincidence = max(aux_reincidence)
+by NombrePignorante: gen first_visit = fecha_inicial[1]
+by NombrePignorante: gen first_product = t_producto[1]
+by NombrePignorante: gen first_prenda = prenda[1]
+by NombrePignorante: gen first_loan_value = prestamo[1]
+by NombrePignorante: gen first_dias_des = dias_al_desempenyo[1] if !missing(des_c)
+by NombrePignorante: gen first_dias_close = dias_al_close[1] if !missing(concluyo_c)
 
-*Dummy indicating if customer returned after first visit BEFORE 30/60/75 days
-foreach dy in 30 60 75 {
-gen aux_reincidence_bef`dy' = inrange(fecha_inicial, first_visit + 1, first_visit + `dy') ///
-	if !missing(first_product)	
-bysort NombrePignorante : egen reincidence_bef`dy' = max(aux_reincidence_bef`dy')
-}
+*days from first to *second pawn*
+sort NombrePignorante fecha_inicial prod
+by NombrePignorante: gen days_second_pawns = fecha_inicial[2] - first_visit if _n==1
+
+*Dummy indicating if customer returned to pawn ANOTHER piece
+by NombrePignorante: gen another_piece_second = !inrange(prestamo[2],first_loan_value*0.9,first_loan_value*1.1) if _n==1
+
+*Ever repeat pawns
+bysort NombrePignorante : gen reincidence = !missing(days_second_pawns)
+
+	*Example of other variables
+*Dummy indicating if customer returned after first visit BEFORE x days
+	*bysort NombrePignorante : gen reincidence = days_second_pawns<x & !missing(days_second_pawns)
 
 *Dummy indicating if customer returned after first visit & having recovered first piece
-gen aux_reincidence_rec = (fecha_inicial >	first_visit + first_dias_des & ///
-	first_dias_des<75) ///
-	if !missing(first_product)	
-bysort NombrePignorante : egen reincidence_rec = max(aux_reincidence_rec)
+	*bysort NombrePignorante : gen reincidence = days_second_pawns>=first_visit + first_dias_des
 
-*Dummy indicating if customer returned after first visit to pawn second piece
-*when first one is NOT recovered yet
-gen aux_reincidence_fnr = (fecha_inicial >	first_visit + 75 & ///
-	first_dias_des>=75 ) if !missing(first_product)	
-bysort NombrePignorante : egen reincidence_fnr = max(aux_reincidence_fnr)
+*Dummy indicating if customer returned after first visit to pawn second piece when first one is NOT recovered yet
+	*bysort NombrePignorante : gen reincidence = inrange(days_second_pawns, first_visit, first_visit + first_dias_des)
 
-
-*Dummy indicating if customer received same treatment in reincidence (compared to first visit)
-sort NombrePignorante fecha_inicial					
-bysort NombrePignorante : gen aux_re_product = t_prod ///
-					if aux_reincidence_uncond==1 & aux_reincidence_uncond[_n-1]==0
-bysort NombrePignorante : egen reincidence_product = max(aux_re_product) 
-bysort NombrePignorante : gen same_prod_reincidence = (first_product==reincidence_product) ///
-					if !missing(reincidence)
-
-
-keep NombrePignorante fecha_inicial reincidence* visit_number num_arms ///
-		more_one_arm same_prod_reincidence* first_prenda
+keep if first_pawn==1
+keep NombrePignorante fecha_inicial prenda first* days_second_pawns another_piece_second reincidence
 tempfile temp_rec
 save  `temp_rec'
 restore
 
 
-* Number of visits and treatment arms in first 75 days
-preserve
-duplicates drop NombrePignorante fecha_inicial, force
-sort NombrePignorante fecha_inicial
-bysort NombrePignorante: gen first_visit = fecha_inicial[1]
-keep if (fecha_inicial <= first_visit + 75)
-bysort NombrePignorante: gen visit_number_75 = _N
-replace visit_number_75 = `tr99' if visit_number_75>=`tr99'
-bysort NombrePignorante t_prod : gen unique_arms = _n==1
-replace unique_arms = 0 if missing(t_prod)
-bysort NombrePignorante : egen num_arms_75 = sum(unique_arms)
-gen more_one_arm_75 = (num_arms_75>1)
-keep NombrePignorante visit_number_75 num_arms_75 more_one_arm_75
-duplicates drop
-tempfile temp_rec75
-save  `temp_rec75'
-restore
+merge m:1 NombrePignorante fecha_inicial using `temp_varsC0', nogen
+merge m:1 NombrePignorante fecha_inicial prenda using `temp_rec', nogen
 
-*Dummy indicating if in choice arm, customer selected same product as before
-preserve
-keep if inlist(t_producto,4,5)
-duplicates drop NombrePignorante fecha_inicial, force
-sort NombrePignorante fecha_inicial
-bysort NombrePignorante: gen visit_number_2 = _n
-bysort NombrePignorante: gen choose_same = (producto[_n]==producto[_n-1])
-replace choose_same = . if visit_number_2==1
-keep choose_same NombrePignorante fecha_inicial
-tempfile temp_choose
-save  `temp_choose'
-restore
-
-
-merge m:1 NombrePignorante fecha_inicial using `temp_rec', nogen
-merge m:1 NombrePignorante using `temp_rec75', nogen
-merge m:1 NombrePignorante fecha_inicial using `temp_choose', nogen
-replace choose_same = 2 if missing(choose_same)
 
 *The next variables indicate if the movement exists in the voucher.
 *e.g.
@@ -463,6 +471,7 @@ merge m:1 prenda using `temp_fp', nogen
 replace first_pay = 0 if missing(first_pay)
 
 sort prenda fecha_movimiento HoraMovimiento
+	*Desempeno should be last movement in ticket
 by prenda: gen des_c=desempeno[_N]
 gen def_c = 1-des_c
 by prenda: egen ref_c=max(refrendo)
@@ -470,25 +479,29 @@ by prenda: egen ref_90_c=max(refrendo_90)
 by prenda: egen abo_c=max(abono)
 by prenda: egen vbi_c = max(ventabillete)
 by prenda: egen pam_c=max(pasealmoneda)
-by prenda: gen sum_p_c=sum_p[_N]
-by prenda: gen sum_int_c=sum_int[_N]
-by prenda: gen sum_inc_int_c=sum_inc_int[_N]
-by prenda: gen sum_inc_fee_c=sum_inc_fee[_N]
-by prenda: gen sum_pay_fee_c=sum_pay_fee[_N]
+by prenda: egen sum_p_c=max(sum_p)
+by prenda: egen sum_int_c=max(sum_int)
+by prenda: egen sum_inc_int_c=max(sum_inc_int)
+by prenda: egen sum_inc_fee_c=max(sum_inc_fee)
+by prenda: egen sum_pay_fee_c=max(sum_pay_fee)
 by prenda: gen pays_c=(sum_p_c>0) if !missing(sum_p_c)
 by prenda: egen mn_p_=mean(pagos) if clave_movimiento!=4 & pagos!=0
 by prenda: egen mn_p_c=max(mn_p_) 
 replace mn_p_c = 0 if missing(mn_p_c)
-by prenda: gen sum_porcp_c=sum_porc_p[_N]
-by prenda: gen sum_porc_int_c=sum_porc_int[_N]
-by prenda: gen sum_porc_inc_int_c=sum_porc_inc_int[_N]
-by prenda: gen sum_porc_inc_fee_c=sum_porc_inc_fee[_N]
-by prenda: gen sum_porc_pay_fee_c=sum_porc_pay_fee[_N]
+by prenda: egen sum_porcp_c=max(sum_porc_p)
+by prenda: egen sum_porcp30_c=sum(porc_pagos) if dias_inicio<=35
+by prenda: egen sum_porcp60_c=sum(porc_pagos) if dias_inicio<=65
+by prenda: egen sum_porcp90_c=sum(porc_pagos) if dias_inicio<=95
+by prenda: egen sum_porcp105_c=sum(porc_pagos) if dias_inicio<=110
+by prenda: egen sum_porc_int_c=max(sum_porc_int)
+by prenda: egen sum_porc_inc_int_c=max(sum_porc_inc_int)
+by prenda: egen sum_porc_inc_fee_c=max(sum_porc_inc_fee)
+by prenda: egen sum_porc_pay_fee_c=max(sum_porc_pay_fee)
 by prenda: gen num_p=sum_np[_N]
 by prenda: gen num_v=sum_visit[_N]
 by prenda: egen dias_primer_pago = min(dpp)
 by prenda: gen dias_ultimo_mov = dias_inicio[_N]
-gen dias_inicio_d=dias_inicio if des_c
+gen dias_inicio_d=dias_inicio if des_c==1
 by prenda: gen dias_al_desempenyo=dias_inicio_d[_N]
 replace dias_al_desempenyo = 1 if dias_al_desempenyo==0
 replace dias_inicio = 1 if dias_inicio==0 & des_c==1
@@ -544,7 +557,11 @@ label var sum_inc_fee_c "Cum (total) incurred fees"
 label var sum_pay_fee_c "Cum (total) payed fees"
 label var pays_c "Dummy of payment>0"
 label var mn_p_c "Mean of payments"
-label var sum_porcp_c "Percentage of payment"
+label var sum_porcp_c "Percentage of payment (total)"
+label var sum_porcp30_c "Percentage of payment (at 30 days)"
+label var sum_porcp60_c "Percentage of payment (at 60 days)"
+label var sum_porcp90_c "Percentage of payment (at 90 days)"
+label var sum_porcp105_c "Percentage of payment (at 105 days)"
 label var sum_porc_int_c "Percentage of interest"
 label var sum_porc_inc_int_c "Percentage of incurred interest"
 label var sum_porc_inc_fee_c "Percentage of incurred fees"

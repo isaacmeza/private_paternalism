@@ -104,10 +104,10 @@ by NombrePignorante : gen kp = 1 if (choose_nsq!=. & (num_pr_tr==1  ///
 *coming next
 sort NombrePignorante fecha_inicial
 preserve
-drop if missing(comb_prod)
 by NombrePignorante : gen first = comb_prod[1]
+by NombrePignorante : gen first_t_pr = pt_prod[1]
 by NombrePignorante : gen num_prods = _N
-keep NombrePignorante first num_prods
+keep NombrePignorante first num_prods first_t_pr
 duplicates drop
 tempfile tempfirst
 save `tempfirst'

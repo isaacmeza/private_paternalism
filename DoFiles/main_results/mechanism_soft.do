@@ -30,6 +30,7 @@ gen pay_default = (pays_c==1 & def_c==1)
 gen first_pay_porc = first_pay/prestamo
 
 *Conditional on default
+gen num_v_d = num_v if def_c==1
 gen sum_porcp_c_d = sum_porcp_c if def_c==1
 gen zero_pay_default_d = zero_pay_default if def_c==1
 
@@ -43,7 +44,7 @@ gen rec_fd = (des_c==1 & num_v==1)
 *Mean % size of payment
 gen mn_p_c_p = mn_p_c/prestamo
 
-local mec_vars dias_primer_pago first_pay_porc rec_fd num_v  num_v_r mn_p_c_p dias_al_desempenyo  dias_ultimo_mov  sum_porcp_c sum_porcp_c_d pay_default zero_pay_default zero_pay_default_d 
+local mec_vars dias_primer_pago first_pay_porc rec_fd num_v num_v_d num_v_r mn_p_c_p dias_al_desempenyo  dias_ultimo_mov  sum_porcp_c sum_porcp_c_d pay_default zero_pay_default zero_pay_default_d 
 
 
 ********************************************************************************

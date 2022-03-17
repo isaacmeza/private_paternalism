@@ -76,7 +76,7 @@ gen dow=dow(fecha_inicial)
 *Aux Dummies (Fixed effects)
 tab num_arms, gen(num_arms_d)
 tab visit_number, gen(visit_number_d)
-foreach var of varlist dow suc /*prenda_tipo edo_civil choose_same trabajo*/  {
+foreach var of varlist dow suc  {
 	tab `var', gen(dummy_`var')
 	}
 drop num_arms_d1 num_arms_d2 visit_number_d1

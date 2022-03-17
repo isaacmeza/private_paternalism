@@ -508,10 +508,7 @@ This estimate of the ToT is the standard one that would result from instrumentin
 
 \[ToT = \frac{\beta^C}{p}; \hspace{15} TuT = \frac{(\beta^F - \beta^C)}{(1-p)}; \hspace{15} (ToT-TuT) = \frac{\beta^C}{p}- \frac{(\beta^F - \beta^C)}{(1-p)}. \]
 
-Table \ref{tot_tut} shows the results of this analysis.  Across the board, the TuT is greater than the ToT which illustrates that the `wrong' people are choosing commitment in terms of direct financial cost.\footnote{It is worth noting that the statistical power of these estimands is driven by the compliance rate; given our low overall compliance we are better powered to measure the TuT than the ToT, and the power for the difference between the two would be highest with a compliance rate of 50\%.}
-
-
-\textcolor{red}{Discussion to be fortified with updated table}\ref{tot_tut}
+Table \ref{tot_tut} shows the results of this analysis.  Given that the ITT results for the Choice arm imply an insignificant worsening of outcomes relative to the control, our estimates of the Treatment on the Treated in the first row of the bottom panel show negative results that are larger in absolute magnitude (multiplied by \~9, the inverse of the compliance rate) and similarly insignificant.  The Treatment on the Untreated (TuT), conversely, is strongly positive across the board, and indicates a significant improvement for all outcomes (here ITTs are multiplied by 1.12, the inverse of the non-compliance rate).  Most novel is the ability to form a test of the difference between the ToT and the TuT, which is conducted in the bottom rows of the table.  We provide four different ways of estimating p-values; the standard clustered estimates motivated by the experimental design, normal and percentile bootstraps, and randomization inference.  The differences between treatment effects for compliers and non-compliers are of borderline significance in some of the unadjusted specifications, but are not significant once adjusted.\footnote{It is worth noting that the statistical power of these estimands is driven by the compliance rate; given our low overall compliance we are better powered to measure the TuT than the ToT, and the power for the difference between the two would be highest with a compliance rate of 50\%.}   
 
 
 
@@ -995,27 +992,27 @@ an OLS regression, and each panel represents a different treatment arm-control c
 
 
 
-\begin{table}[H]
-\caption{Learning analysis with experimental data}
-\label{learning_reg}
-\begin{center}
-\scriptsize{\input{./Tables/learning_exp.tex}}
-\end{center}
- \scriptsize This table shows choice after experience of an experimental arm in the previous loan. Columns (1)-(4) restrict the sample to borrowers whose second loan falls in the Choice commitment arm. Dependent variable in columns (5)-(8) is `ever chooses commitment', a dummy variable defined to be $0$ if borrower didn't take a loan, or if borrower took a loan and didn't choose commitment, and it is $1$ only when borrower took a loan and chose commitment. 
-%\textit{Do file: } \texttt{learning\_reg.do}
-\end{table}
+% \begin{table}[H]
+% \caption{Learning analysis with experimental data}
+% \label{learning_reg}
+% \begin{center}
+% \scriptsize{\input{./Tables/learning_exp.tex}}
+% \end{center}
+%  \scriptsize This table shows choice after experience of an experimental arm in the previous loan. Columns (1)-(4) restrict the sample to borrowers whose second loan falls in the Choice commitment arm. Dependent variable in columns (5)-(8) is `ever chooses commitment', a dummy variable defined to be $0$ if borrower didn't take a loan, or if borrower took a loan and didn't choose commitment, and it is $1$ only when borrower took a loan and chose commitment. 
+% %\textit{Do file: } \texttt{learning\_reg.do}
+% \end{table}
 
 
 
-\begin{table}[H]
-\caption{Differential attrition}
-\label{diff_att}
-\begin{center}
-\scriptsize{\input{./Tables/differential_attrition.tex}}
-\end{center}
- \scriptsize This table shows differential attrition in the experimental arms for (1) experiencing a second arm and (2) when the second loan is a Choice commitment arm.
-%\textit{Do file: } \texttt{learning\_reg.do}
-\end{table}
+% \begin{table}[H]
+% \caption{Differential attrition}
+% \label{diff_att}
+% \begin{center}
+% \scriptsize{\input{./Tables/differential_attrition.tex}}
+% \end{center}
+%  \scriptsize This table shows differential attrition in the experimental arms for (1) experiencing a second arm and (2) when the second loan is a Choice commitment arm.
+% %\textit{Do file: } \texttt{learning\_reg.do}
+% \end{table}
 
 
 
@@ -1280,7 +1277,18 @@ an OLS regression, and each panel represents a different treatment arm-control c
 
 
 
-
+\begin{figure}[H]
+     \caption{ToT \& TuT as LATE}
+    \label{tot_tut_graph}
+    \begin{center}
+    \begin{subfigure}{0.9\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/tot_tut_apr.eps}
+    \end{subfigure}
+    \end{center}
+    \scriptsize
+    This figure shows 
+\end{figure}
 
 
 
@@ -1644,9 +1652,9 @@ an OLS regression, and each panel represents a different treatment arm-control c
 %      \footnotesize{ } \textit{Do file: }  \texttt{fc\_te.do, def\_te.do, fc\_quantilereg.do}
 %\end{figure}
 
-\newpage
+%\newpage
 
-\input{OA.tex}
+%\input{OA.tex}
 
 \end{document}
 
