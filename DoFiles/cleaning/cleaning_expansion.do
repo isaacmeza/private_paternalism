@@ -1,3 +1,24 @@
+
+********************
+version 17.0
+********************
+/* 
+/*******************************************************************************
+* Name of file:	
+* Author:	Isaac M
+* Machine:	Isaac M 											
+* Date of creation:	
+* Last date of modification: March. 21, 2021 
+* Modifications: 
+* Files used:     
+		- 
+* Files created:  
+
+* Purpose: 
+
+*******************************************************************************/
+*/
+
 *import delimited "${directorio}\Raw\basedatos_seira.csv", clear
 use "${directorio}\Raw\basedatos_seira.dta", clear
 
@@ -43,7 +64,7 @@ drop if fechavencimiento>`r(max)'
 drop if fechaaltadelultimodetalle>fechavencimiento
 
 *Default
-gen def = !missing(fechacva) 
+gen def = !missing(fechavta) 
 *Not refrendums
 gen nref = (tipooperacion=="ALT")
 

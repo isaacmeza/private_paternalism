@@ -151,13 +151,15 @@ foreach var of varlist tau_apr tau_eff tau_des {
 	forvalues i=1/`rr' {
 		local lo = ranges[`i',1]
 		local hi = ranges[`i',2]
-		replace sig_range = 0.01 if inrange(inst,`lo',`hi')
+		if !missing(`lo') {
+			replace sig_range = 0.01 if inrange(inst,`lo',`hi')
+		}
 		}
 
 	*Plot
 	twoway (line t1 t0 inst , ///
 		sort ylab(, grid)) ///
-		(line sig_range inst , lcolor(navy)) , ///
+		(scatter sig_range inst , msymbol(Oh) msize(tiny) lcolor(navy)) , ///
 		legend(order(1 "Choosers" 2 "Non-choosers") rows(1)) xtitle("T.effect") scheme(s2mono) graphregion(color(white)) 
 	graph export "$directorio/Figuras/cdf_predchoose_`var'.pdf", replace
 	restore	

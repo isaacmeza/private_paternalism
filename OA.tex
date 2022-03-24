@@ -277,6 +277,32 @@
 \subsection{Main treatment effects: Additional material}
 
 
+\begin{table}[H]
+\caption{Effects on several definitions of cost - Soft arms}
+\label{table_robustness_fc_soft}
+\begin{center}
+\scriptsize{\input{./Tables/fc_robustness_soft.tex}}
+\end{center}
+ \scriptsize
+
+%\textit{Do file: } \texttt{fc\_robustness\_soft.do}
+\end{table}
+
+\begin{landscape}
+
+\begin{table}[H]
+\caption{Intermediate outcomes - Soft arms}
+\label{mechanisms_soft}
+\begin{center}
+\scriptsize{\input{./Tables/mechanism_soft.tex}}
+\end{center}
+
+%\textit{Do file: } \texttt{mechanisms\_soft.do}
+\end{table}
+
+\end{landscape}
+
+\cleardoublepage
 
 % \begin{figure}[H]
 %         \caption{FC restricted to 115 days}
@@ -341,16 +367,16 @@
       %\textit{Do file: }  \texttt{binscatter\_hte.do}
 \end{figure}
 
-\begin{figure}[H]
-        \caption{Repeat purchase before 30/60 days}
-    \label{reincidence_before}
-    \begin{center}
-        \centering
-        \includegraphics[width=0.50\textwidth]{Figuras/re_te_earlydays.pdf}
-    \end{center}
-     \scriptsize This figure shows the estimated treatment effect of repeat purchase before 30 \& 60 days.
-     %\textit{Do file: }  \texttt{re\_te\_earlydays.do}
-\end{figure}
+% \begin{figure}[H]
+%         \caption{Repeat purchase before 30/60 days}
+%     \label{reincidence_before}
+%     \begin{center}
+%         \centering
+%         \includegraphics[width=0.50\textwidth]{Figuras/re_te_earlydays.pdf}
+%     \end{center}
+%      \scriptsize This figure shows the estimated treatment effect of repeat purchase before 30 \& 60 days.
+%      %\textit{Do file: }  \texttt{re\_te\_earlydays.do}
+% \end{figure}
 
 
 
@@ -544,107 +570,107 @@ We use \cite{atheygrf} \texttt{causal\_forest} of the \texttt{grf} library in $R
 
 
 
-\begin{comment}
-\begin{figure}[H]
-    \caption{Heterogeneous Treatment Effect: Promise-forcing contract}
-    \label{heterogeneous_te_3}
-    \begin{center}
-    \begin{subfigure}{0.4\textwidth}
-        \caption{Financial cost}
-        \centering
-        \includegraphics[width=\textwidth]{Figuras/he_dist_fc_admin_disc_pro_3.pdf}
-    \end{subfigure}
-    \begin{subfigure}{0.4\textwidth}
-        \caption*{}
-        \centering
-        \includegraphics[width=\textwidth]{Figuras/HE/he_int_vertical_fc_admin_disc_pro_3.pdf}
-    \end{subfigure}
+
+% \begin{figure}[H]
+%     \caption{Heterogeneous Treatment Effect: Promise-forcing contract}
+%     \label{heterogeneous_te_3}
+%     \begin{center}
+%     \begin{subfigure}{0.4\textwidth}
+%         \caption{Financial cost}
+%         \centering
+%         \includegraphics[width=\textwidth]{Figuras/he_dist_fc_admin_disc_pro_3.pdf}
+%     \end{subfigure}
+%     \begin{subfigure}{0.4\textwidth}
+%         \caption*{}
+%         \centering
+%         \includegraphics[width=\textwidth]{Figuras/HE/he_int_vertical_fc_admin_disc_pro_3.pdf}
+%     \end{subfigure}
     
-    \begin{subfigure}{0.4\textwidth}
-        \caption{Losing Pawn}
-        \centering
-        \includegraphics[width=\textwidth]{Figuras/he_dist_def_c_pro_3.pdf}
-    \end{subfigure}
-    \begin{subfigure}{0.4\textwidth}
-        \caption*{}
-        \centering
-        \includegraphics[width=\textwidth]{Figuras/HE/he_int_vertical_def_c_pro_3.pdf}
-    \end{subfigure}
-    \end{center}
-     \scriptsize
-      %\footnotesize{ \textit{Do file: }  \texttt{analyze\_grf\_single\_arm.do}}
-\end{figure}
-\end{comment}
+%     \begin{subfigure}{0.4\textwidth}
+%         \caption{Losing Pawn}
+%         \centering
+%         \includegraphics[width=\textwidth]{Figuras/he_dist_def_c_pro_3.pdf}
+%     \end{subfigure}
+%     \begin{subfigure}{0.4\textwidth}
+%         \caption*{}
+%         \centering
+%         \includegraphics[width=\textwidth]{Figuras/HE/he_int_vertical_def_c_pro_3.pdf}
+%     \end{subfigure}
+%     \end{center}
+%      \scriptsize
+%       %\footnotesize{ \textit{Do file: }  \texttt{analyze\_grf\_single\_arm.do}}
+% \end{figure}
 
 
 
 
 
-\begin{comment}
 
-\begin{figure}[H]
-    \caption{Heterogeneous Treatment Effect - Choice/Fee}
-    \label{heterogeneous_te_4}
-    \begin{center}
-    \begin{subfigure}{0.4\textwidth}
-        \caption{Financial cost}
-        \centering
-        \includegraphics[width=\textwidth]{Figuras/he_dist_fc_admin_disc_pro_4.pdf}
-    \end{subfigure}
-    \begin{subfigure}{0.4\textwidth}
-        \caption*{}
-        \centering
-        \includegraphics[width=\textwidth]{Figuras/HE/he_int_vertical_fc_admin_disc_pro_4.pdf}
-    \end{subfigure}
+
+
+% \begin{figure}[H]
+%     \caption{Heterogeneous Treatment Effect - Choice/Fee}
+%     \label{heterogeneous_te_4}
+%     \begin{center}
+%     \begin{subfigure}{0.4\textwidth}
+%         \caption{Financial cost}
+%         \centering
+%         \includegraphics[width=\textwidth]{Figuras/he_dist_fc_admin_disc_pro_4.pdf}
+%     \end{subfigure}
+%     \begin{subfigure}{0.4\textwidth}
+%         \caption*{}
+%         \centering
+%         \includegraphics[width=\textwidth]{Figuras/HE/he_int_vertical_fc_admin_disc_pro_4.pdf}
+%     \end{subfigure}
     
-    \begin{subfigure}{0.4\textwidth}
-        \caption{Losing Pawn}
-        \centering
-        \includegraphics[width=\textwidth]{Figuras/he_dist_def_c_pro_4.pdf}
-    \end{subfigure}
-    \begin{subfigure}{0.4\textwidth}
-        \caption*{}
-        \centering
-        \includegraphics[width=\textwidth]{Figuras/HE/he_int_vertical_def_c_pro_4.pdf}
-    \end{subfigure}
-    \end{center}
-     \footnotesize \textit{Notes: } The distribution plots the FC treatment effect for the interval $[\mu-2\sigma,\mu+2\sigma]$ to ignore the outliers.
-      \footnotesize{ \textit{Do file: }  \texttt{analyze\_grf\_single\_arm.do}}
-\end{figure}
+%     \begin{subfigure}{0.4\textwidth}
+%         \caption{Losing Pawn}
+%         \centering
+%         \includegraphics[width=\textwidth]{Figuras/he_dist_def_c_pro_4.pdf}
+%     \end{subfigure}
+%     \begin{subfigure}{0.4\textwidth}
+%         \caption*{}
+%         \centering
+%         \includegraphics[width=\textwidth]{Figuras/HE/he_int_vertical_def_c_pro_4.pdf}
+%     \end{subfigure}
+%     \end{center}
+%      \footnotesize \textit{Notes: } The distribution plots the FC treatment effect for the interval $[\mu-2\sigma,\mu+2\sigma]$ to ignore the outliers.
+%       \footnotesize{ \textit{Do file: }  \texttt{analyze\_grf\_single\_arm.do}}
+% \end{figure}
 
 
 
 
-\begin{figure}[H]
-    \caption{Heterogeneous Treatment Effect - Choice/Promise}
-    \label{heterogeneous_te_5}
-    \begin{center}
-    \begin{subfigure}{0.4\textwidth}
-        \caption{Financial cost}
-        \centering
-        \includegraphics[width=\textwidth]{Figuras/he_dist_fc_admin_disc_pro_5.pdf}
-    \end{subfigure}
-    \begin{subfigure}{0.4\textwidth}
-        \caption*{}
-        \centering
-        \includegraphics[width=\textwidth]{Figuras/HE/he_int_vertical_fc_admin_disc_pro_5.pdf}
-    \end{subfigure}
-    \begin{subfigure}{0.4\textwidth}
-        \caption{Losing Pawn}
-        \centering
-        \includegraphics[width=\textwidth]{Figuras/he_dist_def_c_pro_5.pdf}
-    \end{subfigure}
-    \begin{subfigure}{0.4\textwidth}
-        \caption*{}
-        \centering
-        \includegraphics[width=\textwidth]{Figuras/HE/he_int_vertical_def_c_pro_5.pdf}
-    \end{subfigure}
-    \end{center}
-     \footnotesize \textit{Notes: } 
-      \footnotesize{ \textit{Do file: }  \texttt{analyze\_grf\_single\_arm.do}}
-\end{figure}
+% \begin{figure}[H]
+%     \caption{Heterogeneous Treatment Effect - Choice/Promise}
+%     \label{heterogeneous_te_5}
+%     \begin{center}
+%     \begin{subfigure}{0.4\textwidth}
+%         \caption{Financial cost}
+%         \centering
+%         \includegraphics[width=\textwidth]{Figuras/he_dist_fc_admin_disc_pro_5.pdf}
+%     \end{subfigure}
+%     \begin{subfigure}{0.4\textwidth}
+%         \caption*{}
+%         \centering
+%         \includegraphics[width=\textwidth]{Figuras/HE/he_int_vertical_fc_admin_disc_pro_5.pdf}
+%     \end{subfigure}
+%     \begin{subfigure}{0.4\textwidth}
+%         \caption{Losing Pawn}
+%         \centering
+%         \includegraphics[width=\textwidth]{Figuras/he_dist_def_c_pro_5.pdf}
+%     \end{subfigure}
+%     \begin{subfigure}{0.4\textwidth}
+%         \caption*{}
+%         \centering
+%         \includegraphics[width=\textwidth]{Figuras/HE/he_int_vertical_def_c_pro_5.pdf}
+%     \end{subfigure}
+%     \end{center}
+%      \footnotesize \textit{Notes: } 
+%       \footnotesize{ \textit{Do file: }  \texttt{analyze\_grf\_single\_arm.do}}
+% \end{figure}
 
-\end{comment}
+
 
 
 
@@ -1025,16 +1051,6 @@ and the RHS is a function of observed data only.
 \newpage 
 
 \subsection{New results}
-\begin{figure}[H]
-        \caption{Financial cost for different discount rates}
-    \label{fc_discount_rates}
-    \begin{center}
-        \centering
-        \includegraphics[width=0.55\textwidth]{Figuras/discount_effect.pdf}
-    \end{center}
-     \scriptsize This Figure estimates the treatment effect on financial cost with different discount rates.  
-     %\textit{Do file: }  \texttt{discounted\_noeffect.do}
-\end{figure}
 
 
 
@@ -1058,20 +1074,17 @@ and the RHS is a function of observed data only.
 % \end{figure}
 
 
-\scriptsize {
-\noindent This Figure shows the treatment effects for the main outcomes when pooling all arms in the same regression.
-}
 
-\begin{figure}[H]
-        \caption{Treatment effect decomposition of the Financial Cost }
-    \label{reg_int_pro_2}
-    \begin{center}
-        \centering
-        \includegraphics[width=0.60\textwidth]{Figuras/int_te_pro_2.pdf}
-    \end{center}
-     \scriptsize This Figure is a "close-up" for the estimates found in Figure \ref{fc_pro2} - Panel (a). It shows the treatment effects on payed \& incurred interest, the former defined as the actual interest payed, and the latter is the sum of all potential interests (for those pawns that were lost we calculate the interest generated until day 230). In the right axis we show the treatment effect on the payed fees. Finally, we analyze this effect for the subsamples that recovers or loses the pawn.
-     %\textit{Do file: }  \texttt{reg_\int.do}
-\end{figure}
+% \begin{figure}[H]
+%         \caption{Treatment effect decomposition of the Financial Cost }
+%     \label{reg_int_pro_2}
+%     \begin{center}
+%         \centering
+%         \includegraphics[width=0.60\textwidth]{Figuras/int_te_pro_2.pdf}
+%     \end{center}
+%      \scriptsize This Figure is a "close-up" for the estimates found in Figure \ref{fc_pro2} - Panel (a). It shows the treatment effects on payed \& incurred interest, the former defined as the actual interest payed, and the latter is the sum of all potential interests (for those pawns that were lost we calculate the interest generated until day 230). In the right axis we show the treatment effect on the payed fees. Finally, we analyze this effect for the subsamples that recovers or loses the pawn.
+%      %\textit{Do file: }  \texttt{reg_\int.do}
+% \end{figure}
 
 
 % \begin{figure}[H]
@@ -1084,60 +1097,6 @@ and the RHS is a function of observed data only.
 %      \scriptsize  This Figure shows the occurrence and frequency of renewals. It locates in time, respective to the day the loan started, when the renewal occurs for both the first and second renewal. Note that the first renewal is concentrated around 100 days, while the second is concentrated around the 200 days, corresponding to the first and second cycle. 
 %      %\textit{Do file: }  \texttt{ref_\dist.do}
 % \end{figure}
-
-\begin{figure}[H]
-    \caption{Histogram of payments}
-    \label{hist_payments}
-    \begin{center}
-    \begin{subfigure}{0.31\textwidth}
-        \caption{Status-quo}
-        \centering
-        \includegraphics[width=\textwidth]{Figuras/hist_payments_sq.pdf}
-    \end{subfigure}
-    \begin{subfigure}{0.31\textwidth}
-        \caption{Forced commitment}
-        \centering
-        \includegraphics[width=\textwidth]{Figuras/hist_payments_fc.pdf}
-    \end{subfigure}
-    \begin{subfigure}{0.31\textwidth}
-        \caption{Choice commitment}
-        \centering
-        \includegraphics[width=\textwidth]{Figuras/hist_payments_cc.pdf}
-    \end{subfigure}    
-        \begin{subfigure}{0.31\textwidth}
-        \caption{Forced soft}
-        \centering
-        \includegraphics[width=\textwidth]{Figuras/hist_payments_fs.pdf}
-    \end{subfigure}
-    \begin{subfigure}{0.31\textwidth}
-        \caption{Choice soft}
-        \centering
-        \includegraphics[width=\textwidth]{Figuras/hist_payments_cs.pdf}
-    \end{subfigure} 
-    \end{center}
-     \scriptsize
-      %\footnotesize{ \textit{Do file: }  \texttt{hist\_payments.do}}
-\end{figure}
-
-
-\begin{figure}[H]
-        \caption{Survival graphs}
-    \label{survival_graph}
-    \begin{center}
-   \begin{subfigure}{0.45\textwidth}
-        \caption{Closed contracts}
-        \centering
-        \includegraphics[width=\textwidth]{Figuras/survival_graph_ended.pdf}
-    \end{subfigure} 
-       \begin{subfigure}{0.45\textwidth}
-        \caption{Recovery}
-        \centering
-        \includegraphics[width=\textwidth]{Figuras/survival_graph_unpledge.pdf}
-    \end{subfigure} 
-    \end{center}
-     \scriptsize  This Figure shows the accumulated percentage of recovery in time by treatment arm. 
-     %\textit{Do file: }  \texttt{survival\_graph.do}
-\end{figure}
 
 
 
@@ -1195,118 +1154,118 @@ and the RHS is a function of observed data only.
 
 
 
-\begin{comment}
-\begin{figure}[H]
-        \caption{Percentage of payments}
-    \label{perc_payments}
-    \begin{center}
-    \begin{subfigure}{.31\textwidth}
-    \caption{Control}
-        \centering
-        \includegraphics[width=\textwidth]{Figuras/hist_porc_pay_pro_1.pdf}
-    \end{subfigure}
-    \begin{subfigure}{.31\textwidth}
-    \caption{Forcing - fee}
-        \centering
-        \includegraphics[width=\textwidth]{Figuras/hist_porc_pay_pro_2.pdf}
-    \end{subfigure}   
-     \begin{subfigure}{.31\textwidth}
-    \caption{Forcing - promise}
-        \centering
-        \includegraphics[width=\textwidth]{Figuras/hist_porc_pay_pro_3.pdf}
-    \end{subfigure}  
-     \begin{subfigure}{.31\textwidth}
-    \caption{Choice - fee}
-        \centering
-        \includegraphics[width=\textwidth]{Figuras/hist_porc_pay_pro_4.pdf}
-    \end{subfigure}  
-     \begin{subfigure}{.31\textwidth}
-    \caption{Choice - fee - SQ}
-        \centering
-        \includegraphics[width=\textwidth]{Figuras/hist_porc_pay_pro_6.pdf}
-    \end{subfigure}    
-     \begin{subfigure}{.31\textwidth}
-    \caption{Choice - fee - NSQ}
-        \centering
-        \includegraphics[width=\textwidth]{Figuras/hist_porc_pay_pro_7.pdf}
-    \end{subfigure}    
-     \begin{subfigure}{.31\textwidth}
-    \caption{Choice - promise}
-        \centering
-        \includegraphics[width=\textwidth]{Figuras/hist_porc_pay_pro_5.pdf}
-    \end{subfigure}  
-     \begin{subfigure}{.31\textwidth}
-    \caption{Choice - promise - SQ}
-        \centering
-        \includegraphics[width=\textwidth]{Figuras/hist_porc_pay_pro_8.pdf}
-    \end{subfigure}    
-     \begin{subfigure}{.31\textwidth}
-    \caption{Choice - promise - NSQ}
-        \centering
-        \includegraphics[width=\textwidth]{Figuras/hist_porc_pay_pro_9.pdf}    
-    \end{subfigure}        
-    \end{center}
-     \footnotesize \textit{Notes: } 
-      \footnotesize{ \textit{Do file: }  \texttt{hist\_payments.do}}
-\end{figure}
+
+% \begin{figure}[H]
+%         \caption{Percentage of payments}
+%     \label{perc_payments}
+%     \begin{center}
+%     \begin{subfigure}{.31\textwidth}
+%     \caption{Control}
+%         \centering
+%         \includegraphics[width=\textwidth]{Figuras/hist_porc_pay_pro_1.pdf}
+%     \end{subfigure}
+%     \begin{subfigure}{.31\textwidth}
+%     \caption{Forcing - fee}
+%         \centering
+%         \includegraphics[width=\textwidth]{Figuras/hist_porc_pay_pro_2.pdf}
+%     \end{subfigure}   
+%      \begin{subfigure}{.31\textwidth}
+%     \caption{Forcing - promise}
+%         \centering
+%         \includegraphics[width=\textwidth]{Figuras/hist_porc_pay_pro_3.pdf}
+%     \end{subfigure}  
+%      \begin{subfigure}{.31\textwidth}
+%     \caption{Choice - fee}
+%         \centering
+%         \includegraphics[width=\textwidth]{Figuras/hist_porc_pay_pro_4.pdf}
+%     \end{subfigure}  
+%      \begin{subfigure}{.31\textwidth}
+%     \caption{Choice - fee - SQ}
+%         \centering
+%         \includegraphics[width=\textwidth]{Figuras/hist_porc_pay_pro_6.pdf}
+%     \end{subfigure}    
+%      \begin{subfigure}{.31\textwidth}
+%     \caption{Choice - fee - NSQ}
+%         \centering
+%         \includegraphics[width=\textwidth]{Figuras/hist_porc_pay_pro_7.pdf}
+%     \end{subfigure}    
+%      \begin{subfigure}{.31\textwidth}
+%     \caption{Choice - promise}
+%         \centering
+%         \includegraphics[width=\textwidth]{Figuras/hist_porc_pay_pro_5.pdf}
+%     \end{subfigure}  
+%      \begin{subfigure}{.31\textwidth}
+%     \caption{Choice - promise - SQ}
+%         \centering
+%         \includegraphics[width=\textwidth]{Figuras/hist_porc_pay_pro_8.pdf}
+%     \end{subfigure}    
+%      \begin{subfigure}{.31\textwidth}
+%     \caption{Choice - promise - NSQ}
+%         \centering
+%         \includegraphics[width=\textwidth]{Figuras/hist_porc_pay_pro_9.pdf}    
+%     \end{subfigure}        
+%     \end{center}
+%      \footnotesize \textit{Notes: } 
+%       \footnotesize{ \textit{Do file: }  \texttt{hist\_payments.do}}
+% \end{figure}
 
 
 
 
-\begin{figure}[H]
-        \caption{Percentage of payment conditional on positive payment and Losing Pawn}
-    \label{perc_payments_conditional}
-    \begin{center}
-    \begin{subfigure}{.31\textwidth}
-    \caption{Control}
-        \centering
-        \includegraphics[width=\textwidth]{Figuras/hist_porc_pay_cond_pro_1.pdf}
-    \end{subfigure}
-    \begin{subfigure}{.31\textwidth}
-    \caption{Forcing - fee}
-        \centering
-        \includegraphics[width=\textwidth]{Figuras/hist_porc_pay_cond_pro_2.pdf}
-    \end{subfigure}   
-     \begin{subfigure}{.31\textwidth}
-    \caption{Forcing - promise}
-        \centering
-        \includegraphics[width=\textwidth]{Figuras/hist_porc_pay_cond_pro_3.pdf}
-    \end{subfigure}  
-     \begin{subfigure}{.31\textwidth}
-    \caption{Choice - fee}
-        \centering
-        \includegraphics[width=\textwidth]{Figuras/hist_porc_pay_cond_pro_4.pdf}
-    \end{subfigure}  
-     \begin{subfigure}{.31\textwidth}
-    \caption{Choice - fee - SQ}
-        \centering
-        \includegraphics[width=\textwidth]{Figuras/hist_porc_pay_cond_pro_6.pdf}
-    \end{subfigure}    
-     \begin{subfigure}{.31\textwidth}
-    \caption{Choice - fee - NSQ}
-        \centering
-        \includegraphics[width=\textwidth]{Figuras/hist_porc_pay_cond_pro_7.pdf}
-    \end{subfigure}    
-     \begin{subfigure}{.31\textwidth}
-    \caption{Choice - promise}
-        \centering
-        \includegraphics[width=\textwidth]{Figuras/hist_porc_pay_cond_pro_5.pdf}
-    \end{subfigure}  
-     \begin{subfigure}{.31\textwidth}
-    \caption{Choice - promise - SQ}
-        \centering
-        \includegraphics[width=\textwidth]{Figuras/hist_porc_pay_cond_pro_8.pdf}
-    \end{subfigure}    
-     \begin{subfigure}{.31\textwidth}
-    \caption{Choice - promise - NSQ}
-        \centering
-        \includegraphics[width=\textwidth]{Figuras/hist_porc_pay_cond_pro_9.pdf}    
-    \end{subfigure}        
-    \end{center}
-     \footnotesize \textit{Notes: } 
-      \footnotesize{ \textit{Do file: }  \texttt{hist\_payments.do}}
-\end{figure}
-\end{comment}
+% \begin{figure}[H]
+%         \caption{Percentage of payment conditional on positive payment and Losing Pawn}
+%     \label{perc_payments_conditional}
+%     \begin{center}
+%     \begin{subfigure}{.31\textwidth}
+%     \caption{Control}
+%         \centering
+%         \includegraphics[width=\textwidth]{Figuras/hist_porc_pay_cond_pro_1.pdf}
+%     \end{subfigure}
+%     \begin{subfigure}{.31\textwidth}
+%     \caption{Forcing - fee}
+%         \centering
+%         \includegraphics[width=\textwidth]{Figuras/hist_porc_pay_cond_pro_2.pdf}
+%     \end{subfigure}   
+%      \begin{subfigure}{.31\textwidth}
+%     \caption{Forcing - promise}
+%         \centering
+%         \includegraphics[width=\textwidth]{Figuras/hist_porc_pay_cond_pro_3.pdf}
+%     \end{subfigure}  
+%      \begin{subfigure}{.31\textwidth}
+%     \caption{Choice - fee}
+%         \centering
+%         \includegraphics[width=\textwidth]{Figuras/hist_porc_pay_cond_pro_4.pdf}
+%     \end{subfigure}  
+%      \begin{subfigure}{.31\textwidth}
+%     \caption{Choice - fee - SQ}
+%         \centering
+%         \includegraphics[width=\textwidth]{Figuras/hist_porc_pay_cond_pro_6.pdf}
+%     \end{subfigure}    
+%      \begin{subfigure}{.31\textwidth}
+%     \caption{Choice - fee - NSQ}
+%         \centering
+%         \includegraphics[width=\textwidth]{Figuras/hist_porc_pay_cond_pro_7.pdf}
+%     \end{subfigure}    
+%      \begin{subfigure}{.31\textwidth}
+%     \caption{Choice - promise}
+%         \centering
+%         \includegraphics[width=\textwidth]{Figuras/hist_porc_pay_cond_pro_5.pdf}
+%     \end{subfigure}  
+%      \begin{subfigure}{.31\textwidth}
+%     \caption{Choice - promise - SQ}
+%         \centering
+%         \includegraphics[width=\textwidth]{Figuras/hist_porc_pay_cond_pro_8.pdf}
+%     \end{subfigure}    
+%      \begin{subfigure}{.31\textwidth}
+%     \caption{Choice - promise - NSQ}
+%         \centering
+%         \includegraphics[width=\textwidth]{Figuras/hist_porc_pay_cond_pro_9.pdf}    
+%     \end{subfigure}        
+%     \end{center}
+%      \footnotesize \textit{Notes: } 
+%       \footnotesize{ \textit{Do file: }  \texttt{hist\_payments.do}}
+% \end{figure}
+
 
 
 %\begin{figure}[H]
@@ -1354,19 +1313,18 @@ and the RHS is a function of observed data only.
 
 
 
-\begin{comment}
 
-\begin{figure}[H]
-        \caption{FC effect for different discount rates}
-    \label{oc_hist}
-    \begin{center}
-        \centering
-        \includegraphics[width=0.50\textwidth]{Figuras/discount_effect.pdf}
-    \end{center}
-    \footnotesize \textit{Notes: } 
-     \footnotesize{ \textit{Do file: }  \texttt{discounted\_noeffect.do}}
-\end{figure}
-\end{comment}
+% \begin{figure}[H]
+%         \caption{FC effect for different discount rates}
+%     \label{oc_hist}
+%     \begin{center}
+%         \centering
+%         \includegraphics[width=0.50\textwidth]{Figuras/discount_effect.pdf}
+%     \end{center}
+%     \footnotesize \textit{Notes: } 
+%      \footnotesize{ \textit{Do file: }  \texttt{discounted\_noeffect.do}}
+% \end{figure}
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

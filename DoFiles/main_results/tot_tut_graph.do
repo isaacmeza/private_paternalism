@@ -8,13 +8,13 @@ version 17.0
 * Author:	Isaac M
 * Machine:	Isaac M 											
 * Date of creation:	March. 14, 2022
-* Last date of modification: 
-* Modifications: 
+* Last date of modification: March. 21, 2022
+* Modifications: - Remove propensity score, arrows for ITT and braces for TOT-TUT
 * Files used:     
 		- 
 * Files created:  
 
-* Purpose: ToT-TuT figure
+* Purpose: ToT-TuT figure 
 
 *******************************************************************************/
 */
@@ -110,18 +110,18 @@ twoway (scatter ToC_ choosers if !inrange(_n,3,7), msymbol(+) msize(medium) mcol
 	(rcap ToNC_ UoNC_ tut, color(black%75)) ///
 	(rcap tut_hl tut_hh tut_a, color(black%75) lpattern(dash) horizontal) ///
 	(rcap tot_hl tot_hh tot_a, color(black%75) lpattern(dash) horizontal xaxis(2)) ///
-	(rcap EY0_c EY2_c itt_c, color(black%75)) ///
-	(rcap EY1_c EY0_c itt_f, color(black%75)) ///
+	(pcarrow  EY0_c itt_c EY2_c itt_c, color(black%75)) ///
+	(pcarrow EY0_c itt_f EY1_c itt_f, color(black%75)) ///
 	(scatteri 70 .06 "ToT = `=round(ToC-UoC)'" 20 .91 "TuT = `=round(ToNC-UoNC)'", msymbol(i) mlabcolor(gs5)) ///
 	(scatteri 19 0 "ToT = ITT{superscript:C}/p" 8 .4 "TuT = (ITT{superscript:F} - ITT{superscript:C})/(1-p)", msymbol(i) mlabcolor(black)) ///
 	(scatteri `=(EY2_c+EY0_c)/2' `=itt_c' (9) "ITT{superscript:C} = `=round(EY2-EY0,0.1)'" `=(EY1_c+EY0_c)/2' `=itt_f' (9) "ITT{superscript:F} = `=round(EY1-EY0,0.1)'", msymbol(i) mlabcolor(black)) ///
-	, xlabel(-.25 " " 0 "0" `p_' "p = `=round(`p',0.1)'" 1, axis(1)) /// 
+	, xlabel(-.25 " " 0 " " `p_' " " 1 " ", axis(1)) /// 
 	 xlabel(-.25 " " 0 " " `=`p_'/2' "Choosers" `p_' " " 0.75 "Non-choosers" 1 " ", axis(2)) /// 
 	 xtitle(" ", axis(2)) ///
 	 ylabel(`=UoNC_' "`=round(UoNC)'" `=EY2_c' "`=round(EY2)'" ///
 		`=EY0_c' "`=round(EY0)'" `=ToNC_' "`=round(ToNC)'" `=EY1_c' "`=round(EY1)'" ///
 		`=ToC_' "`=round(ToC)'" `=UoC_' "`=round(UoC)'" , angle(horizontal) labsize(vsmall) ) ///
 	graphregion(color(white)) legend(order(1 "E[Y{subscript:1} | C=1]" 2 "E[Y{subscript:0} | C=1]" 3 "E[Y{subscript:1} | C=0]" 4 "E[Y{subscript:0} | C=0]" ///
-	5 "E[Y | Z{subscript:0}]" 8 "E[Y | Z{subscript:1}]" 10 "E[Y | Z{subscript:2}]") rows(2) size(small)) ///
+	5 "Control" 8 "Forced-commitment" 10 "Choice-commitment") rows(2) size(vsmall)) ///
 	ytitle("APR (benefit)" " ") 
 graph export "C:\Users\isaac\Dropbox\Apps\ShareLaTeX\Donde2020\Figuras\tot_tut_apr.eps", as(eps)  preview(off) replace

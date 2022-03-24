@@ -8,10 +8,11 @@ version 17.0
 * Author:	Isaac M
 * Machine:	Isaac M 											
 * Date of creation:	October. 5, 2021
-* Last date of modification: February. 21, 2022  
-* Modifications: Change outcome to effective APR. Add choosers vs non-choosers analysis & split two axis in two figures.		
+* Last date of modification: March. 23, 2022  
+* Modifications: - Change outcome to effective APR. Add choosers vs non-choosers analysis & split two axis in two figures.		
+	- Fix quantity in money of mistakes for Choosers
 * Files used:     
-		- eff_te_grf.csv
+		- apr_te_grf.csv
 		- Master.dta
 * Files created:  
 
@@ -23,36 +24,31 @@ version 17.0
 
 ********************************************************************************
 
-** RUN R CODE : eff_te_grf.R
+** RUN R CODE : te_grf.R
 
 ********************************************************************************
 
 
 *Load data with *_te predictions (created in te_grf.R)
-import delimited "$directorio/_aux/eff_te_grf.csv", clear
-keep prenda tau_hat_oobvarianceestimates tau_hat_oobpredictions
-rename (tau_hat_oobvarianceestimates tau_hat_oobpredictions) (var_eff tau_eff)
-tempfile temp_eff
-save `temp_eff'
 
 import delimited "$directorio/_aux/apr_te_grf.csv", clear
 merge 1:1 prenda using "$directorio/DB/Master.dta", nogen keep(3)
-merge 1:1 prenda using `temp_eff', nogen keep(3)
+
 
 *Counterfactuals estimates
 	
 	*Causal forest on nochoice/fee-vs-control
-gen eff_te_cf =  tau_hat_oobpredictions
+gen apr_te_cf =  tau_hat_oobpredictions
 *CI - 95%
-gen eff_te_cf_ub95 = eff_te_cf + invnorm(0.975)*sqrt(tau_hat_oobvarianceestimates)
-gen eff_te_cf_lb95 = eff_te_cf - invnorm(0.975)*sqrt(tau_hat_oobvarianceestimates)
+gen apr_te_cf_ub95 = apr_te_cf + invnorm(0.975)*sqrt(tau_hat_oobvarianceestimates)
+gen apr_te_cf_lb95 = apr_te_cf - invnorm(0.975)*sqrt(tau_hat_oobvarianceestimates)
 *CI - 90%
-gen eff_te_cf_ub90 = eff_te_cf + invnorm(0.95)*sqrt(tau_hat_oobvarianceestimates)
-gen eff_te_cf_lb90 = eff_te_cf - invnorm(0.95)*sqrt(tau_hat_oobvarianceestimates)
+gen apr_te_cf_ub90 = apr_te_cf + invnorm(0.95)*sqrt(tau_hat_oobvarianceestimates)
+gen apr_te_cf_lb90 = apr_te_cf - invnorm(0.95)*sqrt(tau_hat_oobvarianceestimates)
 
 
 *Histogram of CATE
-foreach var of varlist eff_te_cf {
+foreach var of varlist apr_te_cf {
 	twoway (hist `var' if pro_6==1 | pro_7==1, percent  lcolor(blue) color(blue)) ///
 		(hist `var' if pro_8==1 | pro_9==1, percent  lcolor(black) color(none)), ///
 		scheme(s2mono) graphregion(color(white)) ///
@@ -69,6 +65,7 @@ foreach var of varlist eff_te_cf {
 
 ********************************************************************************
 gen tau_sim = . 
+gen ts_a = . 
 gen quant_sim = .
 gen choose_wrong_fee = .
 gen choose_wrong_fee_choose = .
@@ -101,18 +98,25 @@ forvalues i = 0(5)80 {
 	gen cwf_nonchoose_h`i' = .	
 	gen bfa_normal_l`i' = .
 	gen bfa_normal_h`i' = .
+	
+	gen qwf`i' = .
+	gen qwf_choose`i' = .
+	gen qwf_nonchoose`i' = .
 	}
 
 gen qwf = 0
 gen qwf_choose = 0
 gen qwf_nonchoose = 0
+
 	
 local rep_num = 500
 forvalues rep = 1/`rep_num' {
 	di "`rep'"
 	*Draw random effect from normal distribution with standard error according to Athey
 	replace tau_sim = rnormal(tau_hat_oobpredictions, sqrt(tau_hat_oobvarianceestimates))	
-	replace quant_sim = rnormal(tau_eff, sqrt(var_eff))*100	
+	replace ts_a = tau_sim/1200
+	replace quant_sim = ts_a*(1+ts_a)^3/((1+ts_a)^3-1)
+	replace quant_sim = 3*quant_sim
 	
 *Computation of people that makes mistakes in the choice arm according to estimated counterfactual
 	local k = 1
@@ -157,21 +161,21 @@ forvalues rep = 1/`rep_num' {
 			
 		*Quantification in $
 		replace quant_wrong_fee = .
-		replace quant_wrong_fee = abs(quant_sim) if choose_wrong_fee==1
+		replace quant_wrong_fee = abs(quant_sim-1)*100 if choose_wrong_fee==1
 		su quant_wrong_fee
-		cap replace qwf = qwf + `r(mean)' in `k'		
+		cap replace qwf`i' = `r(mean)' in `rep'		
 			*Only consider "choosers"
 		*Quantification in $
 		replace quant_wrong_fee_choose = .
-		replace quant_wrong_fee_choose = abs(quant_sim) if choose_wrong_fee_choose==1
+		replace quant_wrong_fee_choose = abs(quant_sim-1)*100 if choose_wrong_fee_choose==1
 		su quant_wrong_fee_choose
-		cap replace qwf_choose = qwf_choose + `r(mean)' in `k'
+		cap replace qwf_choose`i' = `r(mean)' in `rep'
 			*Only consider "non-choosers"
 		*Quantification in $
 		replace quant_wrong_fee_nonchoose = .
-		replace quant_wrong_fee_nonchoose = abs(quant_sim) if choose_wrong_fee_nonchoose==1
+		replace quant_wrong_fee_nonchoose = abs(quant_sim-1)*100 if choose_wrong_fee_nonchoose==1
 		su quant_wrong_fee_nonchoose
-		cap replace qwf_nonchoose = qwf_nonchoose + `r(mean)' in `k'		
+		cap replace qwf_nonchoose`i' = `r(mean)' in `rep'	
 		
 ********************************************************************************
 		
@@ -195,10 +199,19 @@ forvalues rep = 1/`rep_num' {
 	}	
 
 *Recover the means
-foreach var of varlist better_forceall cwf cwf_choose cwf_nonchoose qwf qwf_choose qwf_nonchoose {
+foreach var of varlist better_forceall cwf cwf_choose cwf_nonchoose {
 	replace `var' = `var'/`rep_num'
 	}
-	
+local k = 1
+forvalues i = 0(5)80 {
+	foreach vr in qwf qwf_choose qwf_nonchoose {
+		su `vr'`i'
+		if `r(N)'>0 {
+			replace `vr' = `r(mean)' in `k'
+		}
+	}
+	local k = `k' + 1
+	}	
 
 *Distribution of the CI
 local k = 1
@@ -209,12 +222,13 @@ forvalues i = 0(5)80 {
 		replace `vr'_l = 0 if `vr'_l < 0 & !missing(`vr'_l )
 		su `vr'_h`i', d
 		replace `vr'_h = `r(p95)' in `k'
+		replace `vr'_h = 100 if `vr'_h > 100 & !missing(`vr'_h )
 	}
 	local k = `k' + 1
 	}
 
 gen threshold = (_n-1)*5 if (_n-1)*5<=80
-
+save "$directorio/_aux/choose_wrong.dta", replace
 
 **************************************PLOTS*************************************
 	
@@ -222,7 +236,7 @@ gen threshold = (_n-1)*5 if (_n-1)*5<=80
 			(line better_forceall threshold, lpattern(solid) lwidth(medthick) lcolor(navy)) ///
 			(scatter better_forceall threshold,  msymbol(x) color(navy) ) ///
 			, legend(off) scheme(s2mono) ///
-			graphregion(color(white)) xtitle("Threshold (as % of loan)") ///
+			graphregion(color(white)) xtitle("APR threshold") ///
 			ytitle("% benefitted", axis(1)) ///
 			ylabel(0(10)100, axis(1)) 
 	graph export "$directorio/Figuras/line_better_forceall_apr_te_cf.pdf", replace
@@ -255,4 +269,3 @@ gen threshold = (_n-1)*5 if (_n-1)*5<=80
 	graph export "$directorio/Figuras/money_cw_apr_te_cf.pdf", replace	
 
 	
-

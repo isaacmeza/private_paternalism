@@ -86,7 +86,9 @@ local rr = rowsof(ranges)
 forvalues i=1/`rr' {
 	local lo = ranges[`i',1]
 	local hi = ranges[`i',2]
-	replace sig_range = 0.01 if inrange(inst,`lo',`hi')
+	if !missing(`lo') {
+		replace sig_range = 0.01 if inrange(inst,`lo',`hi')
+	}
 	}
 	
 *Variables of test of difference in means	
@@ -100,7 +102,7 @@ gen ubi = -0.4
 *Plot
 twoway (line t1 t0 dif inst , ///
 	sort ylab(, grid)) ///
-	(line sig_range inst , lcolor(navy)) ///
+	(scatter sig_range inst , msymbol(Oh) msize(tiny) lcolor(navy)) ///
 	(rcap hi1 lo1 ubi, horizontal msize(ehuge)) ///
 	(rcap hi0 lo0 ubi, horizontal msize(ehuge) lpattern(dash)) ///
 	(scatteri  -0.35 `=`hi0'+0.05' "`m0'", msymbol(i)) ///

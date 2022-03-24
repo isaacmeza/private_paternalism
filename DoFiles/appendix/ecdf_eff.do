@@ -4,7 +4,8 @@ Empirical Effective cost_loan cumulative distribution
 
 use "$directorio/DB/Master.dta", clear
 
-replace eff_cost_loan = -eff_cost_loan
+
+gen eff_cost_loan = fc_admin/prestamo
 
 *cumulative distribution of "realized financial cost" 
 *for the sq contract and the fee-forcing contract
@@ -39,13 +40,15 @@ local rr = rowsof(ranges)
 forvalues i=1/`rr' {
 	local lo = ranges[`i',1]
 	local hi = ranges[`i',2]
-	replace sig_range = 0.01 if inrange(fc,`lo',`hi')
+	if !missing(`lo') {
+		replace sig_range = 0.01 if inrange(fc,`lo',`hi')
+	}
 	}
 *Plot
 su fc, d	
 twoway (line fc_cdf_1 fc_cdf_0 dif fc if fc<=`r(p95)', ///
 	sort ylab(, grid)) ///
-	(line sig_range fc if fc<=`r(p95)', lcolor(navy)), ///
+	(scatter sig_range fc if fc<=`r(p95)', msymbol(Oh) msize(tiny) lcolor(navy)), ///
 	ytitle("") xtitle("Effective cost/loan ratio") ///
 	legend(order(1 "Fee-forcing" 2 "SQ" 3 "SQ-Fee") rows(1)) xtitle("Effective cost/loan ratio") scheme(s2mono) graphregion(color(white)) 
 graph export "$directorio/Figuras/cdf_eff_pro_2.pdf", replace

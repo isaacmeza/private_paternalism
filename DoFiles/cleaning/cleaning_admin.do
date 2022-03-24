@@ -16,7 +16,7 @@ version 17.0
 
 * Purpose: This do file cleans the admin data & generates relevant variables for analysis -
 which is a panel recording all transactions
-of a given pawn. 
+of a given pawn.  
 
 *******************************************************************************/
 */
