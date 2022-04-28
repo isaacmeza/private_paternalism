@@ -34,7 +34,7 @@ tempfile temp_dif
 save `temp_dif'
 use `temp', clear
 merge m:1 fc using `temp_dif', nogen 
-*Signifficant region
+*Significant region
 gen sig_range = .
 local rr = rowsof(ranges)
 forvalues i=1/`rr' {

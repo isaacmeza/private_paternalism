@@ -1,15 +1,15 @@
-/*
+
 ********************
 version 17.0
 ********************
- 
+/* 
 /*******************************************************************************
 * Name of file:	
 * Author:	Isaac M
 * Machine:	Isaac M 											
 * Date of creation:	October. 5, 2021
-* Last date of modification:   
-* Modifications:		
+* Last date of modification:  April. 22, 2022
+* Modifications: ELiminate t-test difference of means in plot.		
 * Files used:     
 		- 
 * Files created:  
@@ -48,9 +48,6 @@ graph export "$directorio/Figuras/dif_tot_tut.pdf", replace
 
 
 
-
-
-
 reshape long inst_hat_, i(prenda) j(tot)
 
 *cumulative distribution of "TOT & TUT" 
@@ -80,7 +77,7 @@ tempfile temp_dif
 save `temp_dif'
 use `temp', clear
 merge m:1 inst using `temp_dif', nogen 
-*Signifficant region
+*Significant region
 gen sig_range = .
 local rr = rowsof(ranges)
 forvalues i=1/`rr' {
@@ -91,22 +88,10 @@ forvalues i=1/`rr' {
 	}
 	}
 	
-*Variables of test of difference in means	
-gen hi1	= `hi1'
-gen hi0	= `hi0'
-gen lo1	= `lo1'
-gen lo0	= `lo0'
-gen ubi = -0.4
-
 
 *Plot
-twoway (line t1 t0 dif inst , ///
-	sort ylab(, grid)) ///
+twoway (line t1 t0 dif inst , sort ylab(, grid)) ///
 	(scatter sig_range inst , msymbol(Oh) msize(tiny) lcolor(navy)) ///
-	(rcap hi1 lo1 ubi, horizontal msize(ehuge)) ///
-	(rcap hi0 lo0 ubi, horizontal msize(ehuge) lpattern(dash)) ///
-	(scatteri  -0.35 `=`hi0'+0.05' "`m0'", msymbol(i)) ///
-	(scatteri  -0.35 `=`lo1'-0.15' "`m1'", msymbol(i)) ///
 	, ///
 	legend(order(1 "TOT" 2 "TUT" 3 "TOT-TUT") rows(1)) xtitle("T.Effect") scheme(s2mono) graphregion(color(white)) 
 graph export "$directorio/Figuras/cdf_tot_tut.pdf", replace

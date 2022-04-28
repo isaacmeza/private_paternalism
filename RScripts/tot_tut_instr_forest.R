@@ -140,7 +140,7 @@ fit_instr_forest = function(xvar, wvar, yvar, zvar, dta, nme) {
 
 require("dplyr")
 
-tot_tut <- read_csv('./_aux/tot_tut_eff_cost_loan.csv') 
+tot_tut <- read_csv('./_aux/tot_tut_apr.csv') 
 
 data_in <- tot_tut %>%
   mutate_all(~ifelse(is.na(.), median(., na.rm = TRUE), .))  
@@ -161,15 +161,15 @@ rename_var(tut)
 
 
 # PREPARE VARIABLES
-X_tot <- select(tot,-c(eff_cost_loan, choice_nsq, choice_nonsq, forced_fee_vs_choice, choice_vs_control,
+X_tot <- select(tot,-c(apr, choice_nsq, choice_nonsq, forced_fee_vs_choice, choice_vs_control,
                        esample_tot, esample_tut, prenda))
-Y_tot <- select(tot,eff_cost_loan)
+Y_tot <- select(tot,apr)
 W_tot <- as.numeric(tot$choice_nsq == 1)
 Z_tot <- as.numeric(tot$choice_vs_control == 1)
 
-X_tut <- select(tut,-c(eff_cost_loan, choice_nsq, choice_nonsq, forced_fee_vs_choice, choice_vs_control,
+X_tut <- select(tut,-c(apr, choice_nsq, choice_nonsq, forced_fee_vs_choice, choice_vs_control,
                        esample_tot, esample_tut, prenda))
-Y_tut <- select(tut,eff_cost_loan)
+Y_tut <- select(tut,apr)
 W_tut <- as.numeric(tut$choice_nonsq == 1)
 Z_tut <- as.numeric(tut$forced_fee_vs_choice == 1)
 
