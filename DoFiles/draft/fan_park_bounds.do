@@ -172,13 +172,13 @@ foreach delta of local levels {
 			su nobs if abs(dif-Mdelta)<1e-10
 			local ysup_d = `r(min)'
 			* sigma^L^2 = F_1(ysup_d)[1-F_1(ysup_d)]+(n1/n0)F_0(ysup_d-delta)[1-F_0(ysup_d-delta)]
-			matrix sigma_2_cond[`i',1] = sigma_2[`i',1] + freq[`c',1]*(F_1_c`c'[`ysup_d']*(1-F_1_c`c'[`ysup_d'])+(`n1_c'/`n0_c')*F_0_s_c`c'[`ysup_d']*(1-F_0_s_c`c'[`ysup_d']))
+			matrix sigma_2_cond[`i',1] = sigma_2_cond[`i',1] + freq[`c',1]*(F_1_c`c'[`ysup_d']*(1-F_1_c`c'[`ysup_d'])+(`n1_c'/`n0_c')*F_0_s_c`c'[`ysup_d']*(1-F_0_s_c`c'[`ysup_d']))
 			
 			* yinf_d = argsinf_{Y_\delta} {F_1(y)-F_0(y-\delta)}  
 			su nobs if abs(dif-mdelta)<1e-10
 			local yinf_d = `r(min)'
 			* sigma^U^2 = F_1(yinf_d)[1-F_1(yinf_d)]+(n1/n0)F_0(yinf_d-delta)[1-F_0(yinf_d-delta)]
-			matrix sigma_2_cond[`i',2] = sigma_2[`i',2] + freq[`c',1]*(F_1_c`c'[`yinf_d']*(1-F_1_c`c'[`yinf_d'])+(`n1_c'/`n0_c')*F_0_s_c`c'[`yinf_d']*(1-F_0_s_c`c'[`yinf_d']))
+			matrix sigma_2_cond[`i',2] = sigma_2_cond[`i',2] + freq[`c',1]*(F_1_c`c'[`yinf_d']*(1-F_1_c`c'[`yinf_d'])+(`n1_c'/`n0_c')*F_0_s_c`c'[`yinf_d']*(1-F_0_s_c`c'[`yinf_d']))
 		
 			*F^L(\delta)
 			cap matrix bounds_cond[`i',1] = bounds_cond[`i',1] + freq[`c',1]*max(Mdelta[1],0)

@@ -43,11 +43,10 @@ import delimited "$directorio/_aux/eff_te_grf.csv", clear
 keep prenda tau_hat_oobvarianceestimates tau_hat_oobpredictions
 rename (tau_hat_oobvarianceestimates tau_hat_oobpredictions) (var_eff tau_eff)
 
-merge 1:1 prenda using "$directorio/DB/Master.dta", nogen keep(3)
-merge 1:1 prenda using `temp_des', nogen keep(3)
-merge 1:1 prenda using `temp_def', nogen keep(3)
-merge 1:1 prenda using `temp_sum', nogen keep(3)
-
+merge 1:1 prenda using "$directorio/DB/Master.dta", nogen keep(2 3)
+merge 1:1 prenda using `temp_des', nogen keep(1 3)
+merge 1:1 prenda using `temp_def', nogen keep(1 3)
+merge 1:1 prenda using `temp_sum', nogen keep(1 3)
 
 ********************************************************************************
 eststo clear

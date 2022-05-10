@@ -40,7 +40,7 @@ gen quant_0_us = .
 matrix bounds_q = J(1000, 3, .) 
 	
 local i = 1
-forvalues q = 10(1)990 {
+forvalues q = 1(1)1000 {
 	di `i'
 	qui {
 	preserve

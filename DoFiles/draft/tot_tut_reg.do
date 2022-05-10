@@ -9,7 +9,7 @@ version 17.0
 * Machine:	Isaac M 											
 * Date of creation:	(Adapted from tot_tut.do)
 * Last date of modification: February. 25, 2022
-* Modifications: Rgression based LATE TOT vs TUT- COmputation of Ri & Bootsrtap p-values
+* Modifications: Regression based LATE TOT vs TUT- Computation of Ri & Bootsrtap p-values
 * Files used:     
 		- 
 * Files created:  
@@ -22,7 +22,7 @@ clear all
 set maxvar 100000
 use "$directorio/DB/Master.dta", clear
 keep if inlist(t_prod,1,2,4)
-local rep = 10000
+local rep = 1000
 
 * Rescale to positive scale (benefits)
 gen eff_cost_loan = -fc_admin/prestamo
@@ -158,7 +158,7 @@ foreach var of varlist apr des_c eff_cost_loan pay_default  {
 
 *Save results	
 esttab using "$directorio/Tables/reg_results/tot_tut_reg.csv", se r2 ${star} b(a2) ///
-		scalars("ContrMean Control Mean" "tot ToT" "p_tot p-value" ///
+		scalars("ContrMean Control Mean"  ///
 		"tot ToT" "p_tot p-value" ///
 		"tut TuT" "p_tut p-value" ///
 		"tot_tut ToT-TuT" "pvalue F p-value" ///
