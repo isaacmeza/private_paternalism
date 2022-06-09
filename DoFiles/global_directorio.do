@@ -8,3 +8,4 @@ global C0 = "dummy_* num_arms_d* visit_number_d*" /*Controls*/
 global star "star(* 0.1 ** 0.05 *** 0.01)"
 *global star "nostar"
 
+set scheme white_tableau, perm
