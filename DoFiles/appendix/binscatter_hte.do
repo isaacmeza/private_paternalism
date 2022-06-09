@@ -52,11 +52,11 @@ foreach var in def_c des_c fc_admin eff_cost_loan  {
 /*(1) será verdad que los que tienen mayor impacto en recovery también tienen 
  mayor impacto en financing cost? */ 
 
-binscatter hte_fc_admin hte_def_c, nq(90) scheme(s2mono) graphregion(color(white)) ///
+binscatter hte_fc_admin hte_def_c, nq(90)  graphregion(color(white)) ///
 	xtitle("Not recovery (effect)") ytitle("FC (effect)")
 graph export "$directorio\Figuras\binscatter_fc_def_`arm'.pdf", replace
 
-binscatter hte_eff_cost_loan hte_des_c, nq(90) scheme(s2mono) graphregion(color(white)) ///
+binscatter hte_eff_cost_loan hte_des_c, nq(90)  graphregion(color(white)) ///
 	xtitle("Recovery (effect)") ytitle("Effective cost/loan benefit (effect)")
 graph export "$directorio\Figuras\binscatter_eff_des_`arm'.pdf", replace
 
@@ -64,7 +64,7 @@ graph export "$directorio\Figuras\binscatter_eff_des_`arm'.pdf", replace
 /*(2) será verdad que los que tienen mayor decremento en first day of payment
  también tienen mayor financing cost*/
 
-binscatter hte_fc_admin hte_dias_primer_pago, nq(90) scheme(s2mono) graphregion(color(white)) ///
+binscatter hte_fc_admin hte_dias_primer_pago, nq(90)  graphregion(color(white)) ///
 	xtitle("Elapsed days of first installment (effect)") ytitle("FC (effect)")	
 graph export "$directorio\Figuras\binscatter_fc_days_`arm'.pdf", replace
 
@@ -77,7 +77,7 @@ graph export "$directorio\Figuras\binscatter_eff_days_`arm'.pdf", replace
 /*(3) será verdad que los que tienen mayor decremento en first day of payment
  también tienen mayor pr de recuperacion*/
 
-binscatter hte_des_c hte_dias_primer_pago, nq(90) scheme(s2mono) graphregion(color(white)) ///
+binscatter hte_des_c hte_dias_primer_pago, nq(90)  graphregion(color(white)) ///
 	xtitle("Elapsed days of first installment (effect)") ytitle("Recovery (effect)")	
 graph export "$directorio\Figuras\binscatter_def_days_`arm'.pdf", replace
 

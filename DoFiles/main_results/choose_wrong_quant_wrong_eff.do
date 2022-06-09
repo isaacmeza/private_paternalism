@@ -51,13 +51,13 @@ gen apr_te_cf_lb90 = apr_te_cf - invnorm(0.95)*sqrt(tau_hat_oobvarianceestimates
 foreach var of varlist apr_te_cf {
 	twoway (hist `var' if pro_6==1 | pro_7==1, percent  lcolor(blue) color(blue)) ///
 		(hist `var' if pro_8==1 | pro_9==1, percent  lcolor(black) color(none)), ///
-		scheme(s2mono) graphregion(color(white)) ///
+		 graphregion(color(white)) ///
 		legend(order(1 "Fee" 2 "Promise")) xtitle("Estimated benefit")
 	graph export "$directorio/Figuras/hist_benefit_fee_`var'.pdf", replace
 	
 	twoway (hist `var' if pro_7==1 | pro_9==1, percent  lcolor(blue) color(blue)) ///
 		(hist `var' if pro_6==1 | pro_8==1, percent  lcolor(black) color(none)), ///
-		scheme(s2mono) graphregion(color(white)) ///
+		graphregion(color(white)) ///
 		legend(order(1 "Choose commitment" 2 "No commitment")) xtitle("Estimated benefit")
 	graph export "$directorio/Figuras/hist_benefit_choice_`var'.pdf", replace
 	
@@ -109,7 +109,7 @@ gen qwf_choose = 0
 gen qwf_nonchoose = 0
 
 	
-local rep_num = 500
+local rep_num = 100
 forvalues rep = 1/`rep_num' {
 	di "`rep'"
 	*Draw random effect from normal distribution with standard error according to Athey
@@ -231,6 +231,9 @@ gen threshold = (_n-1)*5 if (_n-1)*5<=80
 save "$directorio/_aux/choose_wrong.dta", replace
 
 **************************************PLOTS*************************************
+
+use "$directorio/_aux/choose_wrong.dta", clear 
+
 	
 	twoway 	(rarea bfa_normal_l bfa_normal_h threshold, fcolor(navy) fintensity(40)) ///
 			(line better_forceall threshold, lpattern(solid) lwidth(medthick) lcolor(navy)) ///
@@ -252,7 +255,7 @@ save "$directorio/_aux/choose_wrong.dta", replace
 			(line cwf_choose threshold, lpattern(solid) lwidth(medthick) lcolor(maroon%70)) ///
 			(scatter cwf_choose threshold, connect(l) msymbol(x) color(maroon%70) ) ///				
 			, legend(order(3 "Choice commitment"  ///
-				6 "Non-choosers" 9 "Choosers") rows(1))  ///
+				6 "Non-choosers" 9 "Choosers") pos(6) rows(1))  ///
 			graphregion(color(white)) xtitle("APR threshold") ///
 			ytitle("% of relevant group making mistakes") ///
 			ylabel(0(10)100) 
@@ -263,7 +266,7 @@ save "$directorio/_aux/choose_wrong.dta", replace
 			(scatter qwf_nonchoose threshold, connect(l) msymbol(x) color(dkgreen%90)) ///	
 			(scatter qwf_choose threshold, connect(l)  msymbol(x) color(maroon%80)) ///				
 			, legend(order(1 "Choice commitment"  ///
-				2 "Non-choosers" 3 "Choosers")  rows(1)) ///
+				2 "Non-choosers" 3 "Choosers") pos(6) rows(1)) ///
 			graphregion(color(white)) xtitle("APR threshold") ///
 			ytitle("Money (as % of loan)") 
 	graph export "$directorio/Figuras/money_cw_apr_te_cf.pdf", replace	

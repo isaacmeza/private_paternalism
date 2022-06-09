@@ -143,7 +143,7 @@ twoway (rarea hi1_5 lo1_5 optc, color(maroon%15)) ///
 	(line def_beta1 optc, color(maroon) lwidth(medthick)) ///
 	(line def_beta2 optc, color(navy) lwidth(medthick)) ///
 	, xlabel(1(2)18) ytitle("% Default") xtitle("Number of times exposed to FP") graphregion(color(white)) ///
-	legend(order( 6 "Choosers" 5 "Non-Choosers") size(small)) 
+	legend(order( 6 "Choosers" 5 "Non-Choosers") pos(6) rows(1) size(small)) 
 	
 
 foreach var of varlist def_beta1 def_beta2 hi* lo* {
@@ -157,6 +157,6 @@ twoway (rarea hi1_5_ lo1_5_ optc_hi1_5, color(maroon%15)) ///
 	(line def_beta1_ optc_def_beta1, color(maroon) lwidth(medthick)) ///
 	(line def_beta2_ optc_def_beta2, color(navy) lwidth(medthick)) ///
 	, xlabel(1(2)18) ytitle("% Default") xtitle("Number of times exposed to FP") graphregion(color(white)) ///
-	legend(order( 6 "Choosers" 5 "Non-Choosers") size(small)) 	
+	legend(order( 6 "Choosers" 5 "Non-Choosers") pos(6) rows(1) size(small)) 	
 graph export "$directorio\Figuras\learning_over_time.pdf", replace
 	

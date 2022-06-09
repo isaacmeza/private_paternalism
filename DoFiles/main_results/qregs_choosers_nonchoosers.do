@@ -60,7 +60,7 @@ foreach var of varlist  fc_admin apr {
 	(`var'_3_7, keep(pro_7) rename(pro_7 = "50%") color(maroon) cismooth(color(maroon) n(10)) offset(-0.06)) ///
 	(`var'_2_7, keep(pro_7) rename(pro_7 = "25%") color(maroon) cismooth(color(maroon) n(10)) offset(-0.06)) ///
 	(`var'_1_7, keep(pro_7) rename(pro_7 = "15%") color(maroon) cismooth(color(maroon) n(10)) offset(-0.06))  ///
-	, nooffset legend(order(11 "Non-choosers" 66 "Choosers")) xline(0, lcolor(gs10))  graphregion(color(white)) xtitle("T. Effects") 
+	, nooffset legend(order(11 "Non-choosers" 66 "Choosers") pos(6) rows(1)) xline(0, lcolor(gs10))  graphregion(color(white)) xtitle("T. Effects") 
 
 
 	graph export "$directorio\Figuras\qreg_hard_`var'.pdf", replace
@@ -76,7 +76,7 @@ foreach var of varlist  fc_admin apr {
 	(`var'_3_9, keep(pro_9) rename(pro_9 = "50%") color(maroon) cismooth(color(maroon) n(10)) offset(-0.06)) ///
 	(`var'_2_9, keep(pro_9) rename(pro_9 = "25%") color(maroon) cismooth(color(maroon) n(10)) offset(-0.06)) ///
 	(`var'_1_9, keep(pro_9) rename(pro_9 = "15%") color(maroon) cismooth(color(maroon) n(10)) offset(-0.06))  ///
-	, nooffset legend(order(11 "Non-choosers" 66 "Choosers")) xline(0, lcolor(gs10))  graphregion(color(white)) xtitle("T. Effects") 
+	, nooffset legend(order(11 "Non-choosers" 66 "Choosers") pos(6) rows(1)) xline(0, lcolor(gs10))  graphregion(color(white)) xtitle("T. Effects") 
 
 
 	graph export "$directorio\Figuras\qreg_soft_`var'.pdf", replace	

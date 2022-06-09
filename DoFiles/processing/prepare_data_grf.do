@@ -28,7 +28,7 @@ sort NombrePignorante fecha_inicial
 gen eff_cost_loan = fc_admin/prestamo
 
 *Covariates - Randomization - Outcomes
-keep apr eff_cost_loan def_c des_c fc_admin  /// *Dependent variables
+keep apr eff_cost_loan def_c des_c fc_admin dias_primer_pago  /// *Dependent variables
 	pro_* fee NombrePignorante prenda fecha_inicial  /// *Admin variables
 	$C0 /// *Controls
 	log_prestamo pr_recup  edad  faltas val_pren_std /// *Continuous covariates
@@ -36,7 +36,7 @@ keep apr eff_cost_loan def_c des_c fc_admin  /// *Dependent variables
 	masqueprepa  pb 
 	
 	
-order apr eff_cost_loan def_c des_c fc_admin  /// *Dependent variables
+order apr eff_cost_loan def_c des_c fc_admin dias_primer_pago /// *Dependent variables
 	pro_* fee NombrePignorante prenda fecha_inicial  /// *Admin variables
 	$C0 /// *Controls
 	log_prestamo pr_recup  edad  faltas val_pren_std /// *Continuous covariates
@@ -57,11 +57,11 @@ sort NombrePignorante fecha_inicial
 gen eff_cost_loan = fc_admin/prestamo
 
 *Covariates - Randomization - Outcomes
-keep apr eff_cost_loan def_c des_c fc_admin   /// *Dependent variables
+keep apr eff_cost_loan def_c des_c fc_admin dias_primer_pago  /// *Dependent variables
 	pro_* fee NombrePignorante prenda fecha_inicial  /// *Admin variables
 	$C0 /* *Controls */
 	
-order apr eff_cost_loan def_c des_c fc_admin   /// *Dependent variables
+order apr eff_cost_loan def_c des_c fc_admin dias_primer_pago  /// *Dependent variables
 	pro_* fee NombrePignorante prenda fecha_inicial  /// *Admin variables
 	$C0 /* *Controls */
 	

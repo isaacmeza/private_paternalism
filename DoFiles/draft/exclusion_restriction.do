@@ -52,7 +52,7 @@ use "$directorio/DB/Master.dta", clear
 matrix results = J(4, 5, .) // empty matrix for results
 	//  5 cols are: (1) Treatment arm, (2) beta, (3) std error, (4) df, (5) pvalue
 	
-reg eff_cost_loan i.prod ${C0} if inlist(prod,1,2,4,5) , r cluster(suc_x_dia) 
+reg apr i.prod ${C0} if inlist(prod,1,2,4,5) , r cluster(suc_x_dia) 
 local df = e(df_r)	
 		
 matrix results[1,1] = 1
@@ -91,7 +91,7 @@ matrix results[3,5] = 2*ttail(`df', abs(_b[5.prod]/_se[5.prod]))
 
 *-------------------------------------------------------------------------------
 		
-reg eff_cost_loan pro_4 ${C0}, r cluster(suc_x_dia) 
+reg apr pro_4 ${C0}, r cluster(suc_x_dia) 
 local df = e(df_r)	
 		
 matrix results[4,1] = 1
@@ -139,12 +139,12 @@ graph twoway
 			, 
 			title(" ", `title_options')
 			yline(0, `manual_axis')
-			xtitle("Effective cost/loan benefit", `xtitle_options')
+			xtitle("APR", `xtitle_options')
 			ytitle("Effect")
 			xscale(range(0.95 1.15))
 			xscale(noline) /* because manual axis at 0 with yline above) */
 			`plotregion' `graphregion'  
-			legend(order(1 "Forced fee" 4 "Non chooser" 7 "Choosers" 10 "Choice arm") rows(1))
+			legend(order(1 "Forced fee" 4 "Non chooser" 7 "Choosers" 10 "Choice arm") pos(6) rows(1))
 			xlabel(none)
 			;
 #delimit cr

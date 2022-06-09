@@ -73,7 +73,7 @@ foreach depvar in  apr eff_cost_loan  def_c  fc_admin {
 		(kdensity hi_tau_hat if esample==1, yaxis(2) ylab(${uno}, notick nolab axis(2)) ///		
 						ytitle(" ", axis(2)) xtitle("Effect")  ///
 						lcolor(maroon) lwidth(thick) lpattern(dot)), ///
-						legend(order(2 "HTE" 3 "Lower bound CI" 4 "Upper bound CI") rows(1))  graphregion(color(white))	
+						legend(order(2 "HTE" 3 "Lower bound CI" 4 "Upper bound CI") pos(6) rows(1))  graphregion(color(white))	
 	graph export "$directorio\Figuras\he_dist_`depvar'_`arm'.pdf", replace
 
 	****************************************************************************
@@ -165,7 +165,7 @@ foreach depvar in  apr eff_cost_loan  def_c  fc_admin {
 			 
 	coefplot (matrix(blp_i[,2]), offset(0.06) ci((blp_i[,5] blp_i[,6]))  ciopts(lcolor(gs4))) ///
 	(matrix(blp_reg[,2]), offset(-0.06) ci((blp_reg[,5] blp_reg[,6]))  ciopts(lcolor(gs4))) , ///
-		headings("Loan value" = "{bf:Loan characteristics}" "Income index" = "{bf:Income}" "Present bias" = "{bf:Self Control}" "Pawn before" = "{bf:Experience}" "Age" = "{bf:Other}",labsize(medium)) legend(order(2 "AIPW DR" 4 "OLS"))  xline(0)  graphregion(color(white)) 
+		headings("Loan value" = "{bf:Loan characteristics}" "Income index" = "{bf:Income}" "Present bias" = "{bf:Self Control}" "Pawn before" = "{bf:Experience}" "Age" = "{bf:Other}",labsize(medium)) legend(order(2 "AIPW DR" 4 "OLS") pos(6) rows(1))  xline(0)  graphregion(color(white)) 
 	graph export "$directorio\Figuras\HE\he_int_vertical_`depvar'_`arm'.pdf", replace
 
 

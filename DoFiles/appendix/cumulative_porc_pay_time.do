@@ -94,7 +94,7 @@ twoway (line sum_porc_p dias_inicio if t_prod==1, lwidth(medthick) lcolor(black)
 		67 105 (3) "{&sigma}{subscript:105} = `se10'" ///
 		, msymbol(i) mlabcolor(black)) ///			
 	, graphregion(color(white)) xtitle("Elapsed days") ytitle("% of payment") ///
-	 legend(order(1 "Status-quo" 2 "Forced commitment" 3 "Choice commitment") size(small) rows(1))
+	 legend(order(1 "Status-quo" 2 "Forced commitment" 3 "Choice commitment") size(small) pos(6) rows(1))
 graph export "$directorio\Figuras\cumulative_porc_pay_time.pdf", replace
 
 
@@ -131,6 +131,6 @@ twoway (line sum_porc_p dias_inicio if t_prod==1, lwidth(medthick) lcolor(black)
 	(scatteri 6.5 105 (3) "{&sigma}{subscript:105} = `=round(`sed10',.1)'" ///
 		, msymbol(i) mlabcolor(black)) ///			
 	, graphregion(color(white)) xtitle("Elapsed days") ytitle("% of payment") ///
-	 legend(order(1 "Status-quo" 2 "Forced commitment" 3 "Choice commitment") size(small) rows(1))
+	 legend(order(1 "Status-quo" 2 "Forced commitment" 3 "Choice commitment") size(small) pos(6) rows(1))
 graph export "$directorio\Figuras\cumulative_porc_pay_time_default.pdf", replace
 	 

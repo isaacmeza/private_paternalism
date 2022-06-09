@@ -107,15 +107,15 @@ foreach var of varlist tau_apr tau_eff tau_des {
 	gen hi = s_aux + 1.96*se
 
 	*Continuous plot
-	twoway (rarea hi lw x) (line s_aux x, lpattern(solid)) (lfit `var' pr_gbc_1 if sct!=2, lpattern(dot) lwidth(medthick) color(black)) (scatter `var' pr_gbc_1 if sct!=2, color(navy) msymbol(O)) ///
-			, legend(off) scheme(s2mono) graphregion(color(white)) xtitle("Probability to choose commitment") ytitle("TE") 
+	twoway (rarea hi lw x, color(gs5)) (line s_aux x, lpattern(solid) color(black)) (lfit `var' pr_gbc_1 if sct!=2, lpattern(dot) lwidth(medthick) color(black)) (scatter `var' pr_gbc_1 if sct!=2, color(navy) msymbol(O)) ///
+			, legend(off)  graphregion(color(white)) xtitle("Probability to choose commitment") ytitle("TE") 
 	graph export "$directorio\Figuras\benefit_choice_`var'.pdf", replace
 
 
 	*Discretize predicted probability and plot CDF's to identify Stochasic Dominance
 	use `tempmaster', clear
 
-	twoway (hist `var' if predicted_choose==1, percent color(navy%70) ) (hist `var' if predicted_choose==0 ,color(none) lcolor(black) percent), xtitle("Effective cost/loan benefit TE") scheme(s2mono) graphregion(color(white)) legend(order(1 "Choosers" 2 "Non-choosers"))
+	twoway (hist `var' if predicted_choose==1, percent color(navy%70) ) (hist `var' if predicted_choose==0 ,color(none) lcolor(black) percent), xtitle("Effective cost/loan benefit TE")  graphregion(color(white)) legend(order(1 "Choosers" 2 "Non-choosers") pos(6) rows(1))
 	graph export "$directorio\Figuras\hist_predchoose_`var'.pdf", replace
 
 
@@ -157,10 +157,12 @@ foreach var of varlist tau_apr tau_eff tau_des {
 		}
 
 	*Plot
-	twoway (line t1 t0 inst , ///
+	twoway (line t1 inst , lpattern(solid) lcolor(black) ///
 		sort ylab(, grid)) ///
-		(scatter sig_range inst , msymbol(Oh) msize(tiny) lcolor(navy)) , ///
-		legend(order(1 "Choosers" 2 "Non-choosers") rows(1)) xtitle("T.effect") scheme(s2mono) graphregion(color(white)) 
+		(line t0 inst , lpattern(dash) lcolor(black)  ///
+		sort ylab(, grid)) ///
+		(scatter sig_range inst , msymbol(Oh) msize(tiny) color(gs8)) , ///
+		legend(order(1 "Choosers" 2 "Non-choosers") pos(6) rows(1)) xtitle("T.effect") graphregion(color(white)) 
 	graph export "$directorio/Figuras/cdf_predchoose_`var'.pdf", replace
 	restore	
 }

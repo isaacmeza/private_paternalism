@@ -33,7 +33,7 @@ restore
 
 merge m:1 idsuc using `temp', nogen
 
-tsline pf_suc if sampl==1, by(idsuc, note("") title("") graphregion(color(white)))  graphregion(color(white)) scheme(s2mono) ///
+tsline pf_suc if sampl==1, by(idsuc, note("") title("") graphregion(color(white)))  graphregion(color(white)) ///
 	xtitle("Date") ytitle("Exists FP contract") ///
 	yla(0 1) xla(, format(%tmCY) angle(vertical) )
 graph export "$directorio\Figuras\active_pf_suc.pdf", replace	

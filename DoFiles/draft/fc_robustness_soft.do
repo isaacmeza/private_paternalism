@@ -73,5 +73,5 @@ coefplot (fc_admin_p, keep(3.t_producto) rename(3.t_producto = "FC (appraised va
 (apr_tc_p, keep(5.t_producto) rename(5.t_producto = "APR + travel cost") color(maroon)  cismooth(color(maroon) n(10))  offset(-0.09)) ///
 (apr_s_tc_p, keep(5.t_producto) rename(5.t_producto = "APR (subj.) + travel cost") color(maroon)  cismooth(color(maroon) n(10))  offset(-0.09)) ///
 (apr_fa_p, keep(5.t_producto) rename(5.t_producto = "APR (fully adjusted)") color(maroon)  cismooth(color(maroon) n(10))  offset(-0.09)) ///
-, headings("FC (appraised value)" = "{bf:Financial Cost}" "APR" = "{bf:APR}") nooffset legend(order(11 "Forced-soft" 121 "Choice-soft")) xline(0, lcolor(gs10))  graphregion(color(white)) xtitle("T. Effects (std deviations)")
+, headings("FC (appraised value)" = "{bf:Financial Cost}" "APR" = "{bf:APR}") nooffset legend(order(11 "Forced-soft" 121 "Choice-soft") pos(6) rows(1)) xline(0, lcolor(gs10))  graphregion(color(white)) xtitle("T. Effects (std deviations)")
 graph export "$directorio\Figuras\fc_robustness_soft.pdf", replace

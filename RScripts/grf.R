@@ -30,7 +30,7 @@ heterogeneity_effect <- function(data_in,treatment_var,outcome_var,writedata,ext
   data_frame <- data_in %>%
     filter(data_in[,treatment_var] == 1 | data_in[,treatment_var] == 0) %>%
     select(-c( pro_2, pro_3, pro_4, pro_5, pro_6, pro_7, pro_8, pro_9, fee, fecha_inicial,
-               apr, eff_cost_loan, def_c, des_c, fc_admin), 
+               apr, eff_cost_loan, def_c, des_c, fc_admin, dias_primer_pago), 
            treatment_var, outcome_var ) %>%
     mutate_all(~ifelse(is.na(.), median(., na.rm = TRUE), .))  
   data_copy <- data_frame

@@ -115,7 +115,7 @@ twoway (rarea reincidence_days_beforeh_1 reincidence_days_beforel_1 dy, color(gs
 		(line reincidence_days_before_2 dy, color(navy) lwidth(medthick)) ///
 		(line reincidence_days_before_4 dy, color(maroon) lwidth(medthick) xline(90 105, lcolor(gs12))) ///
 		, graphregion(color(white)) xtitle("Days within first loan") xlabel(0(20)100) ytitle("Prob. of taking second loan") ///
-		legend(order (3 "Control" 4 "Forced commitment" 5 "Choice commitment") rows(1) size(small))
+		legend(order (3 "Control" 4 "Forced commitment" 5 "Choice commitment") pos(6) rows(1) size(small))
 graph export "$directorio\Figuras\prob_reincidence_within.pdf", replace
 
 *Probability of a second loan before x time 
@@ -125,7 +125,7 @@ twoway (rarea reincidence_days_afterh_1 reincidence_days_afterl_1 dy, color(gs5%
 		(line reincidence_days_after_2 dy, color(navy) lwidth(medthick)) ///
 		(line reincidence_days_after_4 dy, color(maroon) lwidth(medthick) xline(90 105, lcolor(gs12))) ///
 		, graphregion(color(white)) xtitle("Days after first loan") xlabel(0(20)100) ytitle("Prob. of taking second loan") ///
-		legend(order (3 "Control" 4 "Forced commitment" 5 "Choice commitment") rows(1) size(small))
+		legend(order (3 "Control" 4 "Forced commitment" 5 "Choice commitment") pos(6) rows(1) size(small))
 graph export "$directorio\Figuras\prob_reincidence_after.pdf", replace
 
 

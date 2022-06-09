@@ -77,7 +77,7 @@ coefplot (fc_admin_2, keep(pro_2) rename(pro_2 = "FC (appraised value)") color(n
 (apr_tc_4, keep(pro_4) rename(pro_4 = "APR + travel cost") color(maroon)  cismooth(color(maroon) n(10))  offset(-0.09)) ///
 (apr_s_tc_4, keep(pro_4) rename(pro_4 = "APR (subj.) + travel cost") color(maroon)  cismooth(color(maroon) n(10))  offset(-0.09)) ///
 (apr_noint_4, keep(pro_4) rename(pro_4 = "APR - interests") color(maroon)  cismooth(color(maroon) n(10))  offset(-0.09)) ///
-, headings("FC (appraised value)" = "{bf:Financial Cost}" "APR" = "{bf:APR}") nooffset legend(order(11 "Forced-commitment" 110 "Choice-commitment")) xline(0, lcolor(gs10))  graphregion(color(white)) xtitle("T. Effects (std deviations)")
+, headings("FC (appraised value)" = "{bf:Financial Cost}" "APR" = "{bf:APR}") nooffset legend(order(11 "Forced-commitment" 110 "Choice-commitment") pos(6) rows(1)) xline(0, lcolor(gs10))  graphregion(color(white)) xtitle("T. Effects (std deviations)")
 */
 
 *Beta plots (pooled)
@@ -101,5 +101,5 @@ coefplot (fc_admin_p, keep(2.t_producto) rename(2.t_producto = "FC (appraised va
 (apr_tc_p, keep(4.t_producto) rename(4.t_producto = "APR + travel cost") color(maroon)  cismooth(color(maroon) n(10))  offset(-0.09)) ///
 (apr_s_tc_p, keep(4.t_producto) rename(4.t_producto = "APR (subj.) + travel cost") color(maroon)  cismooth(color(maroon) n(10))  offset(-0.09)) ///
 (apr_fa_p, keep(4.t_producto) rename(4.t_producto = "APR (fully adjusted)") color(maroon)  cismooth(color(maroon) n(10))  offset(-0.09)) ///
-, headings("FC (appraised value)" = "{bf:Financial Cost}" "APR" = "{bf:APR}") nooffset legend(order(11 "Forced-commitment" 121 "Choice-commitment")) xline(0, lcolor(gs10))  graphregion(color(white)) xtitle("T. Effects (std deviations)")
+, headings("FC (appraised value)" = "{bf:Financial Cost}" "APR" = "{bf:APR}") nooffset legend(order(11 "Forced-commitment" 121 "Choice-commitment") pos(6) rows(1)) xline(0, lcolor(gs10))  graphregion(color(white)) xtitle("T. Effects (std deviations)")
 graph export "$directorio\Figuras\fc_robustness.pdf", replace

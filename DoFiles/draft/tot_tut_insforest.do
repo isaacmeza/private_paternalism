@@ -43,7 +43,7 @@ local lo0 = `r(mu_2)' - 1.96*`r(sd_2)'/sqrt(`r(N_2)')
 
 *Difference between TOT-TUT
 gen dif  = inst_hat_1 - inst_hat_0
-twoway (hist dif,  percent scheme(s2mono) graphregion(color(white)) color(navy) lcolor(black) xtitle("TOT-TUT")) 
+twoway (hist dif,  percent graphregion(color(white)) color(navy) lcolor(black) xtitle("TOT-TUT")) 
 graph export "$directorio/Figuras/dif_tot_tut.pdf", replace
 
 
@@ -90,10 +90,12 @@ forvalues i=1/`rr' {
 	
 
 *Plot
-twoway (line t1 t0 dif inst , sort ylab(, grid)) ///
-	(scatter sig_range inst , msymbol(Oh) msize(tiny) lcolor(navy)) ///
+twoway (line t1 inst , lcolor(black) lpattern(solid) sort ylab(, grid)) ///
+	(line t0 inst , lcolor(black) lpattern(dash) sort ylab(, grid)) ///
+	(line dif inst , lcolor(black) lpattern(dot) sort ylab(, grid)) ///
+	(scatter sig_range inst , msymbol(Oh) msize(tiny) color(gs12)) ///
 	, ///
-	legend(order(1 "TOT" 2 "TUT" 3 "TOT-TUT") rows(1)) xtitle("T.Effect") scheme(s2mono) graphregion(color(white)) 
+	legend(order(1 "TOT" 2 "TUT" 3 "TOT-TUT") pos(6) rows(1)) xtitle("T.Effect") graphregion(color(white)) 
 graph export "$directorio/Figuras/cdf_tot_tut.pdf", replace
 
 

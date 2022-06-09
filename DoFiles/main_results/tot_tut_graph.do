@@ -122,6 +122,6 @@ twoway (scatter ToC_ choosers if !inrange(_n,3,7), msymbol(+) msize(medium) mcol
 		`=EY0_c' "`=round(EY0)'" `=ToNC_' "`=round(ToNC)'" `=EY1_c' "`=round(EY1)'" ///
 		`=ToC_' "`=round(ToC)'" `=UoC_' "`=round(UoC)'" , angle(horizontal) labsize(vsmall) ) ///
 	graphregion(color(white)) legend(order(1 "E[Y{subscript:1} | C=1]" 2 "E[Y{subscript:0} | C=1]" 3 "E[Y{subscript:1} | C=0]" 4 "E[Y{subscript:0} | C=0]" ///
-	5 "Control" 8 "Forced-commitment" 10 "Choice-commitment") rows(2) size(vsmall)) ///
+	5 "Control" 8 "Forced-commitment" 10 "Choice-commitment") pos(6) rows(2) size(vsmall)) ///
 	ytitle("APR (benefit)" " ") 
 graph export "C:\Users\isaac\Dropbox\Apps\ShareLaTeX\Donde2020\Figuras\tot_tut_apr.eps", as(eps)  preview(off) replace

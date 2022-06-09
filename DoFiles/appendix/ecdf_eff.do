@@ -46,9 +46,13 @@ forvalues i=1/`rr' {
 	}
 *Plot
 su fc, d	
-twoway (line fc_cdf_1 fc_cdf_0 dif fc if fc<=`r(p95)', ///
+twoway (line fc_cdf_1 fc if fc<=`r(p95)', lpattern(solid) lcolor(black) ///
 	sort ylab(, grid)) ///
-	(scatter sig_range fc if fc<=`r(p95)', msymbol(Oh) msize(tiny) lcolor(navy)), ///
+	(line fc_cdf_0 fc if fc<=`r(p95)', lpattern(dash) lcolor(black) ///
+	sort ylab(, grid)) ///
+	(line dif fc if fc<=`r(p95)', lpattern(dot) lcolor(black) ///
+	sort ylab(, grid)) ///
+	(scatter sig_range fc if fc<=`r(p95)', msymbol(Oh) msize(tiny) color(gs12)), ///
 	ytitle("") xtitle("Effective cost/loan ratio") ///
-	legend(order(1 "Fee-forcing" 2 "SQ" 3 "SQ-Fee") rows(1)) xtitle("Effective cost/loan ratio") scheme(s2mono) graphregion(color(white)) 
+	legend(order(1 "Fee-forcing" 2 "SQ" 3 "SQ-Fee") pos(6) rows(1)) xtitle("Effective cost/loan ratio")  graphregion(color(white)) 
 graph export "$directorio/Figuras/cdf_eff_pro_2.pdf", replace

@@ -11,19 +11,19 @@ keep if pro_2==0 | missing(pro_2)
 keep if des_c==0
 
 
-hist dias_ultimo_mov, percent w(10) scheme(s2mono) graphregion(color(white)) ///
+hist dias_ultimo_mov, percent w(10)  graphregion(color(white)) ///
 	xtitle("Elapsed days to last payment") title("") note("")
 graph export "$directorio\Figuras\hist_days_default.pdf", replace
 
-hist dias_primer_pago, percent w(10) scheme(s2mono) graphregion(color(white)) ///
+hist dias_primer_pago, percent w(10)  graphregion(color(white)) ///
 	xtitle("Elapsed days") title("") note("")
 graph export "$directorio\Figuras\hist_firstdays_default.pdf", replace			
 			
-hist sum_porcp_c, percent w(0.1) scheme(s2mono) graphregion(color(white)) ///
+hist sum_porcp_c, percent w(0.1) graphregion(color(white)) ///
 	title("") note("")
 graph export "$directorio\Figuras\hist_percpay_default.pdf", replace			
 			
-catplot num_p if num_p<=5, percent vertical scheme(s2mono) graphregion(color(white)) ///
+catplot num_p if num_p<=5, percent vertical graphregion(color(white)) ///
 	 ytitle("Percent")
 graph export "$directorio\Figuras\hist_numpay_default.pdf", replace			
 			

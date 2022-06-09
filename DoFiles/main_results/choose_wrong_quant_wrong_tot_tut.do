@@ -89,7 +89,7 @@ gen qwf_choose = 0
 gen qwf_nonchoose = 0
 
 	
-local rep_num = 500
+local rep_num = 100
 forvalues rep = 1/`rep_num' {
 	di "`rep'"
 	*Draw random effect from normal distribution with standard error according to Athey
@@ -197,6 +197,7 @@ save "$directorio/_aux/choose_wrong_tot_tut.dta", replace
 
 **************************************PLOTS*************************************
 
+use "$directorio/_aux/choose_wrong_tot_tut.dta", clear
 	
 	twoway 	(rarea cwf_normal_l cwf_normal_h threshold, lcolor(navy%5) fcolor(navy) fintensity(50)) ///
 			(line cwf threshold, lpattern(solid) lwidth(medthick) lcolor(navy)) ///
@@ -208,7 +209,7 @@ save "$directorio/_aux/choose_wrong_tot_tut.dta", replace
 			(line cwf_choose threshold, lpattern(solid) lwidth(medthick) lcolor(maroon%70)) ///
 			(scatter cwf_choose threshold, connect(l) msymbol(x) color(maroon%70) ) ///				
 			, legend(order(3 "Choice commitment"  ///
-				6 "Non-choosers" 9 "Choosers") rows(1))  ///
+				6 "Non-choosers" 9 "Choosers") pos(6) rows(1))  ///
 			graphregion(color(white)) xtitle("APR threshold") ///
 			ytitle("% of relevant group making mistakes") ///
 			ylabel(0(10)100) 
@@ -217,7 +218,7 @@ save "$directorio/_aux/choose_wrong_tot_tut.dta", replace
 	
 	twoway 	(scatter qwf_nonchoose threshold, connect(l) msymbol(x) color(dkgreen%90)) ///	
 			(scatter qwf_choose threshold, connect(l)  msymbol(x) color(maroon%80)) ///				
-			, legend(order(1 "Non-choosers" 2 "Choosers")  rows(1)) ///
+			, legend(order(1 "Non-choosers" 2 "Choosers")  pos(6) rows(1)) ///
 			graphregion(color(white)) xtitle("APR threshold") ///
 			ytitle("Money (as % of loan)") 
 	graph export "$directorio/Figuras/money_cw_apr_tot_tut.pdf", replace	

@@ -14,7 +14,7 @@ tab num_pawns if f_idcliente==1
 keep if num_pawns<=60
 
 
-hist num_pawns, discrete percent scheme(s2mono) graphregion(color(white)) ///
+hist num_pawns, discrete percent graphregion(color(white)) ///
 	xtitle("Number of pawns")
 graph export "$directorio\Figuras\hist_num_pawns.pdf", replace	
 	

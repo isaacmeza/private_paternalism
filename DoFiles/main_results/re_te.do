@@ -320,7 +320,7 @@ graph twoway
 			xscale(range(`min_xaxis' `max_xaxis'))
 			xscale(noline) /* because manual axis at 0 with yline above) */
 			`plotregion' `graphregion'  
-			legend(order(4 "SQ" 7 "NSQ") rows(1))
+			legend(order(4 "SQ" 7 "NSQ") pos(6) rows(1))
 			xline(5, lpattern(dot) lwidth(thick) lcolor(black))
 			xline(8, lpattern(dot) lwidth(thick) lcolor(black))
 			xline(11, lpattern(dot) lwidth(thick) lcolor(black))

@@ -30,7 +30,7 @@ xtile perc_apr_d = apr, nq(100)
 
 twoway (hist apr if apr<=750 & des_c==0 , w(20) percent lwidth(medthick) lcolor(navy) color(ltblue)) ///
 		(hist apr if apr<=750 & des_c==1, w(20) percent lwidth(medthick) lcolor(black) color(none)), ///
-		legend(order(1 "Cond. on not rec." 2 "Cond. on rec.")) xtitle("APR %") scheme(s2mono) graphregion(color(white))
+		legend(order(1 "Cond. on not rec." 2 "Cond. on rec.") pos(6) rows(1)) xtitle("APR %")  graphregion(color(white))
 graph export "$directorio/Figuras/hist_apr.pdf", replace
 
 
@@ -40,7 +40,7 @@ xtile perc_a = fc_admin, nq(100)
 
 twoway (hist fc_admin if perc_a<=99 & des_c==0, w(500) percent lwidth(medthick) lcolor(navy) color(ltblue)) ///
 		(hist fc_admin if perc_a<=99 & des_c==1, w(500) percent lwidth(medthick) lcolor(black) color(none)), ///
-		legend(order(1 "Cond. on not rec." 2 "Cond. on rec." )) xtitle("Financial Cost") scheme(s2mono) graphregion(color(white))
+		legend(order(1 "Cond. on not rec." 2 "Cond. on rec." ) pos(6) rows(1)) xtitle("Financial Cost")  graphregion(color(white))
 graph export "$directorio/Figuras/hist_fc.pdf", replace
 
 

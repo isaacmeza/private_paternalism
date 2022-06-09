@@ -153,20 +153,20 @@ gen prob_threshold = _n
 
 * Change in benefit for Type 1 individuals
 twoway 	(rarea lwp hip prob_threshold if inrange(prob_threshold, 10,90), color(navy*.9) xaxis(1) yaxis(1) xlabel(10(10)90, axis(1))) ///
-	(line betap prob_threshold if inrange(prob_threshold, 10,90), yline(0) lpattern(solid) xaxis(1) yaxis(1) xlabel(10(10)90)) ///
+	(line betap prob_threshold if inrange(prob_threshold, 10,90), yline(0) lpattern(solid) xaxis(1) yaxis(1) xlabel(10(10)90) color(black)) ///
 	(rarea share1_lw share1_hi prob_threshold if inrange(prob_threshold, 10,90), color(gs5%25) xaxis(2) yaxis(2) xlabel(10(10)90, nolabel noticks axis(2))) ///
 	(line share1 prob_threshold if inrange(prob_threshold, 10,90), lpattern(dot) lwidth(medthick) color(black) xaxis(2) yaxis(2) xlabel(10(10)90, nolabel noticks axis(2))) ///	
-	(line prop_clasep_1 prob_threshold if inrange(prob_threshold, 10,90), color(red%70)  lpattern(solid) xaxis(2) yaxis(2) xlabel(10(10)90, nolabel noticks axis(2))) , scheme(s2mono) graphregion(color(white)) ///
-	legend(order(2 "Change in benefit" 5 "Proportion of Type 1 individuals")) xtitle("Probability threshold", axis(1)) xtitle("", axis(2)) ytitle("Change in benefit for Type 1 individuals", axis(1)) ytitle("Proportion", axis(2)) 
+	(line prop_clasep_1 prob_threshold if inrange(prob_threshold, 10,90), color(red%70)  lpattern(solid) xaxis(2) yaxis(2) xlabel(10(10)90, nolabel noticks axis(2))) , graphregion(color(white)) ///
+	legend(order(2 "Change in benefit" 5 "Proportion of Type 1 individuals") pos(6) rows(1)) xtitle("Probability threshold", axis(1)) xtitle("", axis(2)) ytitle("Change in benefit for Type 1 individuals", axis(1)) ytitle("Proportion", axis(2)) 
 graph export "$directorio\Figuras\benefit_type1p.pdf", replace
 
 
 twoway 	(rarea lw hi prob_threshold if inrange(prob_threshold, 10,90), color(navy*.9) xaxis(1) yaxis(1) xlabel(10(10)90, axis(1))) ///
-	(line beta prob_threshold if inrange(prob_threshold, 10,90), yline(0) lpattern(solid) xaxis(1) yaxis(1) xlabel(10(10)90)) ///
+	(line beta prob_threshold if inrange(prob_threshold, 10,90), yline(0) lpattern(solid) xaxis(1) yaxis(1) xlabel(10(10)90) color(black)) ///
 	(rarea share1_lw share1_hi prob_threshold if inrange(prob_threshold, 10,90), color(gs5%25) xaxis(2) yaxis(2) xlabel(10(10)90, nolabel noticks axis(2))) ///
 	(line share1 prob_threshold if inrange(prob_threshold, 10,90), lpattern(dot) lwidth(medthick) color(black) xaxis(2) yaxis(2) xlabel(10(10)90, nolabel noticks axis(2))) ///	
-	(line prop_clase_1 prob_threshold if inrange(prob_threshold, 10,90), color(red%70)  lpattern(solid) xaxis(2) yaxis(2) xlabel(10(10)90, nolabel noticks axis(2))) , scheme(s2mono) graphregion(color(white)) ///
-	legend(order(2 "Change in benefit" 5 "Proportion of Type 1 individuals")) xtitle("Probability threshold", axis(1)) xtitle("", axis(2)) ytitle("Change in benefit for Type 1 individuals", axis(1)) ytitle("Proportion", axis(2)) 
+	(line prop_clase_1 prob_threshold if inrange(prob_threshold, 10,90), color(red%70)  lpattern(solid) xaxis(2) yaxis(2) xlabel(10(10)90, nolabel noticks axis(2))) , graphregion(color(white)) ///
+	legend(order(2 "Change in benefit" 5 "Proportion of Type 1 individuals") pos(6) rows(1)) xtitle("Probability threshold", axis(1)) xtitle("", axis(2)) ytitle("Change in benefit for Type 1 individuals", axis(1)) ytitle("Proportion", axis(2)) 
 graph export "$directorio\Figuras\benefit_type1.pdf", replace
 	
 
