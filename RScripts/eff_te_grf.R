@@ -40,16 +40,11 @@ data_in <- rename.vars(data_in, c(
   "visit_number_d5", 
   "visit_number_d6", 
   "visit_number_d7",
-  "log_prestamo",
-  "pr_recup",
   "edad",
   "faltas",
   "val_pren_std",
   "genero",
-  "pres_antes",
-  "plan_gasto_bin",
-  "masqueprepa",
-  "pb"
+  "masqueprepa"
 ),
 c(
   "monday",
@@ -74,16 +69,11 @@ c(
   "visit.number.5",
   "visit.number.6",
   "visit.number.7",
-  "log.loan",
-  "subj.pr",
   "age",
   "income.index",
   "subj.loan.value",
   "female",
-  "pawn.before",
-  "makes.budget",
-  "more.high.school",
-  "pb"
+  "more.high.school"
 ))
 
 require("dplyr")
@@ -132,7 +122,7 @@ fun_threshold_alpha = function(alpha, g) {
   return((2*sum(num)/den-lambda)^2)
 }
 
-alfa = optimize(fun_threshold_alpha, g, interval=c(0.001, 0.49))$minimum
+alfa = optimize(fun_threshold_alpha, g, interval=c(0.001, 0.499))$minimum
 
 X <- X[propensity_score>=alfa & propensity_score<=(1-alfa),]
 Y <- Y[propensity_score>=alfa & propensity_score<=(1-alfa),]
@@ -233,6 +223,49 @@ write_csv(blp, file = "_aux/blp_eff_te_grf.csv")
 
 tc <- tidy(test_calibration(tau.forest))
 print(tc)
+
+
+observation_weights <- function(forest) {
+  # Case 1: No sample.weights
+  if (is.null(forest$sample.weights)) {
+    if (length(forest$clusters) == 0 || !forest$equalize.cluster.weights) {
+      raw.weights <- rep(1, NROW(forest$Y.orig))
+    } else {
+      # If clustering with no sample.weights provided and equalize.cluster.weights = TRUE, then
+      # give each observation weight 1/cluster size, so that the total weight of each cluster is the same.
+      clust.factor <- factor(forest$clusters)
+      inverse.counts <- 1 / as.numeric(Matrix::colSums(Matrix::sparse.model.matrix(~ clust.factor + 0)))
+      raw.weights <- inverse.counts[as.numeric(clust.factor)]
+    }
+  }
+  
+  # Case 2: sample.weights provided
+  if (!is.null(forest$sample.weights)) {
+    if (length(forest$clusters) == 0 || !forest$equalize.cluster.weights) {
+      raw.weights <- forest$sample.weights
+    } else {
+      stop("Specifying non-null sample.weights is not allowed when equalize.cluster.weights = TRUE")
+    }
+  }
+  
+  return (raw.weights / sum(raw.weights))
+}
+observation.weight <- observation_weights(tau.forest)
+
+
+preds <- predict(forest)$predictions
+mean.pred <- weighted.mean(preds, observation.weight)
+DF <- data.frame(
+  target = unname(forest$Y.orig - forest$Y.hat),
+  mean.forest.prediction = unname(forest$W.orig - forest$W.hat) * mean.pred,
+  differential.forest.prediction = unname(forest$W.orig - forest$W.hat) *
+    (preds - mean.pred)
+)
+md<- lm(target ~ mean.forest.prediction + differential.forest.prediction + 0,
+   weights = observation.weight,
+   data = DF)
+summary(md)
+
 write_csv(tc,file = "_aux/tc_eff_te_grf.csv")
 
 # Save results

@@ -105,8 +105,8 @@ di `tot'
 di `tut'
 
 
-twoway (kdensity apr if t_prod==1 & apr>`bottom', bw(25) xline(`bottom' `top', lpattern(dot) lcolor(gs4)) lwidth(medthick) lcolor(navy%90)) ///
-	(kdensity apr if t_prod==1 & apr<`top', xline(`lb' `ub', lcolor(navy%90)) bw(25) lwidth(medthick) lcolor(maroon%90))  
+twoway (kdensity apr if t_prod==1 & apr>`bottom_0', bw(25) xline(`bottom_0' `top_0', lpattern(dot) lcolor(gs4)) lwidth(medthick) lcolor(navy%90)) ///
+	(kdensity apr if t_prod==1 & apr<`top_0', xline(`lb_tot' `ub_tot', lcolor(navy%90)) bw(25) lwidth(medthick) lcolor(maroon%90))  
 	
 	
 	

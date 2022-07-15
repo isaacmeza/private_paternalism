@@ -129,7 +129,7 @@ heterogeneity_effect <- function(data_in,treatment_var,outcome_var,writedata,ext
   # Equivalently the first value of alpha (in increasing order) such that the constraint is achieved by equality
   # (as the constraint is a monotone increasing function in alpha)
   
-  alfa = optimize(fun_threshold_alpha, g, interval=c(0.001, 0.49))$minimum
+  alfa = optimize(fun_threshold_alpha, g, interval=c(0.001, 0.499))$minimum
 
   X <- X[propensity_score>=alfa & propensity_score<=(1-alfa),]
   Y <- Y[propensity_score>=alfa & propensity_score<=(1-alfa),]
@@ -284,7 +284,7 @@ data <- read_csv('./_aux/heterogeneity_grf.csv')
 
 #Heterogeneous Effects
 for (arm in c("pro_2")){
-  for (dep in c("apr", "eff_cost_loan", "def_c", "des_c", "fc_admin")){
+  for (dep in c("apr", "eff_cost_loan", "def_c", "des_c", "fc_admin", "dias_primer_pago")){
     heterogeneity_effect(data_extended,arm,dep,1,1) 
     heterogeneity_effect(data,arm,dep,1,0) 
   }

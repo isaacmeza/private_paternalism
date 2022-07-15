@@ -125,7 +125,7 @@ te_grf <- function(data_in, outcome_var, name) {
   # Equivalently the first value of alpha (in increasing order) such that the constraint is achieved by equality
   # (as the constraint is a monotone increasing function in alpha)
   
-  alfa = optimize(fun_threshold_alpha, g, interval=c(0.001, 0.49))$minimum
+  alfa = optimize(fun_threshold_alpha, g, interval=c(0.001, 0.499))$minimum
   
   X <- X[propensity_score>=alfa & propensity_score<=(1-alfa),]
   Y <- Y[propensity_score>=alfa & propensity_score<=(1-alfa),]

@@ -36,7 +36,7 @@ estadd scalar ContrMean = `r(mean)'
 preserve
 keep if visit_number==1
 eststo: reg fc_admin i.t_prod dummy_* if inlist(t_prod,1,2,4), vce(cluster suc_x_dia)
-su fc_admin if e(sample) &t_prod==1
+su fc_admin if e(sample) & t_prod==1
 estadd scalar ContrMean = `r(mean)'
 eststo: reg apr i.t_prod dummy_* if inlist(t_prod,1,2,4), vce(cluster suc_x_dia)
 su apr if e(sample) & t_prod==1

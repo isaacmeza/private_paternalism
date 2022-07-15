@@ -25,7 +25,7 @@ replace fc_admin =log(fc_admin)
 
 local cov_partition = 6
 local delta_partition = 100
-local var fc_admin
+local var apr
 
 * Partition of covariate space
 cluster kmedians $C0 edad  faltas val_pren_std genero masqueprepa , k(`cov_partition') gen(_clus_1)
@@ -45,8 +45,12 @@ global n0 = r(N)
 global c_ = r(min)
 global d_ = r(max)
 * Define a partition of [a-d, b-c] 
-range delta_range `=${a_}-${d_}' `=${b_}-${c_}' `=`delta_partition'+1'
-replace delta_range = . if _n==`=`delta_partition'+1'
+*range delta_range `=${a_}-${d_}' `=${b_}-${c_}' `=`delta_partition'+1'
+*replace delta_range = . if _n==`=`delta_partition'+1'
+gen delta_range = -10 in 1
+replace delta_range = 0 in 2
+replace delta_range = 10 in 3
+
 
 * For any \delta\in [a-d, b-c] we define Y_\delta = [a,b] \cap [c+\delta, d+\delta]
 * F^L(\delta) = max {sup_{Y_\delta} {F_1(y)-F_0(y-\delta)} , 0}
@@ -262,7 +266,7 @@ if "`var'"=="apr" {
 		(line ub delta_range, color(maroon)) ///
 		, graphregion(color(white)) legend(order(5 "Lower bound" 6 "Upper bound")) ///
 		xtitle("{&Delta} APR")
-	graph export "$directorio/Figuras/fan_park_bounds_`var'.pdf", replace
+	*graph export "$directorio/Figuras/fan_park_bounds_`var'.pdf", replace
 }
 
 if "`var'"=="fc_admin" {

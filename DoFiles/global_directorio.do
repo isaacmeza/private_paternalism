@@ -1,3 +1,24 @@
+
+********************
+version 17.0
+********************
+/* 
+/*******************************************************************************
+* Name of file:	
+* Author:	Isaac M 
+* Machine:	Isaac M 											
+* Date of creation:	
+* Last date of modification: 
+* Modifications: 	
+* Files used:     
+		- 
+* Files created:  
+
+* Purpose : Defines the path of the project folder & some global variables
+
+*******************************************************************************/
+*/
+
 *Directory
 set more off
 global directorio "C:\Users\isaac\Dropbox\Apps\ShareLaTeX\Donde2020"

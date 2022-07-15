@@ -788,9 +788,33 @@ We use \cite{atheygrf} \texttt{causal\_forest} of the \texttt{grf} library in $R
 \end{figure}
 
 
-\scriptsize {
+\scriptsize 
 \noindent This figure reports bivariate regressions of the form $\widehat{TakeUp} = \alpha + \beta \: X_i + \epsilon_i$, where $\widehat{TakeUp}$ is the prediction using random forests. The figure reports the $\beta$ coefficients for different $X_i$'s along with 95\% confidence intervals. Panel (a) focuses on take up in the arm where clients could chose among the fee-commitment contract and the status quo contract. Panel (b) focuses on the arm where clients could chose among the promise-commitment contract and the status quo contract. Using random forests we can predict who takes up the fee-forcing contract with 85\% accuracy out of sample.\footnote{Correcting for the fact that most chose the status-quo contract using the method of SMOTE, \cite{smote} we find an accuracy rate of 75\%.} Which suggests that choice among contracts is not purely random. This figure shows that the more educated, those that report that their family typically asks for money, those that make a monthly budget of expenses, and those that ask for a remainder of their due payments (and marginally those we classify as present-biased) are more likely to chose the fee-commitment contract if given the choice. The opposite holds for clients that are more economically vulnerable (can barely pay for food, electricity, etc) and those that report being more stressed.
-}
+
+
+\newpage
+
+\subsection{Bounding ToT \& TuT} \label{bound_tot_tut_appendix}
+
+\vspace{.2in}
+\normalsize
+\linespread{1.25}
+%Really force it to normal size and linespread
+\normalsize
+\linespread{1.25}
+
+Even without the exclusion restriction, it’s possible to bound $\mathbb{E}[Y_1-Y_0\;|\;T=0]$ and $\mathbb{E}[Y_1-Y_0\;|\;T=1]$ using observed outcomes in the forced arm and observed take-up in the choice arm. It should also be possible to create bounds conditional on covariates. The basic approach is similar to that of \cite{huber_mellace}. \\
+
+
+From the $Z=0$ arm we identify the distribution $F_0$ of $Y_0$, the potential outcome when forced into the no-commitment contract. Now, from the choice arm we know that around 90\% of people are $T=0$ types. Because choice was randomly assigned, the 90\% figure holds for all arms in the experiment. This tells us that $F_0$ is a 90\%-10\% mixture of $Y_0\;|\;T=0$ and $Y_0\;|\;T=1$. Cut out the bottom 10\% of $F_0$ and calculate the mean of this new distribution. Then cut out the top 10\% of $F_0$ and compute the mean of this new distribution. The result is an upper and lower bound for $\mathbb{E}[Y_0\;|\;T=0]$ that does not rely on the exclusion restriction. We can apply similar reasoning to bound $\mathbb{E}[Y_1\;|\;T=0]$ Combining the previous bounds gives a bound for the TuT that does not rely on the exclusion restriction, and analogous we can bound the ToT. \\
+
+
+
+The \cite{huber_mellace} bounds for the ToT \& TuT APR are respectively:
+\[\text{ToT} : [-481.8, 483.7]\quad\quad\quad\text{TuT} : [-17.9, 90.6]\]
+
+Note that since both TuT and ToT estimates from the LATE approach lies inside these bounds, we do not falsify the exclusion restriction. 
+
 
 \newpage
 
@@ -822,6 +846,9 @@ We use \cite{atheygrf} \texttt{causal\_forest} of the \texttt{grf} library in $R
 \subsubsection{Finite mixture model }\label{fmm_section}
 
 \vspace{.2in}
+\normalsize
+\linespread{1.25}
+%Really force it to normal size and linespread
 \normalsize
 \linespread{1.25}
 
@@ -896,7 +923,9 @@ Then the (incomplete) log-likelihood function is
 \vspace{.2in}
 \normalsize
 \linespread{1.25}
-
+%Really force it to normal size and linespread
+\normalsize
+\linespread{1.25}
 
  Recall that $Z_i$ is the observed, randomly assigned experimental allocation, where $Z_i=0$ denotes the control arm, $Z_i=1$ denotes the forced-fee arm, and $Z_i=2$ is the choice arm.  Let $C_i$ be the unobserved choice type. $C_i=0$ when individual $i$ does not choose commitment  given the choice and $C_i=1$ when chooses commitment given the choice. Finally, $D_i = Z_i\times \mathds{1}(Z_i\neq 2) + C_i\times \mathds{1}(Z_i=2)$ is the observed treatment indicator, and $Y(d,z)$ is the potential outcome function for $d=0,1$, and $z=0,1,2$. 
 
@@ -1055,7 +1084,7 @@ and the RHS is a function of observed data only.
 
 \begin{table}[H]
 \caption{Effect of frequent payment in observational data}
-\label{attrition_table}
+\label{te_obs}
 \begin{center}
 \scriptsize{\input{./Tables/def_te_obs.tex}}
 \end{center}
