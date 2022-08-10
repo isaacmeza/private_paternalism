@@ -607,6 +607,29 @@ drop if missing(apr)
 drop sqrt3
 label var apr "APR (appraised value)"
 
+*Consolidate APR of multiple pawns 
+	*Sum of loans
+bysort NombrePignorante fecha_inicial : egen sl = sum(prestamo) if fecha_inicial==fecha_movimiento
+bysort NombrePignorante fecha_inicial : egen sum_loan = mean(sl) 
+	*Sum of defaulted loans
+bysort NombrePignorante fecha_inicial : egen sdl = sum(prestamo) if fecha_inicial==fecha_movimiento & def_c==1
+bysort NombrePignorante fecha_inicial : egen sum_def_loan = mean(sdl) 
+replace sum_def_loan = 0 if missing(sum_def_loan)
+	*Consolidated sum of payments
+bysort NombrePignorante fecha_inicial : egen scp = sum(sum_p_c) if fecha_inicial==fecha_movimiento
+bysort NombrePignorante fecha_inicial : egen sum_con_p_c = mean(scp) 
+
+	*Consolidated APR
+gen double apr_consolidated = (sum_con_p_c + (sum_def_loan)/0.7)/sum_loan 
+replace apr_consolidated = apr_consolidated/3
+gen double sqrt3_c =  (2*apr_consolidated^3 + 9*apr_consolidated^2 + 3*sqrt(3)*sqrt(3*apr_consolidated^4 + 14*apr_consolidated^3 + 27*apr_consolidated^2) + 27*apr_consolidated)^(1/3)
+replace apr_consolidated = sqrt3_c/(3*2^(1/3)) - (2^(1/3)*(-apr_consolidated^2 - 3*apr_consolidated))/(3*sqrt3_c) + (apr_consolidated - 3)/3
+replace apr_consolidated = apr_consolidated*12*100
+drop if missing(apr_consolidated)
+drop sqrt3_c
+label var apr_consolidated "APR consolidated"
+
+
 *Calculate a version of this that doesn't include the interest that is mechanically saved by paying early since this is the piece of the forced-fee contract that has a foregone liquidity cost for the borrower.
 gen apr_noint = sum_porcp_c - sum_porc_int_c + 1/0.7
 replace apr_noint = apr_noint - 1/0.7 if des_c == 1
@@ -650,7 +673,15 @@ merge m:1 prenda using `temp_emp', nogen
 *Panel data
 save "$directorio/DB/Base_Boleta_230dias_Seguimiento_Ago2013_Grandota_2", replace
 sort prenda fecha_inicial fecha_movimiento t_prod
-by prenda fecha_inicial: keep if _n==1
+by prenda fecha_inicial : keep if _n==1
+*Consolidate multiple pawns
+bysort NombrePignorante fecha_inicial : replace apr_consolidated = . if _n!=1
+bysort NombrePignorante fecha_inicial : egen des_con_c = mean(des_c)
+bysort NombrePignorante fecha_inicial : replace des_con_c = . if _n!=1
+bysort NombrePignorante fecha_inicial : egen def_con_c = mean(def_c)
+bysort NombrePignorante fecha_inicial : replace def_con_c = . if _n!=1
+bysort NombrePignorante fecha_inicial : egen fc_con_admin = sum(fc_admin)
+bysort NombrePignorante fecha_inicial : replace fc_con_admin = . if _n!=1 
 
 *Drop outliers
 drop if prestamo>57000

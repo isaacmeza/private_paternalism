@@ -193,5 +193,6 @@ replace pr_prob = pr_prob*100
 gen OC = (pr_recup>pr_prob) if (!missing(pr_recup) & !missing(pr_prob))
 gen cont_OC = pr_recup-pr_prob if (!missing(pr_recup) & !missing(pr_prob))
 
+compress
 save "$directorio/DB/Master.dta", replace	
 export delimited using "$directorio/DB/Master.csv", replace quote nolabel
