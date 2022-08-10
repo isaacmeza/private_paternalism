@@ -14,7 +14,7 @@ version 17.0
 		- 
 * Files created:  
 
-* Purpose: ToT-TuT analysis 
+* Purpose: ToT-TuT analysis using STATA tot_tut package and compare it with stacked GMM
 
 *******************************************************************************/
 */
@@ -35,7 +35,7 @@ replace apr_consolidated = -apr_consolidated
 	*No payment | recovers ---> negation of +pay & defaults
 gen pay_default = (pays_c==0 | des_c==1)
 
-keep apr apr_consolidated des_c des_con_c pay_default choose_commitment t_prod prod suc_x_dia visit_number
+keep apr apr_consolidated des_c des_con_c pay_default choose_commitment t_prod prod suc_x_dia visit_number  NombreP fecha_inicial
 
 ********************************************************************************
 
@@ -148,7 +148,7 @@ gen z2_itt = (Zitt==2)
 foreach var of varlist apr apr_consolidated des_c des_con_c  {
 eststo : tot_tut `var' Z choose_commitment ,  vce(cluster suc_x_dia)
 eststo : tot_tut `var' Z choose_commitment if visit_number==1,  vce(cluster suc_x_dia)
-eststo : tot_tut `var' Z_itt choose_commitment ,  vce(cluster suc_x_dia)
+eststo : tot_tut `var' Zitt choose_commitment ,  vce(cluster suc_x_dia)
 }
 
 
