@@ -76,13 +76,17 @@ label values suc lab_suc
 label values clave_movimiento lab_mov
 
 
-*Days passed between movement date and initial date
+*We compute the elapsed days from loan origination
 gen dias_inicio = fecha_movimiento - fecha_inicial
-su fecha_movimiento
-drop if fecha_inicial>`r(max)'-230
-drop if dias_inicio>230 | dias_inicio<0
+drop if dias_inicio < 0 | missing(dias_inicio)
+*Define threshold from where we "ignore" transactions
+*Since each row in the dataset is a transaction we are essentially just standing at 230 days after loan origination and defining all variables as outcomes served after those 230 days of treatment. This allows us to also measure every pawn fairly.
+drop if dias_inicio>230 
 label var dias_inicio  "Days passed between movement date and initial date"
-replace dias_inicio = . if inlist(clave_movimiento, 2)
+
+*Ignore "venta con billete" since this is a transaction not made by the borrower
+drop if inlist(clave_movimiento, 2)
+
 
 *Days of payments
 bysort prenda fecha_movimiento : gen days_payment = dias_inicio if inlist(clave_movimiento, 1,3,5) & _n==1
@@ -672,8 +676,18 @@ merge m:1 prenda using `temp_emp', nogen
 *******************************************************************
 *Panel data
 save "$directorio/DB/Base_Boleta_230dias_Seguimiento_Ago2013_Grandota_2", replace
-sort prenda fecha_inicial fecha_movimiento t_prod
+gsort prenda fecha_inicial -fecha_movimiento clave_movimiento t_prod
 by prenda fecha_inicial : keep if _n==1
+
+*Elapsed days since treatment by treatment start date
+twoway (scatter dias_ultimo_mov fecha_inicial if !missing(prod) & des_c==1) ///
+	(scatter dias_ultimo_mov fecha_inicial if !missing(prod) & des_c==0 & clave_movimiento==5) ///
+	(scatter dias_ultimo_mov fecha_inicial if !missing(prod) & des_c==0 & (clave_movimiento!=5 & clave_movimiento!=6)) ///
+	(scatter dias_ultimo_mov fecha_inicial if !missing(prod) & des_c==0 & clave_movimiento==6) ///
+	 , ///
+	legend(order(1 "Recovery" 2 "Refrendum" 3 "Partial payment" 4 "Pawn at sale")) xtitle("Treatment date") ytitle("Elapsed days")
+	
+	
 *Consolidate multiple pawns
 bysort NombrePignorante fecha_inicial : replace apr_consolidated = . if _n!=1
 bysort NombrePignorante fecha_inicial : egen des_con_c = mean(des_c)

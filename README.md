@@ -33,4 +33,4 @@ Analysis of the data and econometrics is done with STATA. However, the HTE (done
 
 # Workflow 
 
-We share all our work through github, and update the Overleaf project through Dropbox.
+We share all our work through GitHub, and update the Overleaf project through Dropbox.
