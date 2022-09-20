@@ -83,7 +83,7 @@ gen val_pren_std = (val_pren_pr-r(mean))/r(sd)
 *Financial cost
 	*survey fc
 gen fc_survey = sum_p_c
-replace fc_survey = fc_survey + val_pren if des_c != 1
+replace fc_survey = fc_survey + val_pren if def_c==1
 gen log_fc_survey = log(1+fc_survey)
 label var fc_survey "Financial cost (subjective value)"
 
@@ -96,7 +96,7 @@ gen trans_cost = (c_trans + 62.33)*num_v
 
 *APR subjective
 gen double apr_survey = sum_porcp_c 
-replace apr_survey = apr_survey + val_pren/prestamo if des_c != 1
+replace apr_survey = apr_survey + val_pren/prestamo if def_c==1
 	*annualize *solution to : apr/3 = x(1+x)^3/((1+x)^3-1)
 replace apr_survey = apr_survey/3
 gen double sqrt3 =  (2*apr_survey^3 + 9*apr_survey^2 + 3*sqrt(3)*sqrt(3*apr_survey^4 + 14*apr_survey^3 + 27*apr_survey^2) + 27*apr_survey)^(1/3)
@@ -107,7 +107,7 @@ label var apr_survey "APR (subjective value)"
 
 *APR + tc
 gen double apr_tc = sum_porcp_c + trans_cost/prestamo
-replace apr_tc = apr_tc + 1/0.7 if des_c != 1
+replace apr_tc = apr_tc + 1/0.7 if def_c==1
 
 	*annualize *solution to : apr/3 = x(1+x)^3/((1+x)^3-1)
 replace apr_tc = apr_tc/3
@@ -119,7 +119,7 @@ label var apr_tc "APR (appraised) + tc"
 
 *APR subjective + tc
 gen double apr_s_tc = sum_porcp_c + trans_cost/prestamo
-replace apr_s_tc = apr_s_tc + val_pren/prestamo if des_c != 1
+replace apr_s_tc = apr_s_tc + val_pren/prestamo if def_c==1
 
 	*annualize *solution to : apr/3 = x(1+x)^3/((1+x)^3-1)
 replace apr_s_tc = apr_s_tc/3
@@ -131,7 +131,7 @@ label var apr_s_tc "APR (subjective) + tc"
 
 *APR fully adjusted (subj + tc - int)
 gen double apr_fa = sum_porcp_c + trans_cost/prestamo - sum_porc_int_c
-replace apr_fa = apr_fa + val_pren/prestamo if des_c != 1
+replace apr_fa = apr_fa + val_pren/prestamo if def_c==1
 
 	*annualize *solution to : apr/3 = x(1+x)^3/((1+x)^3-1)
 replace apr_fa = apr_fa/3

@@ -90,17 +90,12 @@ gen dpp = dias_inicio if inlist(clave_movimiento, 1,3,5)
 
 *Drop negative pledges (this are duplicates - so we are not losing any information)
 drop if importe<0
+drop if prestamo<0
 
 *Loan amount
-sort prenda fecha_movimiento HoraMovimiento
-bysort prenda: gen prestamo_real = prestamo if clave_movimiento==4
-bysort prenda: replace prestamo_real = prestamo_real[_n-1] if missing(prestamo_real)
-replace prestamo = prestamo_real
-drop prestamo_real
-
 gen log_prestamo = log(prestamo)
 
-*Drop pawns with 'duplicated' un-pledges
+*Drop pawns with 'duplicated' recovery
 sort prenda fecha_movimiento HoraMovimiento
 by prenda : gen uno = clave_movimiento==3
 by prenda : egen dup = sum(uno)
@@ -147,7 +142,7 @@ save "$directorio/_aux/pre_experiment_admin.dta", replace
 restore
 
 *Start of randomization
-keep if  fecha_inicial>=date("06/09/2012","DMY")  
+keep if fecha_inicial>=date("06/09/2012","DMY")  
 
 						
 *Identify type of product
@@ -176,23 +171,15 @@ label var pro_9 "C-Promise-NSQ"
 
 *Choose commitment variable
 gen choose_commitment =  (producto==5 | producto==7) if inlist(producto, 4, 5, 6, 7)
-		
-
-*Verify if loan remains constant in the voucher
-bysort prenda: gen aux = 1 if prestamo[_n]~=prestamo[_n-1]
-bysort prenda: replace aux = 0 if _n==1
-bysort prenda : egen drp = max(aux)
-drop if drp==1 
-drop drp aux
 
 
 *Variable creation
 
 sort prenda fecha_movimiento HoraMovimiento
-*'pagos' indicate deposits from the customers, i.e. refrendo, desempeno, venta con billete, abono al capital.
+*'pagos' indicate deposits from the customers, i.e. refrendo, desempeno, abono al capital.
 *Filter those that indicate payments
-gen pagos=importe if inlist(clave_movimiento, 1,3,5)
-replace pagos=0 if pagos==.
+gen pagos = importe if inlist(clave_movimiento, 1,3,5)
+replace pagos = 0 if pagos==.
 label var pagos "Client deposits"
 
 *Payed interests
@@ -204,14 +191,30 @@ replace intereses = spagos-sint-prestamo if clave_movimiento==3
 drop spagos sint
 label var intereses "Interests"
 
-*Credit has ended, meaning either 'desempeno' or 'pase al moneda'
-gen concluyo = inlist(clave_movimiento,3,6)
+*Credit has CERTAINLY ended, meaning either 'desempeno' or 'pase al moneda'
+sort prenda dias_inicio 
+by prenda : gen ultimo_mov = _n==_N
+
+*Tag as ended if either recovery, default, or vbi
+gen concluyo = inlist(clave_movimiento,2,3,6)
+*Add those that sell pawn (these default)
+replace concluyo = 1 if ultimo_mov==1 & clave_movimiento==4
+*Add those that didnt rollover pawn (these default)
+replace concluyo = 1 if ultimo_mov==1 & clave_movimiento==1 
+*Add those that did rollover but then didnt pay in observation window - and didnt rollover for a further period (these default)
+su fecha_movimiento
+gen dias_quedan = `r(max)' - fecha_movimiento
+replace concluyo = 1 if ultimo_mov==1 & clave_movimiento==5 & dias_quedan>=60
+*Identify ended loans
 bysort prenda : egen concluyo_c = max(concluyo)
+
+*Drop when pawn was sell, since this is not of interest, and moves the last day in the admin data.
+drop if clave_movimiento==2
 
 *Incurred interests/fee
 preserve
 drop if clave_movimiento==2
-collapse (mean) prestamo (sum) importe (mean) dias_inicio (mean) concluyo_c (mean) producto, by(prenda fecha_movimiento)
+collapse (mean) prestamo (sum) importe (mean) dias_inicio (mean) concluyo_c (mean) producto (mean) fecha_inicial, by(prenda fecha_movimiento)
 sort prenda fecha_movimiento 
 
 gen double incurred_int = .
@@ -226,7 +229,9 @@ forvalues i = 2/`r(max)' {
 	bysort prenda : replace fee_strong = .02*capital[_n-1]/3*(ceil(dias_inicio/30)-ceil(dias_inicio[_n-1]/30)-1+(importe<=capital/3)) if _n==`i'
 	bysort prenda : replace capital = capital[_n-1] - (importe-incurred_int-fee_strong) if _n==`i'
 	}	
-bysort prenda : replace incurred_int = incurred_int + capital*((1+0.002257833358012379025857)^(230-dias_inicio)-1) if concluyo_c==0 & _n==_N
+	
+su fecha_movimiento	
+bysort prenda : replace incurred_int = incurred_int + capital*((1+0.002257833358012379025857)^((`r(max)'-fecha_inicial)-dias_inicio)-1) if concluyo_c==0 & _n==_N
 
 keep prenda fecha_movimiento incurred_int fee_strong capital
 tempfile temp_int
@@ -235,8 +240,9 @@ restore
 
 merge m:1 prenda fecha_movimiento using `temp_int', nogen
 *Drop duplicates by prenda-date
+sort prenda fecha_movimiento HoraMovimiento
 foreach var of varlist incurred_int fee_strong {
-	bysort prenda fecha_mov : replace `var' = . if _n!=1
+	by prenda fecha_movimiento : replace `var' = . if _n!=1
 	}
 	
 *Payed fees
@@ -347,7 +353,6 @@ gen desempeno=(clave_movimiento==3)
 gen abono=(clave_movimiento==1)
 gen refrendo=(clave_movimiento==5)
 gen refrendo_90=(clave_movimiento==5 & dias_inicio>=75)
-gen ventabillete=(clave_movimiento==2)
 gen pasealmoneda=(clave_movimiento==6)
 
 *Controls $C0 for multiple loans
@@ -375,8 +380,8 @@ restore
 *Recidivism
 preserve
 sort prenda fecha_movimiento HoraMovimiento
-	*Desempeno should be last movement in ticket
-by prenda: gen des_c=desempeno[_N]
+	*Desempeno 
+by prenda: egen des_c=max(desempeno)
 by prenda: gen dias_ultimo_mov = dias_inicio[_N]
 gen dias_inicio_d=dias_inicio if des_c==1
 by prenda: gen dias_al_desempenyo=dias_inicio_d[_N]
@@ -467,14 +472,18 @@ merge m:1 prenda using `temp_fp', nogen
 replace first_pay = 0 if missing(first_pay)
 
 sort prenda fecha_movimiento HoraMovimiento
-	*Desempeno should be last movement in ticket
-by prenda: gen des_c=desempeno[_N]
-gen def_c = 1-des_c
+********************************************************************************
+*							Measures of recovery/default					   *
+********************************************************************************
+	*Desempeno - defined as ever recovered in observation window 
+by prenda: egen des_c=max(desempeno)
+	*Default - defined as losing the piece - note that it is not symmetrical with recovered
+gen def_c = concluyo_c
+replace def_c = 0 if des_c==1
+
 by prenda: egen ref_c=max(refrendo)
 by prenda: egen ref_90_c=max(refrendo_90)
 by prenda: egen abo_c=max(abono)
-by prenda: egen vbi_c = max(ventabillete)
-by prenda: egen pam_c=max(pasealmoneda)
 by prenda: egen sum_p_c=max(sum_p)
 by prenda: egen sum_int_c=max(sum_int)
 by prenda: egen sum_inc_int_c=max(sum_inc_int)
@@ -506,13 +515,11 @@ replace dias_inicio = 1 if dias_inicio==0 & des_c==1
 cap drop dias_inicio_d
 
 * `Naiveness' variables (item-level)
-bysort prenda: gen ref_default = (1-des_c)*ref_90_c
-bysort prenda: gen pos_pay_default = (1-des_c)*(sum_porcp_c>0) if !missing(sum_porcp_c)
-bysort prenda: gen pay_30_default = (1-des_c)*(sum_porcp_c>=.30) if !missing(sum_porcp_c)
-gen def_120 = def_c
-replace def_120 = 0 if dias_al_desempenyo <= 120 & !missing(dias_al_desempenyo)
-bysort prenda: gen zero_pay_default = (1-des_c)*(sum_porcp_c==0) if !missing(sum_porcp_c)
-gen pos_pay_120_default = (1-des_c)*(pagos>0 & dias_inicio>120) 
+bysort prenda: gen ref_default = def_c*ref_90_c
+bysort prenda: gen pos_pay_default = def_c*(sum_porcp_c>0) if !missing(sum_porcp_c)
+bysort prenda: gen pay_30_default = def_c*(sum_porcp_c>=.30) if !missing(sum_porcp_c)
+bysort prenda: gen zero_pay_default = def_c*(sum_porcp_c==0) if !missing(sum_porcp_c)
+gen pos_pay_120_default = def_c*(pagos>0 & dias_inicio>120) 
 bysort prenda: egen pos_pay_120_def_c = max(pos_pay_120_default)
 
 * Naiveness (person-level)
@@ -539,13 +546,11 @@ forvalues i=1/4 {
 * Valid items to interact naiveness w/treatment effect to measure its intensity 
 by NombrePignorante : gen valid_item = (fecha_inicial>=ultima_fecha & (primer_producto==1 | primer_producto==.))
 
-label var des_c "Un-pledge"
+label var des_c "Recovery"
 label var def_c "Default"
-label var def_120 "Default (120)"
 label var ref_c "Refrendum"
 label var ref_90_c "Refrendum 90 days"
 label var abo_c "Payment to principal"
-label var vbi_c "Venta con Billete"
 label var sum_p_c "Cum (total) payments"
 label var sum_int_c "Cum (total) interest"
 label var sum_inc_int_c "Cum (total) incurred interest"
@@ -563,7 +568,6 @@ label var sum_porc_inc_int_c "Percentage of incurred interest"
 label var sum_porc_inc_fee_c "Percentage of incurred fees"
 label var sum_porc_pay_fee_c "Percentage of payed fees"
 label var num_p "Number of payment"
-label var pam_c "Pase al moneda"
 label var ref_default "Refrendum but default"
 label var pos_pay_default "Positive payment but default"
 label var pos_pay_120_def_c "Positive payment (after 120dd) but default"
@@ -581,19 +585,19 @@ label var fee "Charged late fee - dummy"
 ********************************************************************************
 	
 *Financial cost
-gen fc_admin = sum_p_c + prestamo/(0.7)
-replace fc_admin = fc_admin - prestamo/(0.7) if des_c == 1
+gen fc_admin = sum_p_c 
+replace fc_admin = fc_admin + prestamo/(0.7) if def_c==1
 gen log_fc_admin = log(1+fc_admin)
 label var fc_admin "Financial cost (appraised value)"
 
 	*cost of losing pawn
-gen cost_losing_pawn = prestamo/(0.7)
-replace cost_losing_pawn = cost_losing_pawn - prestamo/(0.7) if des_c == 1
+gen cost_losing_pawn = 0
+replace cost_losing_pawn = prestamo/(0.7) if def_c==1
 
 
 *APR
-gen double apr = sum_porcp_c + 1/0.7
-replace apr = apr - 1/0.7 if des_c == 1
+gen double apr = sum_porcp_c 
+replace apr = apr + 1/0.7 if def_c==1
 	*annualize *solution to : apr/3 = x(1+x)^3/((1+x)^3-1)
 replace apr = apr/3
 gen double sqrt3 =  (2*apr^3 + 9*apr^2 + 3*sqrt(3)*sqrt(3*apr^4 + 14*apr^3 + 27*apr^2) + 27*apr)^(1/3)
@@ -627,8 +631,8 @@ label var apr_consolidated "APR consolidated"
 
 
 *Calculate a version of this that doesn't include the interest that is mechanically saved by paying early since this is the piece of the forced-fee contract that has a foregone liquidity cost for the borrower.
-gen apr_noint = sum_porcp_c - sum_porc_int_c + 1/0.7
-replace apr_noint = apr_noint - 1/0.7 if des_c == 1
+gen apr_noint = sum_porcp_c - sum_porc_int_c 
+replace apr_noint = apr_noint + 1/0.7 if def_c == 1
 	*annualize
 replace apr_noint = apr_noint/3
 gen double sqrt3 =  (2*apr_noint^3 + 9*apr_noint^2 + 3*sqrt(3)*sqrt(3*apr_noint^4 + 14*apr_noint^3 + 27*apr_noint^2) + 27*apr_noint)^(1/3)
@@ -673,11 +677,10 @@ by prenda fecha_inicial : keep if _n==1
 
 *Elapsed days since treatment by treatment start date
 twoway (scatter dias_ultimo_mov fecha_inicial if !missing(prod) & des_c==1) ///
-	(scatter dias_ultimo_mov fecha_inicial if !missing(prod) & des_c==0 & clave_movimiento==5) ///
-	(scatter dias_ultimo_mov fecha_inicial if !missing(prod) & des_c==0 & (clave_movimiento!=5 & clave_movimiento!=6)) ///
-	(scatter dias_ultimo_mov fecha_inicial if !missing(prod) & des_c==0 & clave_movimiento==6) ///
+	(scatter dias_ultimo_mov fecha_inicial if !missing(prod) & def_c==1) ///
+	(scatter dias_ultimo_mov fecha_inicial if !missing(prod) & des_c==0 & def_c==0) ///
 	 , ///
-	legend(order(1 "Recovery" 2 "Refrendum" 3 "Partial payment" 4 "Pawn at sale")) xtitle("Treatment date") ytitle("Elapsed days")
+	legend(order(1 "Recovery" 2 "Default" 3 "Not ended (Rollover)")) xtitle("Treatment date") ytitle("Elapsed days")
 	
 	
 *Consolidate multiple pawns
