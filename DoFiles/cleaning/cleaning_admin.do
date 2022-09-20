@@ -8,8 +8,9 @@ version 17.0
 * Author:	Isaac M
 * Machine:	Isaac M 											
 * Date of creation:	-
-* Last date of modification: March. 14, 2022
+* Last date of modification: Sept. 19, 2022
 * Modifications: - Clean reincidence variables
+	- Redifinition of main outcome variables. General revision of cleaning file
 * Files used:     
 		- 
 * Files created:  
@@ -79,13 +80,7 @@ label values clave_movimiento lab_mov
 *We compute the elapsed days from loan origination
 gen dias_inicio = fecha_movimiento - fecha_inicial
 drop if dias_inicio < 0 | missing(dias_inicio)
-*Define threshold from where we "ignore" transactions
-*Since each row in the dataset is a transaction we are essentially just standing at 230 days after loan origination and defining all variables as outcomes served after those 230 days of treatment. This allows us to also measure every pawn fairly.
-drop if dias_inicio>230 
 label var dias_inicio  "Days passed between movement date and initial date"
-
-*Ignore "venta con billete" since this is a transaction not made by the borrower
-drop if inlist(clave_movimiento, 2)
 
 
 *Days of payments
@@ -93,7 +88,10 @@ bysort prenda fecha_movimiento : gen days_payment = dias_inicio if inlist(clave_
 *Days of first payment
 gen dpp = dias_inicio if inlist(clave_movimiento, 1,3,5)
 
-*Variable of loan amount
+*Drop negative pledges (this are duplicates - so we are not losing any information)
+drop if importe<0
+
+*Loan amount
 sort prenda fecha_movimiento HoraMovimiento
 bysort prenda: gen prestamo_real = prestamo if clave_movimiento==4
 bysort prenda: replace prestamo_real = prestamo_real[_n-1] if missing(prestamo_real)
@@ -101,12 +99,6 @@ replace prestamo = prestamo_real
 drop prestamo_real
 
 gen log_prestamo = log(prestamo)
-
-*Drop negative pledges
-bysort prenda: egen aux=min(MontoPréstamoActualizado)
-bysort prenda importe: drop if(importe[_n-1]<0)
-drop if importe<0
-drop aux
 
 *Drop pawns with 'duplicated' un-pledges
 sort prenda fecha_movimiento HoraMovimiento

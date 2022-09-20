@@ -64,7 +64,11 @@ drop if fechavencimiento>`r(max)'
 drop if fechaaltadelultimodetalle>fechavencimiento
 
 *Default
-gen def = !missing(fechavta) 
+gen def_vta = !missing(fechavta) 
+gen def_cva = !missing(fechacva)
+gen def = def_cva
+replace def = 1 if def_vta==1 & def_cva==0
+
 *Not refrendums
 gen nref = (tipooperacion=="ALT")
 
