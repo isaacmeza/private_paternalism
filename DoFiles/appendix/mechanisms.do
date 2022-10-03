@@ -14,7 +14,7 @@ version 17.0
 		- 
 * Files created:  
 
-* Purpose: Intermediate outcomes table
+* Purpose: Intermediate outcomes table 
 
 *******************************************************************************/
 */

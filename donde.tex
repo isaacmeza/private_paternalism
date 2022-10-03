@@ -1106,6 +1106,7 @@ an OLS regression, and each panel represents a different treatment arm-control c
 
 \cleardoublepage
 
+\begin{landscape}
 
 \begin{table}[H]
 \caption{Multiple-loans robustness check}
@@ -1118,6 +1119,7 @@ an OLS regression, and each panel represents a different treatment arm-control c
 %\textit{Do file: } \texttt{multiple\_loans.do}
 \end{table}
 
+\end{landscape}
 
 \cleardoublepage
 
@@ -1300,7 +1302,7 @@ an OLS regression, and each panel represents a different treatment arm-control c
     \end{center}
          \scriptsize
          Panel (a) presents a histogram of financial cost for the control group. Financial cost is defined as the sum of payments made by a client towards recovering her pawn + the cost of the pawned piece when she ends up losing it. We plot separately the financial cost for those who lose the pawn (blue) and those that recover it (transparent).  Panel (b) is analogous but we normalized the financial cost, dividing it by the loan size.  %Given that the loan lasts close to 90 days, bringing payments to present value makes little difference. 
-      %\footnotesize{ } \textit{Do file: }  \texttt{hist\_fc.do, hist\_eff.do}
+      %\footnotesize{ } \textit{Do file: }  \texttt{hist\_fc.do}
 \end{figure}
 
 
@@ -1334,9 +1336,15 @@ an OLS regression, and each panel represents a different treatment arm-control c
     \label{survival_graph}
     \begin{center}
    \begin{subfigure}{0.49\textwidth}
+   \caption{Ended contract}
         \centering
         \includegraphics[width=\textwidth]{Figuras/survival_graph_ended.pdf}
     \end{subfigure} 
+   \begin{subfigure}{0.49\textwidth}
+   \caption{Recovery}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/survival_graph_unpledge.pdf}
+    \end{subfigure}     
     \end{center}
      \scriptsize  This Figure shows the accumulated percentage of recovery in time by treatment arm. 
      %\textit{Do file: }  \texttt{survival\_graph.do}
@@ -1344,7 +1352,7 @@ an OLS regression, and each panel represents a different treatment arm-control c
 
 \begin{figure}[H]
         \caption{\% of payment over time}
-    \label{survival_graph}
+    \label{porc_payment_over_time}
     \begin{center}
    \begin{subfigure}{0.49\textwidth}
         \caption{Unconditional}
@@ -1394,6 +1402,9 @@ an OLS regression, and each panel represents a different treatment arm-control c
     \scriptsize
     This figure shows treatment effects using several measures of cost. The first definition is our main definition of cost, which uses the appraised value of the pawn. The second definition uses the subjective (self-reported) value for the pawn. The third and fourth definition adds the travel cost for the treatment arms. The last definition is a `fully adjusted' scenario that doesn't include the interest that is mechanically saved by paying early since this is the piece of the Forced-commitment contract that has a foregone liquidity cost for the borrower, on top of adding travel costs. We also compute APR versions of the above measures. 
     Finally, `APR - interests'  The treatment effects are indicated in standard deviations, together with 95\% confidence intervals.
+    
+    
+%\textit{Do file: } \texttt{fc\_robustness.do}
 \end{figure}
 
 \cleardoublepage
@@ -1454,6 +1465,9 @@ an OLS regression, and each panel represents a different treatment arm-control c
     \end{center}
     \scriptsize
     Panel (a) shows the main outcomes for the soft arms. The treatment effects are indicated in standard deviations, together with 95\% confidence intervals. Panel (b) shows the treatment effects on the several definitions of cost for the soft arms. 
+    
+
+%\textit{Do file: } \texttt{soft\_te,do, fc\_robustness\_soft.do}    
 \end{figure}
 
 \cleardoublepage
@@ -1462,18 +1476,14 @@ an OLS regression, and each panel represents a different treatment arm-control c
     \caption{Fan \& Park bounds}
     \label{fan_park_bounds}
     \begin{center}
-
-    \begin{subfigure}{0.475\textwidth}
+    \begin{subfigure}{0.675\textwidth}
         \caption{APR}
         \centering
         \includegraphics[width=\textwidth]{Figuras/fan_park_bounds_apr.pdf}
     \end{subfigure}
-    \begin{subfigure}{0.475\textwidth}
-        \caption{Financial Cost}
-        \centering
-        \includegraphics[width=\textwidth]{Figuras/fan_park_bounds_fc_admin.pdf}
-    \end{subfigure}
     \end{center}
+    
+%\textit{Do file: } \texttt{fan\_park\_bnds,do}       
 \end{figure}
 
 

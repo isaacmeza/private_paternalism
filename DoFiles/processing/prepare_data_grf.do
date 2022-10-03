@@ -23,26 +23,23 @@ version 17.0
 
 use "$directorio/DB/Master.dta", clear
 
-
 sort NombrePignorante fecha_inicial
-gen eff_cost_loan = fc_admin/prestamo
 
 *Covariates - Randomization - Outcomes
-keep apr eff_cost_loan def_c des_c fc_admin dias_primer_pago  /// *Dependent variables
+keep apr def_c des_c fc_admin /// *Dependent variables
 	pro_* fee NombrePignorante prenda fecha_inicial  /// *Admin variables
-	$C0 /// *Controls
-	log_prestamo pr_recup  edad  faltas val_pren_std /// *Continuous covariates
-	genero pres_antes plan_gasto_bin /// *Dummy variables
-	masqueprepa  pb 
-	
-	
-order apr eff_cost_loan def_c des_c fc_admin dias_primer_pago /// *Dependent variables
+	$C0 suc_x_dia /// *Controls
+	edad  faltas val_pren_std genero masqueprepa
+
+order apr def_c des_c fc_admin /// *Dependent variables
 	pro_* fee NombrePignorante prenda fecha_inicial  /// *Admin variables
-	$C0 /// *Controls
-	log_prestamo pr_recup  edad  faltas val_pren_std /// *Continuous covariates
-	genero pres_antes plan_gasto_bin /// *Dummy variables
-	masqueprepa  pb 
-	
+	$C0 suc_x_dia /// *Controls
+	edad  faltas val_pren_std genero masqueprepa
+
+	*Drop individuals without observables
+foreach var of varlist edad faltas val_pren_std genero masqueprepa { 
+	drop if missing(`var') 
+	}
 	
 export delimited "$directorio/_aux/heterogeneity_grf.csv", replace nolabel
 
@@ -52,19 +49,16 @@ export delimited "$directorio/_aux/heterogeneity_grf.csv", replace nolabel
 
 use "$directorio/DB/Master.dta", clear
 
-
 sort NombrePignorante fecha_inicial
-gen eff_cost_loan = fc_admin/prestamo
 
 *Covariates - Randomization - Outcomes
-keep apr eff_cost_loan def_c des_c fc_admin dias_primer_pago  /// *Dependent variables
+keep apr def_c des_c fc_admin /// *Dependent variables
 	pro_* fee NombrePignorante prenda fecha_inicial  /// *Admin variables
-	$C0 /* *Controls */
+	$C0 suc_x_dia /* *Controls */
 	
-order apr eff_cost_loan def_c des_c fc_admin dias_primer_pago  /// *Dependent variables
+order apr def_c des_c fc_admin /// *Dependent variables
 	pro_* fee NombrePignorante prenda fecha_inicial  /// *Admin variables
-	$C0 /* *Controls */
+	$C0 suc_x_dia /* *Controls */
 	
-
 export delimited "$directorio/_aux/heterogeneity_te.csv", replace nolabel
 

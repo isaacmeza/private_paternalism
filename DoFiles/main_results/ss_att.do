@@ -8,8 +8,8 @@ version 17.0
 * Author:	Isaac M
 * Machine:	Isaac M 											
 * Date of creation:	-
-* Last date of modification: January. 26, 2022
-* Modifications: 
+* Last date of modification: October 2, 2022
+* Modifications: Dataset with only first visit sample
 * Files used:     
 		- 
 * Files created:  
@@ -26,7 +26,7 @@ set more off
 ********************************************************************************
 
 *ADMIN DATA 
-use "$directorio/DB/Base_Boleta_230dias_Seguimiento_Ago2013_ByPrenda_2.dta", clear
+use "$directorio/DB/Base_Boleta_230dias_Seguimiento_Ago2013_ByPrenda_2fv.dta", clear
 tab producto	
 append using "$directorio/_aux/pre_experiment_admin.dta"
 replace t_prod = 6 if fecha_inicial<date("06/09/2012","DMY")  
@@ -54,7 +54,7 @@ drop if missing(t_prod)
 
 **************************************SS ADMIN**********************************
 
-orth_out prestamo weekday if inlist(t_prod,1,2,3,4,5,6) , by(t_prod) overall count se  vce(cluster suc_x_dia) bdec(2) 
+orth_out prestamo_i weekday if inlist(t_prod,1,2,3,4,5,6) , by(t_prod) overall count se  vce(cluster suc_x_dia) bdec(2) 
 
 qui putexcel set  "$directorio\Tables\SS.xlsx", sheet("SS_admin") modify	
 qui putexcel B2=matrix(r(matrix)) 
@@ -71,7 +71,7 @@ foreach t in 1 2 3 4 5  {
 qui putexcel set  "$directorio\Tables\SS.xlsx", sheet("SS_admin") modify	
 	
 local i = 2	
-foreach var of varlist prestamo weekday  {
+foreach var of varlist prestamo_i weekday  {
 	qui reg `var' i.t_prod if inlist(t_prod,1,2,3,4,5), r cluster(suc_x_dia)
 	test 1.t_prod==2.t_prod==4.t_prod
 	local p_val = `r(p)'
@@ -85,7 +85,7 @@ foreach var of varlist prestamo weekday  {
 local i = 2		
 *Test overall with pre-experiment
 gen overall = inlist(t_prod,1,2,3,4,5) if !missing(t_prod)	
-foreach var of varlist prestamo weekday  {
+foreach var of varlist prestamo_i weekday  {
 	qui reg `var' i.overall, r cluster(suc_x_dia)
 	test 1.overall
 	local p_val = `r(p)'
@@ -96,7 +96,7 @@ foreach var of varlist prestamo weekday  {
 **************************************EXP ARMS**********************************
 preserve
 *Dates of experiment
-use "$directorio/DB/Base_Boleta_230dias_Seguimiento_Ago2013_ByPrenda_2", clear
+use "$directorio/DB/Base_Boleta_230dias_Seguimiento_Ago2013_ByPrenda_2fv.dta", clear
 
 *Only empenios
 keep if !missing(producto)
@@ -187,7 +187,8 @@ drop prod regalo pres_fundacion ledara AW AX question_miss question_miss1 questi
 
 bysort prenda: keep if _n==1
 merge m:1 sucursal f_encuesta using `randomization', nogen keep(1 3)
-merge 1:1 prenda using "$directorio/DB/Base_Boleta_230dias_Seguimiento_Ago2013_ByPrenda_2"
+merge 1:1 prenda using "$directorio/DB/Base_Boleta_230dias_Seguimiento_Ago2013_ByPrenda_2.dta"
+keep if visit_number==1
 
 
 *Impute/recover some answers of survey answers for 'Pignorante' who has several 'prendas'
@@ -214,8 +215,8 @@ replace val_pren = val_pren99 if val_pren>val_pren99 & val_pren~=.
 drop *99
 
 *Imputation
-replace val_pren = 3*prestamo if val_pren>3*prestamo & !missing(val_pren)
-reg val_pren prestamo i.prenda_tipo i.razon, r
+replace val_pren = 3*prestamo_i if val_pren>3*prestamo_i & !missing(val_pren)
+reg val_pren prestamo_i i.prenda_tipo i.razon, r
 predict val_pren_pr
 replace val_pren = val_pren_pr if missing(val_pren)
 

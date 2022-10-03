@@ -8,13 +8,13 @@ version 17.0
 * Author:	Isaac M
 * Machine:	Isaac M 											
 * Date of creation:	February. 16, 2022
-* Last date of modification: 
-* Modifications: 
+* Last date of modification: Sept. 26, 2022
+* Modifications: Change decomposition since the formula of FC was redefined
 * Files used:     
 		- 
 * Files created:  
 
-* Purpose: Decomposition of treatment effect FOR SOFT ARMS
+* Purpose: Decomposition of treatment effect FOR SOFT ARMS 
 
 *******************************************************************************/
 */
@@ -22,27 +22,17 @@ version 17.0
 use "$directorio/DB/Master.dta", clear
 
 
-*Decomposition of FC
-gen payment_fc = sum_p_c-sum_pay_fee_c-sum_int_c
-replace payment_fc = 0 if payment_fc<0
 *Decomposition of APR
-gen payment_apr = sum_porcp_c-sum_porc_pay_fee_c-sum_porc_int_c
-replace payment_apr = 0 if payment_apr<0
 	*participation of each component in apr 
-foreach var of varlist 	payment_fc sum_pay_fee_c sum_int_c {
-	gen share_`var' = `var'/fc_admin
-	gen `var'_p = share_`var'*apr
-	
+foreach var of varlist 	sum_int_c sum_pay_fee_c cost_losing_pawn downpayment_capital {
+	gen eff_`var' = `var'/prestamo	
 }
-	gen share_def_c = 0
-	replace share_def_c = prestamo/(0.7*fc_admin) if def_c==1
-	gen def_c_p = share_def_c*apr
 
 	
 eststo clear
 
 *FC
-foreach var of varlist  fc_admin  payment_fc  sum_int_c cost_losing_pawn des_c  {
+foreach var of varlist  fc_admin  sum_int_c sum_pay_fee_c cost_losing_pawn downpayment_capital  {
 	*OLS 
 	eststo : reg `var' i.t_prod $C0 if inlist(t_prod,1,3,5), vce(cluster suc_x_dia)
 	su `var' if e(sample) & t_prod==1
@@ -50,7 +40,7 @@ foreach var of varlist  fc_admin  payment_fc  sum_int_c cost_losing_pawn des_c  
 }
 
 *APR
-foreach var of varlist  apr payment_fc_p  sum_int_c_p def_c_p {
+foreach var of varlist  apr eff_sum_int_c eff_sum_pay_fee_c eff_cost_losing_pawn eff_downpayment_capital  {
 	*OLS 
 	eststo : reg `var' i.t_prod $C0 if inlist(t_prod,1,3,5), vce(cluster suc_x_dia)
 	su `var' if e(sample) & t_prod==1

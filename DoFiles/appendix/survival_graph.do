@@ -36,7 +36,7 @@ twoway (line ecd_t1 dias_ultimo_mov, lwidth(medthick) lcolor(black) xline(105, l
 	(line ecd_t4 dias_ultimo_mov, lwidth(medthick) lcolor(maroon%90)) ///
 	, graphregion(color(white)) ///
 	 xtitle("Elapsed days") ytitle("Percentage (%)") ///
-	 legend(order(1 "Status-quo" 2 "Forced commitment" 3 "Choice commitment") size(small) pos(6) rows(1))
+	 legend(order(1 "Status-quo" 2 "Forced commitment" 3 "Choice commitment") size(small) pos(6) rows(1)) xlabel(0 30 60 90 180 270 320)
 graph export "$directorio\Figuras\survival_graph_ended.pdf", replace
 
 ********************************************************************************
@@ -55,6 +55,6 @@ twoway (line ecdf_t1 dias_al_desempenyo, lwidth(medthick) lcolor(black) xline(10
 	(line ecdf_t4 dias_al_desempenyo, lwidth(medthick) lcolor(maroon%90)) ///
 	, graphregion(color(white)) ///
 	xtitle("Elapsed days to recovery") ytitle("Percentage %") ///
-	 legend(order(1 "Status-quo" 2 "Forced commitment" 3 "Choice commitment") size(small) pos(6) rows(1))
+	 legend(order(1 "Status-quo" 2 "Forced commitment" 3 "Choice commitment") size(small) pos(6) rows(1)) xlabel(0 30 60 90 180 270 320)
 graph export "$directorio\Figuras\survival_graph_unpledge.pdf", replace
 		

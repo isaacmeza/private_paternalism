@@ -21,16 +21,11 @@ version 17.0
 
 use "$directorio/DB/Master.dta", clear
 keep if inlist(t_prod,1,2,4)
-local rep = 10000
 
 * Rescale to positive scale (benefits)
-gen eff_cost_loan = -fc_admin/prestamo
-replace apr = -apr
+replace apr = -100*apr
 
-	*No payment | recovers ---> negation of +pay & defaults
-gen pay_default = (pays_c==0 | des_c==1)
-
-keep apr des_c eff_cost_loan pay_default choose_commitment t_prod suc_x_dia $C0
+keep apr des_c def_c choose_commitment t_prod suc_x_dia $C0
 
 ********************************************************************************
 	*Outcomes
@@ -123,5 +118,5 @@ twoway (scatter ToC_ choosers if !inrange(_n,3,7), msymbol(+) msize(medium) mcol
 		`=ToC_' "`=round(ToC)'" `=UoC_' "`=round(UoC)'" , angle(horizontal) labsize(vsmall) ) ///
 	graphregion(color(white)) legend(order(1 "E[Y{subscript:1} | C=1]" 2 "E[Y{subscript:0} | C=1]" 3 "E[Y{subscript:1} | C=0]" 4 "E[Y{subscript:0} | C=0]" ///
 	5 "Control" 8 "Forced-commitment" 10 "Choice-commitment") pos(6) rows(2) size(vsmall)) ///
-	ytitle("APR (benefit)" " ") 
+	ytitle("APR % (benefit)" " ") 
 graph export "C:\Users\isaac\Dropbox\Apps\ShareLaTeX\Donde2020\Figuras\tot_tut_apr.eps", as(eps)  preview(off) replace

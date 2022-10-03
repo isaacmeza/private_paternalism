@@ -14,7 +14,7 @@ version 17.0
 		- Master.dta
 * Files created:  
 
-* Purpose: Quantile effects for choosers vs non-choosers
+* Purpose: Quantile effects for choosers vs non-choosers 
 
 *******************************************************************************/
 */
@@ -23,7 +23,7 @@ version 17.0
 use "$directorio/DB/Master.dta", clear
 
 *Dependent variables
-local qlist  0.15 0.25 0.47 0.75 0.85 
+local qlist  0.15 0.25 0.47 0.75 0.85
 
 
 foreach var of varlist  fc_admin apr {

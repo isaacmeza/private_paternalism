@@ -14,7 +14,7 @@ version 17.0
 		- Master.dta
 * Files created:  
 
-* Purpose: Quantile reg for soft arms measured in std deviations
+* Purpose: Quantile reg for soft arms measured in std deviations 
 
 *******************************************************************************/
 */

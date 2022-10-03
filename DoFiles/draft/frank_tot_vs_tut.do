@@ -23,20 +23,22 @@ set maxvar 100000
 use "$directorio/DB/Master.dta", clear
 keep if inlist(t_prod,1,2,4)
 
-*keep if visit_number==1
 
 
-* Rescale to positive scale (benefits)
-*gen eff_cost_loan = -fc_admin/prestamo
-replace apr = -apr
-replace apr_consolidated = -apr_consolidated
 
+keep apr  des_c fc_admin  choose_commitment t_prod prod suc_x_dia 
+replace apr = -apr*100
+replace des_c = des_c*100
 
-	*No payment | recovers ---> negation of +pay & defaults
-gen pay_default = (pays_c==0 | des_c==1)
+gen Z = 0 if t_prod==1
+replace Z = 1 if t_prod==2
+replace Z = 2 if t_prod==4
 
-keep apr apr_consolidated des_c des_con_c pay_default choose_commitment t_prod prod suc_x_dia visit_number  NombreP fecha_inicial
+ tot_tut fc_admin Z choose_commitment ,  vce(cluster suc_x_dia)
+ tot_tut apr Z choose_commitment ,  vce(cluster suc_x_dia)
+ tot_tut des_c Z choose_commitment ,  vce(cluster suc_x_dia)
 
+ 
 ********************************************************************************
 
 
@@ -56,12 +58,17 @@ gen z2 = (t_prod==4)
 ******** TOT-TUT-ATE ********
 *****************************
 
-foreach var of varlist apr apr_consolidated des_c des_con_c  {
-reg `var' i.t_prod,  vce(cluster suc_x_dia)	 
+
+foreach var of varlist apr_consolidated des_con_c def_con_c {
+reg apr i.t_prod  ,  vce(cluster suc_x_dia)	 
 qui su choose_commitment 
 local p_rate = `r(mean)'
 local tot = (_b[4.t_prod])/(`p_rate')
+
 local tut = (_b[2.t_prod]-_b[4.t_prod])/(1-`p_rate')
+di `tot'
+di `tut'
+
 local ate = _b[2.t_prod]
 
 
@@ -114,9 +121,7 @@ estadd scalar tut_tot_1 = normal(`sign_tt'*sqrt(r(chi2)))
 cap drop x0 x1 z0 z1 z2
 
 
-gen Z = 0 if t_prod==1
-replace Z = 1 if t_prod==2
-replace Z = 2 if t_prod==4
+
 
 
 gen x0 = -(Z==2)*(choose_commitment==0)
@@ -145,18 +150,11 @@ gen z2_itt = (Zitt==2)
 
 
 
-foreach var of varlist apr apr_consolidated des_c des_con_c  {
+foreach var of varlist  apr_consolidated des_con_c def_con_c {
 eststo : tot_tut `var' Z choose_commitment ,  vce(cluster suc_x_dia)
 eststo : tot_tut `var' Z choose_commitment if visit_number==1,  vce(cluster suc_x_dia)
 eststo : tot_tut `var' Zitt choose_commitment ,  vce(cluster suc_x_dia)
 }
-
-
-
-
-
-
-
 
 
 

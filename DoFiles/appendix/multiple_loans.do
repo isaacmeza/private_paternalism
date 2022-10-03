@@ -8,8 +8,9 @@ version 17.0
 * Author:	Isaac M
 * Machine:	Isaac M 											
 * Date of creation:	February. 17, 2022
-* Last date of modification: July. 28, 2022
+* Last date of modification: Sept. 26, 2022
 * Modifications: Added consolidated outcomes to account for multiple pawns in a same day
+	- Redefinition of main outcomes
 * Files used:     
 		- 
 * Files created:  
@@ -19,75 +20,39 @@ version 17.0
 *******************************************************************************/
 */
 
-use "$directorio/DB/Master.dta", clear
+use "$directorio/_aux/preMaster.dta", clear
 
 eststo clear
 
   
 *Put dummies for these cases as we are currently doing (to allow for flexibility in the regression and let them have less influence on the estimation of TE --ie the slope)
-eststo: reg fc_admin i.t_prod $C0 if inlist(t_prod,1,2,4), vce(cluster suc_x_dia)
-su fc_admin if e(sample) & t_prod==1
+eststo: reg fc_i_admin i.t_prod dummy_* num_arms_d* visit_number_d* if inlist(t_prod,1,2,4), vce(cluster suc_x_dia)
+su fc_i_admin if e(sample) & t_prod==1
 estadd scalar ContrMean = `r(mean)'
-eststo: reg apr i.t_prod $C0 if inlist(t_prod,1,2,4), vce(cluster suc_x_dia)
-su apr if e(sample) & t_prod==1
+eststo: reg apr_i i.t_prod dummy_* num_arms_d* visit_number_d* if inlist(t_prod,1,2,4), vce(cluster suc_x_dia)
+su apr_i if e(sample) & t_prod==1
 estadd scalar ContrMean = `r(mean)'
-eststo: reg def_c i.t_prod $C0 if inlist(t_prod,1,2,4), vce(cluster suc_x_dia)
-su def_c if e(sample) & t_prod==1
+eststo: reg des_i_c i.t_prod dummy_* num_arms_d* visit_number_d* if inlist(t_prod,1,2,4), vce(cluster suc_x_dia)
+su des_i_c if e(sample) & t_prod==1
+estadd scalar ContrMean = `r(mean)'
+eststo: reg def_i_c i.t_prod dummy_* num_arms_d* visit_number_d* if inlist(t_prod,1,2,4), vce(cluster suc_x_dia)
+su def_i_c if e(sample) & t_prod==1
 estadd scalar ContrMean = `r(mean)'
 	
 *Drop multiple visits
 preserve
 keep if visit_number==1
-eststo: reg fc_admin i.t_prod dummy_* if inlist(t_prod,1,2,4), vce(cluster suc_x_dia)
-su fc_admin if e(sample) & t_prod==1
+eststo: reg fc_i_admin i.t_prod dummy_* num_arms_d* if inlist(t_prod,1,2,4), vce(cluster suc_x_dia)
+su fc_i_admin if e(sample) & t_prod==1
 estadd scalar ContrMean = `r(mean)'
-eststo: reg apr i.t_prod dummy_* if inlist(t_prod,1,2,4), vce(cluster suc_x_dia)
-su apr if e(sample) & t_prod==1
+eststo: reg apr_i i.t_prod dummy_* num_arms_d* if inlist(t_prod,1,2,4), vce(cluster suc_x_dia)
+su apr_i if e(sample) & t_prod==1
 estadd scalar ContrMean = `r(mean)'
-eststo: reg def_c i.t_prod dummy_* if inlist(t_prod,1,2,4), vce(cluster suc_x_dia)
-su def_c if e(sample) & t_prod==1
+eststo: reg des_i_c i.t_prod dummy_* num_arms_d* if inlist(t_prod,1,2,4), vce(cluster suc_x_dia)
+su des_i_c if e(sample) & t_prod==1
 estadd scalar ContrMean = `r(mean)'
-restore
-
-*A more standard thing to do here would be to estimate a regression that always given clients the FIRST treatment status they were assigned. ITT method where we use the FIRST treatment
-preserve
-sort NombreP fecha_inicial
-by NombreP  : gen first_tr = t_prod[1] if !missing(t_prod)
-eststo: reg fc_admin i.first_tr $C0 if inlist(first_tr,1,2,4), vce(cluster suc_x_dia)
-su fc_admin if e(sample) & first_tr==1
-estadd scalar ContrMean = `r(mean)'
-eststo: reg apr i.first_tr $C0 if inlist(first_tr,1,2,4), vce(cluster suc_x_dia)
-su apr if e(sample) & first_tr==1
-estadd scalar ContrMean = `r(mean)'
-eststo: reg def_c i.first_tr $C0 if inlist(first_tr,1,2,4), vce(cluster suc_x_dia)
-su def_c if e(sample) & first_tr==1
-estadd scalar ContrMean = `r(mean)'
-restore
-
-***************************** Consolidated *************************************
-
-*Put dummies for these cases as we are currently doing (to allow for flexibility in the regression and let them have less influence on the estimation of TE --ie the slope)
-eststo: reg fc_con_admin i.t_prod $C0 if inlist(t_prod,1,2,4), vce(cluster suc_x_dia)
-su fc_con_admin if e(sample) & t_prod==1
-estadd scalar ContrMean = `r(mean)'
-eststo: reg apr_consolidated i.t_prod $C0 if inlist(t_prod,1,2,4), vce(cluster suc_x_dia)
-su apr_consolidated if e(sample) & t_prod==1
-estadd scalar ContrMean = `r(mean)'
-eststo: reg def_con_c i.t_prod $C0 if inlist(t_prod,1,2,4), vce(cluster suc_x_dia)
-su def_con_c if e(sample) & t_prod==1
-estadd scalar ContrMean = `r(mean)'
-	
-*Drop multiple pawns
-preserve
-keep if visit_number==1
-eststo: reg fc_con_admin i.t_prod dummy_* if inlist(t_prod,1,2,4), vce(cluster suc_x_dia)
-su fc_con_admin if e(sample) & t_prod==1
-estadd scalar ContrMean = `r(mean)'
-eststo: reg apr_consolidated i.t_prod dummy_* if inlist(t_prod,1,2,4), vce(cluster suc_x_dia)
-su apr_consolidated if e(sample) & t_prod==1
-estadd scalar ContrMean = `r(mean)'
-eststo: reg def_con_c i.t_prod dummy_* if inlist(t_prod,1,2,4), vce(cluster suc_x_dia)
-su def_con_c if e(sample) & t_prod==1
+eststo: reg def_i_c i.t_prod dummy_* num_arms_d* if inlist(t_prod,1,2,4), vce(cluster suc_x_dia)
+su def_i_c if e(sample) & t_prod==1
 estadd scalar ContrMean = `r(mean)'
 restore
 
@@ -95,14 +60,17 @@ restore
 preserve
 sort NombreP fecha_inicial
 by NombreP  : gen first_tr = t_prod[1] if !missing(t_prod)
-eststo: reg fc_con_admin i.first_tr $C0 if inlist(first_tr,1,2,4), vce(cluster suc_x_dia)
-su fc_con_admin if e(sample) & first_tr==1
+eststo: reg fc_i_admin i.first_tr dummy_* num_arms_d* visit_number_d* if inlist(first_tr,1,2,4), vce(cluster suc_x_dia)
+su fc_i_admin if e(sample) & first_tr==1
 estadd scalar ContrMean = `r(mean)'
-eststo: reg apr_consolidated i.first_tr $C0 if inlist(first_tr,1,2,4), vce(cluster suc_x_dia)
-su apr_consolidated if e(sample) & first_tr==1
+eststo: reg apr_i i.first_tr dummy_* num_arms_d* visit_number_d* if inlist(first_tr,1,2,4), vce(cluster suc_x_dia)
+su apr_i if e(sample) & first_tr==1
 estadd scalar ContrMean = `r(mean)'
-eststo: reg def_con_c i.first_tr $C0 if inlist(first_tr,1,2,4), vce(cluster suc_x_dia)
-su def_con_c if e(sample) & first_tr==1
+eststo: reg des_i_c i.first_tr dummy_* num_arms_d* visit_number_d* if inlist(first_tr,1,2,4), vce(cluster suc_x_dia)
+su des_i_c if e(sample) & first_tr==1
+estadd scalar ContrMean = `r(mean)'
+eststo: reg def_i_c i.first_tr dummy_* num_arms_d* visit_number_d* if inlist(first_tr,1,2,4), vce(cluster suc_x_dia)
+su def_i_c if e(sample) & first_tr==1
 estadd scalar ContrMean = `r(mean)'
 restore
 

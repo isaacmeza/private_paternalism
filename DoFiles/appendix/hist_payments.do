@@ -19,7 +19,7 @@ version 17.0
 *******************************************************************************/
 */
 
-use "$directorio/DB/Base_Boleta_230dias_Seguimiento_Ago2013_Grandota_2.dta", clear	   
+use "$directorio/DB/Base_Boleta_230dias_Seguimiento_Ago2013_Grandota_2fv.dta", clear	   
 
 
 *Status-quo

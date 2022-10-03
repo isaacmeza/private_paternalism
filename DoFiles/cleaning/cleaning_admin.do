@@ -35,7 +35,7 @@ rename Valuador valuador
 rename FechaMovimiento fecha_movimiento
 rename FechaIngreso fecha_inicial
 rename NúmPrenda prenda
-rename MontoPréstamo prestamo
+rename MontoPréstamo prestamo_i
 rename ImporteMovimiento importe
 
 
@@ -90,17 +90,17 @@ gen dpp = dias_inicio if inlist(clave_movimiento, 1,3,5)
 
 *Drop negative pledges (this are duplicates - so we are not losing any information)
 drop if importe<0
-drop if prestamo<0
+drop if prestamo_i<0
 
 *Loan amount
-gen log_prestamo = log(prestamo)
+gen log_prestamo_i = log(prestamo_i)
 
 *Drop pawns with 'duplicated' recovery
 sort prenda fecha_movimiento HoraMovimiento
 by prenda : gen uno = clave_movimiento==3
 by prenda : egen dup = sum(uno)
 by prenda : gen pd = sum(uno)
-drop if pd==uno & dup==2
+drop if pd==uno & pd==1 & dup==2
 drop uno dup pd
 
 *Auxiliar dataset for number of pawns by branch-day
@@ -136,7 +136,7 @@ rename num_empenio_sucdia num_empenio
 gen dow=dow(fecha_inicial)
 gen weekday=inlist(dow,1,2,3,4,5)
 
-keep fecha_inicial suc prestamo weekday num_empenio
+keep fecha_inicial suc prestamo_i weekday num_empenio
 save "$directorio/_aux/pre_experiment_admin.dta", replace
 
 restore
@@ -187,7 +187,7 @@ gen intereses = importe if inlist(clave_movimiento, 5)
 sort prenda fecha_mov
 by prenda : egen spagos = sum(pagos)
 by prenda : egen sint = sum(intereses)
-replace intereses = spagos-sint-prestamo if clave_movimiento==3
+replace intereses = spagos-sint-prestamo_i if clave_movimiento==3
 drop spagos sint
 label var intereses "Interests"
 
@@ -204,7 +204,7 @@ replace concluyo = 1 if ultimo_mov==1 & clave_movimiento==1
 *Add those that did rollover but then didnt pay in observation window - and didnt rollover for a further period (these default)
 su fecha_movimiento
 gen dias_quedan = `r(max)' - fecha_movimiento
-replace concluyo = 1 if ultimo_mov==1 & clave_movimiento==5 & dias_quedan>=60
+replace concluyo = 1 if ultimo_mov==1 & clave_movimiento==5 & dias_quedan>=90
 *Identify ended loans
 bysort prenda : egen concluyo_c = max(concluyo)
 
@@ -214,12 +214,12 @@ drop if clave_movimiento==2
 *Incurred interests/fee
 preserve
 drop if clave_movimiento==2
-collapse (mean) prestamo (sum) importe (mean) dias_inicio (mean) concluyo_c (mean) producto (mean) fecha_inicial, by(prenda fecha_movimiento)
+collapse (mean) prestamo_i (sum) importe (mean) dias_inicio (mean) concluyo_c (mean) producto (mean) fecha_inicial, by(prenda fecha_movimiento)
 sort prenda fecha_movimiento 
 
 gen double incurred_int = .
 gen double fee_strong = .
-gen capital = prestamo 
+gen capital = prestamo_i 
 bysort prenda : gen num_mov = _N
 su num_mov
 forvalues i = 2/`r(max)' {
@@ -281,58 +281,58 @@ by prenda: gen sum_pay_fee=sum(payed_fees)
 label var sum_pay_fee "Cumulative sum of payed fees"
 
 *Var correction (desempeno)
-bysort prenda: replace clave_movimiento=5 if clave_movimiento==3 & sum_p-sum_int-sum_pay_fee<prestamo - 1
+bysort prenda: replace clave_movimiento=5 if clave_movimiento==3 & sum_p < prestamo_i - 1
 
 *For DISCOUNTED calculations
 save "$directorio/_aux/pre_admin.dta", replace /*save for discounted_noeffect.do*/	
 
 
 *'porc_pagos' is the percentage of payments wrt the loan
-gen porc_pagos=pagos/prestamo
+gen porc_pagos=pagos/prestamo_i
 su  porc_pagos
 su  porc_pagos if clave_movimiento!=3 , d 
 label var porc_pagos "Payment percentage wrt to loan"
 
 *'porc_int' is the percentage of interest wrt the loan
-gen porc_int=intereses/prestamo
+gen porc_int=intereses/prestamo_i
 label var porc_int "Interest percentage wrt to loan"
 
 *'porc_inc_int' is the percentage of incurred interest wrt the loan
-gen porc_inc_int=incurred_int/prestamo
+gen porc_inc_int=incurred_int/prestamo_i
 label var porc_inc_int "Incurred interest percentage wrt to loan"
 
 *'porc_inc_fee' is the percentage of incurred fee wrt the loan
-gen porc_inc_fee=fee_strong/prestamo
+gen porc_inc_fee=fee_strong/prestamo_i
 label var porc_inc_fee "Incurred fee percentage wrt to loan"
 
 *'porc_pay_fee' is the percentage of payed fee wrt the loan
-gen porc_pay_fee=payed_fees/prestamo
+gen porc_pay_fee=payed_fees/prestamo_i
 label var porc_pay_fee "Payed fee percentage wrt to loan"
 
 
 *'sum_porc_p' is the percentage of the cumulative sum of the payments wrt to the loan
 sort prenda fecha_movimiento HoraMovimiento
-by prenda: gen sum_porc_p=sum_p/prestamo
+by prenda: gen sum_porc_p=sum_p/prestamo_i
 label var sum_porc_p "Percentage of the cumulative sum of payments"
 
 *'sum_porc_int' is the percentage of the cumulative sum of the interest wrt to the loan
 sort prenda fecha_movimiento HoraMovimiento
-by prenda: gen sum_porc_int=sum_int/prestamo
+by prenda: gen sum_porc_int=sum_int/prestamo_i
 label var sum_porc_int "Percentage of the cumulative sum of interest"
 
 *'sum_porc_inc_int' is the percentage of the cumulative sum of the incurred interest wrt to the loan
 sort prenda fecha_movimiento HoraMovimiento
-by prenda: gen sum_porc_inc_int=sum_inc_int/prestamo
+by prenda: gen sum_porc_inc_int=sum_inc_int/prestamo_i
 label var sum_porc_inc_int "Percentage of the cumulative sum of incurred interest"
 
 *'sum_porc_inc_fee' is the percentage of the cumulative sum of the incurred fee wrt to the loan
 sort prenda fecha_movimiento HoraMovimiento
-by prenda: gen sum_porc_inc_fee=sum_inc_fee/prestamo
+by prenda: gen sum_porc_inc_fee=sum_inc_fee/prestamo_i
 label var sum_porc_inc_fee "Percentage of the cumulative sum of incurred fee"
 
 *'sum_porc_pay_fee' is the percentage of the cumulative sum of the payed fee wrt to the loan
 sort prenda fecha_movimiento HoraMovimiento
-by prenda: gen sum_porc_pay_fee=sum_pay_fee/prestamo
+by prenda: gen sum_porc_pay_fee=sum_pay_fee/prestamo_i
 label var sum_porc_pay_fee "Percentage of the cumulative sum of payed fee"
 
 *Number of payments at current date
@@ -381,9 +381,9 @@ restore
 preserve
 sort prenda fecha_movimiento HoraMovimiento
 	*Desempeno 
-by prenda: egen des_c=max(desempeno)
+by prenda: egen des_i_c=max(desempeno)
 by prenda: gen dias_ultimo_mov = dias_inicio[_N]
-gen dias_inicio_d=dias_inicio if des_c==1
+gen dias_inicio_d=dias_inicio if des_i_c==1
 by prenda: gen dias_al_desempenyo=dias_inicio_d[_N]
 replace dias_al_desempenyo = 1 if dias_al_desempenyo==0
 
@@ -419,8 +419,8 @@ by NombrePignorante: gen first_pawn = _n==1
 by NombrePignorante: gen first_visit = fecha_inicial[1]
 by NombrePignorante: gen first_product = t_producto[1]
 by NombrePignorante: gen first_prenda = prenda[1]
-by NombrePignorante: gen first_loan_value = prestamo[1]
-by NombrePignorante: gen first_dias_des = dias_al_desempenyo[1] if !missing(des_c)
+by NombrePignorante: gen first_loan_value = prestamo_i[1]
+by NombrePignorante: gen first_dias_des = dias_al_desempenyo[1] if !missing(des_i_c)
 by NombrePignorante: gen first_dias_close = dias_al_close[1] if !missing(concluyo_c)
 
 *days from first to *second pawn*
@@ -428,7 +428,7 @@ sort NombrePignorante fecha_inicial prod
 by NombrePignorante: gen days_second_pawns = fecha_inicial[2] - first_visit if _n==1
 
 *Dummy indicating if customer returned to pawn ANOTHER piece
-by NombrePignorante: gen another_piece_second = !inrange(prestamo[2],first_loan_value*0.9,first_loan_value*1.1) if _n==1
+by NombrePignorante: gen another_piece_second = !inrange(prestamo_i[2],first_loan_value*0.9,first_loan_value*1.1) if _n==1
 
 *Ever repeat pawns
 bysort NombrePignorante : gen reincidence = !missing(days_second_pawns)
@@ -476,10 +476,10 @@ sort prenda fecha_movimiento HoraMovimiento
 *							Measures of recovery/default					   *
 ********************************************************************************
 	*Desempeno - defined as ever recovered in observation window 
-by prenda: egen des_c=max(desempeno)
+by prenda: egen des_i_c=max(desempeno)
 	*Default - defined as losing the piece - note that it is not symmetrical with recovered
-gen def_c = concluyo_c
-replace def_c = 0 if des_c==1
+gen def_i_c = concluyo_c
+replace def_i_c = 0 if des_i_c==1
 
 by prenda: egen ref_c=max(refrendo)
 by prenda: egen ref_90_c=max(refrendo_90)
@@ -506,20 +506,25 @@ by prenda: gen num_p=sum_np[_N]
 by prenda: gen num_v=sum_visit[_N]
 by prenda: egen dias_primer_pago = min(dpp)
 by prenda: gen dias_ultimo_mov = dias_inicio[_N]
-gen dias_inicio_d=dias_inicio if des_c==1
+gen dias_inicio_d=dias_inicio if des_i_c==1
+*Days towards recovery
 by prenda: gen dias_al_desempenyo=dias_inicio_d[_N]
 replace dias_al_desempenyo = 1 if dias_al_desempenyo==0
-replace dias_inicio = 1 if dias_inicio==0 & des_c==1
-
+replace dias_inicio = 1 if dias_inicio==0 & des_i_c==1
+*Days towards default
+gen dias_al_default = dias_ultimo_mov if def_i_c==1
+replace dias_al_default = 105 if dias_al_default<90 & def_i_c==1
+replace dias_al_default = 210 if inrange(dias_ultimo_mov, 110, 180) & def_i_c==1
+replace dias_al_default = 315 if inrange(dias_ultimo_mov, 220, 270) & def_i_c==1
 
 cap drop dias_inicio_d
 
 * `Naiveness' variables (item-level)
-bysort prenda: gen ref_default = def_c*ref_90_c
-bysort prenda: gen pos_pay_default = def_c*(sum_porcp_c>0) if !missing(sum_porcp_c)
-bysort prenda: gen pay_30_default = def_c*(sum_porcp_c>=.30) if !missing(sum_porcp_c)
-bysort prenda: gen zero_pay_default = def_c*(sum_porcp_c==0) if !missing(sum_porcp_c)
-gen pos_pay_120_default = def_c*(pagos>0 & dias_inicio>120) 
+bysort prenda: gen ref_default = def_i_c*ref_90_c
+bysort prenda: gen pos_pay_default = def_i_c*(sum_porcp_c>0) if !missing(sum_porcp_c)
+bysort prenda: gen pay_30_default = def_i_c*(sum_porcp_c>=.30) if !missing(sum_porcp_c)
+bysort prenda: gen zero_pay_default = def_i_c*(sum_porcp_c==0) if !missing(sum_porcp_c)
+gen pos_pay_120_default = def_i_c*(pagos>0 & dias_inicio>120) 
 bysort prenda: egen pos_pay_120_def_c = max(pos_pay_120_default)
 
 * Naiveness (person-level)
@@ -546,8 +551,8 @@ forvalues i=1/4 {
 * Valid items to interact naiveness w/treatment effect to measure its intensity 
 by NombrePignorante : gen valid_item = (fecha_inicial>=ultima_fecha & (primer_producto==1 | primer_producto==.))
 
-label var des_c "Recovery"
-label var def_c "Default"
+label var des_i_c "Recovery"
+label var def_i_c "Default"
 label var ref_c "Refrendum"
 label var ref_90_c "Refrendum 90 days"
 label var abo_c "Payment to principal"
@@ -585,61 +590,31 @@ label var fee "Charged late fee - dummy"
 ********************************************************************************
 	
 *Financial cost
-gen fc_admin = sum_p_c 
-replace fc_admin = fc_admin + prestamo/(0.7) if def_c==1
-gen log_fc_admin = log(1+fc_admin)
-label var fc_admin "Financial cost (appraised value)"
+gen double fc_i_admin = .
+	*Only fees and interest for recovered pawns
+replace fc_i_admin = sum_int_c + sum_pay_fee_c if des_i_c==1
+	*All payments + appraised value when default
+replace fc_i_admin = sum_p_c + prestamo_i/(0.7) if def_i_c==1
+	*Not ended at the end of observation period - only fees and interest
+replace fc_i_admin = sum_int_c + sum_pay_fee_c if def_i_c==0 & des_i_c==0
+
+gen double log_fc_i_admin = log(1+fc_i_admin)
+label var fc_i_admin "Financial cost (appraised value)"
 
 	*cost of losing pawn
-gen cost_losing_pawn = 0
-replace cost_losing_pawn = prestamo/(0.7) if def_c==1
+gen double cost_losing_pawn = 0
+replace cost_losing_pawn = sum_p_c - sum_int_c - sum_pay_fee_c + prestamo_i/(0.7) if def_i_c==1
 
+gen double downpayment_capital = 0
+replace downpayment_capital = sum_p_c - sum_int_c - sum_pay_fee_c if def_i_c==1
 
 *APR
-gen double apr = sum_porcp_c 
-replace apr = apr + 1/0.7 if def_c==1
-	*annualize *solution to : apr/3 = x(1+x)^3/((1+x)^3-1)
-replace apr = apr/3
-gen double sqrt3 =  (2*apr^3 + 9*apr^2 + 3*sqrt(3)*sqrt(3*apr^4 + 14*apr^3 + 27*apr^2) + 27*apr)^(1/3)
-replace apr = sqrt3/(3*2^(1/3)) - (2^(1/3)*(-apr^2 - 3*apr))/(3*sqrt3) + (apr - 3)/3
-replace apr = apr*12*100
-drop if missing(apr)
-drop sqrt3
-label var apr "APR (appraised value)"
+gen double apr_i  = .
+replace apr_i = (1 + (fc_i_admin/prestamo_i)/dias_al_desempenyo)^dias_al_desempenyo - 1  if des_i_c==1
+replace apr_i = (1 + (fc_i_admin/prestamo_i)/dias_al_default)^dias_al_default - 1  if def_i_c==1
+replace apr_i = (1 + (fc_i_admin/prestamo_i)/dias_ultimo_mov)^dias_ultimo_mov - 1  if def_i_c==0 & des_i_c==0
 
-*Consolidate APR of multiple pawns 
-	*Sum of loans
-bysort NombrePignorante fecha_inicial : egen sl = sum(prestamo) if fecha_inicial==fecha_movimiento
-bysort NombrePignorante fecha_inicial : egen sum_loan = mean(sl) 
-	*Sum of defaulted loans
-bysort NombrePignorante fecha_inicial : egen sdl = sum(prestamo) if fecha_inicial==fecha_movimiento & def_c==1
-bysort NombrePignorante fecha_inicial : egen sum_def_loan = mean(sdl) 
-replace sum_def_loan = 0 if missing(sum_def_loan)
-	*Consolidated sum of payments
-bysort NombrePignorante fecha_inicial : egen scp = sum(sum_p_c) if fecha_inicial==fecha_movimiento
-bysort NombrePignorante fecha_inicial : egen sum_con_p_c = mean(scp) 
-
-	*Consolidated APR
-gen double apr_consolidated = (sum_con_p_c + (sum_def_loan)/0.7)/sum_loan 
-replace apr_consolidated = apr_consolidated/3
-gen double sqrt3_c =  (2*apr_consolidated^3 + 9*apr_consolidated^2 + 3*sqrt(3)*sqrt(3*apr_consolidated^4 + 14*apr_consolidated^3 + 27*apr_consolidated^2) + 27*apr_consolidated)^(1/3)
-replace apr_consolidated = sqrt3_c/(3*2^(1/3)) - (2^(1/3)*(-apr_consolidated^2 - 3*apr_consolidated))/(3*sqrt3_c) + (apr_consolidated - 3)/3
-replace apr_consolidated = apr_consolidated*12*100
-drop if missing(apr_consolidated)
-drop sqrt3_c
-label var apr_consolidated "APR consolidated"
-
-
-*Calculate a version of this that doesn't include the interest that is mechanically saved by paying early since this is the piece of the forced-fee contract that has a foregone liquidity cost for the borrower.
-gen apr_noint = sum_porcp_c - sum_porc_int_c 
-replace apr_noint = apr_noint + 1/0.7 if def_c == 1
-	*annualize
-replace apr_noint = apr_noint/3
-gen double sqrt3 =  (2*apr_noint^3 + 9*apr_noint^2 + 3*sqrt(3)*sqrt(3*apr_noint^4 + 14*apr_noint^3 + 27*apr_noint^2) + 27*apr_noint)^(1/3)
-replace apr_noint = sqrt3/(3*2^(1/3)) - (2^(1/3)*(-apr_noint^2 - 3*apr_noint))/(3*sqrt3) + (apr_noint - 3)/3
-replace apr_noint = apr_noint*12*100
-drop sqrt3
-label var apr_noint "APR without interests"
+label var apr_i "APR (appraised value)"
 
 
 ********************************************************************************
@@ -672,28 +647,31 @@ merge m:1 prenda using `temp_emp', nogen
 *******************************************************************
 *Panel data
 save "$directorio/DB/Base_Boleta_230dias_Seguimiento_Ago2013_Grandota_2", replace
+
+*Only first visit
+preserve
+keep if visit_number==1
+save "$directorio/DB/Base_Boleta_230dias_Seguimiento_Ago2013_Grandota_2fv", replace
+restore
+
 gsort prenda fecha_inicial -fecha_movimiento clave_movimiento t_prod
 by prenda fecha_inicial : keep if _n==1
 
 *Elapsed days since treatment by treatment start date
-twoway (scatter dias_ultimo_mov fecha_inicial if !missing(prod) & des_c==1) ///
-	(scatter dias_ultimo_mov fecha_inicial if !missing(prod) & def_c==1) ///
-	(scatter dias_ultimo_mov fecha_inicial if !missing(prod) & des_c==0 & def_c==0) ///
+twoway (scatter dias_ultimo_mov fecha_inicial if !missing(prod) & des_i_c==1) ///
+	(scatter dias_ultimo_mov fecha_inicial if !missing(prod) & def_i_c==1) ///
+	(scatter dias_ultimo_mov fecha_inicial if !missing(prod) & des_i_c==0 & def_i_c==0) ///
 	 , ///
 	legend(order(1 "Recovery" 2 "Default" 3 "Not ended (Rollover)")) xtitle("Treatment date") ytitle("Elapsed days")
-	
-	
-*Consolidate multiple pawns
-bysort NombrePignorante fecha_inicial : replace apr_consolidated = . if _n!=1
-bysort NombrePignorante fecha_inicial : egen des_con_c = mean(des_c)
-bysort NombrePignorante fecha_inicial : replace des_con_c = . if _n!=1
-bysort NombrePignorante fecha_inicial : egen def_con_c = mean(def_c)
-bysort NombrePignorante fecha_inicial : replace def_con_c = . if _n!=1
-bysort NombrePignorante fecha_inicial : egen fc_con_admin = sum(fc_admin)
-bysort NombrePignorante fecha_inicial : replace fc_con_admin = . if _n!=1 
+
 
 *Drop outliers
-drop if prestamo>57000
+drop if prestamo_i>57000
+
 *Final Cross-section
-save "$directorio/DB/Base_Boleta_230dias_Seguimiento_Ago2013_ByPrenda_2", replace
+save "$directorio/DB/Base_Boleta_230dias_Seguimiento_Ago2013_ByPrenda_2.dta", replace
+	
+*Only first visit
+keep if visit_number==1
+save "$directorio/DB/Base_Boleta_230dias_Seguimiento_Ago2013_ByPrenda_2fv.dta", replace
 	

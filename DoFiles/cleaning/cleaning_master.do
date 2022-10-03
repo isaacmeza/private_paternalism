@@ -8,8 +8,8 @@ version 17.0
 * Author:	Isaac M
 * Machine:	Isaac M 											
 * Date of creation:	-
-* Last date of modification: March. 14, 2022
-* Modifications: 
+* Last date of modification: Sept. 26, 2022
+* Modifications: Redefinition of main outcomes.
 * Files used:     
 		- 
 * Files created:  
@@ -64,15 +64,17 @@ replace cont_fam = . if inlist(cont_fam,0)
 *Variable creation
 
 *Wizorise at 99th percentile
+replace val_pren = prestamo_i if val_pren<prestamo_i & !missing(val_pren)
 egen val_pren99 = pctile(val_pren) , p(99)
 replace val_pren = val_pren99 if val_pren>val_pren99 & val_pren~=.
 drop *99
 
 *Imputation
-replace val_pren = 3*prestamo if val_pren>3*prestamo & !missing(val_pren)
-reg val_pren prestamo i.prenda_tipo i.razon, r
+replace val_pren = 1.5/0.7*prestamo_i if val_pren>1.5/0.7*prestamo_i & !missing(val_pren)
+reg val_pren prestamo_i i.prenda_tipo i.razon, r
 predict val_pren_pr
 replace val_pren = val_pren_pr if missing(val_pren)
+replace val_pren = prestamo_i if val_pren<prestamo_i & !missing(val_pren)
 su val_pren_pr 
 gen val_pren_std = (val_pren_pr-r(mean))/r(sd)
 
@@ -82,64 +84,74 @@ gen val_pren_std = (val_pren_pr-r(mean))/r(sd)
 
 *Financial cost
 	*survey fc
-gen fc_survey = sum_p_c
-replace fc_survey = fc_survey + val_pren if def_c==1
-gen log_fc_survey = log(1+fc_survey)
-label var fc_survey "Financial cost (subjective value)"
+gen double fc_i_survey = .
+	*Only fees and interest for recovered pawns
+replace fc_i_survey = sum_int_c + sum_pay_fee_c if des_i_c==1
+	*All payments + appraised value when default
+replace fc_i_survey = sum_p_c + val_pren if def_i_c==1
+	*Not ended at the end of observation period - only fees and interest
+replace fc_i_survey = sum_int_c + sum_pay_fee_c if def_i_c==0 & des_i_c==0	
 
+gen log_fc_i_survey = log(1+fc_i_survey)
+label var fc_i_survey "Financial cost (subjective value)"
 
+gen double apr_i_survey  = .
+replace apr_i_survey = (1 + (fc_i_survey/prestamo_i)/dias_al_desempenyo)^dias_al_desempenyo - 1  if des_i_c==1
+replace apr_i_survey = (1 + (fc_i_survey/prestamo_i)/dias_al_default)^dias_al_default - 1  if def_i_c==1
+replace apr_i_survey = (1 + (fc_i_survey/prestamo_i)/dias_ultimo_mov)^dias_ultimo_mov - 1  if def_i_c==0 & des_i_c==0
+
+***************************************
+
+*APR + tc
 	*travel cost
 su c_trans
 replace c_trans = `r(mean)' if missing(c_trans)
 gen trans_cost = (c_trans + 62.33)*num_v	
 
+gen double fc_i_tc = .
+	*Only fees and interest for recovered pawns
+replace fc_i_tc = sum_int_c + sum_pay_fee_c + trans_cost if des_i_c==1
+	*All payments + appraised value when default
+replace fc_i_tc = sum_p_c + prestamo_i/(0.7) + trans_cost if def_i_c==1
+	*Not ended at the end of observation period - only fees and interest
+replace fc_i_tc = sum_int_c + sum_pay_fee_c + trans_cost if def_i_c==0 & des_i_c==0	
 
-*APR subjective
-gen double apr_survey = sum_porcp_c 
-replace apr_survey = apr_survey + val_pren/prestamo if def_c==1
-	*annualize *solution to : apr/3 = x(1+x)^3/((1+x)^3-1)
-replace apr_survey = apr_survey/3
-gen double sqrt3 =  (2*apr_survey^3 + 9*apr_survey^2 + 3*sqrt(3)*sqrt(3*apr_survey^4 + 14*apr_survey^3 + 27*apr_survey^2) + 27*apr_survey)^(1/3)
-replace apr_survey = sqrt3/(3*2^(1/3)) - (2^(1/3)*(-apr_survey^2 - 3*apr_survey))/(3*sqrt3) + (apr_survey - 3)/3
-replace apr_survey = apr_survey*12*100
-drop sqrt3
-label var apr_survey "APR (subjective value)"
+gen double apr_i_tc  = .
+replace apr_i_tc = (1 + (fc_i_tc/prestamo_i)/dias_al_desempenyo)^dias_al_desempenyo - 1  if des_i_c==1
+replace apr_i_tc = (1 + (fc_i_tc/prestamo_i)/dias_al_default)^dias_al_default - 1  if def_i_c==1
+replace apr_i_tc = (1 + (fc_i_tc/prestamo_i)/dias_ultimo_mov)^dias_ultimo_mov - 1  if def_i_c==0 & des_i_c==0
 
-*APR + tc
-gen double apr_tc = sum_porcp_c + trans_cost/prestamo
-replace apr_tc = apr_tc + 1/0.7 if def_c==1
-
-	*annualize *solution to : apr/3 = x(1+x)^3/((1+x)^3-1)
-replace apr_tc = apr_tc/3
-gen double sqrt3 =  (2*apr_tc^3 + 9*apr_tc^2 + 3*sqrt(3)*sqrt(3*apr_tc^4 + 14*apr_tc^3 + 27*apr_tc^2) + 27*apr_tc)^(1/3)
-replace apr_tc = sqrt3/(3*2^(1/3)) - (2^(1/3)*(-apr_tc^2 - 3*apr_tc))/(3*sqrt3) + (apr_tc - 3)/3
-replace apr_tc = apr_tc*12*100
-drop sqrt3
-label var apr_tc "APR (appraised) + tc"
+***************************************
 
 *APR subjective + tc
-gen double apr_s_tc = sum_porcp_c + trans_cost/prestamo
-replace apr_s_tc = apr_s_tc + val_pren/prestamo if def_c==1
+gen double fc_i_survey_tc = .
+	*Only fees and interest for recovered pawns
+replace fc_i_survey_tc = sum_int_c + sum_pay_fee_c + trans_cost if des_i_c==1
+	*All payments + appraised value when default
+replace fc_i_survey_tc = sum_p_c + val_pren + trans_cost if def_i_c==1
+	*Not ended at the end of observation period - only fees and interest
+replace fc_i_survey_tc = sum_int_c + sum_pay_fee_c + trans_cost if def_i_c==0 & des_i_c==0	
 
-	*annualize *solution to : apr/3 = x(1+x)^3/((1+x)^3-1)
-replace apr_s_tc = apr_s_tc/3
-gen double sqrt3 =  (2*apr_s_tc^3 + 9*apr_s_tc^2 + 3*sqrt(3)*sqrt(3*apr_s_tc^4 + 14*apr_s_tc^3 + 27*apr_s_tc^2) + 27*apr_s_tc)^(1/3)
-replace apr_s_tc = sqrt3/(3*2^(1/3)) - (2^(1/3)*(-apr_s_tc^2 - 3*apr_s_tc))/(3*sqrt3) + (apr_s_tc - 3)/3
-replace apr_s_tc = apr_s_tc*12*100
-drop sqrt3
-label var apr_s_tc "APR (subjective) + tc"
+gen double apr_i_survey_tc  = .
+replace apr_i_survey_tc = (1 + (fc_i_survey_tc/prestamo_i)/dias_al_desempenyo)^dias_al_desempenyo - 1  if des_i_c==1
+replace apr_i_survey_tc = (1 + (fc_i_survey_tc/prestamo_i)/dias_al_default)^dias_al_default - 1  if def_i_c==1
+replace apr_i_survey_tc = (1 + (fc_i_survey_tc/prestamo_i)/dias_ultimo_mov)^dias_ultimo_mov - 1  if def_i_c==0 & des_i_c==0
+
+***************************************
 
 *APR fully adjusted (subj + tc - int)
-gen double apr_fa = sum_porcp_c + trans_cost/prestamo - sum_porc_int_c
-replace apr_fa = apr_fa + val_pren/prestamo if def_c==1
+gen double fc_i_fa = .
+	*Only fees and interest for recovered pawns
+replace fc_i_fa = sum_pay_fee_c + trans_cost if des_i_c==1
+	*All payments + appraised value when default
+replace fc_i_fa = sum_p_c + val_pren + trans_cost - sum_int_c if def_i_c==1
+	*Not ended at the end of observation period - only fees and interest
+replace fc_i_fa = sum_pay_fee_c + trans_cost if def_i_c==0 & des_i_c==0	
 
-	*annualize *solution to : apr/3 = x(1+x)^3/((1+x)^3-1)
-replace apr_fa = apr_fa/3
-gen double sqrt3 =  (2*apr_fa^3 + 9*apr_fa^2 + 3*sqrt(3)*sqrt(3*apr_fa^4 + 14*apr_fa^3 + 27*apr_fa^2) + 27*apr_fa)^(1/3)
-replace apr_fa = sqrt3/(3*2^(1/3)) - (2^(1/3)*(-apr_fa^2 - 3*apr_fa))/(3*sqrt3) + (apr_fa - 3)/3
-replace apr_fa = apr_fa*12*100
-drop sqrt3
-label var apr_fa "APR (fully adjusted)"
+gen double apr_i_fa  = .
+replace apr_i_fa = (1 + (fc_i_fa/prestamo_i)/dias_al_desempenyo)^dias_al_desempenyo - 1  if des_i_c==1
+replace apr_i_fa = (1 + (fc_i_fa/prestamo_i)/dias_al_default)^dias_al_default - 1  if def_i_c==1
+replace apr_i_fa = (1 + (fc_i_fa/prestamo_i)/dias_ultimo_mov)^dias_ultimo_mov - 1  if def_i_c==0 & des_i_c==0
 
 ********************************************************************************
 
@@ -176,17 +188,17 @@ drop num_arms_d1 num_arms_d2 visit_number_d1
 
 *Overconfidence
 	*Cross-validation LASSO
-cvlasso des_c prenda_tipo val_pren prestamo genero edad educacion pres_antes ///
+cvlasso des_i_c prenda_tipo val_pren prestamo_i genero edad educacion pres_antes ///
 	plan_gasto ahorros cta_tanda tent rec_cel faltas , lopt seed(823) 
 *lopt = the lambda that minimizes MSPE.
 local lambda_opt=e(lopt)
 *Variable selection
-lasso2 des_c prenda_tipo val_pren prestamo genero edad educacion pres_antes ///
+lasso2 des_i_c prenda_tipo val_pren prestamo_i genero edad educacion pres_antes ///
 	plan_gasto ahorros cta_tanda tent rec_cel faltas , lambda( `lambda_opt'  ) 
 *Variable selection
 local vrs=e(selected)
 local regressors  `regressors' `vrs'
-logit des_c `regressors'
+logit des_i_c `regressors'
 predict pr_prob
 replace pr_prob = pr_prob*100
 *Overconfident
@@ -194,5 +206,38 @@ gen OC = (pr_recup>pr_prob) if (!missing(pr_recup) & !missing(pr_prob))
 gen cont_OC = pr_recup-pr_prob if (!missing(pr_recup) & !missing(pr_prob))
 
 compress
+
+save "$directorio/_aux/preMaster.dta", replace	
+
+*Define main outcomes 
+gen des_c = des_i_c
+gen def_c = def_i_c
+gen fc_admin = fc_i_admin
+gen apr = apr_i
+gen prestamo = prestamo_i
+
+gen fc_survey = fc_i_survey
+gen apr_survey = apr_i_survey
+
+gen fc_tc = fc_i_tc
+gen apr_tc = apr_i_tc
+
+gen fc_survey_tc = fc_i_survey_tc
+gen apr_survey_tc = apr_i_survey_tc
+
+gen fc_fa = fc_i_fa
+gen apr_fa = apr_i_fa
+
+*Wizorise at 99th percentile
+foreach var of varlist apr_survey apr_survey_tc apr_fa {
+	egen `var'99 = pctile(`var') , p(99)
+	replace `var' = `var'99 if `var'>`var'99 & `var'~=.
+	drop *99
+}
+
+
+*Keep only first visit
+keep if visit_number==1
+
 save "$directorio/DB/Master.dta", replace	
 export delimited using "$directorio/DB/Master.csv", replace quote nolabel
