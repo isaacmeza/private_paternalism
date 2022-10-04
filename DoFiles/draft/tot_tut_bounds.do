@@ -1,4 +1,3 @@
-
 ********************
 version 17.0
 ********************
@@ -22,14 +21,9 @@ use "$directorio/DB/Master.dta", clear
 keep if inlist(t_prod,1,2,4)
 
 * Rescale to positive scale (benefits)
-gen eff_cost_loan = -fc_admin/prestamo
 replace apr = -apr
 
-	*No payment | recovers ---> negation of +pay & defaults
-gen pay_default = (pays_c==0 | des_c==1)
-
-keep apr des_c eff_cost_loan pay_default choose_commitment t_prod suc_x_dia $C0
-
+keep apr des_c fc_admin def_c choose_commitment t_prod suc_x_dia $C0
 
 * From the choice arm we know that around 90% of people are non-choosers
 qui su choose_commitment 
@@ -64,7 +58,7 @@ cap drop perc_apr
 * Identify the distribution F_1 of Y_1 from the treatment arm.
 xtile perc_apr = apr if t_prod==2, nq(1000)
 
-su apr if perc_apr == round(`p_rate'*1000)  & t_prod==2
+su apr if perc_apr == round(`p_rate'*1000) & t_prod==2
 local bottom_1 = `r(mean)'
 su apr if apr>`bottom_1' & t_prod==2
 local ub_1_0= `r(mean)'

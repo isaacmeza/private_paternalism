@@ -10,8 +10,8 @@ library(rattle)
 library(broom)
 
 # SET WORKING DIRECTORY
-setwd('C:/Users/isaac/Dropbox/Apps/ShareLaTeX/Donde2020')
-set.seed(5289364)
+setwd('C:/Users/isaac/Dropbox/Apps/Overleaf/Donde2020')
+set.seed(1)
 
 source("./RScripts/best_tree.R")
 
@@ -30,7 +30,7 @@ heterogeneity_effect <- function(data_in,treatment_var,outcome_var,writedata,ext
   data_frame <- data_in %>%
     filter(data_in[,treatment_var] == 1 | data_in[,treatment_var] == 0) %>%
     select(-c( pro_2, pro_3, pro_4, pro_5, pro_6, pro_7, pro_8, pro_9, fee, fecha_inicial,
-               apr, eff_cost_loan, def_c, des_c, fc_admin, dias_primer_pago), 
+               apr, def_c, des_c, fc_admin), 
            treatment_var, outcome_var ) %>%
     mutate_all(~ifelse(is.na(.), median(., na.rm = TRUE), .))  
   data_copy <- data_frame
@@ -38,64 +38,48 @@ heterogeneity_effect <- function(data_in,treatment_var,outcome_var,writedata,ext
   if (extendedsample == 0) {
     # Data with names in english
     data_frame <- rename.vars(data_frame, c(
-      "dummy_dow1",
       "dummy_dow2",
       "dummy_dow3",
       "dummy_dow4",
       "dummy_dow5",
       "dummy_dow6",
-      "dummy_suc1",
       "dummy_suc2",
       "dummy_suc3",
       "dummy_suc4",
       "dummy_suc5",
       "dummy_suc6",
+      "num_arms_d2",
       "num_arms_d3",
       "num_arms_d4",
       "num_arms_d5",
       "num_arms_d6", 
-      "visit_number_d2", 
-      "visit_number_d3", 
-      "visit_number_d4", 
-      "visit_number_d5", 
-      "visit_number_d6", 
-      "visit_number_d7",
-      "log_prestamo",
-      "pr_recup",
+      "suc_x_dia",
       "edad",
       "faltas",
       "val_pren_std",
       "genero",
       "pres_antes",
-      "plan_gasto_bin",
+      "plan_gasto",
       "masqueprepa",
       "pb"
     ),
     c(
-      "monday",
       "tuesday",
       "wednesday",
       "thurdsay",
       "friday",
       "saturday",
-      "branch.1",
       "branch.2",
       "branch.3",
       "branch.4",
       "branch.5",
       "branch.6",
+      "num.exp.arms.2",
       "num.exp.arms.3",
       "num.exp.arms.4",
       "num.exp.arms.5",
       "num.exp.arms.6",
-      "visit.number.2",
-      "visit.number.3",
-      "visit.number.4",
-      "visit.number.5",
-      "visit.number.6",
-      "visit.number.7",
-      "log.loan",
-      "subj.pr",
+      "suc_x_dia",
       "age",
       "income.index",
       "subj.loan.value",
@@ -103,12 +87,12 @@ heterogeneity_effect <- function(data_in,treatment_var,outcome_var,writedata,ext
       "pawn.before",
       "makes.budget",
       "more.high.school",
-      "pb"
+      "p.bias"
     ))
   }
   
   # PREPARE VARIABLES
-  X <- select(data_frame,-c(outcome_var, treatment_var,NombrePignorante, prenda))
+  X <- select(data_frame,-c(outcome_var, treatment_var, NombrePignorante, prenda, suc_x_dia))
   test <- X
   Y <- select(data_frame,outcome_var)
   W <- as.numeric(data_frame[,treatment_var] == 1)
@@ -146,9 +130,9 @@ heterogeneity_effect <- function(data_in,treatment_var,outcome_var,writedata,ext
     W = W,
     Y.hat = NULL,
     W.hat = NULL,
-    num.trees = 2000,
-    sample.weights = NULL,
     clusters = NULL,
+    num.trees = 5000,
+    sample.weights = NULL,
     equalize.cluster.weights = FALSE,
     sample.fraction = 0.5,
     mtry = min(ceiling(sqrt(ncol(X)) + 20), ncol(X)),
@@ -160,13 +144,13 @@ heterogeneity_effect <- function(data_in,treatment_var,outcome_var,writedata,ext
     imbalance.penalty = 0,
     stabilize.splits = TRUE,
     ci.group.size = 2,
-    tune.parameters = "none",
-    tune.num.trees = 200,
-    tune.num.reps = 50,
-    tune.num.draws = 1000,
+    tune.parameters = c("alpha", "imbalance.penalty"),
+    tune.num.trees = 500,
+    tune.num.reps = 200,
+    tune.num.draws = 2000,
     compute.oob.predictions = TRUE,
     num.threads = NULL,
-    seed = runif(1, 0, .Machine$integer.max))
+    seed = 1)
   
   
   # Estimate treatment effects for the training data using out-of-bag prediction.
@@ -258,7 +242,7 @@ heterogeneity_effect <- function(data_in,treatment_var,outcome_var,writedata,ext
     cat(DiagrammeRsvg::export_svg(tree.plot), file=filename_pl)
     
     # Causal Tree
-    tree <- causalTree(data.matrix(select(data_frame,outcome_var)) ~ . -NombrePignorante -prenda ,
+    tree <- causalTree(data.matrix(select(data_frame,outcome_var)) ~ . -NombrePignorante -prenda -suc_x_dia ,
                        data = select(data_frame,-c(outcome_var)), 
                        treatment = as.numeric(data_frame[,treatment_var] == 1),
                        split.Rule = "CT", cv.option = "CT", split.Honest = T, cv.Honest = T, split.Bucket = F, 
@@ -284,7 +268,7 @@ data <- read_csv('./_aux/heterogeneity_grf.csv')
 
 #Heterogeneous Effects
 for (arm in c("pro_2")){
-  for (dep in c("apr", "eff_cost_loan", "def_c", "des_c", "fc_admin", "dias_primer_pago")){
+  for (dep in c("apr", "fc_admin", "des_c", "def_c")){
     heterogeneity_effect(data_extended,arm,dep,1,1) 
     heterogeneity_effect(data,arm,dep,1,0) 
   }

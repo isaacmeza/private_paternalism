@@ -184,7 +184,7 @@ foreach var of varlist dow suc  {
 	tab `var', gen(dummy_`var')
 	}
 
-drop num_arms_d1 num_arms_d2 visit_number_d1
+drop num_arms_d1 visit_number_d1 dummy_dow1 dummy_suc1
 
 *Overconfidence
 	*Cross-validation LASSO

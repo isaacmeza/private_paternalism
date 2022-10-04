@@ -8,7 +8,8 @@ version 17.0
 * Author:	Isaac M
 * Machine:	Isaac M 											
 * Date of creation:	April. 22, 2022
-* Last date of modification: 
+* Last date of modification: October. 5, 2022
+* Modifications: - Improvement of forests and change of definition in main outcomes
 * Files used:     
 		- tot_instr_forest.csv
 		- tut_instr_forest.csv
@@ -30,16 +31,29 @@ version 17.0
 
 *Load data with forest predictions (created in tot_tut_instr_forest.R)
 
-import delimited "$directorio/_aux/tot_instr_forest.csv", clear
+import delimited "$directorio/_aux/tot_eff_instr_forest.csv", clear
+tempfile temptoteff
+rename inst_hat_oobpredictions inst_hat_1_eff
+rename inst_hat_oobvarianceestimates inst_oobvarianceestimates_1_eff
+save `temptoteff'
+import delimited "$directorio/_aux/tut_eff_instr_forest.csv", clear
+tempfile temptuteff
+rename inst_hat_oobpredictions inst_hat_0_eff
+rename inst_hat_oobvarianceestimates inst_oobvarianceestimates_0_eff
+save `temptuteff'
+
+import delimited "$directorio/_aux/tot_apr_instr_forest.csv", clear
 tempfile temp
 rename inst_hat_oobpredictions inst_hat_1
 rename inst_hat_oobvarianceestimates inst_oobvarianceestimates_1
 save `temp'
 
-import delimited "$directorio/_aux/tut_instr_forest.csv", clear
+import delimited "$directorio/_aux/tut_apr_instr_forest.csv", clear
 rename inst_hat_oobpredictions inst_hat_0
 rename inst_hat_oobvarianceestimates inst_oobvarianceestimates_0
 merge 1:1 prenda using `temp', nogen
+merge 1:1 prenda using `temptoteff', nogen
+merge 1:1 prenda using `temptuteff', nogen
 
 merge 1:1 prenda using "$directorio/DB/Master.dta", nogen keep(3)
 
@@ -47,8 +61,6 @@ merge 1:1 prenda using "$directorio/DB/Master.dta", nogen keep(3)
 ********************************************************************************
 gen tau_sim_1 = . 
 gen tau_sim_0 = . 
-gen ts_a_1 = .
-gen ts_a_0 = . 
 gen quant_sim_1 = .
 gen quant_sim_0 = .
 gen choose_wrong_fee = .
@@ -96,13 +108,8 @@ forvalues rep = 1/`rep_num' {
 	replace tau_sim_1 = rnormal(inst_hat_1, sqrt(inst_oobvarianceestimates_1))	
 	replace tau_sim_0 = rnormal(inst_hat_0, sqrt(inst_oobvarianceestimates_0))	
 	
-	replace ts_a_1 = tau_sim_1/1200
-	replace ts_a_0 = tau_sim_0/1200
-	
-	replace quant_sim_1 = ts_a_1*(1+ts_a_1)^3/((1+ts_a_1)^3-1)
-	replace quant_sim_1 = 3*quant_sim_1
-	replace quant_sim_0 = ts_a_0*(1+ts_a_0)^3/((1+ts_a_0)^3-1)
-	replace quant_sim_0 = 3*quant_sim_0
+	replace quant_sim_1 = rnormal(inst_hat_1, sqrt(inst_oobvarianceestimates_1_eff))	
+	replace quant_sim_0 = rnormal(inst_hat_0, sqrt(inst_oobvarianceestimates_0_eff))		
 	
 *Computation of people that makes mistakes in the choice arm according to estimated counterfactual
 	local k = 1
@@ -112,7 +119,7 @@ forvalues rep = 1/`rep_num' {
 		* people who look like person i and chose the no-commitment contract would have been better off had they chosen commitment : (tau_sim_0>`i' & pro_6==1)
 		* analogous for (tau_sim_1<`i' & pro_7==1)
 		replace choose_wrong_fee = .
-		replace choose_wrong_fee = ((tau_sim_0>`i' & pro_6==1) | (tau_sim_1<-`i' & pro_7==1)) if (!missing(tau_sim_1) | !missing(tau_sim_0)) & t_prod==4
+		replace choose_wrong_fee = ((tau_sim_0>`=`i'/100' & pro_6==1) | (tau_sim_1<-`=`i'/100' & pro_7==1)) if (!missing(tau_sim_1) | !missing(tau_sim_0)) & t_prod==4
 		bootstrap r(mean),  reps(25) level(99): su choose_wrong_fee
 		estat bootstrap, all
 		mat point_estimate = e(b)
@@ -123,7 +130,7 @@ forvalues rep = 1/`rep_num' {
 			replace cwf_normal_h`i' =  confidence_int[2,1]*100 in `rep'
 			*Only consider "choosers"
 		replace choose_wrong_fee_choose = .	
-		replace choose_wrong_fee_choose = (tau_sim_1<-`i' & pro_7==1) if !missing(tau_sim_1) & pro_7==1	
+		replace choose_wrong_fee_choose = (tau_sim_1<-`=`i'/100' & pro_7==1) if !missing(tau_sim_1) & pro_7==1	
 		bootstrap r(mean),  reps(25) level(99): su choose_wrong_fee_choose
 		estat bootstrap, all
 		mat point_estimate = e(b)
@@ -134,7 +141,7 @@ forvalues rep = 1/`rep_num' {
 			replace cwf_choose_h`i' =  confidence_int[2,1]*100 in `rep'		
 			*Only consider "non-choosers"
 		replace choose_wrong_fee_nonchoose = .	
-		replace choose_wrong_fee_nonchoose = (tau_sim_0>`i' & pro_6==1) if !missing(tau_sim_0) & pro_6==1	
+		replace choose_wrong_fee_nonchoose = (tau_sim_0>`=`i'/100' & pro_6==1) if !missing(tau_sim_0) & pro_6==1	
 		bootstrap r(mean),  reps(25) level(99): su choose_wrong_fee_nonchoose
 		estat bootstrap, all
 		mat point_estimate = e(b)
@@ -147,13 +154,13 @@ forvalues rep = 1/`rep_num' {
 			*Only consider "choosers"
 		*Quantification in $
 		replace quant_wrong_fee_choose = .
-		replace quant_wrong_fee_choose = abs(quant_sim_1-1)*100 if choose_wrong_fee_choose==1
+		replace quant_wrong_fee_choose = abs(quant_sim_1)*100 if choose_wrong_fee_choose==1
 		su quant_wrong_fee_choose
 		cap replace qwf_choose`i' = `r(mean)' in `rep'
 			*Only consider "non-choosers"
 		*Quantification in $
 		replace quant_wrong_fee_nonchoose = .
-		replace quant_wrong_fee_nonchoose = abs(quant_sim_0-1)*100 if choose_wrong_fee_nonchoose==1
+		replace quant_wrong_fee_nonchoose = abs(quant_sim_0)*100 if choose_wrong_fee_nonchoose==1
 		su quant_wrong_fee_nonchoose
 		cap replace qwf_nonchoose`i' = `r(mean)' in `rep'	
 		

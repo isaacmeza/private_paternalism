@@ -8,7 +8,7 @@ version 17.0
 * Author:	Isaac M
 * Machine:	Isaac M 											
 * Date of creation:	October. 5, 2021
-* Last date of modification: March. 23, 2022  
+* Last date of modification: October. 5, 2022
 * Modifications: - Change outcome to effective APR. Add choosers vs non-choosers analysis & split two axis in two figures.		
 	- Fix quantity in money of mistakes for Choosers
 * Files used:     
@@ -31,7 +31,14 @@ version 17.0
 
 *Load data with *_te predictions (created in te_grf.R)
 
+import delimited "$directorio/_aux/eff_te_grf.csv", clear
+tempfile temp
+rename tau_hat_oobvarianceestimates tau_hat_oobvarianceestimates_eff
+rename tau_hat_oobpredictions tau_hat_oobpredictions_eff
+save `temp'
+
 import delimited "$directorio/_aux/apr_te_grf.csv", clear
+merge 1:1 prenda using `temp', nogen
 merge 1:1 prenda using "$directorio/DB/Master.dta", nogen keep(3)
 
 
@@ -65,7 +72,6 @@ foreach var of varlist apr_te_cf {
 
 ********************************************************************************
 gen tau_sim = . 
-gen ts_a = . 
 gen quant_sim = .
 gen choose_wrong_fee = .
 gen choose_wrong_fee_choose = .
@@ -114,9 +120,7 @@ forvalues rep = 1/`rep_num' {
 	di "`rep'"
 	*Draw random effect from normal distribution with standard error according to Athey
 	replace tau_sim = rnormal(tau_hat_oobpredictions, sqrt(tau_hat_oobvarianceestimates))	
-	replace ts_a = tau_sim/1200
-	replace quant_sim = ts_a*(1+ts_a)^3/((1+ts_a)^3-1)
-	replace quant_sim = 3*quant_sim
+	replace quant_sim = rnormal(tau_hat_oobpredictions_eff, sqrt(tau_hat_oobvarianceestimates_eff))	
 	
 *Computation of people that makes mistakes in the choice arm according to estimated counterfactual
 	local k = 1
@@ -126,7 +130,7 @@ forvalues rep = 1/`rep_num' {
 		* (tau_sim>`i' & pro_6==1) : positive (in the sense of beneficial)
 		* treatment effect with fee but choose no fee
 		replace choose_wrong_fee = .
-		replace choose_wrong_fee = ((tau_sim>`i' & pro_6==1) | (tau_sim<-`i' & pro_7==1)) if !missing(tau_sim) & t_prod==4
+		replace choose_wrong_fee = ((tau_sim>`=`i'/100' & pro_6==1) | (tau_sim<-`=`i'/100' & pro_7==1)) if !missing(tau_sim) & t_prod==4
 		bootstrap r(mean),  reps(25) level(99): su choose_wrong_fee
 		estat bootstrap, all
 		mat point_estimate = e(b)
@@ -137,7 +141,7 @@ forvalues rep = 1/`rep_num' {
 			replace cwf_normal_h`i' =  confidence_int[2,1]*100 in `rep'
 			*Only consider "choosers"
 		replace choose_wrong_fee_choose = .	
-		replace choose_wrong_fee_choose = (tau_sim<-`i' & pro_7==1) if !missing(tau_sim) & pro_7==1	
+		replace choose_wrong_fee_choose = (tau_sim<-`=`i'/100' & pro_7==1) if !missing(tau_sim) & pro_7==1	
 		bootstrap r(mean),  reps(25) level(99): su choose_wrong_fee_choose
 		estat bootstrap, all
 		mat point_estimate = e(b)
@@ -148,7 +152,7 @@ forvalues rep = 1/`rep_num' {
 			replace cwf_choose_h`i' =  confidence_int[2,1]*100 in `rep'		
 			*Only consider "non-choosers"
 		replace choose_wrong_fee_nonchoose = .	
-		replace choose_wrong_fee_nonchoose = (tau_sim>`i' & pro_6==1) if !missing(tau_sim) & pro_6==1	
+		replace choose_wrong_fee_nonchoose = (tau_sim>`=`i'/100' & pro_6==1) if !missing(tau_sim) & pro_6==1	
 		bootstrap r(mean),  reps(25) level(99): su choose_wrong_fee_nonchoose
 		estat bootstrap, all
 		mat point_estimate = e(b)
@@ -161,19 +165,19 @@ forvalues rep = 1/`rep_num' {
 			
 		*Quantification in $
 		replace quant_wrong_fee = .
-		replace quant_wrong_fee = abs(quant_sim-1)*100 if choose_wrong_fee==1
+		replace quant_wrong_fee = abs(quant_sim)*100 if choose_wrong_fee==1
 		su quant_wrong_fee
 		cap replace qwf`i' = `r(mean)' in `rep'		
 			*Only consider "choosers"
 		*Quantification in $
 		replace quant_wrong_fee_choose = .
-		replace quant_wrong_fee_choose = abs(quant_sim-1)*100 if choose_wrong_fee_choose==1
+		replace quant_wrong_fee_choose = abs(quant_sim)*100 if choose_wrong_fee_choose==1
 		su quant_wrong_fee_choose
 		cap replace qwf_choose`i' = `r(mean)' in `rep'
 			*Only consider "non-choosers"
 		*Quantification in $
 		replace quant_wrong_fee_nonchoose = .
-		replace quant_wrong_fee_nonchoose = abs(quant_sim-1)*100 if choose_wrong_fee_nonchoose==1
+		replace quant_wrong_fee_nonchoose = abs(quant_sim)*100 if choose_wrong_fee_nonchoose==1
 		su quant_wrong_fee_nonchoose
 		cap replace qwf_nonchoose`i' = `r(mean)' in `rep'	
 		
@@ -182,7 +186,7 @@ forvalues rep = 1/`rep_num' {
 		*If we were to force everyone to the FEE contract, how many would be
 		* benefited from this policy?
 		replace choose_wrong_fee = .
-		replace choose_wrong_fee = (tau_sim>`i') if !missing(tau_sim) & t_prod==4
+		replace choose_wrong_fee = (tau_sim>`=`i'/100') if !missing(tau_sim) & t_prod==4
 		bootstrap r(mean),  reps(25) level(99): su choose_wrong_fee
 		estat bootstrap, all
 		mat point_estimate = e(b)

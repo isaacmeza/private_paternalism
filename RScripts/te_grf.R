@@ -10,8 +10,8 @@ library(rattle)
 library(broom)
 
 # SET WORKING DIRECTORY
-setwd('C:/Users/isaac/Dropbox/Apps/ShareLaTeX/Donde2020')
-set.seed(5289174)
+setwd('C:/Users/isaac/Dropbox/Apps/Overleaf/Donde2020')
+set.seed(1)
 
 fun_threshold_alpha = function(alpha, g) {
   lambda = 1/(alpha*(1-alpha))
@@ -29,62 +29,54 @@ te_grf <- function(data_in, outcome_var, name) {
     mutate_all(~ifelse(is.na(.), median(., na.rm = TRUE), .))  
   data_copy <- data_in
   data_in <- rename.vars(data_in, c(
-    "dummy_dow1",
     "dummy_dow2",
     "dummy_dow3",
     "dummy_dow4",
     "dummy_dow5",
     "dummy_dow6",
-    "dummy_suc1",
     "dummy_suc2",
     "dummy_suc3",
     "dummy_suc4",
     "dummy_suc5",
     "dummy_suc6",
+    "num_arms_d2",
     "num_arms_d3",
     "num_arms_d4",
     "num_arms_d5",
     "num_arms_d6", 
-    "visit_number_d2", 
-    "visit_number_d3", 
-    "visit_number_d4", 
-    "visit_number_d5", 
-    "visit_number_d6", 
-    "visit_number_d7",
     "edad",
     "faltas",
     "val_pren_std",
     "genero",
-    "masqueprepa"
+    "pres_antes",
+    "plan_gasto",
+    "masqueprepa",
+    "pb"
   ),
   c(
-    "monday",
     "tuesday",
     "wednesday",
     "thurdsay",
     "friday",
     "saturday",
-    "branch.1",
     "branch.2",
     "branch.3",
     "branch.4",
     "branch.5",
     "branch.6",
+    "num.exp.arms.2",
     "num.exp.arms.3",
     "num.exp.arms.4",
     "num.exp.arms.5",
     "num.exp.arms.6",
-    "visit.number.2",
-    "visit.number.3",
-    "visit.number.4",
-    "visit.number.5",
-    "visit.number.6",
-    "visit.number.7",
     "age",
     "income.index",
     "subj.loan.value",
     "female",
-    "more.high.school"
+    "pawn.before",
+    "makes.budget",
+    "more.high.school",
+    "p.bias"
   ))
   
   require("dplyr")
@@ -141,9 +133,9 @@ te_grf <- function(data_in, outcome_var, name) {
     W = W,
     Y.hat = NULL,
     W.hat = NULL,
-    num.trees = 2000,
-    sample.weights = NULL,
     clusters = NULL,
+    num.trees = 5000,
+    sample.weights = NULL,
     equalize.cluster.weights = FALSE,
     sample.fraction = 0.5,
     mtry = min(ceiling(sqrt(ncol(X)) + 20), ncol(X)),
@@ -155,13 +147,13 @@ te_grf <- function(data_in, outcome_var, name) {
     imbalance.penalty = 0,
     stabilize.splits = TRUE,
     ci.group.size = 2,
-    tune.parameters = "none",
-    tune.num.trees = 200,
-    tune.num.reps = 50,
-    tune.num.draws = 1000,
+    tune.parameters = c("alpha", "imbalance.penalty"),
+    tune.num.trees = 500,
+    tune.num.reps = 200,
+    tune.num.draws = 2000,
     compute.oob.predictions = TRUE,
     num.threads = NULL,
-    seed = runif(1, 0, .Machine$integer.max))
+    seed = 1)
   
   
   # Estimate treatment effects for the training data using out-of-bag prediction.
@@ -247,20 +239,16 @@ te_grf <- function(data_in, outcome_var, name) {
 #####################################################
 
 # READ DATASET
-fc <- read_csv('./_aux/fc_te_heterogeneity.csv') 
-eff <- read_csv('./_aux/eff_te_heterogeneity.csv') 
 apr <- read_csv('./_aux/apr_te_heterogeneity.csv') 
+eff <- read_csv('./_aux/eff_te_heterogeneity.csv') 
 def <- read_csv('./_aux/def_te_heterogeneity.csv') 
 des <- read_csv('./_aux/des_te_heterogeneity.csv') 
-sumporcp <- read_csv('./_aux/sumporcp_te_heterogeneity.csv') 
 
 
 #####################################################
 
-te_grf(fc,"fc_admin","fc") 
-te_grf(eff,"eff_cost_loan","eff") 
 te_grf(apr,"apr","apr") 
+te_grf(eff,"eff","eff") 
 te_grf(def,"def_c","def") 
 te_grf(des,"des_c","des") 
-te_grf(sumporcp,"sum_porcp_c","sumporcp") 
 

@@ -26,10 +26,10 @@ local arm pro_2
 
 set more off
 graph drop _all
-foreach depvar in  apr eff_cost_loan  def_c  fc_admin {
+foreach depvar in  apr des_c  def_c  fc_admin {
 
 	*Load data with heterogeneous predictions & propensities (extended)
-	import delimited "$directorio/_aux/grf_extended_`arm'_`depvar'.csv", clear
+	import delimited "$directorio/_aux/grf_`arm'_`depvar'.csv", clear
 
 	*Confidence intervals for 
 	gen lo_tau_hat = tau_hat_oobpredictions - 1.96*sqrt(tau_hat_oobvarianceestimates)
@@ -84,7 +84,7 @@ foreach depvar in  apr eff_cost_loan  def_c  fc_admin {
 	matrix blp_i = J(10, 6, .)
 	matrix blp = J(10, 6, .)
 	local row = 1
-	foreach name in "log.loan" "subj.loan.value" "income.index" "pb" "makes.budget" "pawn.before" "subj.pr" "age" "female" "more.high.school"  {
+	foreach name in "subj.loan.value" "income.index" "p.bias" "makes.budget" "pawn.before" "age" "female" "more.high.school"  {
 		
 		* Individual effect
 		matrix blp_i[`row',1] = `row'
@@ -123,12 +123,12 @@ foreach depvar in  apr eff_cost_loan  def_c  fc_admin {
 	}
 	matrix colnames blp_i = "k" "beta" "se" "p" "lo" "hi"
 	matrix colnames blp = "k" "beta" "se" "p" "lo" "hi"
-	mat rownames blp_i =  "Loan value" "Subjective value (std)" ///
-		 "Income index" "Present bias"  "Makes budget" "Pawn before" "Prob recovery"  ///
+	mat rownames blp_i =  "Subjective value (std)" ///
+		 "Income index" "Present bias"  "Makes budget" "Pawn before" ///
 		 "Age"  "Gender" "More high school" 	 
-	mat rownames blp =  "Loan value" "Subjective value (std)" ///
-		 "Income index" "Present bias"  "Makes budget" "Pawn before" "Prob recovery"  ///
-		 "Age"  "Gender" "More high school" 		 
+	mat rownames blp =  "Subjective value (std)" ///
+		 "Income index" "Present bias"  "Makes budget" "Pawn before" ///
+		 "Age"  "Gender" "More high school"		 
 	
 	*Load data with heterogeneous predictions & propensities 
 	import delimited "$directorio/_aux/grf_`arm'_`depvar'.csv", clear
@@ -139,7 +139,7 @@ foreach depvar in  apr eff_cost_loan  def_c  fc_admin {
 
 	matrix blp_reg = J(10, 6, .)
 	local row = 1
-	foreach var of varlist log_prestamo val_pren_std faltas pb plan_gasto_bin pres_antes pr_recup edad genero masqueprepa {
+	foreach var of varlist val_pren_std faltas pb plan_gasto pres_antes edad genero masqueprepa {
 		
 		qui reg tau_hat_oobpredictions `var', r
 		local df = e(df_r)	
@@ -159,13 +159,13 @@ foreach depvar in  apr eff_cost_loan  def_c  fc_admin {
 	}
 	matrix colnames blp_reg = "k" "beta" "se" "p" "lo" "hi"
 
-	mat rownames blp_reg =  "Loan value" "Subjective value (std)" ///
-		 "Income index" "Present bias"  "Makes budget" "Pawn before" "Prob recovery"  ///
-		 "Age"  "Gender" "More high school" 
+	mat rownames blp_reg =  "Subjective value (std)" ///
+		 "Income index" "Present bias"  "Makes budget" "Pawn before" ///
+		 "Age"  "Gender" "More high school"	
 			 
 	coefplot (matrix(blp_i[,2]), offset(0.06) ci((blp_i[,5] blp_i[,6]))  ciopts(lcolor(gs4))) ///
 	(matrix(blp_reg[,2]), offset(-0.06) ci((blp_reg[,5] blp_reg[,6]))  ciopts(lcolor(gs4))) , ///
-		headings("Loan value" = "{bf:Loan characteristics}" "Income index" = "{bf:Income}" "Present bias" = "{bf:Self Control}" "Pawn before" = "{bf:Experience}" "Age" = "{bf:Other}",labsize(medium)) legend(order(2 "AIPW DR" 4 "OLS") pos(6) rows(1))  xline(0)  graphregion(color(white)) 
+		headings("Subjective value (std)" = "{bf:Loan characteristics}" "Income index" = "{bf:Income}" "Present bias" = "{bf:Self Control}" "Pawn before" = "{bf:Experience}" "Age" = "{bf:Other}",labsize(medium)) legend(order(2 "AIPW DR" 4 "OLS") pos(6) rows(1))  xline(0)  graphregion(color(white)) 
 	graph export "$directorio\Figuras\HE\he_int_vertical_`depvar'_`arm'.pdf", replace
 
 

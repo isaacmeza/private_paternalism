@@ -25,7 +25,7 @@
 
 
 \title{The limits of self-commitment and private paternalism \thanks{We want to thank Mauricio Romero and Anett John for advice and encouragement. Ricardo Olivares, Gerardo Melendez, and Alonso de Gortari provided excellent research assistance and Erick Molina helped with formatting. Jose Maria Barrero, Francis DiTraglia, Andrei Gomberg, Emilio Gutierrez, David Laibson, Aprajit Mahajan, Matt Rabin, Charlie Sprenger, and seminar participants at ITAM provided valuable feedback.}}
-\author{Craig McIntosh \and Isaac Meza \and Joyce Sadka \and Enrique Seira   \thanks{Seira: ITAM, enrique.seira@gmail.com (corresponding author); McIntosh:  University of California San Diego, ctmcintosh@ucsd.edu; Meza: University of California at Berkeley, isaac.meza@berkeley.edu; Sadka: ITAM, jsadka@itam.mx} }
+\author{Craig McIntosh \and Isaac Meza \and Joyce Sadka \and Enrique Seira \and Frank DiTraglia   \thanks{Seira: ITAM/MSU, enrique.seira@gmail.com (corresponding author); McIntosh:  University of California San Diego, ctmcintosh@ucsd.edu; Meza: University of California at Berkeley, isaac.meza@berkeley.edu; Sadka: ITAM, jsadka@itam.mx; DiTraglia: Oxford, frank@ditraglia.com} }
 \date{This draft:  \today \\[2 cm]}
 
 %\vspace{.5in}
@@ -580,9 +580,9 @@ In the preceding section, we used outcome data from the forced arms ($Z_i\neq 2$
 \]
 The TuT and ToT effects are particularly interesting for understanding the importance of paternalism. If the TuT is positive, this means that someone who did not choose commitment would have been experienced a better outcome \emph{on average} if she had. In a canonical Roy model, the ToT should exceed both the TuT and average treatment effect (ATE). Because our design identifies all three quantities, it allows us to test this implication directly. If the ToT is statistically distinguishable from and substantially larger than the TuT, this provides empirical support for the relevance of selection-on-gains in real-world decision-making.
 
-A number of recent papers compare estimates of the ToT and TuT to better understand who selects into treatment and why, e.g.\ \cite{cornelissen2018benefits} and \cite{Walters}. While valuable and interesting, this line of work relies, at least to some extent, upon structural modeling assumptions to extrapolate from the reduced-form quantities that are identified by the data alone to more interesting, and economically relevant, causal parameters.\footnote{While the marginal treatment effects (MTE) approach \citep{heckman2007econometric} can in principle be used to identify the ToT and TuT without parametric restrictions, doing so requires an instrumental variable $Z$ with sufficiently rich support that the probability of treatment take-up given $Z$ varies continuously between zero and one. In practice, instrumental variables are usually discrete and, even when continuous, typically have a more modest effect on take-up.} An alternative approach aims to avoid structural assumptions by calculating conditional local average treatment effects (LATE) given observed covariates $X$ and reweighting these according to the distribution of $X$ in some population of interest \citep{aronow2013beyond,angrist2013extrapolate}. For example, one might re-weight using the distribution of $X$ in the population as a whole, rather than the sub-population of compliers, to extrapolate from LATE to ATE. But you can't squeeze blood from a stone. This ``LATE-and-reweight'' approach relies upon assumptions of its own, most crucially the assumption that there is \emph{no selection-on-gains} conditional on $X$, i.e.\ that the conditional LATE equals the conditional ATE. As far as we are aware, ours is the only paper in the literature to identify the ToT and TuT without ruling out unobserved selection-on-gains or relying on additional structural modeling assumptions. This is possible because of the unique design of our experiment.
+A number of recent papers compare estimates of the ToT and TuT to better understand who selects into treatment and why, e.g.\ \cite{cornelissen2018benefits} and \cite{Walters}. While valuable and interesting, this line of work relies, at least to some extent, upon structural modeling assumptions to extrapolate from the reduced-form quantities that are identified by the data alone to more interesting, and economically relevant, causal parameters.\footnote{While the marginal treatment effects (MTE) approach \citep{heckman2007econometric} can in principle be used to identify the ToT and TuT without parametric restrictions, doing so requires an instrumental variable $Z$ with sufficiently rich support that the probability of treatment take-up given $Z$ varies continuously between zero and one. In practice, instrumental variables are usually discrete and, even when continuous, typically have a more modest effect on take-up.} An alternative approach aims to avoid structural assumptions by calculating conditional local average treatment effects (LATE) given observed covariates $X$ and reweighting these according to the distribution of $X$ in some population of interest \citep{aronow2013beyond,angrist2013extrapolate}. For example, one might re-weight using the distribution of $X$ in the population as a whole, rather than the sub-population of compliers, to extrapolate from LATE to ATE. But you can't squeeze blood from a stone. This ``LATE-and-reweight'' approach relies upon assumptions of its own, most crucially the assumption that there is \emph{no selection-on-gains} conditional on $X$, i.e.\ that the conditional LATE equals the conditional ATE. As far as we are aware, ours is the only paper in the literature to simultaneously point identify the ATE, ToT and TuT without ruling out unobserved selection-on-gains or relying on additional structural modeling assumptions. This is possible because of the unique design of our experiment.
 
-\todo[inline]{Presumably we want to say something about this design potentially being applicable to other settings?}
+\todo[inline]{Somewhere in the paper we'll want to talk about when this kind of design could be useful in a bit more detail.}
 
 The key insight can be read directly from \eqref{eq:potentialTreatments} and \eqref{eq:potentialOutcomes}. Viewing $Z_i$ as an instrumental variable, our design can be interpreted as a \emph{pair} of RCTs, each subject to one-sided non-compliance.\footnote{For a full derivation, see Appendix ???.} The first of these compares $Z_i=0$ to $Z_i = 2$. For each individual with $Z_i = 0$ we have $D_i = 0$ and observe $Y_{i0}$. For those with $Z_i = 2$ we have $D_i = C_i$ and observe $(1 - C_i) Y_{i0} + C_i Y_{i1}$. This is identical to a ``randomized encouragement'' design in which treatment is only available to those who are encouraged: $Z_i = 2$. Under this interpretation, those with $C_i = 1$ are ``the compliers'' and it follows that 
 \begin{equation}
@@ -613,32 +613,42 @@ where the error terms $U_i$ and $V_i$ satisfy
 \]
 It follows that a pair of just-identified, linear instrumental variables regressions can be used to estimate and carry out inference for each of our quantities of interest. To identify the ATE and ToT, run IV on \eqref{eq:ToTreg} with instruments $\mathbbm{1}(Z_i = 1)$ and $\mathbbm{1}(Z_i=2)$. An F-test based on this regression can then be used to test the restriction $\text{ATE} = \text{ToT}$, and the usual IV output can be used to carry out inference for the ToT. No programming is required. Similarly, to identify the ATE and TuT run IV on \ref{eq:TuTreg} with instruments $\mathbbm{1}(Z_i = 0)$ and $\mathbbm{1}(Z_i = 2)$. An F-test based on this regression can then be used to test the restriction $\text{ATE} = \text{TuT}$, and the usual IV output can be used to carry out inference for the TuT. Again, no programming or special software is required. 
 
-As explained above, a canonical Roy model would suggest that $\text{TuT} \leq \text{ATE} \leq \text{ToT}$. For this reason it is particularly interesting to consider inference for the \emph{difference} $(\text{ToT} - \text{TuT})$. The point estimate of this difference can be constructed directly from the results of the IV regressions described above. Because the respective estimates appear in different equations, however, a bit more work is required to obtain a standard error for $(\text{ToT} - \text{TuT})$. Define the shorthand
+As explained above, a canonical Roy model would suggest that $\text{TuT} \leq \text{ATE} \leq \text{ToT}$. For this reason it is particularly interesting to consider inference for the difference $(\text{ToT} - \text{TuT})$, namely the \emph{average selection on gains}: 
 \[
-p_0 \equiv \mathbbm{P}(Z_i=0), \quad p_1 \equiv \mathbbm{P}(Z_i = 1), \quad q_0 \equiv \mathbbm{E}[\mathbbm{1}(Z_i = 2)(1 - D_i)], \quad q_1 \equiv \mathbbm{E}[\mathbbm{1}(Z_i = 2) D_i].
+\text{ASG} \equiv \mathbbm{E}[Y_{i1} - Y_{i0}|C_i = 1] - \mathbb{E}[Y_{i1} - Y_{i0} | C_i = 0] = \text{ToT} - \text{TuT}.
 \]
-As shown in Appendix \todo{Frank: fill in}{???}, the asymptotic variance of $(\text{Tot} - \text{TuT})$ is given by
+The point estimate of this difference can be constructed directly from the results of the IV regressions described above. Because the respective estimates appear in different equations, however, a bit more work is required to obtain a standard error for $(\text{ToT} - \text{TuT})$. The details are straightforward but somewhat tedious, so we present them in Appendix \todo{!!!}{???}. A companion STATA package accompanying this paper provides cluster robust inference for the average selection on gains, along with two related quantities: the average selection bias (ASB) and average selection on levels (ASL)
 \[
-\text{AVAR}(\text{ToT} - \text{TuT}) = \boldsymbol{\omega}' \boldsymbol{\Sigma} \boldsymbol{\omega}, \quad
-\boldsymbol{\omega}' \equiv \displaystyle \begin{bmatrix}
--\frac{1}{q_1} & \frac{1}{q_0} & \left(\frac{p_1 - 1}{p_0q_1} - \frac{1}{q_0}\right) & -\frac{1}{q_1} - \frac{1 - p_0}{p_1 q_0}
-\end{bmatrix}
+\text{ASB} \equiv \mathbbm{E}[Y_{i0}|C_i = 1] - \mathbbm{E}[Y_{i0}|C_i = 0], \quad 
+\text{ASL} \equiv \mathbbm{E}[Y_{i1}|C_i = 1] - \mathbbm{E}[Y_{i1}|C_i = 0].
 \]
-where $\boldsymbol{\Sigma}$ is a covariance matrix that can be estimated from the residuals of \eqref{eq:ToTreg} and \eqref{eq:TuTreg}. Under iid observations, 
+We show that these latter two quantities are point identified in Appendix \todo{!!!}{???}.
 
-\todo[inline]{Explain two leading forms that $\Sigma$ can take: heterosked and cluster}
+%Define the shorthand
+%\[
+%p_0 \equiv \mathbbm{P}(Z_i=0), \quad p_1 \equiv \mathbbm{P}(Z_i = 1), \quad q_0 \equiv \mathbbm{E}[\mathbbm{1}(Z_i = 2)(1 - D_i)], \quad q_1 \equiv \mathbbm{E}[\mathbbm{1}(Z_i = 2) D_i].
+%\]
+%As shown in Appendix \todo{Frank: fill in}{???}, the asymptotic variance of $(\text{Tot} - \text{TuT})$ is given by
+%\[
+%\text{AVAR}(\text{ToT} - \text{TuT}) = \boldsymbol{\omega}' \boldsymbol{\Sigma} \boldsymbol{\omega}, \quad
+%\boldsymbol{\omega}' \equiv \displaystyle \begin{bmatrix}
+%-\frac{1}{q_1} & \frac{1}{q_0} & \left(\frac{p_1 - 1}{p_0q_1} - \frac{1}{q_0}\right) & -\frac{1}{q_1} - \frac{1 - p_0}{p_1 q_0}
+%\end{bmatrix}
+%\]
+%where $\boldsymbol{\Sigma}$ is a covariance matrix that can be estimated from the residuals of \eqref{eq:ToTreg} and \eqref{eq:TuTreg}. Under iid observations, 
+%
+%\todo[inline]{Explain two leading forms that $\Sigma$ can take: heterosked and cluster}
 
 
 
-\todo[inline]{Frank: give an overview of how to do the comparison of TuT and ToT. Want it to be ``idiot proof'' -- easy to do in standard software, etc. Details in the appendix but want the contribution to be clear. Cluster at the level of the randomization. (Almost WLOG for experiments). Can put some additional details in the appendix.}
+%\todo[inline]{Frank: give an overview of how to do the comparison of TuT and ToT. Want it to be ``idiot proof'' -- easy to do in standard software, etc. Details in the appendix but want the contribution to be clear. Cluster at the level of the randomization. (Almost WLOG for experiments). Can put some additional details in the appendix.}
 
 \todo[inline]{Issac: add the table of TuT/ATE/ToT results without covariates. For the moment I suppose we \emph{don't} have the ToT/TuT comparison. (See Frank todo above!)} 
 
-\todo[inline]{Because they appear in different equations, testing TuT = ToT is slightly more involved. Explain how to do it here, but put additional details in the appendix.} 
+%\todo[inline]{Because they appear in different equations, testing TuT = ToT is slightly more involved. Explain how to do it here, but put additional details in the appendix.} 
 
 \todo[inline]{Frank: after the preceding todo notes, revise the text below that discusses the ToT/TuT etc results. Think about how to compare/contrast/relate to the bounding exercises above as well as the ITT results.}
 
- 
 
 %A unique feature of our design is the randomized assignment to treatment (forced commitment), control (forced no-commitment), and choice of treatment. 
 
@@ -666,6 +676,9 @@ where $\boldsymbol{\Sigma}$ is a covariance matrix that can be estimated from th
 Table \ref{tot_tut} shows the results of this analysis.  Given that the ITT results for the Choice arm imply an insignificant worsening of outcomes relative to the control, our estimates of the Treatment on the Treated in the first row of the bottom panel show negative results that are larger in absolute magnitude (multiplied by ~9, the inverse of the compliance rate) and similarly insignificant.  The Treatment on the Untreated (TuT), conversely, is strongly positive across the board, and indicates a significant improvement for all outcomes (here ITTs are effectively multiplied by 1.12, the inverse of the non-compliance rate).  Most novel is the ability to form a test of the difference between the ToT and the TuT, which is conducted in the bottom rows of the table.  We provide four different ways of estimating p-values for this comparison; the standard clustered estimates motivated by the experimental design, normal and percentile bootstraps, and randomization inference.  The differences between treatment effects for compliers and non-compliers are of borderline significance in some of the unadjusted specifications, but are not significant once adjusted.\footnote{It is worth noting that the statistical power of these estimands is driven by the compliance rate; given our low overall compliance we are better powered to measure the TuT than the ToT, and the power for the difference between the two would be highest with a compliance rate of 50\%.}   Because of the large standard errors on the ToT coming from the low compliance rate in the Choice arm we are unable to state with statistical confidence that the TuT is higher than the ToT, but the TuT is strongly positive while the ToT is weakly negative, and so in both relative and absolute terms the choices being made are `wrong' relative to the potential outcomes.
 
 
+\subsection{Marginal Treatment Effects}
+As described above, our experimental design point identifies the ATE, TUT, and TOT without the need to carry out a marginal treatment effects (MTE) analysis that would rely, to some extent, on structural assumptions or shape restrictions. Nonetheless, researchers who are interested in learning more about essential heterogeneity can combine our design with an MTE approach.
+\todo[inline]{Need to flesh out a bit more, but in short: (1) can extend the results of Mogstad et al (2017) to use our ATE, TUT, and TOT as additional inequality restrictions that constrain partial identification bounds for MTEs; (2) Could allow more flexibility in the approach of Carneiro et al (2011) by recovering $\mu_0(x)$ and $\mu_1(x)$ from the forced arm. This permits richer forms of observed heterogeneity than the linear specification that is typically used in applied MTE papers. One could also combine (1) and (2) or use (1) as a specification test for (2).}
 
 
 
@@ -1135,30 +1148,18 @@ an OLS regression, and each panel represents a different treatment arm-control c
 \end{table}
 
 
-\begin{landscape}
-
 \begin{table}[H]
 \caption{Gains for choosers versus gains from non-choosers (ToT \& TuT)}
 \label{tot_tut}
 \begin{center}
-\scriptsize{\input{./Tables/tot_tut_reg.tex}}
+\scriptsize{\input{./Tables/tot_tut.tex}}
 \end{center}
  \scriptsize This table shows estimates of the ToT and the TuT with an IV-LATE framework. The ToT is computed as the usual LATE with one-sided non-compliance between the choice and control arm, and the TuT is the LATE on non-compliers. 
-%\textit{Do file: } \texttt{tot\_tut\_reg.do}
+%\textit{Do file: } \texttt{tot\_tut.do}
 \end{table}
 
 
-\begin{table}[H]
-\caption{Gains for choosers versus gains from non-choosers (ToT \& TuT)}
-\label{tot_tut}
-\begin{center}
-\scriptsize{\input{./Tables/tot_tut_se.tex}}
-\end{center}
- \scriptsize This table shows estimates of the ToT and the TuT with an IV-LATE framework. The ToT is computed as the usual LATE with one-sided non-compliance between the choice and control arm, and the TuT is the LATE on non-compliers. 
-%\textit{Do file: } \texttt{tot\_tut\_reg.do}
-\end{table}
 
-\end{landscape}
 
 
 \begin{table}[H]
@@ -1473,7 +1474,7 @@ an OLS regression, and each panel represents a different treatment arm-control c
 \cleardoublepage
 
 \begin{figure}[H]
-    \caption{Fan \& Park bounds}
+    \caption{Fan \& Park bounds for benefit in APR\% }
     \label{fan_park_bounds}
     \begin{center}
     \begin{subfigure}{0.675\textwidth}
@@ -1582,7 +1583,12 @@ an OLS regression, and each panel represents a different treatment arm-control c
     \caption{Default}
        \centering
       \includegraphics[width=\textwidth]{Figuras/he_dist_def_c_pro_2.pdf}
-    \end{subfigure}    
+    \end{subfigure}  
+     \begin{subfigure}{0.45\textwidth}
+    \caption{Recovery}
+       \centering
+      \includegraphics[width=\textwidth]{Figuras/he_dist_des_c_pro_2.pdf}
+    \end{subfigure}      
     \end{center}
          \scriptsize
      plots the distribution of the heterogeneous treatment effects on financial cost, estimated using \cite{atheygrf}.
@@ -1692,7 +1698,11 @@ an OLS regression, and each panel represents a different treatment arm-control c
         \centering
         \includegraphics[width=\textwidth]{Figuras/benefit_choice_tau_des.pdf}
     \end{subfigure}
-  
+     \begin{subfigure}{0.475\textwidth}
+        \caption{Default}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/benefit_choice_tau_def.pdf}
+    \end{subfigure} 
     \end{center}
      \scriptsize   This figure asks whether it is the case that people with larger causal benefits from the Forced Commitment contract would be more likely to select that contract. To do this we proceed in two steps. First we estimate a flexible model of take-up of the commitment-fee contract \textit{in the choice arm} using gradient boosting classification, and from this model obtain a probability $P(x_i)$ of choosing the Forced Commitment contract for a client with characteristics $x_i$. We extrapolate this model to clients in the Forced Commitment arm to estimate what would they have chosen if we had given them choice. We plot $\widehat{P(x_i)}$ in the X-axis using a binscatter that splits the X-axis in 100 percentile bins. The Y-axis plots the heterogeneous treatment effects of the (a) effective APR (in the positive scale) and (b) repayment, averaged for the respective x-axis bin. Positive assortative selection would mean a negative relationship: those who benefit more by treatment and lose the pawn less are \emph{less} likely to choose it. 
           %\footnotesize{ \textit{Do file: }  \texttt{benefit\_choice.do}}
@@ -1722,7 +1732,11 @@ an OLS regression, and each panel represents a different treatment arm-control c
         \centering
         \includegraphics[width=\textwidth]{Figuras/cdf_predchoose_tau_des.pdf}
     \end{subfigure}
-  
+    \begin{subfigure}{0.475\textwidth}
+        \caption{Default}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/cdf_predchoose_tau_def.pdf}
+    \end{subfigure}
     \end{center}
      \scriptsize    CDF of the heterogeneous treatment effect for choosers vs non-choosers. The dotted line below indicates the points where the difference in the distributions is significant.  Instead of a single global null hypothesis (that the two CDFs are identical), there is a continuum of individual null hypotheses of CDF equality at each point. This methodology was proposed by \cite{GOLDMAN2018143}.
           %\footnotesize{ \textit{Do file: }  \texttt{benefit\_choice.do}}

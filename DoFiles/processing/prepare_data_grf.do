@@ -24,20 +24,21 @@ version 17.0
 use "$directorio/DB/Master.dta", clear
 
 sort NombrePignorante fecha_inicial
+replace plan_gasto = inlist(plan_gasto,1,2) if !missing(plan_gasto)
 
 *Covariates - Randomization - Outcomes
 keep apr def_c des_c fc_admin /// *Dependent variables
 	pro_* fee NombrePignorante prenda fecha_inicial  /// *Admin variables
 	$C0 suc_x_dia /// *Controls
-	edad  faltas val_pren_std genero masqueprepa
+	edad  faltas val_pren_std genero pres_antes plan_gasto masqueprepa pb
 
 order apr def_c des_c fc_admin /// *Dependent variables
 	pro_* fee NombrePignorante prenda fecha_inicial  /// *Admin variables
 	$C0 suc_x_dia /// *Controls
-	edad  faltas val_pren_std genero masqueprepa
+	edad  faltas val_pren_std genero pres_antes plan_gasto masqueprepa pb
 
 	*Drop individuals without observables
-foreach var of varlist edad faltas val_pren_std genero masqueprepa { 
+foreach var of varlist edad faltas val_pren_std genero pres_antes plan_gasto masqueprepa pb { 
 	drop if missing(`var') 
 	}
 	

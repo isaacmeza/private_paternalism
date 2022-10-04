@@ -10,68 +10,60 @@ library(rattle)
 library(broom)
 
 # SET WORKING DIRECTORY
-setwd('C:/Users/isaac/Dropbox/Apps/ShareLaTeX/Donde2020')
-set.seed(5289174)
+setwd('C:/Users/isaac/Dropbox/Apps/Overleaf/Donde2020')
+set.seed(1)
 
 
 rename_var = function(df) { 
   df <- rename.vars(df, c(
-    "dummy_dow1",
     "dummy_dow2",
     "dummy_dow3",
     "dummy_dow4",
     "dummy_dow5",
     "dummy_dow6",
-    "dummy_suc1",
     "dummy_suc2",
     "dummy_suc3",
     "dummy_suc4",
     "dummy_suc5",
     "dummy_suc6",
+    "num_arms_d2",
     "num_arms_d3",
     "num_arms_d4",
     "num_arms_d5",
     "num_arms_d6", 
-    "visit_number_d2", 
-    "visit_number_d3", 
-    "visit_number_d4", 
-    "visit_number_d5", 
-    "visit_number_d6", 
-    "visit_number_d7",
     "edad",
     "faltas",
     "val_pren_std",
     "genero",
-    "masqueprepa"
+    "pres_antes",
+    "plan_gasto",
+    "masqueprepa",
+    "pb"
   ),
   c(
-    "monday",
     "tuesday",
     "wednesday",
     "thurdsay",
     "friday",
     "saturday",
-    "branch.1",
     "branch.2",
     "branch.3",
     "branch.4",
     "branch.5",
     "branch.6",
+    "num.exp.arms.2",
     "num.exp.arms.3",
     "num.exp.arms.4",
     "num.exp.arms.5",
     "num.exp.arms.6",
-    "visit.number.2",
-    "visit.number.3",
-    "visit.number.4",
-    "visit.number.5",
-    "visit.number.6",
-    "visit.number.7",
     "age",
     "income.index",
     "subj.loan.value",
     "female",
-    "more.high.school"
+    "pawn.before",
+    "makes.budget",
+    "more.high.school",
+    "p.bias"
   ))
 }
 
@@ -110,7 +102,26 @@ fit_instr_forest = function(xvar, wvar, yvar, zvar, dta, nme) {
     X = model.matrix(~., data = xvar), 
     Y = data.matrix(yvar), 
     W = wvar,
-    Z = zvar)
+    Z = zvar,
+    num.trees = 5000,
+    sample.weights = NULL,
+    equalize.cluster.weights = FALSE,
+    sample.fraction = 0.5,
+    min.node.size = 5,
+    honesty = TRUE,
+    honesty.fraction = 0.5,
+    honesty.prune.leaves = TRUE,
+    alpha = 0.05,
+    imbalance.penalty = 0,
+    stabilize.splits = TRUE,
+    ci.group.size = 2,
+    tune.parameters = c("alpha", "imbalance.penalty"),
+    tune.num.trees = 500,
+    tune.num.reps = 200,
+    tune.num.draws = 2000,
+    compute.oob.predictions = TRUE,
+    num.threads = NULL,
+    seed = 1)
   
   # Estimate treatment effects for the training data using out-of-bag prediction.
   inst_hat_oob = predict(inst.forest, estimate.variance = TRUE)
@@ -184,7 +195,52 @@ print(alfa)
 
 # ESTIMATE MODEL
 mapply(fit_instr_forest, list(X_tot, X_tut),  list(W_tot, W_tut), list(Y_tot, Y_tut), list(Z_tot, Z_tut),
-       list(tot_copy, tut_copy), c("tot", "tut"))
+       list(tot_copy, tut_copy), c("tot_apr", "tut_apr"))
 
 
+###################################################################  ###################################################################  
+
+require("dplyr")
+
+tot_tut <- read_csv('./_aux/tot_tut_eff.csv') 
+
+data_in <- tot_tut %>%
+  mutate_all(~ifelse(is.na(.), median(., na.rm = TRUE), .))  
+
+tot <- data_in %>% 
+  filter(esample_tot == 1) 
+tut <- data_in %>% 
+  filter(esample_tut == 1) 
+
+tot_copy <- tot
+tut_copy <- tut
+
+rename_var(tot)
+rename_var(tut)
+
+# PREPARE VARIABLES
+X_tot <- select(tot,-c(eff, choice_nsq, choice_nonsq, forced_fee_vs_choice, choice_vs_control,
+                       esample_tot, esample_tut, prenda))
+Y_tot <- select(tot,eff)
+W_tot <- as.numeric(tot$choice_nsq == 1)
+Z_tot <- as.numeric(tot$choice_vs_control == 1)
+
+X_tut <- select(tut,-c(eff, choice_nsq, choice_nonsq, forced_fee_vs_choice, choice_vs_control,
+                       esample_tot, esample_tut, prenda))
+Y_tut <- select(tut,eff)
+W_tut <- as.numeric(tut$choice_nonsq == 1)
+Z_tut <- as.numeric(tut$forced_fee_vs_choice == 1)
+
+###################################################################  
+###################################################################  
+
+
+# OVERLAP ASSUMPTION
+alfa <- mapply(opt_alfa, list(X_tot, X_tut),  list(W_tot, W_tut))
+print(alfa)  
+
+
+# ESTIMATE MODEL
+mapply(fit_instr_forest, list(X_tot, X_tut),  list(W_tot, W_tut), list(Y_tot, Y_tut), list(Z_tot, Z_tut),
+       list(tot_copy, tut_copy), c("tot_eff", "tut_eff"))
 
