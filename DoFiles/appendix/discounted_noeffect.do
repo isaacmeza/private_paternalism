@@ -14,7 +14,7 @@ version 17.0
 		- pre_admin.dta
 * Files created:  
 
-* Purpose: Compute discount rate such that t. effect becomes 0
+* Purpose: Compute discount rate such that t. effect becomes 0 
 
 *******************************************************************************/
 */
@@ -24,54 +24,10 @@ use "$directorio/_aux/pre_admin.dta", clear
 *This first part of the code is a verbatim copy of the cleaning_admin.do file in order to 
 *create a replica of the main dataset.
 
-gen desempeno=(clave_movimiento==3)
-
-
-*Recidivism
-preserve
-bysort prenda: egen des_c=max(desempeno)
-bysort prenda: egen dias_ultimo_mov = max(dias_inicio)
-gen dias_inicio_d=dias_inicio if des_c
-bysort prenda: egen dias_al_desempenyo=max(dias_inicio_d)
-duplicates drop NombrePignorante fecha_inicial, force
-sort NombrePignorante fecha_inicial
-*Number of visits to pawn 
-bysort NombrePignorante: gen visit_number = _n
-qui su visit_number, d
-local tr99 = `r(p99)'
-replace visit_number = `tr99' if visit_number>=`tr99'
-
-*Dummy indicating if customer received more than one treatment arm
-bysort NombrePignorante t_prod : gen unique_arms = _n==1
-replace unique_arms = 0 if missing(t_prod)
-bysort NombrePignorante : egen num_arms = sum(unique_arms)
-gen more_one_arm = (num_arms>1)
-
-
-keep NombrePignorante fecha_inicial visit_number num_arms 
-tempfile temp_rec
-save  `temp_rec'
-restore
-merge m:1 NombrePignorante fecha_inicial using `temp_rec', nogen
-
-
-*Recover pawn
-sort prenda fecha_movimiento HoraMovimiento
-by prenda: gen des_c=desempeno[_N]
-
-*Days to recover
-gen dias_inicio_d=dias_inicio if des_c
-by prenda: gen dias_al_desempenyo=dias_inicio_d[_N]
-replace dias_al_desempenyo = 1 if dias_al_desempenyo==0
-replace dias_inicio = 1 if dias_inicio==0 & des_c==1
-
 *Suc by day
 egen suc_x_dia=group(suc fecha_inicial)
-
-
-*Number of pledges by suc and day
+*DoW
 gen dow=dow(fecha_inicial)
-
 
 *Aux Dummies (Fixed effects)
 tab num_arms, gen(num_arms_d)
@@ -79,8 +35,8 @@ tab visit_number, gen(visit_number_d)
 foreach var of varlist dow suc  {
 	tab `var', gen(dummy_`var')
 	}
-drop num_arms_d1 num_arms_d2 visit_number_d1
-	
+drop num_arms_d1 visit_number_d1 dummy_dow1 dummy_suc1
+
 	
 matrix results = J(1001, 4, .)
 

@@ -69,6 +69,9 @@ local perc_pr_gbc = 100-round(`r(mean)'*100)
 xtile perc =  pr_gbc_1, nq(100)
 su pr_gbc_1 if  perc==`perc_pr_gbc'
 gen predicted_choose = pr_gbc_1>=`r(mean)'
+
+
+keep if t_prod==2
 tempfile tempmaster
 save `tempmaster'
 	

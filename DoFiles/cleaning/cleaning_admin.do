@@ -132,7 +132,7 @@ bysort suc fecha_inicial: keep if _n==1
 merge 1:1 suc fecha_inicial using "$directorio/_aux/num_pawns_suc_dia.dta", nogen keep(1 3)
 rename num_empenio_sucdia num_empenio
 
-*Number of pledges by suc and day
+*Day of week 
 gen dow=dow(fecha_inicial)
 gen weekday=inlist(dow,1,2,3,4,5)
 
@@ -282,9 +282,6 @@ label var sum_pay_fee "Cumulative sum of payed fees"
 
 *Var correction (desempeno)
 bysort prenda: replace clave_movimiento=5 if clave_movimiento==3 & sum_p < prestamo_i - 1
-
-*For DISCOUNTED calculations
-save "$directorio/_aux/pre_admin.dta", replace /*save for discounted_noeffect.do*/	
 
 
 *'porc_pagos' is the percentage of payments wrt the loan
@@ -453,6 +450,8 @@ restore
 merge m:1 NombrePignorante fecha_inicial using `temp_varsC0', nogen
 merge m:1 NombrePignorante fecha_inicial prenda using `temp_rec', nogen
 
+*For DISCOUNTED calculations
+save "$directorio/_aux/pre_admin.dta", replace /*save for discounted_noeffect.do*/	
 
 *The next variables indicate if the movement exists in the voucher.
 *e.g.
@@ -622,7 +621,7 @@ label var apr_i "APR (appraised value)"
 *Suc by day
 egen suc_x_dia=group(suc fecha_inicial)
 
-*Number of pledges by suc and day
+*Day of week
 gen dow=dow(fecha_inicial)
 gen weekday=inlist(dow,1,2,3,4,5)
 preserve
