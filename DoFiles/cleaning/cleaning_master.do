@@ -141,11 +141,11 @@ replace apr_i_survey_tc = (1 + (fc_i_survey_tc/prestamo_i)/dias_ultimo_mov)^dias
 
 *APR fully adjusted (subj + tc - int)
 gen double fc_i_fa = .
-	*Only fees and interest for recovered pawns
+	*Only fees for recovered pawns
 replace fc_i_fa = sum_pay_fee_c + trans_cost if des_i_c==1
 	*All payments + appraised value when default
 replace fc_i_fa = sum_p_c + val_pren + trans_cost - sum_int_c if def_i_c==1
-	*Not ended at the end of observation period - only fees and interest
+	*Not ended at the end of observation period - only fees
 replace fc_i_fa = sum_pay_fee_c + trans_cost if def_i_c==0 & des_i_c==0	
 
 gen double apr_i_fa  = .

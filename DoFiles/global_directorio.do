@@ -31,4 +31,4 @@ global star "star(* 0.1 ** 0.05 *** 0.01)"
 global C0 = "dummy_* num_arms_d*" /*Controls*/  
 
 *Set scheme
-set scheme white_tableau, perm
+set scheme white_tableau1, perm

@@ -24,7 +24,7 @@
 \begin{document}
 
 
-\title{The limits of self-commitment and private paternalism \thanks{We want to thank Mauricio Romero and Anett John for advice and encouragement. Ricardo Olivares, Gerardo Melendez, and Alonso de Gortari provided excellent research assistance and Erick Molina helped with formatting. Jose Maria Barrero, Francis DiTraglia, Andrei Gomberg, Emilio Gutierrez, David Laibson, Aprajit Mahajan, Matt Rabin, Charlie Sprenger, and seminar participants at ITAM provided valuable feedback.}}
+\title{The limits of self-commitment and private paternalism \thanks{We want to thank Mauricio Romero and Anett John for advice and encouragement. Ricardo Olivares, Gerardo Melendez, and Alonso de Gortari provided excellent research assistance and Erick Molina helped with formatting. Jose Maria Barrero, Andrei Gomberg, Emilio Gutierrez, David Laibson, Aprajit Mahajan, Matt Rabin, Charlie Sprenger, and seminar participants at ITAM provided valuable feedback.}}
 \author{Craig McIntosh \and Isaac Meza \and Joyce Sadka \and Enrique Seira \and Frank DiTraglia   \thanks{Seira: ITAM/MSU, enrique.seira@gmail.com (corresponding author); McIntosh:  University of California San Diego, ctmcintosh@ucsd.edu; Meza: University of California at Berkeley, isaac.meza@berkeley.edu; Sadka: ITAM, jsadka@itam.mx; DiTraglia: Oxford, frank@ditraglia.com} }
 \date{This draft:  \today \\[2 cm]}
 
@@ -584,7 +584,7 @@ A number of recent papers compare estimates of the ToT and TuT to better underst
 
 \todo[inline]{Somewhere in the paper we'll want to talk about when this kind of design could be useful in a bit more detail.}
 
-The key insight can be read directly from \eqref{eq:potentialTreatments} and \eqref{eq:potentialOutcomes}. Viewing $Z_i$ as an instrumental variable, our design can be interpreted as a \emph{pair} of RCTs, each subject to one-sided non-compliance.\footnote{For a full derivation, see Appendix ???.} The first of these compares $Z_i=0$ to $Z_i = 2$. For each individual with $Z_i = 0$ we have $D_i = 0$ and observe $Y_{i0}$. For those with $Z_i = 2$ we have $D_i = C_i$ and observe $(1 - C_i) Y_{i0} + C_i Y_{i1}$. This is identical to a ``randomized encouragement'' design in which treatment is only available to those who are encouraged: $Z_i = 2$. Under this interpretation, those with $C_i = 1$ are ``the compliers'' and it follows that 
+The key insight can be read directly from \eqref{eq:potentialTreatments} and \eqref{eq:potentialOutcomes}. Viewing $Z_i$ as an instrumental variable, our design can be interpreted as a \emph{pair} of RCTs, each subject to one-sided non-compliance.\footnote{For a full derivation, see \hl{Appendix ???}.} The first of these compares $Z_i=0$ to $Z_i = 2$. For each individual with $Z_i = 0$ we have $D_i = 0$ and observe $Y_{i0}$. For those with $Z_i = 2$ we have $D_i = C_i$ and observe $(1 - C_i) Y_{i0} + C_i Y_{i1}$. This is identical to a ``randomized encouragement'' design in which treatment is only available to those who are encouraged: $Z_i = 2$. Under this interpretation, those with $C_i = 1$ are ``the compliers'' and it follows that 
 \begin{equation}
 \frac{\mathbbm{E}(Y_i|Z_i=2) - \mathbbm{E}(Y_i|Z_i =0)}{\mathbbm{E}(D_i|Z_i=2)-\mathbbm{E}(D_i|Z_i=0)} = 
 \frac{\mathbbm{E}(Y_i|Z_i=2) - \mathbbm{E}(Y_i|Z_i =0)}{\mathbbm{E}(D_i|Z_i=2)} = \mathbbm{E}(Y_{i1} - Y_{i0}|C_i = 1)

@@ -99,6 +99,59 @@ te_grf <- function(data_in, outcome_var, name) {
   ###################################################################  
   ###################################################################  
   
+  # Estimation of E[Y | X , W = 1] and E[Y | X , W = 0]
+  X1 = X[W==1,]
+  X0 = X[W==0,]
+  Y1 = as.numeric(unlist(Y[W==1,]))
+  Y0 = as.numeric(unlist(Y[W==0,]))
+  
+  mu.1 = regression_forest(X1,Y1,
+    num.trees = 3000,
+    sample.weights = NULL,
+    clusters = NULL,
+    equalize.cluster.weights = FALSE,
+    sample.fraction = 0.5,
+    mtry = min(ceiling(sqrt(ncol(X)) + 20), ncol(X)),
+    min.node.size = 5,
+    honesty = TRUE,
+    honesty.fraction = 0.5,
+    honesty.prune.leaves = TRUE,
+    alpha = 0.05,
+    imbalance.penalty = 0,
+    ci.group.size = 2,
+    tune.parameters = c("alpha", "imbalance.penalty"),
+    tune.num.trees = 500,
+    tune.num.reps = 200,
+    tune.num.draws = 2000,
+    compute.oob.predictions = TRUE,
+    num.threads = NULL,
+    seed = 1)
+  
+  pr_mu1 = predict(mu.1, data_test, estimate.variance = TRUE)
+  
+  mu.0 = regression_forest(X0,Y0,
+    num.trees = 3000,
+    sample.weights = NULL,
+    clusters = NULL,
+    equalize.cluster.weights = FALSE,
+    sample.fraction = 0.5,
+    mtry = min(ceiling(sqrt(ncol(X)) + 20), ncol(X)),
+    min.node.size = 5,
+    honesty = TRUE,
+    honesty.fraction = 0.5,
+    honesty.prune.leaves = TRUE,
+    alpha = 0.05,
+    imbalance.penalty = 0,
+    ci.group.size = 2,
+    tune.parameters = c("alpha", "imbalance.penalty"),
+    tune.num.trees = 500,
+    tune.num.reps = 200,
+    tune.num.draws = 2000,
+    compute.oob.predictions = TRUE,
+    num.threads = NULL,
+    seed = 1)
+  
+  pr_mu0 = predict(mu.0, data_test, estimate.variance = TRUE)
   
   # OVERLAP ASSUMPTION
   propensity.forest = regression_forest(X, W)
@@ -230,7 +283,9 @@ te_grf <- function(data_in, outcome_var, name) {
   write_csv(tc,filename_tc)
   
   # Save results
-  data.out <- add_column(data_copy, tau_hat_oob$predictions, tau_hat_oob$variance.estimates)
+  data.out <- add_column(data_copy, tau_hat_oob$predictions, tau_hat_oob$variance.estimates,
+                         pr_mu1$predictions, pr_mu1$variance.estimates,
+                         pr_mu0$predictions, pr_mu0$variance.estimates)
   filename_out <- paste("_aux/", name, "_te_grf.csv", sep="")
   write_csv(data.out, filename_out)
 }  
