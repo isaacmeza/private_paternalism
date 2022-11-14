@@ -493,14 +493,14 @@ Y_i(d=0, z=0) = Y_i(d=0, z=2) \equiv Y_{i0}, \quad
 Y_i(d=1, z=1) = Y_i(d=1, z=2) \equiv Y_{i1}.
 \label{eq:exclusion}
 \end{equation}
-\Eqref{eq:exclusion} says that each participant's potential outcome is the same regardless of whether she \emph{chooses} a particular treatment $D=d$ or is \emph{assigned} the same treatment. Viewing $Z_i$ as an instrumental variable (IV) for the treatment $D_i$, this nothing more than the usual IV exclusion restriction.\footnote{\cite{chamberlain2011bayesian} uses an identical assumption to develop a theory of optimal treatment choice for an individual who has access to data from an RCT.} \Eqref{eq:exclusion} is plausible in our empirical setting and has testable implications that we fail to reject: see Appendix \todo{Fill in}{???} for details. Under \eqref{eq:exclusion}, each participant's observed outcome $Y_i$ is related to her potential outcomes $(Y_{i0}, Y_{i1})$ according to 
+\ref{eq:exclusion} says that each participant's potential outcome is the same regardless of whether she \emph{chooses} a particular treatment $D=d$ or is \emph{assigned} the same treatment. Viewing $Z_i$ as an instrumental variable (IV) for the treatment $D_i$, this nothing more than the usual IV exclusion restriction.\footnote{\cite{chamberlain2011bayesian} uses an identical assumption to develop a theory of optimal treatment choice for an individual who has access to data from an RCT.} \ref{eq:exclusion} is plausible in our empirical setting and has testable implications that we fail to reject: see Appendix \todo{Fill in}{???} for details. Under \ref{eq:exclusion}, each participant's observed outcome $Y_i$ is related to her potential outcomes $(Y_{i0}, Y_{i1})$ according to 
 \todo[inline]{Issac: add a section \ref{bound_tot_tut_appendix} to the appendix and drop in the results for the Huber \& Mellace stuff; Frank: follow-up and draft that section of the appendix.}
 \begin{equation}
     Y_i = \mathbbm{1}(Z_i =0) Y_{i0} + \mathbbm{1}(Z_i = 1)  Y_{i1}  + \mathbbm{1}(Z_i = 2) \left[(1 - C_i) Y_{i0} + C_i Y_{i1} \right].
 \label{eq:potentialOutcomes}
 \end{equation}
 
-\Eqref{eq:potentialOutcomes} is the key to understanding the results that follows. By randomly assigning $Z_i=0$ and $Z_i = 1$, our experiment identifies the marginal distributions of $Y_{i0}$ and $Y_{i1}$ in the population as a whole. By randomly assigning $Z_i=2$, it likewise identifies the share of people with $C_i = 1$ (the treated), the distribution of $Y_{i1}$ for these individuals, and the distribution of $Y_{i0}$ for those with $C_i = 0$ (the untreated). Because $Z_i$ is assigned independently of pre-treatment covariates $X_i$, our design also identifies the corresponding \emph{conditional} distributions of $Y_{i0}$ and $Y_{i1}$ given $X_i$. These distributions are the ingredients that we use below to explore the importance of paternalism. 
+\ref{eq:potentialOutcomes} is the key to understanding the results that follows. By randomly assigning $Z_i=0$ and $Z_i = 1$, our experiment identifies the marginal distributions of $Y_{i0}$ and $Y_{i1}$ in the population as a whole. By randomly assigning $Z_i=2$, it likewise identifies the share of people with $C_i = 1$ (the treated), the distribution of $Y_{i1}$ for these individuals, and the distribution of $Y_{i0}$ for those with $C_i = 0$ (the untreated). Because $Z_i$ is assigned independently of pre-treatment covariates $X_i$, our design also identifies the corresponding \emph{conditional} distributions of $Y_{i0}$ and $Y_{i1}$ given $X_i$. These distributions are the ingredients that we use below to explore the importance of paternalism. 
 
 %The fact that the Forced Commitment contract lowers financial costs for almost all clients, together with the fact that only 11\% choose it must mean that many consumers are choosing contracts with higher financial costs for themselves. We now use several different techniques to shed further light on the idea that the `wrong' people are choosing commitment.  
 
@@ -526,12 +526,12 @@ In the second step we fit a linear regression model to data from the training se
 Y_i = \alpha_0 + \alpha_1 \psi_i + \beta_1 (Z_i - \mathbbm{E}[Z_i]) + \beta_2 (Z_i - \mathbbm{E}[Z_i])(\tau_i - \mathbbm{E}[\tau_i]) + \epsilon_i
 \label{eq:chernreg}
 \end{equation}
-where $\psi_i \equiv \psi(X_i|\text{Training})$ and $\tau_i \equiv \tau(X_i|\text{Training})$.\footnote{This is a slightly simpler regression than the one proposed in equation (3.1) of \cite{chernozhukov2018generic}, which involves propensity score weights. Because the random assignment of $Z$ in our experiment does \emph{not} condition on $X$, the propensity score weights in our case are constant over $X$ and hence drop out.} As shown by \cite{chernozhukov2018generic}, the coefficients $\beta_1$ and $\beta_2$ from \eqref{eq:chernreg} identify the \emph{best linear predictor} of the conditional ATE based on $\tau(\cdot|\text{Training})$, namely
+where $\psi_i \equiv \psi(X_i|\text{Training})$ and $\tau_i \equiv \tau(X_i|\text{Training})$.\footnote{This is a slightly simpler regression than the one proposed in equation (3.1) of \cite{chernozhukov2018generic}, which involves propensity score weights. Because the random assignment of $Z$ in our experiment does \emph{not} condition on $X$, the propensity score weights in our case are constant over $X$ and hence drop out.} As shown by \cite{chernozhukov2018generic}, the coefficients $\beta_1$ and $\beta_2$ from \ref{eq:chernreg} identify the \emph{best linear predictor} of the conditional ATE based on $\tau(\cdot|\text{Training})$, namely
 \[
 \beta_1 = \mathbbm{E}[\text{ATE}(X_i)] = \text{ATE}, \quad
 \beta_2 = \frac{\text{Cov}[\text{ATE}(X_i), \tau_i]}{\text{Var}(\tau_i)}.
 \]
-If treatment effects are homogeneous we must have $\beta_2 = 0$. Rejecting this hypothesis establishes that $\tau_i$ predicts $\text{ATE}(X_i)$ and hence that $\Delta_i$ varies. Since $\tau_i$ and $\psi_i$ do not depend on the test set, inference for the regression in \eqref{eq:chernreg} is straightforward conditional on the Training/Test split.  
+If treatment effects are homogeneous we must have $\beta_2 = 0$. Rejecting this hypothesis establishes that $\tau_i$ predicts $\text{ATE}(X_i)$ and hence that $\Delta_i$ varies. Since $\tau_i$ and $\psi_i$ do not depend on the test set, inference for the regression in \ref{eq:chernreg} is straightforward conditional on the Training/Test split.  
 
 \todo[inline]{Discuss the results here.}
 
@@ -584,13 +584,13 @@ A number of recent papers compare estimates of the ToT and TuT to better underst
 
 \todo[inline]{Somewhere in the paper we'll want to talk about when this kind of design could be useful in a bit more detail.}
 
-The key insight can be read directly from \eqref{eq:potentialTreatments} and \eqref{eq:potentialOutcomes}. Viewing $Z_i$ as an instrumental variable, our design can be interpreted as a \emph{pair} of RCTs, each subject to one-sided non-compliance.\footnote{For a full derivation, see \hl{Appendix ???}.} The first of these compares $Z_i=0$ to $Z_i = 2$. For each individual with $Z_i = 0$ we have $D_i = 0$ and observe $Y_{i0}$. For those with $Z_i = 2$ we have $D_i = C_i$ and observe $(1 - C_i) Y_{i0} + C_i Y_{i1}$. This is identical to a ``randomized encouragement'' design in which treatment is only available to those who are encouraged: $Z_i = 2$. Under this interpretation, those with $C_i = 1$ are ``the compliers'' and it follows that 
+The key insight can be read directly from \ref{eq:potentialTreatments} and \ref{eq:potentialOutcomes}. Viewing $Z_i$ as an instrumental variable, our design can be interpreted as a \emph{pair} of RCTs, each subject to one-sided non-compliance.\footnote{For a full derivation, see \hl{Appendix ???}.} The first of these compares $Z_i=0$ to $Z_i = 2$. For each individual with $Z_i = 0$ we have $D_i = 0$ and observe $Y_{i0}$. For those with $Z_i = 2$ we have $D_i = C_i$ and observe $(1 - C_i) Y_{i0} + C_i Y_{i1}$. This is identical to a ``randomized encouragement'' design in which treatment is only available to those who are encouraged: $Z_i = 2$. Under this interpretation, those with $C_i = 1$ are ``the compliers'' and it follows that 
 \begin{equation}
 \frac{\mathbbm{E}(Y_i|Z_i=2) - \mathbbm{E}(Y_i|Z_i =0)}{\mathbbm{E}(D_i|Z_i=2)-\mathbbm{E}(D_i|Z_i=0)} = 
 \frac{\mathbbm{E}(Y_i|Z_i=2) - \mathbbm{E}(Y_i|Z_i =0)}{\mathbbm{E}(D_i|Z_i=2)} = \mathbbm{E}(Y_{i1} - Y_{i0}|C_i = 1)
 \label{eq:ToT}
 \end{equation}
-since $\mathbbm{E}(D_i|Z_i=0)=0$ by \eqref{eq:potentialTreatments}. 
+since $\mathbbm{E}(D_i|Z_i=0)=0$ by \ref{eq:potentialTreatments}. 
 
 A closely related if slightly less intuitive argument can be used to construct a Wald estimand that identifies the TuT. Here we consider $Z_i = 1$ to be the ``encouragement'' and compare the outcomes for these individuals to those with $Z_i = 2$. If $Z_i = 1$ then $D_i = 1$ and we observe $Y_{i1}$; If $Z_i = 2$ then $D_i = C_i$ and we observe $(1 - C_i) Y_{i0} + C_i Y_{i1}$. Again, we can view this as an experiment with one-sided non-compliance, but now the situation is reversed. Everyone with $Z_i = 1$ is treated, but some people with $Z_i = 2$ are ``always-takers'' who obtain the treatment ($D_i = 1$) despite having been allocated to the ``control'' arm $Z_i=2$. Under this interpretation, the ``compliers'' are those with $C_i = 0$: when $Z_i=1$ they take the treatment, and when $Z_i=2$, they do not. Thus, 
 \begin{equation}
@@ -598,9 +598,9 @@ A closely related if slightly less intuitive argument can be used to construct a
 \frac{\mathbbm{E}(Y_i|Z_i=1) - \mathbbm{E}(Y_i|Z_i =0)}{1 - \mathbbm{E}(D_i|Z_i=2)} = \mathbbm{E}(Y_{i1} - Y_{i0} | C_i = 0)
 \label{eq:TuT}
 \end{equation}
-since $\mathbbm{E}(D_i|Z_i = 1)= 1$ by \eqref{eq:potentialTreatments}. 
+since $\mathbbm{E}(D_i|Z_i = 1)= 1$ by \ref{eq:potentialTreatments}. 
 
-\Eqref{eq:ToT} and \eqref{eq:TuT} are useful for understanding why our design identifies the ToT and TuT, but they are less convenient for estimation and inference. In Appendix \todo{Frank: fill in}{???}, we show that
+\ref{eq:ToT} and \ref{eq:TuT} are useful for understanding why our design identifies the ToT and TuT, but they are less convenient for estimation and inference. In Appendix \todo{Frank: fill in}{???}, we show that
 \begin{align}
 \label{eq:ToTreg}
 Y_i &= \mathbbm{E}(Y_{i0}) + (\text{ATE}) \mathbbm{1}(Z_i = 1) + (\text{ToT}) \left[\mathbbm{1}(Z_i = 2) \times D_i\right] + U_i \\
@@ -611,7 +611,7 @@ where the error terms $U_i$ and $V_i$ satisfy
 \[
 \mathbbm{E}(V_i) = \mathbbm{E}(U_i) = \mathbbm{E}[U_i \mathbbm{1}(Z_i = z)] = \mathbbm{E}[V_i \mathbbm{1}(Z_i = z)] = 0, \quad z = 0, 1, 2.
 \]
-It follows that a pair of just-identified, linear instrumental variables regressions can be used to estimate and carry out inference for each of our quantities of interest. To identify the ATE and ToT, run IV on \eqref{eq:ToTreg} with instruments $\mathbbm{1}(Z_i = 1)$ and $\mathbbm{1}(Z_i=2)$. An F-test based on this regression can then be used to test the restriction $\text{ATE} = \text{ToT}$, and the usual IV output can be used to carry out inference for the ToT. No programming is required. Similarly, to identify the ATE and TuT run IV on \ref{eq:TuTreg} with instruments $\mathbbm{1}(Z_i = 0)$ and $\mathbbm{1}(Z_i = 2)$. An F-test based on this regression can then be used to test the restriction $\text{ATE} = \text{TuT}$, and the usual IV output can be used to carry out inference for the TuT. Again, no programming or special software is required. 
+It follows that a pair of just-identified, linear instrumental variables regressions can be used to estimate and carry out inference for each of our quantities of interest. To identify the ATE and ToT, run IV on \ref{eq:ToTreg} with instruments $\mathbbm{1}(Z_i = 1)$ and $\mathbbm{1}(Z_i=2)$. An F-test based on this regression can then be used to test the restriction $\text{ATE} = \text{ToT}$, and the usual IV output can be used to carry out inference for the ToT. No programming is required. Similarly, to identify the ATE and TuT run IV on \ref{eq:TuTreg} with instruments $\mathbbm{1}(Z_i = 0)$ and $\mathbbm{1}(Z_i = 2)$. An F-test based on this regression can then be used to test the restriction $\text{ATE} = \text{TuT}$, and the usual IV output can be used to carry out inference for the TuT. Again, no programming or special software is required. 
 
 As explained above, a canonical Roy model would suggest that $\text{TuT} \leq \text{ATE} \leq \text{ToT}$. For this reason it is particularly interesting to consider inference for the difference $(\text{ToT} - \text{TuT})$, namely the \emph{average selection on gains}: 
 \[
@@ -635,7 +635,7 @@ We show that these latter two quantities are point identified in Appendix \todo{
 %-\frac{1}{q_1} & \frac{1}{q_0} & \left(\frac{p_1 - 1}{p_0q_1} - \frac{1}{q_0}\right) & -\frac{1}{q_1} - \frac{1 - p_0}{p_1 q_0}
 %\end{bmatrix}
 %\]
-%where $\boldsymbol{\Sigma}$ is a covariance matrix that can be estimated from the residuals of \eqref{eq:ToTreg} and \eqref{eq:TuTreg}. Under iid observations, 
+%where $\boldsymbol{\Sigma}$ is a covariance matrix that can be estimated from the residuals of \ref{eq:ToTreg} and \ref{eq:TuTreg}. Under iid observations, 
 %
 %\todo[inline]{Explain two leading forms that $\Sigma$ can take: heterosked and cluster}
 
