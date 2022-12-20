@@ -78,25 +78,14 @@
 
 
 
-\section{ Further results}
+\section{ }
 \vspace{.2in}
 
 
-\begin{table}[H]
-\caption{Number of pawns balance before and after the experiment}
-\label{num_pawns_bal}
-\begin{center}
-\scriptsize{\input{./Tables/num_pawns_bal.tex}}
-\end{center}
- \scriptsize 
-%\textit{Do file: } \texttt{num\_pawns\_bal.do}
-\end{table}
 
-\subsection{Some materials}
 
 \vspace{.1in}
 
-\subsection{Pictures}
 
 \begin{figure}[H]
      \caption{Some Pawnshops}
@@ -125,9 +114,6 @@
         \centering
         \includegraphics[width=\textwidth]{Figuras/empenio3.png}
     \end{subfigure}
-       
-
-    
     \end{center}
     \scriptsize
         This figure  shows pictures of pawnshops in Mexico city. They do not necessarily coincide with Lender P for confidentiality. 
@@ -160,48 +146,19 @@
 
 
 
-%\begin{figure}[H]
-%        \caption{Booklet with product information}
-%    \label{micas}
-%    \begin{center}
-%        \centering
-%        \includegraphics[width=\textwidth]{micas.pdf}
-%    \end{center}
-%     \footnotesize \textit{Notes: } 
-%      \footnotesize{ }
-%\end{figure}
-
-
-%\begin{figure}[H]
-%     \caption{Booklet with product information translated}
-%    \label{booklet_translate2}
-%    \begin{center}
-%    \begin{subfigure}{.9\textwidth}
-%        \centering
-%        \includegraphics[width=\textwidth]{Figuras/MP_F.pdf}
-%    \end{subfigure}
-    %\begin{subfigure}{0.55\textwidth}
-    %   \centering
-    %  \includegraphics[width=\textwidth]{Figuras/MP_2.pdf}
-    %\end{subfigure}
-%    \end{center}
-%\end{figure}
+\begin{table}[H]
+\caption{Number of pawns balance before and after the experiment}
+\label{num_pawns_bal}
+\begin{center}
+\scriptsize{\input{./Tables/num_pawns_bal.tex}}
+\end{center}
+ \scriptsize 
+%\textit{Do file: } \texttt{num\_pawns\_bal.do}
+\end{table}
 
 
 
 \subsection{Surveys}
-
-
-%\begin{table}[H]
-%\caption{Survey's non-response balance}
-%\label{balance_response}
-%\begin{center}
-%\scriptsize{\input{./Tables/balance_response.tex}}
-%\end{center}
-% \scriptsize This table shows whether the means of variables in the administrative dataset are different for those that respond the baseline survey vs those that do not. We use this as an assessment of external validity. Internal validity is guaranteed because the baseline survey was implemented before treatment assignment and therefore response rates are orthogonal to treatment assignments. Panel A studies the baseline survey, while Panel B focuses on the exit survey. The columns labeled ``p-values'' report p-values for the test that the means of the respective variable are the same for those that responded did not respond the survey.
-%\textit{Do file: } \texttt{balance\_response.do}
-%\end{table}
-
 
 \afterpage{
 \begin{table}[H]
@@ -213,29 +170,6 @@
 \end{table}
 }
 
-
-\begin{comment}
-\begin{table}[H]
-\caption{Reincidence SS}
-\label{tab_reincidence}
-\begin{center}
-\scriptsize{\input{./Tables/tab_reincidence.tex}}
-\end{center}
- \scriptsize
-%\textit{Do file: } \texttt{tab\_reincidence.do}
-\end{table}
-
-
-\begin{table}[H]
-\caption{Summary statistics (exit survey)}
-\label{SS_exit}
-\begin{center}
-\scriptsize{\input{./Tables/SS_exit.tex}}
-\end{center}
- \scriptsize We carried out an exit survey. It had a small response rate and we don't use it in the paper. Here it shows that the characteristics of those that responded it are balanced across arms (Panel B). Panel A reports outcomes.
-%\textit{Do file: } \texttt{ss.do}
-\end{table}
-\end{comment}
 
 
 \newpage
@@ -277,113 +211,78 @@
 \subsection{Main treatment effects: Additional material}
 
 
-\begin{table}[H]
-\caption{Effects on several definitions of cost - Soft arms}
-\label{table_robustness_fc_soft}
-\begin{center}
-\scriptsize{\input{./Tables/fc_robustness_soft.tex}}
-\end{center}
- \scriptsize
 
-%\textit{Do file: } \texttt{fc\_robustness\_soft.do}
-\end{table}
+\begin{figure}[H]
+        \caption{Financial cost for different discount rates}
+    \label{fc_discount_rates}
+    \begin{center}
+        \centering
+        \includegraphics[width=0.55\textwidth]{Figuras/discount_effect.pdf}
+    \end{center}
+     \scriptsize This Figure estimates the treatment effect on financial cost with different discount rates.  
+     %\textit{Do file: }  \texttt{discounted\_noeffect.do}
+\end{figure}
 
 \begin{landscape}
 
 \begin{table}[H]
-\caption{Intermediate outcomes - Soft arms}
-\label{mechanisms_soft}
+\caption{Multiple-loans robustness check}
+\label{multiple_loans}
 \begin{center}
-\scriptsize{\input{./Tables/mechanism_soft.tex}}
+\scriptsize{\input{./Tables/multiple_loans.tex}}
 \end{center}
+ \scriptsize
 
-%\textit{Do file: } \texttt{mechanisms\_soft.do}
+%\textit{Do file: } \texttt{multiple\_loans.do}
 \end{table}
 
 \end{landscape}
 
-\cleardoublepage
-
-% \begin{figure}[H]
-%         \caption{FC restricted to 115 days}
-%     \label{fc_pro_2_115}
-%     \begin{center}
-%         \centering
-%         \includegraphics[width=0.50\textwidth]{Figuras/fc_te_115_pro_2.pdf}
-%     \end{center}
-%      \scriptsize This figure is the same as in Figure \ref{fc_pro2} Panel (a), but with the subsample restricted to the first 115 days.
-%      %\textit{Do file: }  \texttt{fc\_te\_115.do}
-% \end{figure}
-
-
-
-% \begin{figure}[H]
-%         \caption{Financial cost effect: charging all fees}
-%     \label{fc_allfee}
-%     \begin{center}
-%         \centering
-%         \includegraphics[width=0.50\textwidth]{Figuras/fc_allfee_quantile_pro_2.pdf}
-%     \end{center}
-%     \scriptsize
-%      This figure is the analogous to Figure \ref{fc_pro2}(b), except that for the fee-forcing contract we pretend that all clients incurred in their late fees, and therefore inflate the financial cost by summing those fees. This is intended as a kind of worse case scenario for the financial cost of the fee-forcing contract. The circles indicate the quantile treatment effects, while the cross is the (OLS) mean. We still find that the financial cost of will be smaller under the fee-forcing contract in spite of artificially inflating it.
-%      %\texttt{fc\_all\_fee.do}
-% \end{figure}
-
-
-
-
-
-% \begin{figure}[H]
-%         \caption{FC as \% of loan - treatment effect}
-%     \label{fc_perc}
-%     \begin{center}
-%         \centering
-%         \includegraphics[width=0.50\textwidth]{Figuras/fc_perc_te_allarms.pdf}
-%     \end{center}
-%      \scriptsize This figure shows the estimated treatment effect of all arms against the status quo, but normalizing the dependent variable by the value of the loan.
-%      %\textit{Do file: }  \texttt{fc\_perc\_allarms.do}
-% \end{figure}
-
-
-
 
 \begin{figure}[H]
-    \caption{Relationship between treatment effects}
-    \label{induced_to_pay_early}
+        \caption{Survival graph}
+    \label{survival_graph}
     \begin{center}
-    \begin{subfigure}{0.45\textwidth}
-        \caption{\footnotesize{Induced to pay earlier vs Induced Lower FC}}
+   \begin{subfigure}{0.49\textwidth}
+   \caption{Ended contract}
         \centering
-        \includegraphics[width=\textwidth]{Figuras/binscatter_fc_days_pro_2.pdf}
-    \end{subfigure}
-        \begin{subfigure}{0.45\textwidth}
-        \caption{\footnotesize{Induced to pay earlier vs Induced Recovery}}
+        \includegraphics[width=\textwidth]{Figuras/survival_graph_ended.pdf}
+    \end{subfigure} 
+   \begin{subfigure}{0.49\textwidth}
+   \caption{Recovery}
         \centering
-        \includegraphics[width=\textwidth]{Figuras/binscatter_def_days_pro_2.pdf}
-    \end{subfigure}
+        \includegraphics[width=\textwidth]{Figuras/survival_graph_unpledge.pdf}
+    \end{subfigure}     
     \end{center}
-       \scriptsize 
-       This figure plots relationships between \textit{treatment effects}. Both Panels (a) an (b) have the same X-axis, which displays the estimated heterogeneous treatment effect on the outcome ``elapsed days of first payment'', that is how many days elapsed from the day the loan was awarded to the first payment the client made. The treatments effects were calculated using \cite{atheygrf}. In Panel (a) the Y-axis is the \textit{treatment effect} on financial cost. In Panel (b) the Y-axis is the \textit{treatment effect} on losing their pawn. Panel (a) shows that those induced to pay earlier are also those that have larger savings in financial cost as a result of ``forcing'' the frequent payment commitment contract compared to the status-quo (control). Panel (b) shows that those induced to pay earlier are also those that have a larger increase in recovery.
-      %\textit{Do file: }  \texttt{binscatter\_hte.do}
+     \scriptsize  This Figure shows the accumulated percentage of recovery in time by treatment arm. 
+     %\textit{Do file: }  \texttt{survival\_graph.do}
 \end{figure}
 
-% \begin{figure}[H]
-%         \caption{Repeat purchase before 30/60 days}
-%     \label{reincidence_before}
-%     \begin{center}
-%         \centering
-%         \includegraphics[width=0.50\textwidth]{Figuras/re_te_earlydays.pdf}
-%     \end{center}
-%      \scriptsize This figure shows the estimated treatment effect of repeat purchase before 30 \& 60 days.
-%      %\textit{Do file: }  \texttt{re\_te\_earlydays.do}
-% \end{figure}
+\begin{figure}[H]
+        \caption{\% of payment over time}
+    \label{porc_payment_over_time}
+    \begin{center}
+   \begin{subfigure}{0.49\textwidth}
+        \caption{Unconditional}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/cumulative_porc_pay_time.pdf}
+    \end{subfigure} 
+   \begin{subfigure}{0.49\textwidth}
+        \caption{Conditional on default}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/cumulative_porc_pay_time_default.pdf}
+    \end{subfigure}     
+    \end{center}
+     \scriptsize  This Figure shows the accumulated percentage of recovery in time by treatment arm. 
+     %\textit{Do file: }  \texttt{cumulative\_porc\_pay\_time.do}
+\end{figure}
 
 
 
 
-\vspace{.3in}
 
-\subsection{FOSD: fee forcing vs status quo financial cost distributions}
+
+\cleardoublepage
 
 
 \vspace{.2in}
@@ -477,319 +376,50 @@ Note the proof was done in the case of absolutely continuous and strictly increa
 
 
 
-
 \newpage
-\subsection{Causal Random Forest and HTE}
-
-\vspace{.3in}
-\begin{figure}[H]
-        \caption{Honest causal tree for the Forced-commitment contract heterogeneous treatment effects}
-    \label{casual_tree}
-    \begin{center}
-        \centering
-        \includegraphics[width=\textwidth]{Figuras/crf_pro_2_apr.pdf}
-    \end{center}
-    \footnotesize 
-    This is one(it is chosen such that it minimizes the pruned cost, that is it is the tree with the smallest root-node impurity) of the honest causal trees in the random forest we use for the estimation of the heterogeneous treatment effect of the fee-forcing contract. It is meant only as an example of how these trees look like. The forest was such that there are as many estimated treatment effects as there are clients.
-     %\footnotesize{ \textit{RScript: }  \texttt{grf.R}
-\end{figure}
-
-We use \cite{atheygrf} \texttt{causal\_forest} of the \texttt{grf} library in $R$. The parameters used were:
-\scriptsize{\textit{causal\_forest(
-  X, 
-  Y, 
-  W, 
-  Y.hat = NULL, 
-  W.hat = NULL, 
-  num.trees = 2000, 
-  sample.weights = NULL, 
-  clusters = NULL, 
-  equalize.cluster.weights = FALSE, 
-  sample.fraction = 0.5, 
-  mtry = min(ceiling(sqrt(ncol(X)) + 20),ncol(X)), 
-  min.node.size = 5, 
-  honesty = TRUE, 
-  honesty.fraction = 0.5, 
-  honesty.prune.leaves = TRUE, 
-  alpha = 0.05, 
-  imbalance.penalty = 0, 
-  stabilize.splits = TRUE, 
-  ci.group.size = 2, 
-  tune.parameters = "none", 
-  tune.num.trees = 200, 
-  tune.num.reps = 50, 
-  tune.num.draws = 1000, 
-  compute.oob.predictions = TRUE, 
-  orthog.boosting = FALSE, 
-  num.threads = NULL)}}
 
 
-\begin{figure}[H]
-        \caption{Single causal tree for the Forced-commitment contract heterogeneous treatment effects}
-    \label{casual_tree}
-    \begin{center}
-        \centering
-        \includegraphics[width=\textwidth]{Figuras/ct_pro_2_apr.pdf}
-    \end{center}
-    \footnotesize 
-   
-     %\footnotesize{ \textit{RScript: }  \texttt{grf.R}
-\end{figure}
+\subsection{Testing for heterogeneity}
+Our approach relies on the following simple observation: if $\Delta_i$ is constant across $i$ then we must have 
+\[
+\text{ATE}(X_i) \equiv \mathbbm{E}[\Delta_i |X_i] = \mathbbm{E}[\Delta_i] \equiv \text{ATE}
+\]
+for any covariates $X_i$ that vary across $i$. If, on the other hand, $\text{ATE}(X_i)$ can be predicted using some scalar function $\tau(\cdot)$ of $X_i$, then the average treatment effect function is not constant so there must be treatment effect heterogeneity. 
 
+We operationalize this idea using a two-step approach proposed by \cite{chernozhukov2018generic}.  We begin by randomly dividing the participants in the forced arms of the experiment ($Z_i \neq 2$) into two groups: a ``training set'' and a \todo{80/20 split?}{``test set.''} In the first step, we apply random forests to the training set to estimate two proxy predictors: $\psi(\cdot|\text{Training})$ approximates the untreated potential outcome function, $\mathbbm{E}[Y_{i0}|X_i] = \mathbbm{E}[Y_i|Z_i=0,X_i]$, while  $\tau(\cdot|\text{Training})$, approximates the average treatment effect function
+\[
+\text{ATE}(X_i) = \mathbbm{E}[Y_i|Z_i=1,X_i] - \mathbbm{E}[Y_i|Z_i=0, X_i].
+\]
+The proxy predictors need not be unbiased or even consistent estimators of the functions they aim to approximate: the goal of this exercise is merely to find a scalar function of $X_i$ that \emph{accurately predicts} $\text{ATE}(X_i)$.
 
+In the second step we fit a linear regression model to data from the training set using regressors constructed from the proxy functions $\psi(\cdot|\text{Training})$ and $\tau(\cdot|\text{Training})$ constructed in the first step. In particular, we estimate 
+\begin{equation}
+Y_i = \alpha_0 + \alpha_1 \psi_i + \beta_1 (Z_i - \mathbbm{E}[Z_i]) + \beta_2 (Z_i - \mathbbm{E}[Z_i])(\tau_i - \mathbbm{E}[\tau_i]) + \epsilon_i
+\label{eq:chernreg}
+\end{equation}
+where $\psi_i \equiv \psi(X_i|\text{Training})$ and $\tau_i \equiv \tau(X_i|\text{Training})$.\footnote{This is a slightly simpler regression than the one proposed in equation (3.1) of \cite{chernozhukov2018generic}, which involves propensity score weights. Because the random assignment of $Z$ in our experiment does \emph{not} condition on $X$, the propensity score weights in our case are constant over $X$ and hence drop out.} As shown by \cite{chernozhukov2018generic}, the coefficients $\beta_1$ and $\beta_2$ from \eqref{eq:chernreg} identify the \emph{best linear predictor} of the conditional ATE based on $\tau(\cdot|\text{Training})$, namely
+\[
+\beta_1 = \mathbbm{E}[\text{ATE}(X_i)] = \text{ATE}, \quad
+\beta_2 = \frac{\text{Cov}[\text{ATE}(X_i), \tau_i]}{\text{Var}(\tau_i)}.
+\]
+If treatment effects are homogeneous we must have $\beta_2 = 0$. Rejecting this hypothesis establishes that $\tau_i$ predicts $\text{ATE}(X_i)$ and hence that $\Delta_i$ varies. Since $\tau_i$ and $\psi_i$ do not depend on the test set, inference for the regression in \eqref{eq:chernreg} is straightforward conditional on the Training/Test split.  
 
-% \begin{figure}[H]
-%     \caption{Heterogeneous Treatment Effect: Fee-forcing contract}
-%     \label{HTE_fee_forcing}
-%     \begin{center}
-%     %\begin{subfigure}{0.4\textwidth}
-%     %    \caption{Financial cost}
-%     %    \centering
-%     %    \includegraphics[width=\textwidth]{Figuras/he_dist_fc_admin_disc_pro_2.pdf}
-%     %\end{subfigure}
-%     \begin{subfigure}{0.7\textwidth}
-%         \caption{Determinants of effects}
-%         \centering
-%         \includegraphics[width=\textwidth]{Figuras/HE/he_int_vertical_fc_admin_disc_pro_2.pdf}
-%     \end{subfigure}
-    
-%     %\begin{subfigure}{0.4\textwidth}
-%     %    \caption{Losing Pawn}
-%     %    \centering
-%     %    \includegraphics[width=\textwidth]{Figuras/he_dist_def_c_pro_2.pdf}
-%     %\end{subfigure}
-%     %\begin{subfigure}{0.4\textwidth}
-%     %    \caption*{}
-%     %    \centering
-%     %    \includegraphics[width=\textwidth]{Figuras/HE/he_int_vertical_def_c_pro_2.pdf}
-%     %\end{subfigure}
-%     \end{center}
-%      \scriptsize  This figure estimates bivariate regressions of the estimated client-level heterogeneous treatment effects against the respective covariate from the baseline survey  $\widehat{hte_i} = \alpha + \beta \: X_i + \epsilon_i$. The regressors $X_i$ include (e.g if the family asks for money, if they have savings, if they are overconfident using the definition the text, etc. See this Appendix for a transcription of the survey).
-%       %\footnotesize{ \textit{Do file: }  \texttt{analyze\_grf\_single\_arm.do}}
-% \end{figure}
+\todo[inline]{Discuss the results here.}
 
-
-
-
-% \begin{figure}[H]
-%     \caption{Heterogeneous Treatment Effect: Promise-forcing contract}
-%     \label{heterogeneous_te_3}
-%     \begin{center}
-%     \begin{subfigure}{0.4\textwidth}
-%         \caption{Financial cost}
-%         \centering
-%         \includegraphics[width=\textwidth]{Figuras/he_dist_fc_admin_disc_pro_3.pdf}
-%     \end{subfigure}
-%     \begin{subfigure}{0.4\textwidth}
-%         \caption*{}
-%         \centering
-%         \includegraphics[width=\textwidth]{Figuras/HE/he_int_vertical_fc_admin_disc_pro_3.pdf}
-%     \end{subfigure}
-    
-%     \begin{subfigure}{0.4\textwidth}
-%         \caption{Losing Pawn}
-%         \centering
-%         \includegraphics[width=\textwidth]{Figuras/he_dist_def_c_pro_3.pdf}
-%     \end{subfigure}
-%     \begin{subfigure}{0.4\textwidth}
-%         \caption*{}
-%         \centering
-%         \includegraphics[width=\textwidth]{Figuras/HE/he_int_vertical_def_c_pro_3.pdf}
-%     \end{subfigure}
-%     \end{center}
-%      \scriptsize
-%       %\footnotesize{ \textit{Do file: }  \texttt{analyze\_grf\_single\_arm.do}}
-% \end{figure}
-
-
-
-
-
-
-
-
-% \begin{figure}[H]
-%     \caption{Heterogeneous Treatment Effect - Choice/Fee}
-%     \label{heterogeneous_te_4}
-%     \begin{center}
-%     \begin{subfigure}{0.4\textwidth}
-%         \caption{Financial cost}
-%         \centering
-%         \includegraphics[width=\textwidth]{Figuras/he_dist_fc_admin_disc_pro_4.pdf}
-%     \end{subfigure}
-%     \begin{subfigure}{0.4\textwidth}
-%         \caption*{}
-%         \centering
-%         \includegraphics[width=\textwidth]{Figuras/HE/he_int_vertical_fc_admin_disc_pro_4.pdf}
-%     \end{subfigure}
-    
-%     \begin{subfigure}{0.4\textwidth}
-%         \caption{Losing Pawn}
-%         \centering
-%         \includegraphics[width=\textwidth]{Figuras/he_dist_def_c_pro_4.pdf}
-%     \end{subfigure}
-%     \begin{subfigure}{0.4\textwidth}
-%         \caption*{}
-%         \centering
-%         \includegraphics[width=\textwidth]{Figuras/HE/he_int_vertical_def_c_pro_4.pdf}
-%     \end{subfigure}
-%     \end{center}
-%      \footnotesize \textit{Notes: } The distribution plots the FC treatment effect for the interval $[\mu-2\sigma,\mu+2\sigma]$ to ignore the outliers.
-%       \footnotesize{ \textit{Do file: }  \texttt{analyze\_grf\_single\_arm.do}}
-% \end{figure}
-
-
-
-
-% \begin{figure}[H]
-%     \caption{Heterogeneous Treatment Effect - Choice/Promise}
-%     \label{heterogeneous_te_5}
-%     \begin{center}
-%     \begin{subfigure}{0.4\textwidth}
-%         \caption{Financial cost}
-%         \centering
-%         \includegraphics[width=\textwidth]{Figuras/he_dist_fc_admin_disc_pro_5.pdf}
-%     \end{subfigure}
-%     \begin{subfigure}{0.4\textwidth}
-%         \caption*{}
-%         \centering
-%         \includegraphics[width=\textwidth]{Figuras/HE/he_int_vertical_fc_admin_disc_pro_5.pdf}
-%     \end{subfigure}
-%     \begin{subfigure}{0.4\textwidth}
-%         \caption{Losing Pawn}
-%         \centering
-%         \includegraphics[width=\textwidth]{Figuras/he_dist_def_c_pro_5.pdf}
-%     \end{subfigure}
-%     \begin{subfigure}{0.4\textwidth}
-%         \caption*{}
-%         \centering
-%         \includegraphics[width=\textwidth]{Figuras/HE/he_int_vertical_def_c_pro_5.pdf}
-%     \end{subfigure}
-%     \end{center}
-%      \footnotesize \textit{Notes: } 
-%       \footnotesize{ \textit{Do file: }  \texttt{analyze\_grf\_single\_arm.do}}
-% \end{figure}
-
-
-
-
-
-
-
-
-
-%\begin{figure}[H]
-%    \caption{Heterogeneous Treatment Effect (FC survey) - All arms}
-%    \label{heterogeneous_te_fcsurvey_all}
-%    \begin{center}
-%    \begin{subfigure}{0.4\textwidth}
-%        \caption{Forcing/Fee}
-%        \centering
-%        \includegraphics[width=\textwidth]{Figuras/he_dist_fc_survey_disc_pro_2.pdf}
-%    \end{subfigure}
-%    \begin{subfigure}{0.4\textwidth}
-%        \caption{Forcing/Promise}
-%        \centering
-%        \includegraphics[width=\textwidth]{Figuras/he_dist_fc_survey_disc_pro_3.pdf}
-%    \end{subfigure}
-    
-%    \begin{subfigure}{0.4\textwidth}
-%        \caption{Choice/Fee}
-%        \centering
-%        \includegraphics[width=\textwidth]{Figuras/he_dist_fc_survey_disc_pro_4.pdf}
-%    \end{subfigure}
-%    \begin{subfigure}{0.4\textwidth}
-%        \caption{Choice/Promise}
-%        \centering
-%        \includegraphics[width=\textwidth]{Figuras/he_dist_fc_survey_disc_pro_5.pdf}
-%    \end{subfigure}
-%    \end{center}
-%     \footnotesize \textit{Notes: } 
-%      \footnotesize{ \textit{Do file: }  \texttt{analyze\_grf\_single\_arm.do}}
-%\end{figure}
-
-
-
-\subsection{Take up}
-
+\todo[inline]{Issac: re-run this exercise with removing the propensity score weights $p(Z)$. Presumably it shouldn't change anything, but it's simpler to explain what we do and probably less noisy
 
 \begin{table}[H]
-    \caption{Predicting Take-up: Goodness-of-Fit}
-    \label{Table_compliance}
-    %\begin{subtable}{1\textwidth}
-    % \centering
-    %    \caption{Take up}
-    %    \scriptsize{\input{./Tables/oos_pago_frec_vol.tex}}
-    %\end{subtable}%
-    
-    %\bigskip
-     \begin{subtable}{1\textwidth}
-      \centering
-        \caption{Take up: Choice-fee Arm}
-        \scriptsize{\input{./Tables/oos_pago_frec_vol_fee.tex}}
-    \end{subtable}
-    
-      \bigskip
-    \begin{subtable}{1\textwidth}
-      \centering
-        \caption{Take up: Choice-promise Arm}
-        \scriptsize{\input{./Tables/oos_pago_frec_vol_promise.tex}}
-    \end{subtable}
-            \scriptsize
-           \\
-           \\
-           \\
-    
-     %\textit{Scripts: } \texttt{pred\_take\_up.do, pfv\_pred.R}
+\begin{center}
+\scriptsize{\input{./Tables/test_calibration_2.tex}}
+\end{center}
 \end{table}
 
+}
+
+\todo[inline]{Some Questions for Issac: (1) How are we carrying out the sample splitting? If we cluster standard errors at the branch-day level, we should take this into account when we split. (2) How are you carrying out inference for $\beta_2$? Chernozhukov et al discuss two approaches: ``conditional'' and ``variational.'' The former is simpler as it conditions on the training/test split. The latter is a bit more involved, since one accounts for uncertainty arising from different splits. (3) What are the details of the random forest procedure employed here? (Tuning parameters choice, etc.) We should put them into the appendix.}
 
 
 
-\vspace{.1in}
-\begin{figure}[H]
-    \caption{Out of sample ROC curve}
-    \label{roc_curve}
-    \begin{center}
-    \begin{subfigure}{0.45\textwidth}
-        \caption{Take-up in Fee Arm}
-        \centering
-        \includegraphics[width=\textwidth]{Figuras/Boost/ROC_curve_outsample_pago_frec_vol_fee.pdf}
-    \end{subfigure}
-    \begin{subfigure}{0.45\textwidth}
-        \caption{Take-up in Promise Arm}
-        \centering
-        \includegraphics[width=\textwidth]{Figuras/Boost/ROC_curve_outsample_pago_frec_vol_promise.pdf}
-    \end{subfigure}
-    \end{center}
-     \scriptsize 
-  %\footnotesize{ \textit{Do file: }  \texttt{pred\_take\_up.do}}
-\end{figure}
-
-
-
-\begin{figure}[H]
-    \caption{Predictors of commitment contract take-up}
-    \label{interactions_takeup}
-    \begin{center}
-    \begin{subfigure}{0.45\textwidth}
-        \caption{with Fee Arm}
-        \centering
-        \includegraphics[width=\textwidth]{Figuras/pago_frec_vol_fee_interactions_rf.pdf}
-    \end{subfigure}
-    \begin{subfigure}{0.45\textwidth}
-        \caption{with Promise Arm}
-        \centering
-        \includegraphics[width=\textwidth]{Figuras/pago_frec_vol_promise_interactions_rf.pdf}
-    \end{subfigure}
-    \end{center}
-     \scriptsize
-      %\footnotesize{ \textit{Do file: }  \texttt{analyze\_fvp.do}}
-\end{figure}
-
-
-\scriptsize 
-\noindent This figure reports bivariate regressions of the form $\widehat{TakeUp} = \alpha + \beta \: X_i + \epsilon_i$, where $\widehat{TakeUp}$ is the prediction using random forests. The figure reports the $\beta$ coefficients for different $X_i$'s along with 95\% confidence intervals. Panel (a) focuses on take up in the arm where clients could chose among the fee-commitment contract and the status quo contract. Panel (b) focuses on the arm where clients could chose among the promise-commitment contract and the status quo contract. Using random forests we can predict who takes up the fee-forcing contract with 85\% accuracy out of sample.\footnote{Correcting for the fact that most chose the status-quo contract using the method of SMOTE, \cite{smote} we find an accuracy rate of 75\%.} Which suggests that choice among contracts is not purely random. This figure shows that the more educated, those that report that their family typically asks for money, those that make a monthly budget of expenses, and those that ask for a remainder of their due payments (and marginally those we classify as present-biased) are more likely to chose the fee-commitment contract if given the choice. The opposite holds for clients that are more economically vulnerable (can barely pay for food, electricity, etc) and those that report being more stressed.
 
 
 \newpage
@@ -818,108 +448,11 @@ Note that since both TuT and ToT estimates from the LATE approach lies inside th
 
 \newpage
 
-\subsection{Selection on gains}
-
-
-\begin{figure}[H]
-    \caption{Determinants of treatment effects and probability of choosing commitment}
-    \label{determinants_ps_hte}
-    \begin{center}
-    \begin{subfigure}{0.475\textwidth}
-        \caption{Determinants of HTE}
-        \centering
-        \includegraphics[width=\textwidth]{Figuras/HE/he_int_vertical_apr_pro_2.pdf}
-    \end{subfigure}
-    \begin{subfigure}{0.475\textwidth}
-        \caption{Determinants of propensity score}
-        \centering
-        \includegraphics[width=\textwidth]{Figuras/HE/ps_int_vertical_pr_gbc_1.pdf}
-    \end{subfigure}
-  
-    \end{center}
-     \scriptsize   This figure estimates bivariate regressions of the estimated client-level (a) heterogeneous treatment effects, (b) propensity score, against the respective covariate from the baseline survey  $\widehat{HTE_i}, \widehat{P_i} = \alpha + \beta \: X_i + \epsilon_i$. The regressors $X_i$ include (e.g if the family asks for money, if they have savings, if they are overconfident using the definition the text, etc. See this Appendix for a transcription of the survey). \\
-      %\footnotesize{ \textit{Do file: }  \texttt{analyze\_grf\_single\_arm.do}} \texttt{benefit\_choice.do}}
-\end{figure}
 
 
 
-\subsubsection{Finite mixture model }\label{fmm_section}
 
-\vspace{.2in}
-\normalsize
-\linespread{1.25}
-%Really force it to normal size and linespread
-\normalsize
-\linespread{1.25}
-
-We assume the following structural model : Each individual $i$ is of type  $k\in\{1, 2\}$ with probability $\alpha_{i,k}$. We assume it follows a logit distribution:
-\begin{align*}
-\label{dist_alpha}
-    \alpha_{i,k} = \Pr(\text{Type}_i = k \;|\; \mathbf{W}_{i}) = \frac{e^{\gamma_{k}\mathbf{W}_i}}{\sum_{j=1}^{K} e^{\gamma_{j}\mathbf{W}_i}}
-\end{align*}
-
-where $\mathbf{W}_i$ are observable characteristics. This characteristics include choice for commitment, present bias, subjective probability of recovery, etc, which might be indicators of naivete vs sophistication.  
-
-Now, given their type, each individual makes a choice to default or not $c_{i,k} \in \{1,2\}$, based on other set of observable characteristics $\mathbf{X}_i$ (subjective \& objective value of the loan). We will assume there is a continuous latent variable $Y_{i,k,c}$ distributed as
-\[Y_{i,k,c} = \beta_{c,k}\mathbf{X}_{i} +\epsilon_{c,k}\]
-with\footnote{We can impose other errors, and even impose a covariance structure, for instance if $(\epsilon_{c,k})_{c}\sim\mathcal{N}(0,\Sigma_k)$, we arrive to the Multinomial Probit.} $\epsilon_{c;k}\sim\operatorname{EV}(0,1)$. This latent variable can be thought of as the utility associated with individual $i$, being type $k$, making choice $c$. 
-
-
-
-Thus, the density for each individual $i$ being type $k$ is
-\[f(c_i,\mathbf{X}_i; \bm\beta_{k}) = \prod_{c=1}^4\left(\frac{e^{\beta_{c,k} \mathbf{X}_i}}{\sum_{j=1}^{4} e^{\beta_{j,k}  \mathbf{X}_i}}\right)^{[c_i=4]}\]
-
-Finally, the generative model is then a mixture model with density given by,
-\begin{align*}
-    f(c_i ,\mathbf{W}_i, \mathbf{X}_i; \bm{\gamma},\bm{\beta}) &= \sum_{k=1}^K \alpha_k f(c_i,\mathbf{X}_i; \bm\beta_{k}) \\
-    &= \sum_{k=1}^K \alpha_k \prod_{c=1}^4\left(\frac{e^{\beta_{c,k} \mathbf{X}_i}}{\sum_{j=1}^{4} e^{\beta_{j,k}  \mathbf{X}_i}}\right)^{[c_i=c]} 
-\end{align*}
-
-
-
-where $\alpha\sim \operatorname{Categorical}$, and $\gamma_{K} = \beta_{4,k}=0$ for identification purposes. 
-
-Then the (incomplete) log-likelihood function is
-\begin{align*}
-    \ell(\bm{\gamma}, \bm{\beta}; c, \mathbf{W},  \mathbf{X}) = \sum_{i=1}^n \log\sum_{k=1}^K \alpha_k \prod_{c=1}^4\left(\frac{e^{\beta_{c,k} \mathbf{X}_i}}{\sum_{j=1}^{4} e^{\beta_{j,k}  \mathbf{X}_i}}\right)^{[c_i=c]} 
-\end{align*}
-
-, thus we estimate parameters $(\bm{\gamma}, \bm{\beta})$ with an EM algorithm using choice (default), and observable characteristics: $(c_i,\mathbf{W}_i,\mathbf{X}_i)$.
-
-
-\begin{table}[H]
-\caption{FMM}
-\label{fmm_table}
-\begin{center}
-\scriptsize{\input{./Tables/fmm_types.tex}}
-\end{center}
- \scriptsize
-
-%\textit{Do file: } \texttt{fmm.do}
-\end{table}
-
-
-\begin{figure}[H]
-    \caption{Treatment effect of Type 1 individuals}
-    \label{fmm_hte}
-    \begin{center}
-    \begin{subfigure}{0.475\textwidth}       
-            \caption{Probability of Type 1 vs HTE}
-            \centering
-        \includegraphics[width=\textwidth]{Figuras/binscatter_tau_classpost.pdf}
-    \end{subfigure}
-   \begin{subfigure}{0.475\textwidth}
-        \caption{Type 1 vs HTE}
-        \centering
-        \includegraphics[width=\textwidth]{Figuras/benefit_type1p.pdf}
-    \end{subfigure}
-    \end{center}
-     \scriptsize 
-     After estimating the FMM, we compute the probability for each individual of belonging to each class, the x-axis represents the probability of being Type $1$, while the y-axis shows the HTE. A positive relation indicates that Type $1$ individuals are more benefited from commitment.
-      %\footnotesize{ \textit{Do file: }  \texttt{fmm.do}} 
-\end{figure}
-
-\subsubsection{LATE: ToT \& TuT}
+\subsection{LATE: ToT \& TuT}
 \vspace{.2in}
 \normalsize
 \linespread{1.25}
@@ -1078,428 +611,271 @@ and the RHS is a function of observed data only.
 %---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 \newpage 
+\newpage
+\subsection{Causal Random Forest and HTE}
 
-\subsection{New results}
+\vspace{.3in}
+\begin{figure}[H]
+        \caption{Honest causal tree for the Forced-commitment contract heterogeneous treatment effects}
+    \label{casual_tree}
+    \begin{center}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/crf_pro_2_apr.pdf}
+    \end{center}
+    \footnotesize 
+    This is one(it is chosen such that it minimizes the pruned cost, that is it is the tree with the smallest root-node impurity) of the honest causal trees in the random forest we use for the estimation of the heterogeneous treatment effect of the fee-forcing contract. It is meant only as an example of how these trees look like. The forest was such that there are as many estimated treatment effects as there are clients.
+     %\footnotesize{ \textit{RScript: }  \texttt{grf.R}
+\end{figure}
+
+We use \cite{atheygrf} \texttt{causal\_forest} of the \texttt{grf} library in $R$. The parameters used were:
+\scriptsize{\textit{causal\_forest(
+  X, 
+  Y, 
+  W, 
+  Y.hat = NULL, 
+  W.hat = NULL, 
+  num.trees = 2000, 
+  sample.weights = NULL, 
+  clusters = NULL, 
+  equalize.cluster.weights = FALSE, 
+  sample.fraction = 0.5, 
+  mtry = min(ceiling(sqrt(ncol(X)) + 20),ncol(X)), 
+  min.node.size = 5, 
+  honesty = TRUE, 
+  honesty.fraction = 0.5, 
+  honesty.prune.leaves = TRUE, 
+  alpha = 0.05, 
+  imbalance.penalty = 0, 
+  stabilize.splits = TRUE, 
+  ci.group.size = 2, 
+  tune.parameters = "none", 
+  tune.num.trees = 200, 
+  tune.num.reps = 50, 
+  tune.num.draws = 1000, 
+  compute.oob.predictions = TRUE, 
+  orthog.boosting = FALSE, 
+  num.threads = NULL)}}
+
+
+\begin{figure}[H]
+        \caption{Single causal tree for the Forced-commitment contract heterogeneous treatment effects}
+    \label{casual_tree}
+    \begin{center}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/ct_pro_2_apr.pdf}
+    \end{center}
+    \footnotesize 
+   
+     %\footnotesize{ \textit{RScript: }  \texttt{grf.R}
+\end{figure}
+
+
+
+
+
+\begin{figure}[H]
+    \caption{Choice of contracts and treatment effects}
+    \label{choose_wrong}
+    \begin{center}
+        \begin{subfigure}{0.45\textwidth}
+        \caption{Mistakes in choice arm}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/line_cw_apr_te_cf.pdf}
+        
+    \end{subfigure}
+        \begin{subfigure}{0.45\textwidth}
+        \caption{Financial value of mistake}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/money_cw_apr_te_cf.pdf}
+
+    \bigskip
+        
+    \end{subfigure}
+        \begin{subfigure}{0.45\textwidth}
+        \caption{\% better when forced to forced commitment}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/line_better_forceall_apr_te_cf.pdf}
+        
+    \end{subfigure}
+    %     \begin{subfigure}{0.45\textwidth}
+    %     \caption{\footnotesize{Effect of CATE benefit vs predicted take-up}}
+    %     \centering
+    %     \includegraphics[width=\textwidth]{Figuras/benefit_choice.pdf}% takeuppr_def.pdf 
+    % \end{subfigure}
+    
+    \end{center}
+        \scriptsize
+        In Panel (a) we estimate what the treatment effect of the commitment contract \textit{would have been} for all subjects in the choice arm if they had been forced into the fee-commitment contract. To do this we proceed in two steps. First, we estimate treatment effects in the forcing arm by comparing the Forced Commitment arm against the status quo arm. We let these effects be heterogeneous as a function of our $x$'s using \cite{atheygrf}'s methodology of causal forests. Second, we extrapolate these treatment effects based on the choice arm using the same $x$'s. Once we have personalized counterfactual treatment effects in the choice arm we calculate what fraction of subjects in the choice arm incurred in financial costs that are  $> z$\% than if they had chosen the opposite contract of what they actually chose, were $z$\% is defined as a fraction of the loan. $z$\% is a level of tolerance we can vary and we plot it in the X-axis. The left Y-axis measures the fraction of subjects that would have been better by a margin of $z$\% if they changed their choice, and the right Y-axis measures the amount of money ``left on the table''. We use bootstrap to tighten the confidence intervals (CIs). \cite{atheygrf}'s heterogeneous treatment effect using GRF is asymptotically normal. We compute the HTE ($\mu$) together with standard errors ($\sigma$) . For every pledge, we draw a random effect from a normal distribution with parameters ($\mu$,$\sigma^2$), and compute via bootstrap the percentage that choose wrong, along normal-approximation CIs (results are robust if we use instead percentile CIs or bias-corrected CIs) . This allows us to estimate a distribution for the upper and lower bound CIs, which we then use to obtain a 95\% CI. Panel (b) is analogous to Panel (a) except that it does the exercise separately for clients we classified as overconfident ($OC_i:=\mathbbm{1}(P^s_i-\widehat{P_i(X_i)}>0))$ and those we classified as not overconfident. Panel (c) simulates what percentage would be better by at least $z$ if we forced everybody of those in the Commitment Choice arm into the fee-commitment contract.
+        % Panel (d) asks whether it is the case that people with larger causal benefits from the Forced Commitment contract would be more likely to select that contract. To do this we proceed in two steps as well. First we estimate a flexible model of take-up of the fee commitment contract \textit{in the choice arm} using random forests, and from this model obtain a probability $P(x_i)$ of choosing the Forced Commitment contract for a client with characteristics $x_i$. We extrapolate this model to clients in the Forced Commitment arm to estimate what would they have chosen if we had given them choice. 
+        % Figure (d) plots $\widehat{P(x_i)}$ in the X-axis using a binscatter that splits the X-axis in 100 percentile bins. The Y-axis plots the heterogeneous treatment effects of the fee forcing contract on the probability of losing the pawns (more negative means then more likely to recover it), averaged for the respective x-axis bin. Positive assortative selection would mean a negative relationship: those who benefit more by treatment and lose the pawn less are \emph{less} likely to choose it.  Using all bins we estimate a slope of zero in the relationship. Using the 80 right most points, we estimate a \textit{positive} relationship.
+        %\textit{Do file: }  \texttt{choose\_wrong\_quant\_wrong.do, choose\_wrong\_quant\_wrong\_decomposition.do}
+\end{figure}
+
+
+
+
+
+
+\subsection{Take up}
 
 
 \begin{table}[H]
-\caption{Effect of frequent payment in observational data}
-\label{te_obs}
-\begin{center}
-\scriptsize{\input{./Tables/def_te_obs.tex}}
-\end{center}
- \scriptsize 
-%\textit{Do file: } \texttt{def\_te\_obs.do}
+    \caption{Predicting Take-up: Goodness-of-Fit}
+    \label{Table_compliance}
+    %\begin{subtable}{1\textwidth}
+    % \centering
+    %    \caption{Take up}
+    %    \scriptsize{\input{./Tables/oos_pago_frec_vol.tex}}
+    %\end{subtable}%
+    
+    %\bigskip
+     \begin{subtable}{1\textwidth}
+      \centering
+        \caption{Take up: Choice-fee Arm}
+        \scriptsize{\input{./Tables/oos_pago_frec_vol_fee.tex}}
+    \end{subtable}
+    
+      \bigskip
+    \begin{subtable}{1\textwidth}
+      \centering
+        \caption{Take up: Choice-promise Arm}
+        \scriptsize{\input{./Tables/oos_pago_frec_vol_promise.tex}}
+    \end{subtable}
+            \scriptsize
+           \\
+           \\
+           \\
+    
+     %\textit{Scripts: } \texttt{pred\_take\_up.do, pfv\_pred.R}
 \end{table}
 
 
-% \begin{figure}[H]
-%     \caption{Treatment effects pooling all arms}
-%     \label{pooled_arms_te}
-%     \begin{center}
-%     \begin{subfigure}{0.45\textwidth}
-%         \caption{Financial Cost}
-%         \centering
-%         \includegraphics[width=\textwidth]{Figuras/te_allarms_fc_admin_disc.pdf}
-%     \end{subfigure}
-%     \begin{subfigure}{0.45\textwidth}
-%         \caption{Lost Pawn}
-%         \centering
-%         \includegraphics[width=\textwidth]{Figuras/te_allarms_def_c.pdf}
-%     \end{subfigure}
-%     \end{center}
-%      \scriptsize
-%       %\footnotesize{ \textit{Do file: }  \texttt{te\_allarms.do}}
-% \end{figure}
+
+
+\vspace{.1in}
+\begin{figure}[H]
+    \caption{Out of sample ROC curve}
+    \label{roc_curve}
+    \begin{center}
+    \begin{subfigure}{0.45\textwidth}
+        \caption{Take-up in Fee Arm}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/Boost/ROC_curve_outsample_pago_frec_vol_fee.pdf}
+    \end{subfigure}
+    \begin{subfigure}{0.45\textwidth}
+        \caption{Take-up in Promise Arm}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/Boost/ROC_curve_outsample_pago_frec_vol_promise.pdf}
+    \end{subfigure}
+    \end{center}
+     \scriptsize 
+  %\footnotesize{ \textit{Do file: }  \texttt{pred\_take\_up.do}}
+\end{figure}
 
 
 
-% \begin{figure}[H]
-%         \caption{Treatment effect decomposition of the Financial Cost }
-%     \label{reg_int_pro_2}
-%     \begin{center}
-%         \centering
-%         \includegraphics[width=0.60\textwidth]{Figuras/int_te_pro_2.pdf}
-%     \end{center}
-%      \scriptsize This Figure is a "close-up" for the estimates found in Figure \ref{fc_pro2} - Panel (a). It shows the treatment effects on payed \& incurred interest, the former defined as the actual interest payed, and the latter is the sum of all potential interests (for those pawns that were lost we calculate the interest generated until day 230). In the right axis we show the treatment effect on the payed fees. Finally, we analyze this effect for the subsamples that recovers or loses the pawn.
-%      %\textit{Do file: }  \texttt{reg_\int.do}
-% \end{figure}
+\begin{figure}[H]
+    \caption{Predictors of commitment contract take-up}
+    \label{interactions_takeup}
+    \begin{center}
+    \begin{subfigure}{0.45\textwidth}
+        \caption{with Fee Arm}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/pago_frec_vol_fee_interactions_rf.pdf}
+    \end{subfigure}
+    \begin{subfigure}{0.45\textwidth}
+        \caption{with Promise Arm}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/pago_frec_vol_promise_interactions_rf.pdf}
+    \end{subfigure}
+    \end{center}
+     \scriptsize
+      %\footnotesize{ \textit{Do file: }  \texttt{analyze\_fvp.do}}
+\end{figure}
 
 
-% \begin{figure}[H]
-%         \caption{Frequency of renewals}
-%     \label{ref_dist}
-%     \begin{center}
-%         \centering
-%         \includegraphics[width=0.60\textwidth]{Figuras/ref_dist.pdf}
-%     \end{center}
-%      \scriptsize  This Figure shows the occurrence and frequency of renewals. It locates in time, respective to the day the loan started, when the renewal occurs for both the first and second renewal. Note that the first renewal is concentrated around 100 days, while the second is concentrated around the 200 days, corresponding to the first and second cycle. 
-%      %\textit{Do file: }  \texttt{ref_\dist.do}
-% \end{figure}
-
-
-
-
-
-%\begin{figure}[H]
-%    \caption{Exit Survey: reasons to pawn or not again with monthly payments}
-%    \label{reasons}
-%    \begin{center}
-%    \begin{subfigure}{0.5\textwidth}
-%        \caption{Pawn again because:}
-%        \centering
-%        \includegraphics[width=\textwidth]{Figuras/razones_si.pdf}
-%    \end{subfigure}
-%    \begin{subfigure}{0.5\textwidth}
-%        \caption{Not pawn because:}
-%        \centering
-%        \includegraphics[width=\textwidth]{Figuras/razones_no.pdf}
-%    \end{subfigure}
-%    \end{center}
-%     \footnotesize \textit{Notes: } 
-%      \footnotesize{ \textit{Do file: }  \texttt{ss.do}}
-%\end{figure}
+\scriptsize 
+\noindent This figure reports bivariate regressions of the form $\widehat{TakeUp} = \alpha + \beta \: X_i + \epsilon_i$, where $\widehat{TakeUp}$ is the prediction using random forests. The figure reports the $\beta$ coefficients for different $X_i$'s along with 95\% confidence intervals. Panel (a) focuses on take up in the arm where clients could chose among the fee-commitment contract and the status quo contract. Panel (b) focuses on the arm where clients could chose among the promise-commitment contract and the status quo contract. Using random forests we can predict who takes up the fee-forcing contract with 85\% accuracy out of sample.\footnote{Correcting for the fact that most chose the status-quo contract using the method of SMOTE, \cite{smote} we find an accuracy rate of 75\%.} Which suggests that choice among contracts is not purely random. This figure shows that the more educated, those that report that their family typically asks for money, those that make a monthly budget of expenses, and those that ask for a remainder of their due payments (and marginally those we classify as present-biased) are more likely to chose the fee-commitment contract if given the choice. The opposite holds for clients that are more economically vulnerable (can barely pay for food, electricity, etc) and those that report being more stressed.
 
 
 
+\subsection{Selection on gains}
 
 
-%\begin{figure}[H]
-%    \caption{Decomposition of the mistakes by `Overconfidence' for Promise Arms}
-%    \label{Promise_errors}
-%    \begin{center}
-%    \begin{subfigure}{0.6\textwidth}
-%        \caption{Promise}
-%        \centering
-%        \includegraphics[width=\textwidth]{Figuras/line_cw_fc_te_cf_OC_promise.pdf}
-%    \end{subfigure}
-%    \end{center}
-%     \footnotesize 
-%     \textit{Notes: }  Decomposition of the percentage of mistakes by overconfidence. 
-%       \textit{Do file: }  \texttt{choose\_wrong\_quant\_wrong\_decomposition.do}
-%\end{figure}
+\begin{figure}[H]
+    \caption{Determinants of treatment effects and probability of choosing commitment}
+    \label{determinants_ps_hte}
+    \begin{center}
+    \begin{subfigure}{0.475\textwidth}
+        \caption{Determinants of HTE}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/HE/he_int_vertical_apr_pro_2.pdf}
+    \end{subfigure}
+    \begin{subfigure}{0.475\textwidth}
+        \caption{Determinants of propensity score}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/HE/ps_int_vertical_pr_gbc_1.pdf}
+    \end{subfigure}
+  
+    \end{center}
+     \scriptsize   This figure estimates bivariate regressions of the estimated client-level (a) heterogeneous treatment effects, (b) propensity score, against the respective covariate from the baseline survey  $\widehat{HTE_i}, \widehat{P_i} = \alpha + \beta \: X_i + \epsilon_i$. The regressors $X_i$ include (e.g if the family asks for money, if they have savings, if they are overconfident using the definition the text, etc. See this Appendix for a transcription of the survey). \\
+      %\footnotesize{ \textit{Do file: }  \texttt{analyze\_grf\_single\_arm.do}} \texttt{benefit\_choice.do}}
+\end{figure}
 
-
-%\begin{figure}[H]
-%        \caption{Types of agents that incur in different FC}
-%    \label{components_fc}
-%    \begin{center}
-%        \centering
-%        \includegraphics[width=\textwidth]{Figuras/scatter_fc_pay.pdf}
-%    \end{center}
-%     \footnotesize \textit{Notes: } 
-%      \footnotesize{ \textit{Do file: }  \texttt{hist\_fc.do}}
-%\end{figure}
-
-
-
-
-% \begin{figure}[H]
-%         \caption{Percentage of payments}
-%     \label{perc_payments}
-%     \begin{center}
-%     \begin{subfigure}{.31\textwidth}
-%     \caption{Control}
-%         \centering
-%         \includegraphics[width=\textwidth]{Figuras/hist_porc_pay_pro_1.pdf}
-%     \end{subfigure}
-%     \begin{subfigure}{.31\textwidth}
-%     \caption{Forcing - fee}
-%         \centering
-%         \includegraphics[width=\textwidth]{Figuras/hist_porc_pay_pro_2.pdf}
-%     \end{subfigure}   
-%      \begin{subfigure}{.31\textwidth}
-%     \caption{Forcing - promise}
-%         \centering
-%         \includegraphics[width=\textwidth]{Figuras/hist_porc_pay_pro_3.pdf}
-%     \end{subfigure}  
-%      \begin{subfigure}{.31\textwidth}
-%     \caption{Choice - fee}
-%         \centering
-%         \includegraphics[width=\textwidth]{Figuras/hist_porc_pay_pro_4.pdf}
-%     \end{subfigure}  
-%      \begin{subfigure}{.31\textwidth}
-%     \caption{Choice - fee - SQ}
-%         \centering
-%         \includegraphics[width=\textwidth]{Figuras/hist_porc_pay_pro_6.pdf}
-%     \end{subfigure}    
-%      \begin{subfigure}{.31\textwidth}
-%     \caption{Choice - fee - NSQ}
-%         \centering
-%         \includegraphics[width=\textwidth]{Figuras/hist_porc_pay_pro_7.pdf}
-%     \end{subfigure}    
-%      \begin{subfigure}{.31\textwidth}
-%     \caption{Choice - promise}
-%         \centering
-%         \includegraphics[width=\textwidth]{Figuras/hist_porc_pay_pro_5.pdf}
-%     \end{subfigure}  
-%      \begin{subfigure}{.31\textwidth}
-%     \caption{Choice - promise - SQ}
-%         \centering
-%         \includegraphics[width=\textwidth]{Figuras/hist_porc_pay_pro_8.pdf}
-%     \end{subfigure}    
-%      \begin{subfigure}{.31\textwidth}
-%     \caption{Choice - promise - NSQ}
-%         \centering
-%         \includegraphics[width=\textwidth]{Figuras/hist_porc_pay_pro_9.pdf}    
-%     \end{subfigure}        
-%     \end{center}
-%      \footnotesize \textit{Notes: } 
-%       \footnotesize{ \textit{Do file: }  \texttt{hist\_payments.do}}
-% \end{figure}
-
-
-
-
-% \begin{figure}[H]
-%         \caption{Percentage of payment conditional on positive payment and Losing Pawn}
-%     \label{perc_payments_conditional}
-%     \begin{center}
-%     \begin{subfigure}{.31\textwidth}
-%     \caption{Control}
-%         \centering
-%         \includegraphics[width=\textwidth]{Figuras/hist_porc_pay_cond_pro_1.pdf}
-%     \end{subfigure}
-%     \begin{subfigure}{.31\textwidth}
-%     \caption{Forcing - fee}
-%         \centering
-%         \includegraphics[width=\textwidth]{Figuras/hist_porc_pay_cond_pro_2.pdf}
-%     \end{subfigure}   
-%      \begin{subfigure}{.31\textwidth}
-%     \caption{Forcing - promise}
-%         \centering
-%         \includegraphics[width=\textwidth]{Figuras/hist_porc_pay_cond_pro_3.pdf}
-%     \end{subfigure}  
-%      \begin{subfigure}{.31\textwidth}
-%     \caption{Choice - fee}
-%         \centering
-%         \includegraphics[width=\textwidth]{Figuras/hist_porc_pay_cond_pro_4.pdf}
-%     \end{subfigure}  
-%      \begin{subfigure}{.31\textwidth}
-%     \caption{Choice - fee - SQ}
-%         \centering
-%         \includegraphics[width=\textwidth]{Figuras/hist_porc_pay_cond_pro_6.pdf}
-%     \end{subfigure}    
-%      \begin{subfigure}{.31\textwidth}
-%     \caption{Choice - fee - NSQ}
-%         \centering
-%         \includegraphics[width=\textwidth]{Figuras/hist_porc_pay_cond_pro_7.pdf}
-%     \end{subfigure}    
-%      \begin{subfigure}{.31\textwidth}
-%     \caption{Choice - promise}
-%         \centering
-%         \includegraphics[width=\textwidth]{Figuras/hist_porc_pay_cond_pro_5.pdf}
-%     \end{subfigure}  
-%      \begin{subfigure}{.31\textwidth}
-%     \caption{Choice - promise - SQ}
-%         \centering
-%         \includegraphics[width=\textwidth]{Figuras/hist_porc_pay_cond_pro_8.pdf}
-%     \end{subfigure}    
-%      \begin{subfigure}{.31\textwidth}
-%     \caption{Choice - promise - NSQ}
-%         \centering
-%         \includegraphics[width=\textwidth]{Figuras/hist_porc_pay_cond_pro_9.pdf}    
-%     \end{subfigure}        
-%     \end{center}
-%      \footnotesize \textit{Notes: } 
-%       \footnotesize{ \textit{Do file: }  \texttt{hist\_payments.do}}
-% \end{figure}
-
-
-
-%\begin{figure}[H]
-%    \caption{Evolution of payment}
-%    \label{Evolution payment}
-%    \begin{center}
-%    \begin{subfigure}{0.49\textwidth}
-%        \caption{Paid loans}
-%        \centering
-%        \includegraphics[width=\textwidth]{Figuras/desempeno_evol.pdf}
-%    \end{subfigure}
-%     \begin{subfigure}{0.49\textwidth}
-%      \caption*{}
-%        \centering
-%        \includegraphics[width=\textwidth]{Figuras/desempeno_evol_choice.pdf}
-%    \end{subfigure}
-    
-%     \begin{subfigure}{0.49\textwidth}
-%        \caption{Average percentage of paid loans}
-%        \centering
-%        \includegraphics[width=\textwidth]{Figuras/sum_porc_evol.pdf}
-%    \end{subfigure}
-%     \begin{subfigure}{0.49\textwidth}
-%      \caption*{}
-%        \centering
-%        \includegraphics[width=\textwidth]{Figuras/sum_porc_evol_choice.pdf}
-%    \end{subfigure}
-    
-%   \begin{subfigure}{0.49\textwidth}
-%        \caption{Average percentage of paid loans | paid}
-%        \centering
-%        \includegraphics[width=\textwidth]{Figuras/sum_porc_cond_evol.pdf}
-%    \end{subfigure}
-%     \begin{subfigure}{0.49\textwidth}
-%      \caption*{}
-%        \centering
-%        \includegraphics[width=\textwidth]{Figuras/sum_porc_cond_evol_choice.pdf}
-%    \end{subfigure}
-%    \end{center}
-%     \footnotesize \textit{Notes: } 
-%      \footnotesize{ \textit{Do file: }  \texttt{evol\_payment.do}}
-%\end{figure}
-
-
-
-
-
-
-% \begin{figure}[H]
-%         \caption{FC effect for different discount rates}
-%     \label{oc_hist}
-%     \begin{center}
-%         \centering
-%         \includegraphics[width=0.50\textwidth]{Figuras/discount_effect.pdf}
-%     \end{center}
-%     \footnotesize \textit{Notes: } 
-%      \footnotesize{ \textit{Do file: }  \texttt{discounted\_noeffect.do}}
-% \end{figure}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
 
 % APPENDIX B
 
-\newpage
-\section{ Observational analysis}
-\label{appendix_b}
-\vspace{.2in}
-\normalsize
-\linespread{1.25}
-%Really force it to normal size and linespread
-\normalsize
-\linespread{1.25}
+
+\section{Mechanisms }
 
 
-The objective of this Appendix is to conduct one test aiming to assess if there is learning in choosing the frequent payment FP) contract. In particular if being endogenously induced to have a FP contract causes the client to chose a FP in subsequent pawn. The identification strategy is not as strong as in a randomized control trial ---having to rely on an instrumental variable strategy using changes in the supply of the FP contract-- and this is why we chose to locate it in a separate Appendix. However we believe we find a strong case for learning causing higher demand for the FP contract.
+\subsection{Optimism, Over-Optimism, and the Failure of Self-Commitment}
+\label{overconfidence}
 
-In what follows we will describe the identifying variation and use the richness of the observational data to control for possible confounds. We will use hundreds of branches and hundreds of thousands of pawns covering more than 4 years to estimate (under the identification assumptions) the causal effect of having had a FP on the conditional demand for the FP type of contract.
+\textcolor{red}{Need to decide whether we want to try to plant our feet on Confidence/Overconfidence as the core `why' of the previous result
+.}
+%\subsubsection{Behavioral: overconfident borrowers demand less (but benefit more)} \label{behavioral}
+
+The leading behavioral explanation in the literature for low demand for commitment is present biased preferences with naivete (e.g. \cite{Rabin2018}, \cite{John}, \cite{Laibson2018})  \cite{Laibson2015} shows that the lost flexibility resulting from a commitment contract can limit take-up especially severely when agents are (partially) naive about their self control problem. In our context if consumers are (partially) naive about their present bias, they would plan to save more (or spend less) than what they actually end up saving, thus making it be harder to recover their pawn. This under-saving will be mitigated in the fee forcing contract since the fee makes them save money to pay part of the loan periodically. \ref{appendix_c} formalizes this in a model. Another behavioral explanation is that clients may underestimate the likelihood and severity of negative income shocks. Both of these explanations predict that clients will be overconfident about their likelihood of pawn recovery. Recall that in the control group the client's subjective probability of recovery is on average 93\%, while actual recovery is just 44\%. A further piece of evidence consistent with underestimating negative income shocks and with present bias with partial naivete is that a large number of people (25\%) in the control group pay a positive amount toward pawn recovery but end up losing their pawn anyway.
 
 
-\vspace{.in}
+So, overconfidence of recovering the pawn is implied by both present bias preferences with naivete and upward bias in their income expectations. But does overconfidence actually predict low demand for commitment empirically? It does. We define as overconfidence as the reported subjective probability of recovery minus the predicted probability based on the client's characteristics, $P^s_i-\widehat{P_i(X_i)}$.\footnote{We predict $\widehat{P_i(X_i)}$ in two steps. In step one we use Lasso with cross validation to tune the regularization parameter to select the most predictive variables $X$. The typical present bias question as in \cite{Ashraf} was eliminated in this step. In the second step we estimate $\widehat{P_i(X_i)}$ using those variables in a logit model. The Lasso selected variables were type of pawn, female, age, has pawned before, has savings, participates in rotating savings, often feels tempted to change plans, would like to have a reminder to pay, and an economic vulnerability index. We are careful not to include these variables as controls in Table  \ref{oc_reg}.} There is a large amount of overconfidence in our context. Figure \ref{oc_hist} plots a histogram of $OC_i$ and shows that the overwhelming majority display overconfidence, and a large fraction overestimate recovery by more than 50 percentage points. Our measure of overconfidence is useful especially when there is limited time for a detailed survey.\footnote{It may be more useful than a simple elicitation of present bias as in \cite{Ashraf}. We find that 15\% of clients are classified as present biased using this measure of preference reversal. This level is similar to the number \cite{Ashraf} find but small to explain no take-up of commitment for 90\% of clients. This measure was not correlated with take up of commitment in our sample.} First it is very prevalent, which makes it promising to explain the overwhelming prevalence of low take up. Second, it is easy to measure. Third, it is predictive of take-up in an intuitive way. Finally, overconfidence in recovery is implied by present bias with (partial) naivete but also by biased expectations of negative income shocks, thus capturing both kinds of bias.\footnote{\textcolor{red}{Another indication of overconfidence is that in our data, of those who renew, 83\% lose the pawn anyway. Our measure of overconfidence has a correlation of \hl{xxx}\% with a dummy for renewing and losing the pawn. }} 
+
+\cite{Sprenger} have argued that it is critical to understand the link between beliefs and demand for commitment, yet the evidence is scarce. Table \ref{oc_reg} does this: it regresses an indicator of take up of the monthly payment contract against an indicator for overconfidence $OC_i:=\mathbbm{1}(P^s_i-\widehat{P_i(X_i)}>0)$ and controls. Controls $Z$ include branch and day of the week dummies, schooling, whether the client does a monthly budget plan, among others. We are careful not to include controls that were used in $\widehat{P_i(X_i)}$. % and a measure of intertemporal preference reversal analogous to that of \cite{Ashraf} as controls.\
+In the choice-fee arm, being overconfident decreases the likelihood of demanding commitment by 12 percentage points a result that this is robust to including controls  (columns 1 and 2). While overconfidence predicts lower take up in the Commitment Choice arm, this is not the case in the promise-choice arm (columns 3 and 4).  One interpretation of the results is that the overconfident borrowers think they do not need commitment, and their demand decreases sharply as soon as there is even a small fee, and at the same time they perceive the promise as a low cost option. This provides evidence for \cite{Sprenger}'s conjecture that ``tepid demand for commitment outside controlled experimental settings is consistent with broad unawareness [of biases]''. 
+
+How does overconfidence map to cost outcomes? Theory predicts that the more overconfident (naive) may be at the same time those that benefit more from commitment. Extrapolating individual treatment effects of the Forced Commitment contract vs the status quo one to the choice arm (see below for more detail), and using them as a dependent variable we find that overconfident borrowers benefit \textit{more} from the commitment contract, with {24.8}\% (=\${30}/\${121}) more savings (columns 5 and 6). Thus while we predict the overconfident benefit more from commitment, they demand less of it. 
 
 
-\subsection{Variation in branches' use of frequent payment contract}
 
-After our experiment ended, Lender $P$ started offering frequent payment contracts along their traditional ones. We were not able to get data for the dates of the first expansion, but we have data for the period January 2016 through May 2020. During this period some branches where offering the frequent payment contract while others were just starting to do this. Some branches also stopped offering the frequent payment contracts. Out of all branches 2\% never offered the FP contract, 29\% always offered it, while 69\% offered for only part of our sample period. Our identification strategy will mostly rely on these later group, as we include branch fixed effects in our regressions. \\
 
-To show the reader a glimpse of this variation in availability of the contract we randomly selected 20 branches and plotted which months had a frequent payment contract active in their IT system. Figure \ref{variation_pf_suc} shows a time plot for each branch, where each observation is a month. The Y-axis takes the value of 1 if in that month the FP contract was available in that branch and zero otherwise. So it is a ``supply side'' variable. 
-
-\vspace{.1in}
-\begin{figure}[H]
-        \caption{Existence of FP per branch}
-    \label{variation_pf_suc}
-    \begin{center}
-        \centering
-        \includegraphics[width=0.80\textwidth]{Figuras/active_pf_suc.pdf}
-    \end{center}
-     \scriptsize This Figure shows the presence of the frequent payment (FP) contract in 20 randomly chosen branches of Lender $P$ for a span of more than 4 years. A $y$ value $=1$ means that in that month the FP contract was available in that branch. 
-     %\textit{Do file: }  \texttt{active\_pf\_suc.do}
-\end{figure}
-\vspace{.1in}
-
-In conversations with Lender $P$ about this variability they said that it is driven by three things: the expansion of the frequent payment product is done gradually, the IT system of a branch sometimes fails, and they often do experiments themselves turning on and off the existing of the frequent payment contract as this was a relatively new type of contract.\footnote{Unfortunately the had no documentation on how these experiments were implemented.} We did verify that there are no frequent payment contracts when they said it was turned off in their IT system.
-
-\paragraph{Orthogonality of FP supply.} We will use the availability of the FP contract as an instrument for the client choosing a FP contract when she pawns. Clearly one cannot choose a FP when it does not exist, so that this instrument allows would-be-FP choosers to obtain a FP contract. We verify that indeed it has a statistically powerful first statge. One may be concerned that this instrument may not satisfy the exclusion restriction however. As we will explain below we will use this instrument in an specification that controls for branch and client fixed effects, taking into advantage that many clients do pawn repeatedly (See Figure \ref{hist_num_pawns} below). These control for any characteristic of the client that is fixed across time, and therefore is a strong control for selection of clients across branch or across contracts. We also control for calendar of the month fixed effects, thereby absorbing common time trends that affect all clients, like macroeconomic shocks. We describe the exact specification below, but for now we want to note that we need only for the exogeneity of the instrument to hold conditional on these extensive set thousands of fixed effects. 
-
-    \vspace{.1in}
-\begin{figure}[H]
-        \caption{Number of pawns per client}
-    \label{hist_num_pawns}
-    \begin{center}
-        \centering
-        \includegraphics[width=0.6\textwidth]{Figuras/hist_num_pawns.pdf}
-    \end{center}
-     \scriptsize This figure plots a histogram of the number of pawns per client during our sample period (January 2016 through May 2020). A large fraction of clients have more than one pawn, and many have several pawns. We use these repeat clients to identify learning below. 
-     %\textit{Do file: }  \texttt{hist\_num\_pawns.do}
-\end{figure}
-\vspace{.1in}
-
-Having said this, in Table \ref{instrument_random} we assess to what extent we can predict whether a given branch activates the FP contract in its IT system in a given week or a given month. It turns out that we cannot predict in which weeks a given branch uses the FP contract with our observables controlling for branch fixed effects. The observables include fraction female clients last week (or last month), the age of these clients, number of pawns last week (or last month), average size of those loans, the percentage of pawns last week (or last month) that were jewelry, the percentage of loan recoveries --the opposite of default-- last week (or last month). The same is true if we use one month prior instead of one week. The $R^2$ shows that the \textit{additional} variance explained by the covariates beyond branch and calendar week fixed effects is low: going from 0.154 to 0.157 when we add all regressors. The $AUC$ and the \textit{Accuracy Rate} give a similar picture, with out-of-sample $AUC$ around 0.72 and Accuracy rates around 66\%.\footnote{\cite{Finanzia} say that for predicting loan default for instance AUC's from 0.80 to 0.95 are common.} \\ %\hl{Appraisers could potentially have an effect on what contract people choose conditional on the contract existing in the system. We test for this and find XXX...} 
-
-Quantitatively the correlations are small: an increase of 1 years of the mean age of clients is associated with an increase of 0.008 percentage points in introducing FP, an increase in the size of the loan by 1000 pesos increases it by 0.002, an increase of 10 pawns per day increases it by less than 0.0002 percentage points. Having 10\% less women as clients in the past increases it by 1 percentage point. This result of low correlation between important observable variables and the supply of FP contract in a given branch makes us more comfortable with the assumption that the instrument satisfies the exclusion restriction. The presence of the FP contract in a given week in a given branch seems almost random from this perspective.
-
-\begin{table}[H]
-\caption{Predicting the supply of FP contracts within branch across time}
-\label{instrument_random}
-\begin{center}
-\footnotesize{\input{./Tables/instrument_random.tex}}
-\end{center}
- \scriptsize
-This table uses OLS regressions to predict whether branch $j$ in week $t$ had a FP available. So the dependent variable is an indicator for this event $\mathbbm{1}(\text{Branch Had FP})_{jt}$, and the explanatory variables are measures of performance of that branch and the characteristics of the clients either the week previous to $t$ or 4 weeks previous to week $t$. We allow for two time periods since the branch manager or central offices may take time to react to information. Column 1 includes branch and week fixed effects, while Column 2 adds the covariates displayed measured the week previous to $t$. Column 3 is analogous to column 2 except that the values of the displayed covariates are averaged across the 4 weeks prior to week $t$. The bottom panel shows measures of predictive power like $R^2$, as well as area under the ROC curve ($AUC$), and the Accuracy Rate. It also shows F-test of the null hypothesis that the branch (week) fixed effects, or the other regressors have coefficients equal to zero. 
-%\textit{Do file: } \texttt{instrument\_random.do, pred\_instrument.do}
-\end{table}
+\subsubsection{Neoclassical Alternatives} \label{neoclasical}
 
 \vspace{.1in}
+\noindent \textbf{Risk aversion.} We do not have measures of risk aversion in our short survey, which makes it hard to assess the hypothesis that risk aversion limits take-up of the fee frequent payment contract. One way to proceed is to take the empirical distribution of financing cost ---$F_{fee}(FC)$--- as one the client would have faced had she chosen the the fee-commitment contract. We could then ask what would risk aversion have to be in order to justify the client choosing the fee-commitment contract distribution of costs over the distribution associated with the status quo contract, $F_{sq}(FC)$. Framed as a choice among cost distributions, we can calculate what risk aversion is needed to rationalize the overwhelming choice of the status quo contract over the fee-commitment contract. This exercise of course assumes --as is common in economics-- that clients know the distribution of financial cost, that the distribution is common across consumers (although this can be relaxed), and that this cost distribution is the only difference among contracts. 
+
+Fortunately for us, it turns out that one distribution first-order-stochastically dominates the other, obviating the need to calibrate a specific utility function or use a parametric distribution function in order to rank them in terms of expected utility. We use the fact that if the utility $u(FC)$ is decreasing in $FC$ (i.e. clients dislike paying higher financing cost) and $F_{fee}(FC) \geq F_{sq}(FC)$ for all $FC$, which we actually verify in our data, then $E_{fee}[u(FC)] \geq E_{sq}[u(FC)]$, that is any expected utility maximizing client risk averse consumer should choose the Forced Commitment contract as a result of the distribution of cost payoffs.\footnote{See the Appendix for the proof. Figure \ref{ecdf_fc} in the Appendix shows that indeed $F_{fee}(FC) \geq F_{sq}(FC)$. Table \ref{stochastic_dominance} shows that this holds also for sub-populations of different characteristics.}. Thus, risk aversion cannot explain the low demand for commitment under the assumptions of this exercise.   
 
 
-\subsection{Experiencing FP causes future demand for FP to increase}
+\vspace{.1in}
+\noindent \textbf{Lost flexibility.} A second explanation for low take up is lost flexibility. That is, the fee-commitment contract may provide too much commitment which is costly because the client may be forced to incur in late payment fees if he experiences a negative income shock.\footnote{Note that income shocks that affect the ability to pay the entire loan are a worry for both the Forced Commitment contract and the status quo one, and should not make one contract more favorable than the other.} While we cannot rule out that income shocks combined with lost flexibility of the contract explain the low demand, we think it is unlikely. First, we showed above that clients report a subjective probability of recovery of 93\% on average, which suggests they are not too worried about income shocks. Second, the fear of incurring fees is quantitatively not enough of a concern when compared to the savings they are experiencing. %Note that fees for late payment are not that high. In an average loan of 2,000 pesos the monthly payment is close to 700 pesos, and a fee of 2\% of that is 14 pesos (less than \$1 dollar). This is about gr{1\%} of monthly per capita income of the first 3 deciles of Mexican {household's} income distribution. %This compares favorably to the gr{\$11.6 + \$62.3)} pesos transportation / transaction cost of one. 
 
-This subsection uses the existence of a FP contract in the branch as an instrument for a client \textit{having} a FP contract if she visited that branch that week to pawn. Using this instrumental variable strategy we estimate the effect of having had a FP in the previous pawn. More concretely, Table \ref{iv_pf} reports results from a two-stage least squares estimate of the effect of having a FP contract on subsequent demand for FP contracts. We estimate the following regression:
+To make this concrete, we calculated what the financing cost of the fee-commitment contract would be if \textit{all} its clients incurred in \textit{all} potential fees (while keeping payment profiles and pawn recovery constant) and added these fictitious fees to financing cost for those in the Forced Commitment arm, thus artificially inflating their cost. We then re-estimated the quantile treatment effects analogous to Figure \ref{fc_pro2}(b) with this inflated financial cost. %\footnote{Of course behavior may not be constant, but we believe this is a reasonable fist approximation. %It could be that having this small fee added to the balance discourages them to pay or makes it harder to pay back the loan. But the contrary may also happen, with the fee making them more determined to pay early. We would need a structural model of client behavior to estimate a full counterfactual. We suspect that such small fees would not generate large changes in behavior in a simple neoclassical model.}). 
+Figure \ref{fc_allfee} presents the results. We find that even in this extreme scenario, tilted against the Forced Commitment contract, the estimated effect still implies cost savings from the Forced Commitment contract at the mean, 25$^{th}$, 50$^{th}$, and 75$^{th}$ percentiles.\footnote{Recall that the differences in financing cost already takes into account the fact that clients in the fee forcing contract sink more pre-payments than those in the status quo contract, and that those prepayments are lost if the loan is not fully paid back.}  Although these arguments are not definitive, they suggest that low demand for commitment may be driven by more than the anticipation of lost flexibility implied by a small fee.
 
-\begin{equation}
-    \mathbbm{1}(\text{Has FP})_{ijt} = \alpha_i + \gamma_t + \beta \mathbbm{1}(\text{Had FP previously})_{ijt}  + \epsilon_{ijt}
-    \label{eqn:IV}
-\end{equation}
+\vspace{.1in}
+\noindent \textbf{High time discounting.} We mentioned above that clients in the status quo contract tend to wait until the last moment to pay to recover their pawns. Even among those that recover their pawn, only 40\% pay before the 90$^{th}$ day. Table \ref{mechanisms} shows that clients assigned to the fee-commitment contract front load their payments, starting their first payment earlier and finishing paying earlier too. However, clients may dislike front loading payments if their time preference discount rate is high. They may be willing to trade off a higher probability of losing their pawn for more \textit{back} loaded payments.  
 
-\noindent where $i,j,t$ index client, branch, and week respectively. $\mathbbm{1}(\text{Has FP})_{ijt}$ is an indicator for client $i$ pawning in branch $j$ in week $t$ using a FP contract, given that both FP and traditional contracts were available at the branch at the time of pawning, so that there is a choice to be made among these.\footnote{When a FP is not available in branch $j$ in week $t$ the variable takes the value of missing, and is therefore not considered in the regression. That is, we only include observations when the client had a choice between FP and traditional contracts.} Moreover we restrict the sample to pawns where the immediate previous pawn is already closed at the moment of opening the new one\footnote{We do this to avoid making the conclusion that clients are re-pawning in order to meet their past debt.}. We estimate a regression with calendar week fixed effects (we have 212 weeks) $\gamma_t$, and also include client fixed effect $\alpha_i$.  The variable of interest is denoted by $\mathbbm{1}(\text{Had FP previously})_{ijt}$, and is an indicator for the client's immediate previous loan\footnote{We consider only the immediate previous loan, following a ``Markov's'' assumption, in which only the present state determines the future.} being FP loan. 
-% The controls $X_{ij}$ include how assiduous a client is: the number of times she has pawned in the 12 months previous to $t$, as well as a dummy of having made a pawn a Lender $P$ in the period from $t'$ to $t$:   $\mathbbm{1}(\text{Had any loan previously})_{ij't'}$. Note that the only difference between this last control variable and our main explanatory variable is that the former does not specify which type of contract this previous loan had. This means that the variation identifying $\beta$ is \textit{which type} of loan the client had conditional on having had one.\\
-
-Having client fixed effects in the regression means that we only use variation across time (across subsequent pawns) to identify the effect of experience, and avoid the selection problems that come from comparing across clients. That is, they control for the fact that different types of clients may select different types of contracts. Repeat pawning is common and this helps for identification. Figure \ref{hist_num_pawns} shows a histogram of the fraction of clients that had $1, 2, 3,\ldots, 60$ pawns in our sample. We have more than one hundred thousand clients that got two loans within 3 or less months from each other\footnote{We give a small lower bound to keep the identity of Lender $P$ confidential}, and for 37\% of those clients the immediately sequentially preceding loan was taken when the branch had FP available.\\
-
-However, even with client fixed effects, idiosyncratic unobserved shocks across time may induce spurious correlation between choosing a FP last week and choosing FP today. The variable $\mathbbm{1}(\text{Had FP previously})_{ijt}$ is therefore still potentially endogenous. To deal with this we instrument $\mathbbm{1}(\text{Had FP previously})_{ijt}$ with the \textit{availability} of the contract in branch $j$  when the client previously went to pawn the immediately prior pawn with respect to $t$, $\mathbbm{1}(\text{FP Avail})_{ijt}$. This is basically using a supply shifter to identify demand. We showed above that availability of FP contracts has close to a zero correlation to a battery of observables. The IV strategy assumes that availability of the FP contract in a given week in a given is uncorrelated with $\epsilon_{ijt}$ --- i.e. that after conditioning on thousands of client, branch and week fixed effects and the client having pawned recently, there is no omitted variable driving both: the branch having FP contracts on, and the client subsequent pawn using a FP contract. Note that including branch fixed effects means that identification comes from a given branch sometimes having the FP and sometimes not. \\
-
-The exclusion restriction for an instrument is untestable, but note that we are comparing clients that go to the same branch, who have the same pawning frequency, but where one of them arrived to the branch to pawn on a week where the FP contract was available and the other arrived on a week where the same branch had no FP contract available.%\footnote{We also tried specifications restricting the sample to 4-12 weeks adjacent to the FP contract becoming available or becoming unavailable in a branch and obtain similar results. This strategy is close in spirit to a regression discontinuity or event-study design, comparing clients that go to the same branch with the difference that one went there 2 weeks before the FP contract becoming available.}
-The exclusion restriction could be violated for example if the branch manager makes FP available as a function of clients that will come in that week and therefore reaches a certain type of client that is more likely in-and-of themselves to prefer FP contracts now and in the future. We find this unlikely. It is hard to predict who will come on a given week and if they are more likely to like the FP contract: Table \ref{instrument_random} strongly suggests that the branch manager is not turning the FP contract on and off as result of which clients are coming to the branch or how the branch is doing. Having said this, we acknowledge that the exclusion restriction could be violated even in this very tightly controlled specification.\\
-
-Table \ref{iv_pf} shows the first and the second stage regressions for equation \ref{eqn:IV}. All columns have branch, and calendar week fixed effects, and standard errors are clustered by client. Columns 1 and 4 show strong first stages (t-stats above 50). The availability and unavailability of the FP contract has an incidence on its use. Under our identification assumptions, Columns 2-3 (and 5-6) show strong causal effects: having  been induced by the instrument to have a FP contract in the previous loan causes the client to a FP for her subsequent pawn by 50 percentage points (column 2). The difference between columns 2 and 3 (and 4-5) is the sub-sample considered: in the first one we only condition the immediate previous pawn to be closed at the time of opening a new one, the second one not only considers previous pawns being closed, but having at least one week closed.
+What would discount rates have to be in order for back loaded payments to offset the reductions in financial cost effects we observe? %We can calculate this number by looping across a grid of discount rates, incorporating this higher discount rate in the definition of financial cost, and reestimating equation \ref{basic_reg} with this modified financial cost measure as the dependent variable in equation 1, searching for the discount rate that makes $\beta$ equal zero. We did this and obtained 
+We calculate that the discount rate that is necessary to compensate for the savings in financial cost (i.e. that makes the estimated $\beta$ in equation \ref{basic_reg} equal to zero when financing cost --using different $r$'s-- is the dependent variable) is a staggering 8,190 percent per year. We find this discount rate implausibly high even for this credit constrained population\footnote{For comparison, \cite{Levin} find that a discount rate of 1,415 per year for subprime borrowers in the US is too high to be believable.}, casting doubt on high discount rates as explanation for low demand for commitment. %\footnote{In the baseline survey we give respondents a hypothetical choice between $100$ pesos tomorrow or $150$ pesos in one month (an implicit yearly interest rate of {12,800\%}) and only 30\% chose the later one.} 
 
 
-\begin{table}[H]
-\caption{Experience with frequent payment contract raises future demand for it}
-\label{iv_pf}
-\begin{center}
-\footnotesize{\input{./Tables/iv_reg_demand_pf.tex}}
-\end{center}
- \scriptsize
-This table shows resulting estimates of variants of equation  \ref{eqn:IV} above. They regress a dummy for the client choosing a frequent payment contract (when both the traditional one and the FP are available) on whether the previous loan was under a FP contract. All columns have branch, and calendar month fixed effects, and the standard errors are clustered by client. The main regressor of interest is having had a FP loan in the immediate past of $t$ which measures experiencing a FP contract. Columns 1 and 4 report the result of first stage where the supply side instrument is an indicator for the branch having had a FP available when the client showed to pawn the previous pawn. Column 2 \& 5 presents the two-stage least square estimate. Columns 3 \& 6 are analogous, but instead of looking clients whose previous pawn is already closed, it looks at those whose previous pawn has at least one week of being closed. We do not report the exact number of observations to keep Lender $P$ identity confidential and instead give a lower bound. 
-%\textit{Do file: } \texttt{iv\_reg\_demand\_pf.do}
-\end{table}
-
-
-
-
-
-% \subsubsection{Experiencing FP causes repeat pawning}
-
-% Using experimental variation the paper find that being forced into a FP contract increases the likelihood of the client coming back and pawning again. Here we see if that result generalizes for all branches using the instrumental variable strategy described above, where we use $\mathbbm{1}(\text{Repeated Pawning})_{ijt}$ as a dependent variable instead in equation \ref{eqn:IV}.
-
-% Table \hl{XXX} has the same structure as Table  \hl{XXX} above. It finds that the experimental result is qualitatively replicated with this different sample and different identification strategy. Having had a previous FP loan induced by its availability is associated with an increase of \hl{XXX} in the probability of pawning again \hl{in the next 3 months}.
-
-
-% \subsubsection{Pawn recovery and FP contracts}
-
-% Using the individual fixed effects specification, as well as the instrumental variable strategy defined above, Table \hl{XXX} finds that FP are \hl{XX\%} more likely to recover their pawns.
-
-
-
-
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % APPENDIX C
 
@@ -1510,6 +886,8 @@ This table shows resulting estimates of variants of equation  \ref{eqn:IV} above
 \normalsize
 \linespread{1.25}
 
+Although the empirical results are striking and stand alone, this section refers to the model of \cite{John} to interpret our empirical results. The model is stylized but incorporates important features of our context. It allows for negative income shocks which we think are prevalent in this population. %The shock generates a cost of committing to monthly payments and could potentially be a reason for low take up. 
+It also features clients with present biased time preferences --allowing for partial naivete-- choosing to save to pay for an expense, and with the opportunity to make a commitment to save and pay. These two features parsimoniously explain several facts about the context --like overconfidence in recovering the pawn--, and about the results --e.g. that forcing commitment seems to help. We intend the model only as a very stylized approximation to our context, and we use it only to help us organize the interpretation of the empirical results, not as a literal description of reality. %Third, it allows for a simple way to model commitment afforded by late payment fees. %Nonetheless, the model abstracts from several details of the context. Even with these abstraction it allows us to explain our six main results listed in Section \ref{explanations_recap} below.
 
 We use the model of \cite{John} and refer the reader to that paper for more detail, justification of assumptions and some of the proofs. The model has three periods and linear utility.\footnote{This does not map perfectly to our 3 period contract, but it is enough to generate the results we need. We also assume that the amount of the loan is used up to pay for the emergency. \cite{John_theory} provides a more general treatment.} Period $t=0$ is a planning period where the client is either allocated to the status quo, the fee-forcing contract, or a choice between the two. Period $t=1$ is the saving-for-the-monthly-payment  period, and $t=2$ in the pawn recovery (loan payment) period. In period 1 the client receives her income $y_1=1$, or gets zero with probability $\lambda$. She can consume ($c_1$) or save ($s_1$) part that income. In period 2 the client gets her savings from period 1, and again receives income of either $y_2=1$, or zero with independent probability $\lambda$. In this last period, she decides whether to use income and savings for consumption $c_2$ and/or for paying back the loan of size $p \in(1,2)$ to recover the pawned piece valued at $b>p$. In this simple set up we model the fee-commitment contract as a contract that imposes a fee of size $F$ if the client fails at $t=1$ to save $s_1=p-1$ pesos, which is what is needed to pay the loan back when there are no shocks. In period $t=0$ she evaluates her welfare as $E[c_1+c_2]$, were for simplicity we have set the time discount to one. We also assume the interest rate is one. We introduce present biased preferences by assuming the following utility function $U_t=c_t+\beta \: \sum_{k=t+1}^{2} E[c_k]$, with $\beta<1$ indicating present bias. A naive client perceives she is not so present biased and instead of $\beta$ uses $\hat{\beta} \in (\beta,1]$. 
 
@@ -1534,6 +912,61 @@ Note that under these assumptions it is efficient at $t=0$ to recover the loan s
 \noindent \textbf{Result 6: Welfare and ex-post observed behavior.} If for a naive client $i$ the fee-forcing contract causes higher pawn recovery, then we know the fee $F$ made her IC constraint binding, and therefore that $\hat{\beta}_i>\widehat{\beta}_{min}$. If in addition if it was the case that $\beta_i<\beta_{SQ}$. %\footnote{\hl{Isaac, aqui tengo dos pregutas: (1) si es $\beta$ y no $\hat{\beta}$ verdad?  (2) Para que una persona naive empenie en el status quo tiene que ser que cree que va a recuperar no? Es decir tiene que ser $\hat{\beta}>\beta_{SQ}$ correcto?}} 
 then the fee-forcing contract would have increased welfare for the naive. That is, our finding that the fee-forcing contract increases pawn recovery is a sign of higher welfare (although not a sufficient condition).\footnote{It is not sufficient since ex-ante the commitment $F$ may have been too expensive given the income shocks, i.e. if $\lambda \: F>(1-\lambda)^2(b-p)$.}
 
+
+
+
+\subsection{Interpretation}
+
+The model is very parsimonious but powerful and it can potentially explain all our empirical findings qualitatively.\footnote{The model is sufficiently stylized that we think we would not gain much from estimating it. Furthermore we have no data on income shocks which figure prominently in the model. \cite{Ted} and \cite{Aprajit} are two very recent models that combine a field experiment with commitment contracts and estimation of present bias parameters.} First, it can explain why default is high in the status-quo contract, namely that clients are present biased and have no commitment devices. Second, it can explain why clients are overconfident in our data, namely by virtue of naivete about present bias. Under the model naivete is necessary to explain this. Third, it can also explain why the fee forcing contract induces lower default, but not for everyone: namely that it makes the incentive compatibility constraint for payment binding for the present biased, while it was not binding in the status quo contract. Fourth, it can also explain why there is low demand for commitment even if it seems to improve welfare: namely that there is a small share of neoclassical and sophisticated clients, and at the same time naifs have a present biased parameters values in the region in which they think they can save on their own. Fifth, it explains non-zero demand for commitment for a set of clients. Sixth, it can explain why clients exposed to the Forced Commitment contract are more likely to come back namely those naifs whose welfare increased as a result of being forced into the fee-commitment contract.\footnote{Those with $\hat{\beta_i}>\beta_{SQ}>\beta$.}
+
+
+\subsection{Other potential explanations: recap} \label{explanations_recap}
+
+There may be other interpretations of the empirical findings, but the bar is high. An alternative explanation will need to explain the 6 facts below:
+
+\begin{enumerate}
+\itemsep0em 
+\item High (although ex-post inefficient) default in status quo contract.
+\item Overconfidence about pawn recovery.
+\item Forcing commitment increases pawn recovery.
+\item Small demand for commitment...
+\item ...but positive demand for commitment.
+\item Forcing commitment makes clients more likely to come back.
+\end{enumerate}
+
+
+Let us consider alternative explanations in isolation (i.e. just considering one change or feature at a time with respect to a neoclassical model):
+
+\vspace{.1in}
+\noindent \textbf{Alternative 1: Strong prevalence of income shocks.} This could explain (4) and (1), but not why forcing helps, (3) and (6), nor why there is overconfidence, (1). It would also not explain why clients come to pawn in the first place and then default, (2), as they would weight in on the high chance of losing the pawn. 
+
+\vspace{.1in}
+\noindent \textbf{Alternative 2: High time discounting}. This could not explain (1) nor (5) nor (6). It could qualitatively explain (4), but as we say in section \ref{sec:demand} quantitatively it would require unbelievably high discount rates.
+
+
+\vspace{.1in}
+\noindent \textbf{Alternative 3: Risk aversion.} We already discussed and rejected risk aversion in section \ref{sec:demand}, although using strong assumptions in the process. Risk or ambiguity aversion could still play a role in explaining 4 and should be investigated in future research. However it would hardly explain (1), (2), (5), or (6).
+
+\vspace{.1in}
+\noindent \textbf{Alternative 4: Misunderstanding the contracts.}\footnote{This is a potential criticism of \textit{any} paper offering choice, and one that is non-falsifiable if the critic has free reign to propose how the contracts are perceived in the subject's mind.} We were very aware of the importance of clients understanding the contract in order to infer preferences from choice. That is why we made a strong effort for clients to understand the contracts (see subsection \ref{implementation}). Note however that while clients making purely random mistakes could explain why 10\% demand commitment ---i.e. (4) and (5)--- it would not explain the rest of the findings, nor why the Soft Commitment (see below) had more take up that the fee-commitment, or why we can statistically predict take-up with significant accuracy (see Figure \ref{interactions_takeup} and Table \ref{Table_compliance}).
+
+
+\vspace{.1in}
+\noindent \textbf{Alternative 5 (behavioral): Forgetting to pay/salience.} Frequent payments may act as a reminder to save and recover the pawn. This would try to explain (1) by appealing to people forgetting to pay, and (3), (5), and (6) by appealing to frequent payment acting as reminders (i.e. there being demand for reminders). It would not explain (2) or (4) which are critical in the paper. However even for (1) it seems to us a stretch to explain people losing a valuable pawn by forgetting to pay it. Since the Soft Commitment installment contract did not change behavior (as shown below) this explanation would also require us to posit that only fees acts as reminders, not promises.
+
+\vspace{.1in}
+\noindent \textbf{Alternative 6 (behavioral): Income shocks overconfidence}. One could also easily introduce in the overconfidence about income shocks in the model of \ref{appendix_c}\footnote{Say with $\widehat{\lambda} <\lambda$. The effect on demand for commitment is uncertain since on the one hand it decreases $\beta_{SQ}$ decreasing demand, but on the other a smaller $F$ is needed to make the IC binding, making commitment less costly.}. This would leave default unchanged in both the status quo and the fee forcing contract thus would not explain (3), %since $F_{min}(\beta,\widehat{\lambda})<F_{min}(\beta,\lambda)$. 
+% $\widehat{\lambda} <\lambda$ alone 
+It would not explain (5) or (6) either as demand for commitment would be zero without present bias. 
+
+
+\vspace{.1in}
+We do not claim that the model in the Appendix is the only possible explanation of our empirical findings, but it is a parsimonious explanation of all of them.
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \clearpage
 \bibliographystyle{authordate1}

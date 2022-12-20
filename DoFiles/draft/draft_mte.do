@@ -92,3 +92,38 @@ twoway (lpoly residual0_des pr_logitlinear if t_prod==4) ///
 (scatter residual0_des pr_logitlinear, msymbol(Oh) msize(small) color(navy%30)) ///
 (scatter residual0_des pr_gbc_1, msymbol(Oh) msize(small) color(red%25)) ///
 , legend(order(1 "Logit" 2 "GBC") pos(6) rows(1)) xtitle("Propensity") ytitle("Residual")
+
+
+
+
+
+use "$directorio/DB/Master.dta", clear
+
+
+replace apr = -apr*100
+replace des_c = des_c*100
+replace def_c = -def_c*100
+
+ 
+********************************************************************************
+
+*Definition of vars
+gen Z = 0 if t_prod==1
+replace Z = 1 if t_prod==2
+replace Z = 2 if t_prod==4
+
+*IV
+gen choice_nsq = (prod==5) /*z=2, t=1*/
+gen choice_vs_control = (t_prod==4) if inlist(t_prod,4,1) 
+gen choice_nonsq = (prod!=4) /*z!=2, t!=0*/
+gen forced_fee_vs_choice = (t_prod==2) if inlist(t_prod,2,4)
+ ivregress 2sls apr  edad genero (choice_nsq =  choice_vs_control) , vce(cluster suc_x_dia)
+ 
+ tot_tut apr Z choose_commitment ,  vce(cluster suc_x_dia)	
+margte apr  edad, treatment(choice_nsq choice_vs_control) common
+
+mtefe apr edad genero (choice_nsq = choice_vs_control)
+
+preserve
+mtebinary apr (choice_nsq = choice_vs_control)  genero, poly(1) reps(0)
+restore 

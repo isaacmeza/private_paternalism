@@ -210,6 +210,7 @@ compress
 save "$directorio/_aux/preMaster.dta", replace	
 
 *Define main outcomes 
+	* - We are keeping first visit. This visit may include multiple pawns, but this is fine since we cluster at the branch-day level.
 gen des_c = des_i_c
 gen def_c = def_i_c
 gen fc_admin = fc_i_admin

@@ -21,7 +21,7 @@ version 17.0
 
 *Directory
 set more off
-global directorio "C:\Users\isaac\Dropbox\Apps\Overleaf\Donde2020"
+global directorio "C:\Users\isaac\Dropbox\Apps\Overleaf\Donde2022"
 
 *Set significance
 global star "star(* 0.1 ** 0.05 *** 0.01)"
