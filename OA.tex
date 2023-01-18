@@ -171,6 +171,16 @@
 }
 
 
+\begin{table}[H]
+\caption{Balance table conditional on survey \& response rates}
+\label{SS_cond_survet}
+\begin{center}
+\scriptsize{\input{./Tables/SS_cond_survey.tex}}
+\end{center}
+
+%\textit{Do file: } \texttt{ss\_att.do}
+\end{table}
+
 
 \newpage
 \subsection{Some more evidence of overconfidence}
@@ -419,8 +429,117 @@ If treatment effects are homogeneous we must have $\beta_2 = 0$. Rejecting this 
 \todo[inline]{Some Questions for Issac: (1) How are we carrying out the sample splitting? If we cluster standard errors at the branch-day level, we should take this into account when we split. (2) How are you carrying out inference for $\beta_2$? Chernozhukov et al discuss two approaches: ``conditional'' and ``variational.'' The former is simpler as it conditions on the training/test split. The latter is a bit more involved, since one accounts for uncertainty arising from different splits. (3) What are the details of the random forest procedure employed here? (Tuning parameters choice, etc.) We should put them into the appendix.}
 
 
+\newpage
+
+\subsection{Derivations for Section \ref{sec:randchoice}}
 
 
+This appendix provides formal proofs of the results described in Section \ref{sec:randchoice}, using the notation and assumptions described in Section \ref{sec:potentialOutcomes}. To simplify the presentation, we omit $i$ subscripts throughout this section.
+The following assumption collects our exclusion restriction and the key features of our experimental design.
+
+\begin{assumption}\mbox{}
+   \begin{enumerate}[(i)]
+   \item $Z$ is independent of $(Y_{0}, Y_{1}, C)$
+   \item $D = \mathbbm{1}(Z \neq 2)Z + \mathbbm{1}(Z = 2)C$
+   \item $Y = \mathbbm{1}(Z = 0) Y_{0} + \mathbbm{1}(Z = 1) Y_{1} + \mathbbm{1}(Z = 2) [ (1 - C) Y_{0} + C Y_{1}]$
+   \end{enumerate}
+   \label{assump:randchoice}
+\end{assumption}
+
+
+\begin{lem}\mbox{}
+   \begin{enumerate}[(i)]
+       \item $\mathbbm{E}(D|Z=2) = \mathbb{P}(C=1)$
+       \item $\mathbbm{E}(Y|Z=0) = \mathbbm{E}(Y_0)$
+       \item $\mathbbm{E}(Y|Z=1) = \mathbbm{E}(Y_1)$
+       \item $\mathbbm{E}(Y|D=0,Z=2) = \mathbbm{E}(Y_0|C=0)$
+       \item $\mathbbm{E}(Y|D=1,Z=2) = \mathbbm{E}(Y_1|C=1)$
+   \end{enumerate} 
+   \label{lem:randchoice}
+\end{lem}
+
+\begin{proof}
+Part (i) follows because $Z=2$ implies $D=C$ and $Z$ is independent of $C$.  
+Parts (ii) and (iii) follow similarly: given $Z=0$ we have $Y = Y_0$, given $Z=1$ we have $Y = Y_1$, and $Z$ is independent of $(Y_0,Y_1)$.
+For parts (iv) and (v), first note that Assumption \ref{assump:randchoice} (iii) implies that $Z$ is conditionally independent of $(Y_0,Y_1)$ given $C$.
+Now, $Z=2$ implies that $D=0$ if and only if $C=0$. Hence,
+\[
+\mathbbm{E}(Y|D=0, Z=2) = \mathbbm{E}(Y_0|D=0, Z=2) = \mathbbm{E}(Y_0|C=0, Z=2)=\mathbbm{E}(Y_0|C=0)
+\]
+establishing part (iv).
+Similarly, $Z=2$ implies that $D=1$ if and only if $C=1$ and hence
+\[
+\mathbbm{E}(Y|D=1, Z=2) = \mathbbm{E}(Y_1|D=1, Z=2) = \mathbbm{E}(Y_1|C=1, Z=2)= \mathbbm{E}(Y_1|C=1)
+\]
+establishing part (v).
+\end{proof}
+
+\begin{prop} \mbox{}
+    \begin{enumerate}[(i)]
+        \item $\text{ToT} \equiv \mathbbm{E}(Y_1 - Y_0|C=1)  = \displaystyle \frac{\mathbbm{E}(Y|Z=2) - \mathbbm{E}(Y|Z=0)}{\mathbbm{E}(D|Z=2)}$
+        \item $\text{TuT} \equiv \mathbbm{E}(Y_1 - Y_0|C=0) = \displaystyle \frac{\mathbbm{E}(Y|Z=1) - \mathbbm{E}(Y|Z=2)}{1 - \mathbbm{E}(D|Z=2)}$
+        \item $\text{ASB} \equiv \mathbbm{E}(Y_0|C=1) - \mathbbm{E}(Y_0|C=0) = \displaystyle \frac{\mathbbm{E}(Y|Z=0) - \mathbbm{E}(Y|Z=2,D=0)}{\mathbbm{E}(D|Z=2)}$
+        \item $\text{ASL} \equiv \mathbbm{E}(Y_1|C=1) - \mathbbm{E}(Y_1|C=0) = \displaystyle \frac{\mathbbm{E}(Y|Z=2,D=1) - \mathbbm{E}(Y|Z=1)}{1 - \mathbbm{E}(D|Z=2)}$
+    \end{enumerate}
+\end{prop}
+
+\begin{proof}
+For parts (i) and (iii) we require an expression for $\mathbbm{E}(Y_0|C=1)$ in terms of the observables $(Y, D, Z)$.
+By Lemma \ref{lem:randchoice}(ii) and iterated expectations
+\[
+\mathbbm{E}(Y|Z=0) = \mathbbm{E}(Y_0) = \mathbbm{E}(Y_0|C=0) \mathbbm{P}(C=0) + \mathbbm{E}(Y_0|C=1) \mathbbm{P}(C=1).
+\]
+Re-arranging and substituting Lemma \ref{lem:randchoice}(i) and (iv),
+\begin{equation}
+\mathbbm{E}(Y_0|C=1)  = \frac{\mathbbm{E}(Y|Z=0) - \mathbbm{E}(Y_0|C=0) \mathbbm{P}(C=0)}{\mathbbm{P}(C=1)} =  \frac{\mathbbm{E}(Y|Z=0) - \mathbbm{E}(Y|Z=2,D=0) \mathbbm{E}(1 - D|Z=2)}{\mathbbm{E}(D|Z=2)}.
+\label{eq:Y0C1}
+\end{equation}
+Part (i) follows by combining \eqref{eq:Y0C1} with Lemma \ref{lem:randchoice}(v) and simplifying; part (iii) follows by combining \eqref{eq:Y0C1} with Lemma \ref{lem:randchoice}(iv) and simplifying.
+Similarly, for parts (ii) and (iv) we require an expression for $\mathbbm{E}(Y_1|C=0)$ in terms of observables.
+By Lemma \ref{lem:randchoice}(iii) and iterated expectations,
+\[
+\mathbbm{E}(Y|Z=1) = \mathbbm{E}(Y_1) = \mathbbm{E}(Y_1|C=0)\mathbbm{P}(C=0) + \mathbbm{E}(Y_1|C=1) \mathbbm{P}(C=1).
+\]
+Re-arranging and substituting Lemma \ref{lem:randchoice}(i) and (v),
+\begin{equation}
+\mathbbm{E}(Y_1|C=0) 
+= \frac{\mathbbm{E}(Y|Z=1) - \mathbbm{E}(Y_1|C=1)\mathbbm{P}(C=1)}{\mathbb{P}(D=0)} =\frac{\mathbbm{E}(Y|Z=1) - \mathbbm{E}(Y|Z=2,D=1)\mathbbm{E}(D|Z=2)}{\mathbb{E}(1-D|Z=2)}.
+\label{eq:Y1C0}
+\end{equation}
+Part (ii) follows by combining \eqref{eq:Y1C0} with Lemma \ref{lem:randchoice}(iv) and simplifying; part (iv) follows by combining \eqref{eq:Y1C0} with Lemma \ref{lem:randchoice}(v) and simplifying.
+\end{proof}
+
+%\begin{proof}
+%For part (iii), note that 
+%\[
+%\mathbbm{E}(Y|Z=0) = \mathbbm{E}(Y_0) = \mathbbm{E}(Y_0|C=0) \mathbbm{P}(C=0) + \mathbbm{E}(Y_0|C=1) \mathbbm{P}(C=1)
+%\]
+%by Lemma \ref{lem:randchoice}(ii) and iterated expectations.
+%Re-arranging, 
+%\[
+%\mathbbm{E}(Y_0|C=1) = \frac{\mathbbm{E}(Y|Z=0) - \mathbbm{E}(Y_0|C=0) \mathbbm{P}(C=0)}{\mathbbm{P}(C=1)}.
+%\]
+%Therefore, by Lemma \ref{lem:randchoice} (i) and (iv)
+%\begin{align*}
+%\mathbbm{E}(Y_0|C=1) - \mathbbm{E}(Y_0|C=0) &= \frac{\mathbbm{E}(Y|Z=0) - \mathbbm{E}(Y|Z=2,D=0) \mathbbm{E}(1 - D|Z=2)}{\mathbbm{E}(D|Z=2)} - \mathbbm{E}(Y|Z=2, D=0)\\
+%&= \frac{\mathbbm{E}(Y|Z=0) - \mathbbm{E}(Y|Z=2,D=0)}{\mathbbm{E}(D|Z=2)}.
+%\end{align*}
+%
+%Similarly, for part (iv) note that
+%\[
+%\mathbbm{E}(Y|Z=1) = \mathbbm{E}(Y_1) = \mathbbm{E}(Y_1|C=0)\mathbbm{P}(C=0) + \mathbbm{E}(Y_1|C=1) \mathbbm{P}(C=1)
+%\]
+%by Lemma \ref{lem:randchoice}(iii) and iterated expectations.
+%Rearranging,
+%\[
+%\mathbbm{E}(Y_1|C=0) = \frac{\mathbbm{E}(Y|Z=1) - \mathbbm{E}(Y_1|C=1)\mathbbm{P}(C=1)}{\mathbb{P}(C=0)}.
+%\]
+%Therefore, by Lemma \ref{lem:randchoice} (i) and (v),
+%\begin{align*}
+%\mathbbm{E}(Y_1|C=1) - \mathbbm{E}(Y_1|C=0) &= \mathbbm{E}(Y|Z=2, D=1) - \frac{\mathbbm{E}(Y|Z=1) - \mathbbm{E}(Y|Z=2, D=1)\mathbbm{E}(D|Z=2)}{\mathbb{P}(C=0)} \\
+%&= \frac{\mathbbm{E}(Y|Z=2,D=1) - \mathbbm{E}(Y|Z=1)}{1 - \mathbbm{E}(D|Z=2)}.
+%\end{align*}
+%\end{proof}
 
 \newpage
 

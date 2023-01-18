@@ -41,11 +41,12 @@ drop prod regalo pres_fundacion ledara AW AX question_miss question_miss1 questi
 
 *How many people repeat the survey?
 bysort prenda: gen aux = _N
+tab aux
 
 *Encuestas repetidas 446+6+10: 462
 *Personas que repitieron encuesta: 227
+duplicates drop
 
-bysort prenda: keep if _n==1	
 merge 1:1 prenda using "$directorio/DB/Base_Boleta_230dias_Seguimiento_Ago2013_ByPrenda_2", keep(2 3) nogen
 
 
@@ -64,17 +65,26 @@ replace cont_fam = . if inlist(cont_fam,0)
 *Variable creation
 
 *Wizorise at 99th percentile
-replace val_pren = prestamo_i if val_pren<prestamo_i & !missing(val_pren)
+replace val_pren = prestamo_i/0.7 if val_pren<prestamo_i/0.7 & !missing(val_pren)
 egen val_pren99 = pctile(val_pren) , p(99)
 replace val_pren = val_pren99 if val_pren>val_pren99 & val_pren~=.
 drop *99
 
 *Imputation
-replace val_pren = 1.5/0.7*prestamo_i if val_pren>1.5/0.7*prestamo_i & !missing(val_pren)
 reg val_pren prestamo_i i.prenda_tipo i.razon, r
 predict val_pren_pr
 replace val_pren = val_pren_pr if missing(val_pren)
-replace val_pren = prestamo_i if val_pren<prestamo_i & !missing(val_pren)
+replace val_pren = prestamo_i/0.7 if val_pren<prestamo_i/0.7 & !missing(val_pren)
+
+gen val_pren_orig = val_pren
+replace val_pren_orig =  2.14489*prestamo_i if val_pren_orig>2.14489*prestamo_i & !missing(val_pren_orig)
+
+reg val_pren prestamo_i, r
+cap drop val_pren_pr
+predict val_pren_pr
+replace val_pren = val_pren_pr if missing(val_pren)
+replace val_pren =  2.14489*prestamo_i if val_pren>2.14489*prestamo_i & !missing(val_pren)
+
 su val_pren_pr 
 gen val_pren_std = (val_pren_pr-r(mean))/r(sd)
 
@@ -123,19 +133,19 @@ replace apr_i_tc = (1 + (fc_i_tc/prestamo_i)/dias_ultimo_mov)^dias_ultimo_mov - 
 
 ***************************************
 
-*APR subjective + tc
-gen double fc_i_survey_tc = .
+*APR -int
+gen double fc_i_int = .
 	*Only fees and interest for recovered pawns
-replace fc_i_survey_tc = sum_int_c + sum_pay_fee_c + trans_cost if des_i_c==1
+replace fc_i_int = sum_pay_fee_c if des_i_c==1
 	*All payments + appraised value when default
-replace fc_i_survey_tc = sum_p_c + val_pren + trans_cost if def_i_c==1
+replace fc_i_int = sum_p_c + prestamo_i/(0.7) if def_i_c==1
 	*Not ended at the end of observation period - only fees and interest
-replace fc_i_survey_tc = sum_int_c + sum_pay_fee_c + trans_cost if def_i_c==0 & des_i_c==0	
+replace fc_i_int = sum_pay_fee_c if def_i_c==0 & des_i_c==0	
 
-gen double apr_i_survey_tc  = .
-replace apr_i_survey_tc = (1 + (fc_i_survey_tc/prestamo_i)/dias_al_desempenyo)^dias_al_desempenyo - 1  if des_i_c==1
-replace apr_i_survey_tc = (1 + (fc_i_survey_tc/prestamo_i)/dias_al_default)^dias_al_default - 1  if def_i_c==1
-replace apr_i_survey_tc = (1 + (fc_i_survey_tc/prestamo_i)/dias_ultimo_mov)^dias_ultimo_mov - 1  if def_i_c==0 & des_i_c==0
+gen double apr_i_int  = .
+replace apr_i_int = (1 + (fc_i_int/prestamo_i)/dias_al_desempenyo)^dias_al_desempenyo - 1  if des_i_c==1
+replace apr_i_int = (1 + (fc_i_int/prestamo_i)/dias_al_default)^dias_al_default - 1  if def_i_c==1
+replace apr_i_int = (1 + (fc_i_int/prestamo_i)/dias_ultimo_mov)^dias_ultimo_mov - 1  if def_i_c==0 & des_i_c==0
 
 ***************************************
 
@@ -158,16 +168,21 @@ replace apr_i_fa = (1 + (fc_i_fa/prestamo_i)/dias_ultimo_mov)^dias_ultimo_mov - 
 gen masqueprepa=(educacion>=3) if educacion!=.
 gen estresado_seguido=(f_estres<3) if f_estres!=.
 gen log_val_pren = log(val_pren)
-gen plan_gasto_bin = (plan_gasto>1) if !missing(plan_gasto)
+gen hace_presupuesto=(plan_gasto==2) if plan_gasto!=.
+replace plan_gasto = inlist(plan_gasto,1,2) if !missing(plan_gasto)
 
 gen pb=(t_consis1==0 & t_consis2==1) if t_consis2!=. & t_consis1!=.
 gen fb=(t_consis1==1 & t_consis2==0) if t_consis2!=. & t_consis1!=.
+*Imputation
+replace fb=0 if t_consis2==1 & missing(fb) 
+replace fb=0 if t_consis1==0 & missing(fb) 
+replace pb=0 if t_consis2==0 & missing(pb) 
+replace pb=0 if t_consis1==1 & missing(pb) 
 
 egen faltas = rowtotal(renta comida medicina luz gas telefono agua) 
 egen report = rownonmiss(renta comida medicina luz gas telefono agua) 
 replace faltas = faltas/report
 
-gen hace_presupuesto=(plan_gasto==2) if plan_gasto!=.
 gen tentado=(tempt>=2) if tempt!=.
 		 
 sum c_trans, d
@@ -223,18 +238,11 @@ gen apr_survey = apr_i_survey
 gen fc_tc = fc_i_tc
 gen apr_tc = apr_i_tc
 
-gen fc_survey_tc = fc_i_survey_tc
-gen apr_survey_tc = apr_i_survey_tc
+gen fc_int = fc_i_int
+gen apr_int = apr_i_int
 
 gen fc_fa = fc_i_fa
 gen apr_fa = apr_i_fa
-
-*Wizorise at 99th percentile
-foreach var of varlist apr_survey apr_survey_tc apr_fa {
-	egen `var'99 = pctile(`var') , p(99)
-	replace `var' = `var'99 if `var'>`var'99 & `var'~=.
-	drop *99
-}
 
 
 *Keep only first visit

@@ -27,9 +27,9 @@ use "$directorio/DB/Master.dta", clear
 keep if pro_2==0
 
 *Histograms of effective cost
-twoway (hist apr if def_c==1 , percent lwidth(medthick) lcolor(navy) color(ltblue)) ///
-		(hist apr if des_c==1, percent lwidth(medthick) lcolor(black) color(none)) ///
-		(hist apr if des_c==0 & def_c==0, percent lwidth(medthick) lcolor(black) color(red%20)), ///
+twoway (hist apr if def_c==1 & apr<10, w(.1) percent lwidth(medthick) lcolor(navy) color(ltblue)) ///
+		(hist apr if des_c==1, w(.1) percent lwidth(medthick) lcolor(black) color(none)) ///
+		(hist apr if des_c==0 & def_c==0, w(.1) percent lwidth(medthick) lcolor(black) color(red%20)), ///
 		legend(order(1 "Default" 2 "Recovery" 3 "Not closed") pos(6) rows(1)) xtitle("APR %")  graphregion(color(white))
 graph export "$directorio/Figuras/hist_apr.pdf", replace
 

@@ -24,7 +24,6 @@ version 17.0
 use "$directorio/DB/Master.dta", clear
 
 sort NombrePignorante fecha_inicial
-replace plan_gasto = inlist(plan_gasto,1,2) if !missing(plan_gasto)
 
 *Covariates - Randomization - Outcomes
 keep apr def_c des_c fc_admin /// *Dependent variables

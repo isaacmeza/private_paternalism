@@ -1,0 +1,72 @@
+ \documentclass[oneside,11pt]{article}
+
+\input{preamble.tex}
+%%% HELPER CODE FOR DEALING WITH EXTERNAL REFERENCES
+\usepackage{xr}
+\makeatletter
+\newcommand*{\addFileDependency}[1]{
+  \typeout{(#1)}
+  \@addtofilelist{#1}
+  \IfFileExists{#1}{}{\typeout{No file #1.}}
+}
+\makeatother
+
+
+\newcommand*{\myexternaldocument}[1]{
+    \externaldocument{#1}
+    \addFileDependency{#1.tex}
+    \addFileDependency{#1.aux}
+}
+
+%\myexternaldocument{OA}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% DOCUMENT
+\begin{document}
+
+\begin{table}[H]
+\caption{Main treatment effects - Financial Cost}
+\label{tot_tut}
+\begin{center}
+\scriptsize{\input{./Tables/main_te_dec_comparison.tex}}
+\end{center}
+ \scriptsize 
+%\textit{Do file: } \texttt{tot\_tut.do}
+\end{table}
+
+
+\begin{table}[H]
+\caption{Main treatment effects - APR}
+\label{tot_tut}
+\begin{center}
+\scriptsize{\input{./Tables/main_te_dec_comparison1.tex}}
+\end{center}
+ \scriptsize 
+%\textit{Do file: } \texttt{tot\_tut.do}
+\end{table}
+
+\begin{table}[H]
+\caption{Gains for choosers versus gains from non-choosers (ToT \& TuT)}
+\label{tot_tut}
+\begin{center}
+\scriptsize{\input{./Tables/tot_tut_comparison.tex}}
+\end{center}
+ \scriptsize 
+%\textit{Do file: } \texttt{tot\_tut.do}
+\end{table}
+
+\begin{landscape}
+
+
+
+\begin{table}[H]
+\caption{Means for different arms}
+\label{mns}
+\begin{center}
+\scriptsize{\input{./Tables/decomposition_main_te_mns.tex}}
+\end{center}
+ \scriptsize 
+%\textit{Do file: } \texttt{tot\_tut.do}
+\end{table}
+
+\end{landscape}
+\end{document}

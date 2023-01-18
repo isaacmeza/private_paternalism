@@ -26,7 +26,6 @@ use "$directorio/DB/Master.dta", clear
 
 gen fee_arms = inlist(prod, 2 , 3 , 4 , 5 , 6 , 7) & !missing(prod)
 gen insample = !missing(pro_2)
-replace plan_gasto = inlist(plan_gasto,1,2) if !missing(plan_gasto)
 replace apr = -apr
 
 
@@ -61,7 +60,6 @@ use "$directorio/DB/Master.dta", clear
 
 gen fee_arms = inlist(prod, 2 , 3 , 4 , 5 , 6 , 7) & !missing(prod)
 gen insample = !missing(pro_2)
-replace plan_gasto = inlist(plan_gasto,1,2) if !missing(plan_gasto)
 gen eff = -fc_admin/prestamo
 
 
@@ -96,7 +94,6 @@ use "$directorio/DB/Master.dta", clear
 
 gen fee_arms = inlist(prod, 2 , 3, 4 , 5 , 6, 7) & !missing(prod)
 gen insample = !missing(pro_2)
-replace plan_gasto = inlist(plan_gasto,1,2) if !missing(plan_gasto)
 
 
 *Covariates 
@@ -126,7 +123,6 @@ use "$directorio/DB/Master.dta", clear
 
 gen fee_arms = inlist(prod, 2 , 3, 4 , 5 , 6, 7) & !missing(prod)
 gen insample = !missing(pro_2)
-replace plan_gasto = inlist(plan_gasto,1,2) if !missing(plan_gasto)
 
 
 *Covariates 
@@ -156,7 +152,6 @@ use "$directorio/DB/Master.dta", clear
 
 gen fee_arms = inlist(prod, 2 , 3, 4 , 5 , 6, 7) & !missing(prod)
 gen insample = !missing(pro_2)
-replace plan_gasto = inlist(plan_gasto,1,2) if !missing(plan_gasto)
 
 
 *Covariates 

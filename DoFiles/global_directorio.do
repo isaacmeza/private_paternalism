@@ -28,7 +28,7 @@ global star "star(* 0.1 ** 0.05 *** 0.01)"
 *global star "nostar"
 
 *Set covariates
-global C0 = "dummy_* num_arms_d*" /*Controls*/  
+global C0 = "dummy_*" /*Controls*/  
 
 *Set scheme
 set scheme white_tableau1, perm

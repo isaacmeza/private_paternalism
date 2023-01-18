@@ -44,7 +44,7 @@ gen forced_fee_vs_choice = (t_prod==2) if inlist(t_prod,2,4)
 *Stack IV/GMM
 gen x0 = -(t_prod==4)*(prod==4)
 	
-	gen x0_ = (t_prod==4)*(prod==4)
+gen x0_ = (t_prod==4)*(prod==4)
 gen x1 = (t_prod==4)*(prod==5)
 gen z0 = -(t_prod==1)
 gen z1 = (t_prod==2)
@@ -66,19 +66,8 @@ replace eligio = 0 if missing(eligio)
 
 gen no_eligio = 1-eligio
 
-	*Single LATE
-eststo : ivregress 2sls apr  (choice_nsq =  choice_vs_control) , vce(cluster suc_x_dia)
-	*LATE + ATE
 
-eststo : ivregress gmm apr  z1 ( x1 = z0  ), vce(cluster suc_x_dia)
-eststo : ivregress 2sls apr z1 (x1 = z2), vce(cluster suc_x_dia)
-eststo : ivregress gmm apr  z1 (  x0 =  z2  ), vce(cluster suc_x_dia) first
-
-eststo : ivregress gmm apr  z1 (  x0 =  z2  ), vce(cluster suc_x_dia) first
-
-
-
-
+ tot_tut apr Z choose_commitment ,  vce(cluster suc_x_dia)
 
 
 	*Reduced form 
@@ -118,11 +107,21 @@ di "ASG"
 di (`ey_d1_z2' - `ey_z1')/(1-`p_rate') - (`ey_z0' - `ey_d0_z2')/(`p_rate')
 
 
+su choose_commitment
+local p_rate = `r(mean)'
+
+
 
 reg apr i.prod 
 *ASB
 di (_b[1.prod]-_b[4.prod])/(`p_rate')
 di (-_b[4.prod])/(`p_rate')
+
+
+*ASL
+di (_b[5.prod]-_b[2.prod])/(1-`p_rate')
+
+
 
 
 gen z_1 = prod==2
@@ -147,43 +146,31 @@ ivregress 2sls new_y uno_z1 (z_2ddd = z_2), nocons
 ivregress 2sls new_y z_0 (uno_d_z2 = z_2), nocons
 
 
-ivregress 2sls apr z_1 (z_2_d_0 = z_0) if prod!=5
 
-*ASL
-di (_b[5.prod]-_b[2.prod])/(1-`p_rate')
+putmata Y = new_y  X1 = (uno_z1 z_2ddd) W = (uno_z1 z_2)
 
+mata : WPY = quadcross(W,Y)
+mata : WPX1i = pinv(quadcross(W,X1))
+mata : theta1 = (WPX1i*WPY)	
+	
+	
+	
 
+X1 = (x1 `z1' 1) `X0' = (`x0' `z0_' 1) `W' = (`z1' `z0' 1) 
+	
+	*'Projection' matrices
+	mata : `WPY' = quadcross(`W',`Y')
+	mata : `WPX1i' = pinv(quadcross(`W',`X1'))
+	mata : `WPX0i' = pinv(quadcross(`W',`X0'))
 
-gen eligio = choose_commitment
-replace eligio = 0 if missing(eligio)
+	
+	
+	gen x0 = -(t_prod==4)*(prod==4)
+gen x1 = (t_prod==4)*(prod==5)
+gen z0 = -(t_prod==1)
+gen z1 = (t_prod==2)
+gen z2 = (t_prod==4)
 
-
-gen zz1 =  prod==2
-gen zz2  = prod==4 | prod==5
-gen dd  = prod==5
-
-
-ivregress 2sls apr   i.prod ( eligio = 4.t_prod)
-
-
-
-su choose_commitment
-
-tot_tut apr Z choose_commitment ,  vce(cluster suc_x_dia)	
-
- su choose_commitment
-
-
-******** TuT ********
-*********************
-	*Single LATE
-eststo : ivregress 2sls apr  (choice_nonsq =  forced_fee_vs_choice) , vce(cluster suc_x_dia)
-	*LATE + ATE
-eststo : ivregress 2sls apr z0 (x0 = z2), vce(cluster suc_x_dia)
-
-	*Reduced form 
-qui su choose_commitment 
-local p_rate = `r(mean)'	
-eststo : reg apr i.t_prod ,  vce(cluster suc_x_dia)	 
-local tut = (_b[2.t_prod]-_b[4.t_prod])/(1-`p_rate')
-di `tut'
+	
+	ivregress 2sls apr z1 (x1 = z2), vce(cluster suc_x_dia)
+	

@@ -24,12 +24,16 @@ set maxvar 100000
 use "$directorio/DB/Master.dta", clear
 keep if inlist(t_prod,1,2,4)
 
-keep apr des_c def_c ref_c fc_admin  choose_commitment t_prod prod suc_x_dia 
+*Mark individuals with observables
+gen sample_cov = !missing(f_encuesta)
+
+
+keep apr des_c def_c fc_admin  choose_commitment t_prod prod suc_x_dia sample_cov
 replace fc_admin = -fc_admin
 replace apr = -apr*100
 replace des_c = des_c*100
 replace def_c = -def_c*100
-replace ref_c = -ref_c*100
+
  
 ********************************************************************************
 
@@ -45,14 +49,30 @@ gen z1 = (t_prod==2)
 gen z2 = (t_prod==4)
 
 
+
+
 ******** TOT-TUT-ATE ********
 *****************************
 
 eststo clear
-foreach var of varlist apr fc_admin des_c def_c ref_c {
+foreach var of varlist apr fc_admin des_c def_c {
 
 		*ToT-TuT
 	eststo : tot_tut `var' Z choose_commitment ,  vce(cluster suc_x_dia)	
+	qui su `var' if e(sample) & t_prod==1
+	local mn = `r(mean)'
+	estadd scalar ContrMean = `mn'
+	test ATE = TuT
+	estadd scalar ate_tut = `r(p)'
+	test ATE = ToT
+	estadd scalar ate_tot = `r(p)'
+	local sign_tt = sign(_b[ToT]-_b[TuT])
+	test TuT-ToT = 0
+	estadd scalar tut_tot = `r(p)'
+	estadd scalar tut_tot_1 = ttail(r(df_r),`sign_tt'*sqrt(r(F)))
+	
+	
+	eststo : tot_tut `var' Z choose_commitment if sample_cov==1,  vce(cluster suc_x_dia)	
 	qui su `var' if e(sample) & t_prod==1
 	local mn = `r(mean)'
 	estadd scalar ContrMean = `mn'
@@ -69,7 +89,7 @@ foreach var of varlist apr fc_admin des_c def_c ref_c {
 
 
 *Save results	
-esttab using "$directorio/Tables/reg_results/tot_tut.csv", se ${star} b(a2) ///
+esttab using "$directorio/Tables/reg_results/tot_tut_.csv", se ${star} b(a2) ///
 		scalars("ContrMean Control Mean"  ///
 		"ate_tut H_0 : ATE-TuT=0" ///
 		"ate_tot H_0 : ATE-ToT=0" ///
