@@ -22,6 +22,7 @@ meges it with the admin data.
 
 clear all
 set more off
+set seed 10
 
 use "$directorio/Raw/Base_Encuestas_Basales_24_05_2013.dta", clear
 
@@ -227,22 +228,35 @@ save "$directorio/_aux/preMaster.dta", replace
 *Define main outcomes 
 	* - We are keeping first visit. This visit may include multiple pawns, but this is fine since we cluster at the branch-day level.
 gen des_c = des_i_c
+label var des_c "Recovery"
 gen def_c = def_i_c
-gen fc_admin = fc_i_admin
-gen apr = apr_i
-gen prestamo = prestamo_i
+label var def_c "Default"
+gen double fc_admin = fc_i_admin
+label var fc_admin "Financial cost (appraised value)"
+gen double apr = apr_i
+label var apr "APR (appraised value)"
+gen double prestamo = prestamo_i
+label var prestamo "Loan"
 
-gen fc_survey = fc_i_survey
-gen apr_survey = apr_i_survey
+gen double fc_survey = fc_i_survey
+label var fc_survey "Financial cost (subj. value)"
+gen double apr_survey = apr_i_survey
+label var apr_survey "APR (subj. value)"
 
-gen fc_tc = fc_i_tc
-gen apr_tc = apr_i_tc
+gen double fc_tc = fc_i_tc
+label var fc_tc "Financial cost + trans. cost"
+gen double apr_tc = apr_i_tc
+label var apr_tc "APR + trans. cost"
 
-gen fc_int = fc_i_int
-gen apr_int = apr_i_int
+gen double fc_int = fc_i_int
+label var fc_int "Financial cost - interest"
+gen double apr_int = apr_i_int
+label var apr_int "APR - interest"
 
-gen fc_fa = fc_i_fa
-gen apr_fa = apr_i_fa
+gen double fc_fa = fc_i_fa
+label var fc_fa "Financial cost (appraised value)"
+gen double apr_fa = apr_i_fa
+label var apr_fa "APR (fully adjusted)"
 
 
 *Keep only first visit

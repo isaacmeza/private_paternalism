@@ -8,9 +8,10 @@ version 17.0
 * Author:	Isaac M
 * Machine:	Isaac M 											
 * Date of creation:	-
-* Last date of modification: Sept. 19, 2022
+* Last date of modification: January. 25, 2023
 * Modifications: - Clean reincidence variables
 	- Redifinition of main outcome variables. General revision of cleaning file
+	- Inclusion of variables for imputation of censoring variables.
 * Files used:     
 		- 
 * Files created:  
@@ -26,7 +27,7 @@ of a given pawn.
 *import excel "$directorio/Raw/20131014Consilidacion_Agosto_2013.xlsx", sheet("Hoja1") firstrow clear
 *save "$directorio/Raw/20131014Consilidacion_Agosto_2013.dta",	replace
 use "$directorio/Raw/20131014Consilidacion_Agosto_2013.dta",	clear
-
+set seed 10
 
 *Recoding of variables
 rename Sucursal suc
@@ -175,7 +176,7 @@ gen choose_commitment =  (producto==5 | producto==7) if inlist(producto, 4, 5, 6
 
 *Variable creation
 
-sort prenda fecha_movimiento HoraMovimiento
+sort prenda fecha_movimiento HoraMovimiento, stable
 *'pagos' indicate deposits from the customers, i.e. refrendo, desempeno, abono al capital.
 *Filter those that indicate payments
 gen pagos = importe if inlist(clave_movimiento, 1,3,5)
@@ -184,7 +185,7 @@ label var pagos "Client deposits"
 
 *Payed interests
 gen intereses = importe if inlist(clave_movimiento, 5)
-sort prenda fecha_mov
+sort prenda fecha_mov, stable
 by prenda : egen spagos = sum(pagos)
 by prenda : egen sint = sum(intereses)
 replace intereses = spagos-sint-prestamo_i if clave_movimiento==3
@@ -192,7 +193,7 @@ drop spagos sint
 label var intereses "Interests"
 
 *Credit has CERTAINLY ended, meaning either 'desempeno' or 'pase al moneda'
-sort prenda dias_inicio 
+sort prenda dias_inicio, stable 
 by prenda : gen ultimo_mov = _n==_N
 
 *Tag as ended if either recovery, default, or vbi
@@ -215,7 +216,7 @@ drop if clave_movimiento==2
 preserve
 drop if clave_movimiento==2
 collapse (mean) prestamo_i (sum) importe (mean) dias_inicio (mean) concluyo_c (mean) producto (mean) fecha_inicial, by(prenda fecha_movimiento)
-sort prenda fecha_movimiento 
+sort prenda fecha_movimiento, stable
 
 gen double incurred_int = .
 gen double fee_strong = .
@@ -240,7 +241,7 @@ restore
 
 merge m:1 prenda fecha_movimiento using `temp_int', nogen
 *Drop duplicates by prenda-date
-sort prenda fecha_movimiento HoraMovimiento
+sort prenda fecha_movimiento HoraMovimiento, stable
 foreach var of varlist incurred_int fee_strong {
 	by prenda fecha_movimiento : replace `var' = . if _n!=1
 	}
@@ -254,29 +255,29 @@ label var payed_fees "Payed fees"
 
 	
 *'sum_p' is the cumulative sum of payments
-sort prenda fecha_movimiento HoraMovimiento
+sort prenda fecha_movimiento HoraMovimiento, stable
 *Add fees
 replace pagos = pagos + payed_fees if !missing(payed_fees)
 by prenda: gen sum_p=sum(pagos)
 label var sum_p "Cumulative sum of payments"
 
 *'sum_int' is the cumulative sum of interest
-sort prenda fecha_movimiento HoraMovimiento
+sort prenda fecha_movimiento HoraMovimiento, stable
 by prenda: gen sum_int=sum(intereses)
 label var sum_int "Cumulative sum of interests"
 
 *'sum_incurred_int' is the cumulative sum of incurred interest
-sort prenda fecha_movimiento HoraMovimiento
+sort prenda fecha_movimiento HoraMovimiento, stable
 by prenda: gen sum_inc_int=sum(incurred_int)
 label var sum_inc_int "Cumulative sum of incurred interests"
 
 *'sum_incurred_fee' is the cumulative sum of incurred fees
-sort prenda fecha_movimiento HoraMovimiento
+sort prenda fecha_movimiento HoraMovimiento, stable
 by prenda: gen sum_inc_fee=sum(fee_strong)
 label var sum_inc_fee "Cumulative sum of incurred fees"
 
 *'sum_pay_fee' is the cumulative sum of payed fees
-sort prenda fecha_movimiento HoraMovimiento
+sort prenda fecha_movimiento HoraMovimiento, stable
 by prenda: gen sum_pay_fee=sum(payed_fees)
 label var sum_pay_fee "Cumulative sum of payed fees"
 
@@ -308,33 +309,33 @@ label var porc_pay_fee "Payed fee percentage wrt to loan"
 
 
 *'sum_porc_p' is the percentage of the cumulative sum of the payments wrt to the loan
-sort prenda fecha_movimiento HoraMovimiento
+sort prenda fecha_movimiento HoraMovimiento, stable
 by prenda: gen sum_porc_p=sum_p/prestamo_i
 label var sum_porc_p "Percentage of the cumulative sum of payments"
 
 *'sum_porc_int' is the percentage of the cumulative sum of the interest wrt to the loan
-sort prenda fecha_movimiento HoraMovimiento
+sort prenda fecha_movimiento HoraMovimiento, stable
 by prenda: gen sum_porc_int=sum_int/prestamo_i
 label var sum_porc_int "Percentage of the cumulative sum of interest"
 
 *'sum_porc_inc_int' is the percentage of the cumulative sum of the incurred interest wrt to the loan
-sort prenda fecha_movimiento HoraMovimiento
+sort prenda fecha_movimiento HoraMovimiento, stable
 by prenda: gen sum_porc_inc_int=sum_inc_int/prestamo_i
 label var sum_porc_inc_int "Percentage of the cumulative sum of incurred interest"
 
 *'sum_porc_inc_fee' is the percentage of the cumulative sum of the incurred fee wrt to the loan
-sort prenda fecha_movimiento HoraMovimiento
+sort prenda fecha_movimiento HoraMovimiento, stable
 by prenda: gen sum_porc_inc_fee=sum_inc_fee/prestamo_i
 label var sum_porc_inc_fee "Percentage of the cumulative sum of incurred fee"
 
 *'sum_porc_pay_fee' is the percentage of the cumulative sum of the payed fee wrt to the loan
-sort prenda fecha_movimiento HoraMovimiento
+sort prenda fecha_movimiento HoraMovimiento, stable
 by prenda: gen sum_porc_pay_fee=sum_pay_fee/prestamo_i
 label var sum_porc_pay_fee "Percentage of the cumulative sum of payed fee"
 
 *Number of payments at current date
 gen dum_pago=(pagos!=0 & pagos!=.)
-sort prenda fecha_movimiento HoraMovimiento
+sort prenda fecha_movimiento HoraMovimiento, stable
 by prenda: gen sum_np= sum(dum_pago)
 by prenda : replace dum_pago = . if fecha_movimiento[_n]==fecha_movimiento[_n-1]
 by prenda: gen sum_visit= sum(dum_pago)
@@ -356,7 +357,7 @@ gen pasealmoneda=(clave_movimiento==6)
 preserve
 duplicates drop NombrePignorante fecha_inicial, force
 
-sort NombrePignorante fecha_inicial
+sort NombrePignorante fecha_inicial, stable
 *Number of visits to pawnshop 
 bysort NombrePignorante: gen visit_number = _n
 qui su visit_number, d
@@ -376,7 +377,7 @@ restore
 
 *Recidivism
 preserve
-sort prenda fecha_movimiento HoraMovimiento
+sort prenda fecha_movimiento HoraMovimiento, stable
 	*Desempeno 
 by prenda: egen des_i_c=max(desempeno)
 by prenda: gen dias_ultimo_mov = dias_inicio[_N]
@@ -404,7 +405,7 @@ bysort NombrePignorante : egen b_mt = max(mt_fl)
 drop if b_mt>1
 
 *Complete NA's
-sort NombrePignorante fecha_inicial prod
+sort NombrePignorante fecha_inicial prod, stable
 by NombrePignorante fecha_inicial : replace prod = prod[_n-1] if missing(prod) & prod[_n-1]!=.
 by NombrePignorante fecha_inicial : replace t_prod = t_prod[_n-1] if missing(t_prod) & t_prod[_n-1]!=.
 duplicates drop NombrePignorante fecha_inicial, force
@@ -425,7 +426,7 @@ sort NombrePignorante fecha_inicial prod
 by NombrePignorante: gen days_second_pawns = fecha_inicial[2] - first_visit if _n==1
 
 *Dummy indicating if customer returned to pawn ANOTHER piece
-by NombrePignorante: gen another_piece_second = !inrange(prestamo_i[2],first_loan_value*0.9,first_loan_value*1.1) if _n==1
+by NombrePignorante: gen another_piece_second = !inrange(prestamo_i[2],first_loan_value*0.95,first_loan_value*1.05) if _n==1
 
 *Ever repeat pawns
 bysort NombrePignorante : gen reincidence = !missing(days_second_pawns)
@@ -482,25 +483,56 @@ replace def_i_c = 0 if des_i_c==1
 
 by prenda: egen ref_c=max(refrendo)
 by prenda: egen ref_90_c=max(refrendo_90)
-by prenda: egen abo_c=max(abono)
 by prenda: egen sum_p_c=max(sum_p)
 by prenda: egen sum_int_c=max(sum_int)
 by prenda: egen sum_inc_int_c=max(sum_inc_int)
 by prenda: egen sum_inc_fee_c=max(sum_inc_fee)
 by prenda: egen sum_pay_fee_c=max(sum_pay_fee)
 by prenda: gen pays_c=(sum_p_c>0) if !missing(sum_p_c)
-by prenda: egen mn_p_=mean(pagos) if clave_movimiento!=4 & pagos!=0
+by prenda: egen mn_p_=mean(pagos) if !inlist(clave_movimiento,4,6) & pagos!=0
 by prenda: egen mn_p_c=max(mn_p_) 
 replace mn_p_c = 0 if missing(mn_p_c)
+by prenda: egen mn_p105_=mean(pagos) if !inlist(clave_movimiento,4,6) & pagos!=0 & dias_inicio<=110
+by prenda: egen mn_p105_c=max(mn_p105_) 
+replace mn_p105_c = 0 if missing(mn_p105_c)
+by prenda: egen mn_p210_=mean(pagos) if !inlist(clave_movimiento,4,6) & pagos!=0 & inrange(dias_inicio,111,220)
+by prenda: egen mn_p210_c=max(mn_p210_) 
+replace mn_p210_c = 0 if missing(mn_p210_c)
+
 by prenda: egen sum_porcp_c=max(sum_porc_p)
-by prenda: egen sum_porcp30_c=sum(porc_pagos) if dias_inicio<=35
-by prenda: egen sum_porcp60_c=sum(porc_pagos) if dias_inicio<=65
-by prenda: egen sum_porcp90_c=sum(porc_pagos) if dias_inicio<=95
-by prenda: egen sum_porcp105_c=sum(porc_pagos) if dias_inicio<=110
+by prenda: egen sum_porcp30_c_aux=sum(porc_pagos) if dias_inicio<=35
+by prenda: egen sum_porcp30_c=max(sum_porcp30_c_aux)
+by prenda: egen sum_porcp60_c_aux=sum(porc_pagos) if dias_inicio<=65
+by prenda: egen sum_porcp60_c=max(sum_porcp60_c_aux)
+by prenda: egen sum_porcp90_c_aux=sum(porc_pagos) if dias_inicio<=95
+by prenda: egen sum_porcp90_c=max(sum_porcp90_c_aux)
+by prenda: egen sum_porcp105_c_aux=sum(porc_pagos) if dias_inicio<=110
+by prenda: egen sum_porcp105_c=max(sum_porcp105_c_aux)
+by prenda: egen sum_porcp150_c_aux=sum(porc_pagos) if dias_inicio<=155
+by prenda: egen sum_porcp150_c=max(sum_porcp150_c_aux)
+by prenda: egen sum_porcp180_c_aux=sum(porc_pagos) if dias_inicio<=185
+by prenda: egen sum_porcp180_c=max(sum_porcp180_c_aux)
+by prenda: egen sum_porcp210_c_aux=sum(porc_pagos) if dias_inicio<=220
+by prenda: egen sum_porcp210_c=max(sum_porcp210_c_aux)
+
+cap drop sum_porcp30_c_aux sum_porcp60_c_aux sum_porcp90_c_aux sum_porcp105_c_aux sum_porcp150_c_aux sum_porcp180_c_aux sum_porcp210_c_aux
+
 by prenda: egen sum_porc_int_c=max(sum_porc_int)
+by prenda: egen sum_porc105_int_c_aux=max(sum_porc_int) if dias_inicio<=110
+by prenda: egen sum_porc105_int_c=max(sum_porc105_int_c_aux) 
+by prenda: egen sum_porc210_int_c_aux=max(sum_porc_int) if dias_inicio<=220
+by prenda: egen sum_porc210_int_c=max(sum_porc210_int_c_aux) 
+
+cap drop sum_porc105_int_c_aux sum_porc210_int_c_aux
+
 by prenda: egen sum_porc_inc_int_c=max(sum_porc_inc_int)
 by prenda: egen sum_porc_inc_fee_c=max(sum_porc_inc_fee)
 by prenda: egen sum_porc_pay_fee_c=max(sum_porc_pay_fee)
+by prenda: egen sum_porc105_pay_fee_c_aux=max(sum_porc_pay_fee) if dias_inicio<=110
+by prenda: egen sum_porc105_pay_fee_c=max(sum_porc105_pay_fee_c_aux) 
+
+cap drop sum_porc105_pay_fee_c_aux
+
 by prenda: gen num_p=sum_np[_N]
 by prenda: gen num_v=sum_visit[_N]
 by prenda: egen dias_primer_pago = min(dpp)
@@ -554,7 +586,6 @@ label var des_i_c "Recovery"
 label var def_i_c "Default"
 label var ref_c "Refrendum"
 label var ref_90_c "Refrendum 90 days"
-label var abo_c "Payment to principal"
 label var sum_p_c "Cum (total) payments"
 label var sum_int_c "Cum (total) interest"
 label var sum_inc_int_c "Cum (total) incurred interest"
@@ -567,7 +598,12 @@ label var sum_porcp30_c "Percentage of payment (at 30 days)"
 label var sum_porcp60_c "Percentage of payment (at 60 days)"
 label var sum_porcp90_c "Percentage of payment (at 90 days)"
 label var sum_porcp105_c "Percentage of payment (at 105 days)"
+label var sum_porcp150_c "Percentage of payment (at 150 days)"
+label var sum_porcp180_c "Percentage of payment (at 180 days)"
+label var sum_porcp210_c "Percentage of payment (at 210 days)"
 label var sum_porc_int_c "Percentage of interest"
+label var sum_porc105_int_c "Percentage of interest (at 105 days)"
+label var sum_porc210_int_c "Percentage of interest (at 210 days)"
 label var sum_porc_inc_int_c "Percentage of incurred interest"
 label var sum_porc_inc_fee_c "Percentage of incurred fees"
 label var sum_porc_pay_fee_c "Percentage of payed fees"
@@ -646,6 +682,7 @@ merge m:1 prenda using `temp_emp', nogen
 *******************************************************************
 *Panel data
 save "$directorio/DB/Base_Boleta_230dias_Seguimiento_Ago2013_Grandota_2", replace
+use "$directorio/DB/Base_Boleta_230dias_Seguimiento_Ago2013_Grandota_2", clear
 
 *Only first visit
 preserve
@@ -656,14 +693,6 @@ restore
 gsort prenda fecha_inicial -fecha_movimiento clave_movimiento t_prod
 by prenda fecha_inicial : keep if _n==1
 
-*Elapsed days since treatment by treatment start date
-twoway (scatter dias_ultimo_mov fecha_inicial if !missing(prod) & des_i_c==1) ///
-	(scatter dias_ultimo_mov fecha_inicial if !missing(prod) & def_i_c==1) ///
-	(scatter dias_ultimo_mov fecha_inicial if !missing(prod) & des_i_c==0 & def_i_c==0) ///
-	 , ///
-	legend(order(1 "Recovery" 2 "Default" 3 "Not ended (Rollover)")) xtitle("Treatment date") ytitle("Elapsed days")
-
-
 *Drop outliers
 drop if prestamo_i>57000
 
@@ -672,5 +701,13 @@ save "$directorio/DB/Base_Boleta_230dias_Seguimiento_Ago2013_ByPrenda_2.dta", re
 	
 *Only first visit
 keep if visit_number==1
+
+*Elapsed days since treatment by treatment start date
+twoway (scatter dias_ultimo_mov fecha_inicial if inlist(t_prod,1,2,4) & des_i_c==1, yline(110 220) msymbol(Oh)) ///
+	(scatter dias_ultimo_mov fecha_inicial if inlist(t_prod,1,2,4) & def_i_c==1, msymbol(Oh)) ///
+	(scatter dias_ultimo_mov fecha_inicial if inlist(t_prod,1,2,4) & concluyo_c==0, msymbol(Oh)) ///
+	 , ///
+	legend(order(1 "Recovery" 2 "Default" 3 "Not ended (Rollover)")) xtitle("Treatment date") ytitle("Elapsed days")
+	
 save "$directorio/DB/Base_Boleta_230dias_Seguimiento_Ago2013_ByPrenda_2fv.dta", replace
 	

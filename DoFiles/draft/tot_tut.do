@@ -38,18 +38,12 @@ gen Z = 0 if t_prod==1
 replace Z = 1 if t_prod==2
 replace Z = 2 if t_prod==4
 
-gen x0 = -(t_prod==4)*(prod==4)
-gen x1 = (t_prod==4)*(prod==5)
-gen z0 = -(t_prod==1)
-gen z1 = (t_prod==2)
-gen z2 = (t_prod==4)
-
 
 ******** TOT-TUT-ATE ********
 *****************************
 
 eststo clear
-foreach var of varlist apr fc_admin des_c def_c ref_c {
+foreach var of varlist apr fc_admin def_c ref_c {
 
 		*ToT-TuT
 	eststo : tot_tut `var' Z choose_commitment ,  vce(cluster suc_x_dia)	

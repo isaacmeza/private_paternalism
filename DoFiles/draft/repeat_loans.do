@@ -25,10 +25,6 @@ use "$directorio/DB/Master.dta", clear
 
 *Ever pawns again conditional on repaying first pawn
 gen reincidence_des = !missing(days_second_pawns)  if first_pawn==1 & !missing(first_dias_des)
-*Ever pawns again conditional on not repaying first pawn
-gen reincidence_def = !missing(days_second_pawns)  if first_pawn==1 & missing(first_dias_des)
-
-
 
 *Ever pawns a different piece
 gen reincidence_other = !missing(days_second_pawns) & another_piece_second==1 if first_pawn==1
@@ -50,7 +46,7 @@ gen reincidence_br =  !missing(days_second_pawns) & (days_second_pawns<=90) if f
 
 eststo clear
 
-foreach var of varlist reincidence reincidence_des reincidence_def reincidence_other reincidence_ar reincidence_br days_second_pawns {
+foreach var of varlist reincidence reincidence_des reincidence_other reincidence_ar reincidence_br {
 	
 	eststo : reg `var' i.t_prod if inlist(t_prod,1,2,4), vce(cluster suc_x_dia)
 	su `var' if e(sample) & t_prod==1

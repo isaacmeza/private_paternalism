@@ -69,4 +69,80 @@
 \end{table}
 
 \end{landscape}
+
+
+
+
+
+\vspace{.2in}
+\begin{figure}[H]
+     \caption{Distribution of FC with imputation}
+    \label{fc_hist_imp}
+    \begin{center}
+    \begin{subfigure}{.45\textwidth}
+      \caption{FC (Ctrl = 0 Cmmtmnt = 0)}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/hist_fc_0_0.pdf}
+    \end{subfigure}
+     \begin{subfigure}{0.45\textwidth}
+    \caption{Effective APR (Ctrl = 0 Cmmtmnt = 0)}
+       \centering
+      \includegraphics[width=\textwidth]{Figuras/hist_apr_0_0.pdf}
+    \end{subfigure}
+   \begin{subfigure}{.45\textwidth}
+      \caption{FC (Ctrl = 0 Cmmtmnt = 1)}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/hist_fc_0_1.pdf}
+    \end{subfigure}
+     \begin{subfigure}{0.45\textwidth}
+    \caption{Effective APR (Ctrl = 0 Cmmtmnt = 1)}
+       \centering
+      \includegraphics[width=\textwidth]{Figuras/hist_apr_0_1.pdf}
+    \end{subfigure}
+   \begin{subfigure}{.45\textwidth}
+      \caption{FC (Ctrl = 1 Cmmtmnt = 0)}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/hist_fc_1_0.pdf}
+    \end{subfigure}
+     \begin{subfigure}{0.45\textwidth}
+    \caption{Effective APR (Ctrl = 1 Cmmtmnt = 0)}
+       \centering
+      \includegraphics[width=\textwidth]{Figuras/hist_apr_1_0.pdf}
+    \end{subfigure}
+   \begin{subfigure}{.45\textwidth}
+      \caption{FC (Ctrl = 1 Cmmtmnt = 1)}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/hist_fc_1_1.pdf}
+    \end{subfigure}
+     \begin{subfigure}{0.45\textwidth}
+    \caption{Effective APR (Ctrl = 1 Cmmtmnt = 1)}
+       \centering
+      \includegraphics[width=\textwidth]{Figuras/hist_apr_1_1.pdf}
+    \end{subfigure}    
+    \end{center}
+        
+\end{figure}
+
+
+\begin{table}[H]
+\caption{Main results without censoring }
+\label{mns}
+\begin{center}
+\scriptsize{\input{./Tables/censoring_imp.tex}}
+\end{center}
+ \scriptsize 
+%\textit{Do file: } \texttt{tot\_tut.do}
+\end{table}
+
+
+\begin{table}[H]
+\caption{ToT \& TuT with imputation}
+\label{mns}
+\begin{center}
+\scriptsize{\input{./Tables/tot_tut_imp.tex}}
+\end{center}
+ \scriptsize 
+%\textit{Do file: } \texttt{tot\_tut.do}
+\end{table}
+
 \end{document}

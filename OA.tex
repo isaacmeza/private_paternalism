@@ -220,6 +220,42 @@
 \newpage
 \subsection{Main treatment effects: Additional material}
 
+\begin{table}[H]
+\caption{Bounding censoring}
+\label{bounding_censoring}
+\begin{center}
+\resizebox{0.9\textwidth}{!}{
+\scriptsize{\input{./Tables/censoring_imp.tex}}
+}
+\end{center}
+ \scriptsize 
+%\textit{Do file: } \texttt{censoring_imp.do, censoring_imp_pr.do}
+\end{table}
+
+\begin{figure}[H]
+        \caption{Interpolation on bounding censoring}
+    \label{interpolation_censoring_imp}
+    \begin{center}
+   \begin{subfigure}{0.49\textwidth}
+   \caption{Significance area for Default }
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/frontera_sig_def_imp.pdf}
+    \end{subfigure} 
+   \begin{subfigure}{0.49\textwidth}
+   \caption{Significance area for APR}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/frontera_sig_apr.pdf}
+    \end{subfigure}     
+    \end{center}
+     \scriptsize  The next figure aims to answer the following question: For how many loans in the control arm can we impute recovery, and for how many in the treatment arm can we impute default and still have significance?
+     This figure shows exactly the boundary separating significance when we vary the percentage of imputed censored loans with recovery and default respectively for control and treatment. Each corner in the square will correspond to one of the panels from the Table \ref{bounding_censoring}. For instance, the origin is the best-case scenario (Panel C) and the point (100,100) (Panel D) is the worst-case scenario. Thus we can think of this graph as an `interpolation' from the four extreme cases. The `x' indicates the proportions imputed by the lasso-logit model, and the different lines correspond to setting different significance levels. 
+
+     %\textit{Do file: }  \texttt{interpolation_{censoring_imp.do}
+\end{figure}
+
+
+
+
 
 
 \begin{figure}[H]
@@ -734,6 +770,39 @@ and the RHS is a function of observed data only.
 \subsection{Causal Random Forest and HTE}
 
 \vspace{.3in}
+
+
+
+\begin{figure}[H]
+     \caption{Heterogeneous Treatment Effects}
+    \label{heterogeneous_effects}
+    \begin{center}
+    \begin{subfigure}{.45\textwidth}
+      \caption{Financial cost (in MXN)}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/he_dist_fc_admin_pro_2.pdf}
+    \end{subfigure}
+     \begin{subfigure}{0.45\textwidth}
+    \caption{Effective APR}
+       \centering
+      \includegraphics[width=\textwidth]{Figuras/he_dist_apr_pro_2.pdf}
+    \end{subfigure}
+     \begin{subfigure}{0.45\textwidth}
+    \caption{Default}
+       \centering
+      \includegraphics[width=\textwidth]{Figuras/he_dist_def_c_pro_2.pdf}
+    \end{subfigure}  
+     \begin{subfigure}{0.45\textwidth}
+    \caption{Recovery}
+       \centering
+      \includegraphics[width=\textwidth]{Figuras/he_dist_des_c_pro_2.pdf}
+    \end{subfigure}      
+    \end{center}
+         \scriptsize
+     plots the distribution of the heterogeneous treatment effects on financial cost, estimated using \cite{atheygrf}.
+  %\footnotesize{ } \textit{Do file: }  \texttt{analyze\_grf\_single\_arm.do}
+\end{figure}
+
 \begin{figure}[H]
         \caption{Honest causal tree for the Forced-commitment contract heterogeneous treatment effects}
     \label{casual_tree}
@@ -949,7 +1018,7 @@ We use \cite{atheygrf} \texttt{causal\_forest} of the \texttt{grf} library in $R
 % APPENDIX B
 
 
-\section{Mechanisms }
+\section{ Mechanisms }
 
 
 \subsection{Optimism, Over-Optimism, and the Failure of Self-Commitment}
