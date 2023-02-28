@@ -1,0 +1,67 @@
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%
+% Usual LaTeX Packages %
+%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{pdfpages}
+\usepackage{amsmath}
+\usepackage{amscd}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{mathrsfs} 			% For Weinberg-esque letters
+\usepackage{cancel}				% For "SUSY-breaking" symbol
+\usepackage{slashed}            % for slashed characters in math mode
+\usepackage{bbm}                % for \mathbbm{1} (unit matrix)
+\usepackage{dsfont}
+\usepackage{amsthm}				% For theorem environment
+\usepackage{multirow}			% For multi row cells in table
+\usepackage{arydshln} 			% For dashed lines in arrays and tables
+\usepackage{multirow}
+\usepackage{multicol}
+\usepackage{bigstrut}
+\usepackage{setspace}
+\usepackage{endnotes}
+\usepackage{etex}
+\usepackage{lmodern}
+\usepackage{booktabs}
+\usepackage{graphics}
+\usepackage[flushleft]{threeparttable}
+%\usepackage{enumitem}
+%\setlist[itemize]{itemsep=2mm}
+\usepackage{array}
+\usepackage{color}
+\usepackage{colortbl}
+\usepackage{hyperref}
+\usepackage{ifplatform}
+\usepackage{dcolumn}
+\usepackage{threeparttable}
+\usepackage{hyperref}
+\usepackage{tabularx}
+\usepackage{soul}
+\usepackage{ulem}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{appendixnumberbeamer}
+\usepackage{xcolor}
+\def\boxit#1{%
+  \smash{\color{red}\fboxrule=1pt\relax\fboxsep=2pt\relax%
+  \llap{\rlap{\fbox{\vphantom{0}\makebox[#1]{}}}~}}\ignorespaces
+}
+
+% Code for Hiding Columns in Tables
+\newcolumntype{H}{>{\setbox0=\hbox\bgroup}c<{\egroup}@{}}
+
+
+\graphicspath{{images/}}	% Put all images in this directory. Avoids clutter.
+
+
+
+
+
+% BIBLIOGRAPHY (OPTION: BIBLATEX) ===========================================
+\usepackage{csquotes}
+\usepackage[natbib = true, backend = biber, style  = authoryear-icomp]{biblatex}
+\addbibresource{References.bib}
+

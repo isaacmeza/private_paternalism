@@ -8,8 +8,9 @@ version 17.0
 * Author:	Isaac M
 * Machine:	Isaac M 											
 * Date of creation:	-
-* Last date of modification: February. 17, 2022
+* Last date of modification: January. 26, 2023
 * Modifications: Added conditional on default outcomes
+	- Set final 'mechanism' variables
 * Files used:     
 		- 
 * Files created:  

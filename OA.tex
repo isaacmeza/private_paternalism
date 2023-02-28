@@ -367,7 +367,7 @@ This table does two things. First, it tests whether the observed empirical distr
 %\textit{Do file: } \texttt{stoch\_dominance.do}
 \end{table}
 
-
+\newpage
 \vspace{.2in}
 \begin{prop}
 \label{lognormal_fosd}
@@ -387,7 +387,6 @@ See Theorem 4 in \cite{lognormal_dominance}.
 }
 \end{proof}
 
-\newpage
 
 \vspace{.1in}
 \begin{prop}
@@ -424,8 +423,14 @@ Note the proof was done in the case of absolutely continuous and strictly increa
 
 \newpage
 
+\normalsize
+\linespread{1.25}
+%Really force it to normal size and linespread
+\normalsize
+\linespread{1.25}
 
 \subsection{Testing for heterogeneity}
+\label{append:chernozhukov}
 Our approach relies on the following simple observation: if $\Delta_i$ is constant across $i$ then we must have 
 \[
 \text{ATE}(X_i) \equiv \mathbbm{E}[\Delta_i |X_i] = \mathbbm{E}[\Delta_i] \equiv \text{ATE}
@@ -468,22 +473,24 @@ If treatment effects are homogeneous we must have $\beta_2 = 0$. Rejecting this 
 \newpage
 
 \subsection{Derivations for Section \ref{sec:randchoice}}
+\label{append:randchoice}
 
 
 This appendix provides formal proofs of the results described in Section \ref{sec:randchoice}, using the notation and assumptions described in Section \ref{sec:potentialOutcomes}. To simplify the presentation, we omit $i$ subscripts throughout this section.
 The following assumption collects our exclusion restriction and the key features of our experimental design.
 
 \begin{assumption}\mbox{}
+\label{assump:randchoice}
    \begin{enumerate}[(i)]
    \item $Z$ is independent of $(Y_{0}, Y_{1}, C)$
    \item $D = \mathbbm{1}(Z \neq 2)Z + \mathbbm{1}(Z = 2)C$
    \item $Y = \mathbbm{1}(Z = 0) Y_{0} + \mathbbm{1}(Z = 1) Y_{1} + \mathbbm{1}(Z = 2) [ (1 - C) Y_{0} + C Y_{1}]$
    \end{enumerate}
-   \label{assump:randchoice}
 \end{assumption}
 
 
 \begin{lem}\mbox{}
+\label{lem_randchoice}
    \begin{enumerate}[(i)]
        \item $\mathbbm{E}(D|Z=2) = \mathbb{P}(C=1)$
        \item $\mathbbm{E}(Y|Z=0) = \mathbbm{E}(Y_0)$
@@ -491,7 +498,6 @@ The following assumption collects our exclusion restriction and the key features
        \item $\mathbbm{E}(Y|D=0,Z=2) = \mathbbm{E}(Y_0|C=0)$
        \item $\mathbbm{E}(Y|D=1,Z=2) = \mathbbm{E}(Y_1|C=1)$
    \end{enumerate} 
-   \label{lem:randchoice}
 \end{lem}
 
 \begin{proof}
@@ -521,28 +527,28 @@ establishing part (v).
 
 \begin{proof}
 For parts (i) and (iii) we require an expression for $\mathbbm{E}(Y_0|C=1)$ in terms of the observables $(Y, D, Z)$.
-By Lemma \ref{lem:randchoice}(ii) and iterated expectations
+By Lemma \ref{lem_randchoice}(ii) and iterated expectations 
 \[
 \mathbbm{E}(Y|Z=0) = \mathbbm{E}(Y_0) = \mathbbm{E}(Y_0|C=0) \mathbbm{P}(C=0) + \mathbbm{E}(Y_0|C=1) \mathbbm{P}(C=1).
 \]
-Re-arranging and substituting Lemma \ref{lem:randchoice}(i) and (iv),
+Re-arranging and substituting Lemma \ref{lem_randchoice}(i) and (iv),
 \begin{equation}
 \mathbbm{E}(Y_0|C=1)  = \frac{\mathbbm{E}(Y|Z=0) - \mathbbm{E}(Y_0|C=0) \mathbbm{P}(C=0)}{\mathbbm{P}(C=1)} =  \frac{\mathbbm{E}(Y|Z=0) - \mathbbm{E}(Y|Z=2,D=0) \mathbbm{E}(1 - D|Z=2)}{\mathbbm{E}(D|Z=2)}.
 \label{eq:Y0C1}
 \end{equation}
-Part (i) follows by combining \eqref{eq:Y0C1} with Lemma \ref{lem:randchoice}(v) and simplifying; part (iii) follows by combining \eqref{eq:Y0C1} with Lemma \ref{lem:randchoice}(iv) and simplifying.
+Part (i) follows by combining \eqref{eq:Y0C1} with Lemma \ref{lem_randchoice}(v) and simplifying; part (iii) follows by combining \eqref{eq:Y0C1} with Lemma \ref{lem_randchoice}(iv) and simplifying.
 Similarly, for parts (ii) and (iv) we require an expression for $\mathbbm{E}(Y_1|C=0)$ in terms of observables.
-By Lemma \ref{lem:randchoice}(iii) and iterated expectations,
+By Lemma \ref{lem_randchoice}(iii) and iterated expectations,
 \[
 \mathbbm{E}(Y|Z=1) = \mathbbm{E}(Y_1) = \mathbbm{E}(Y_1|C=0)\mathbbm{P}(C=0) + \mathbbm{E}(Y_1|C=1) \mathbbm{P}(C=1).
 \]
-Re-arranging and substituting Lemma \ref{lem:randchoice}(i) and (v),
+Re-arranging and substituting Lemma \ref{lem_randchoice}(i) and (v),
 \begin{equation}
 \mathbbm{E}(Y_1|C=0) 
 = \frac{\mathbbm{E}(Y|Z=1) - \mathbbm{E}(Y_1|C=1)\mathbbm{P}(C=1)}{\mathbb{P}(D=0)} =\frac{\mathbbm{E}(Y|Z=1) - \mathbbm{E}(Y|Z=2,D=1)\mathbbm{E}(D|Z=2)}{\mathbb{E}(1-D|Z=2)}.
 \label{eq:Y1C0}
 \end{equation}
-Part (ii) follows by combining \eqref{eq:Y1C0} with Lemma \ref{lem:randchoice}(iv) and simplifying; part (iv) follows by combining \eqref{eq:Y1C0} with Lemma \ref{lem:randchoice}(v) and simplifying.
+Part (ii) follows by combining \eqref{eq:Y1C0} with Lemma \ref{lem_randchoice}(iv) and simplifying; part (iv) follows by combining \eqref{eq:Y1C0} with Lemma \ref{lem_randchoice}(v) and simplifying.
 \end{proof}
 
 %\begin{proof}
@@ -550,12 +556,12 @@ Part (ii) follows by combining \eqref{eq:Y1C0} with Lemma \ref{lem:randchoice}(i
 %\[
 %\mathbbm{E}(Y|Z=0) = \mathbbm{E}(Y_0) = \mathbbm{E}(Y_0|C=0) \mathbbm{P}(C=0) + \mathbbm{E}(Y_0|C=1) \mathbbm{P}(C=1)
 %\]
-%by Lemma \ref{lem:randchoice}(ii) and iterated expectations.
+%by Lemma \ref{lem_randchoice}(ii) and iterated expectations.
 %Re-arranging, 
 %\[
 %\mathbbm{E}(Y_0|C=1) = \frac{\mathbbm{E}(Y|Z=0) - \mathbbm{E}(Y_0|C=0) \mathbbm{P}(C=0)}{\mathbbm{P}(C=1)}.
 %\]
-%Therefore, by Lemma \ref{lem:randchoice} (i) and (iv)
+%Therefore, by Lemma \ref{lem_randchoice} (i) and (iv)
 %\begin{align*}
 %\mathbbm{E}(Y_0|C=1) - \mathbbm{E}(Y_0|C=0) &= \frac{\mathbbm{E}(Y|Z=0) - \mathbbm{E}(Y|Z=2,D=0) \mathbbm{E}(1 - D|Z=2)}{\mathbbm{E}(D|Z=2)} - \mathbbm{E}(Y|Z=2, D=0)\\
 %&= \frac{\mathbbm{E}(Y|Z=0) - \mathbbm{E}(Y|Z=2,D=0)}{\mathbbm{E}(D|Z=2)}.
@@ -565,12 +571,12 @@ Part (ii) follows by combining \eqref{eq:Y1C0} with Lemma \ref{lem:randchoice}(i
 %\[
 %\mathbbm{E}(Y|Z=1) = \mathbbm{E}(Y_1) = \mathbbm{E}(Y_1|C=0)\mathbbm{P}(C=0) + \mathbbm{E}(Y_1|C=1) \mathbbm{P}(C=1)
 %\]
-%by Lemma \ref{lem:randchoice}(iii) and iterated expectations.
+%by Lemma \ref{lem_randchoice}(iii) and iterated expectations.
 %Rearranging,
 %\[
 %\mathbbm{E}(Y_1|C=0) = \frac{\mathbbm{E}(Y|Z=1) - \mathbbm{E}(Y_1|C=1)\mathbbm{P}(C=1)}{\mathbb{P}(C=0)}.
 %\]
-%Therefore, by Lemma \ref{lem:randchoice} (i) and (v),
+%Therefore, by Lemma \ref{lem_randchoice} (i) and (v),
 %\begin{align*}
 %\mathbbm{E}(Y_1|C=1) - \mathbbm{E}(Y_1|C=0) &= \mathbbm{E}(Y|Z=2, D=1) - \frac{\mathbbm{E}(Y|Z=1) - \mathbbm{E}(Y|Z=2, D=1)\mathbbm{E}(D|Z=2)}{\mathbb{P}(C=0)} \\
 %&= \frac{\mathbbm{E}(Y|Z=2,D=1) - \mathbbm{E}(Y|Z=1)}{1 - \mathbbm{E}(D|Z=2)}.
@@ -579,26 +585,90 @@ Part (ii) follows by combining \eqref{eq:Y1C0} with Lemma \ref{lem:randchoice}(i
 
 \newpage
 
-\subsection{Bounding ToT \& TuT} \label{bound_tot_tut_appendix}
+\subsection{Testable Implications of the Exclusion Restriction}
+\label{append:exclusion}
 
-\vspace{.2in}
 \normalsize
 \linespread{1.25}
 %Really force it to normal size and linespread
 \normalsize
 \linespread{1.25}
 
-Even without the exclusion restriction, it’s possible to bound $\mathbb{E}[Y_1-Y_0\;|\;T=0]$ and $\mathbb{E}[Y_1-Y_0\;|\;T=1]$ using observed outcomes in the forced arm and observed take-up in the choice arm. It should also be possible to create bounds conditional on covariates. The basic approach is similar to that of \cite{huber_mellace}. \\
+This section describes the testable implications of our exclusion restrictions: \eqref{eq:exclusion0} and \eqref{eq:exclusion1} from Section \ref{sec:potentialOutcomes}. 
+To consider possible violations of these conditions, it is helpful to introduce some additional notation.
+As in the body of the text, let $Y_0 \equiv Y(d=0,z=0)$ and $Y_1 \equiv Y(d=1,z=1)$ denote the potential outcomes under \emph{forced treatment}: $Y_0$ is the potential outcome when forced into the status quo contract and $Y_1$ when forced into the commitment contract. 
+Further let $Y_{0,2} \equiv Y(d=0,z=2)$ and $Y_{1,2} \equiv Y(d=1,z=2)$ denote the potential outcomes under \emph{free choice of treatment}: $Y_{0,2}$ is the potential outcome when choosing the status quo contract and $Y_{1,2}$ when choosing the commitment contract. 
+Using this notation, \eqref{eq:exclusion0} becomes $Y_0 = Y_{0,2}$ and while \eqref{eq:exclusion1} becomes $Y_1 = Y_{1,2}$.
+If we do not impose this pair of equalities, part (iii) of Assumption \ref{assump:randchoice} becomes 
+\[
+Y = \mathbbm{1}(Z =0) Y_{0} + \mathbbm{1}(Z = 1)  Y_{1}  + \mathbbm{1}(Z = 2) \left[(1 - C) Y_{0,2} + C Y_{1,2} \right]
+\]
+but parts (i) and (ii) continue to hold.
+Accordingly, parts (i)--(iii) of \ref{lem_randchoice} are unchanged, while parts (iv) and (v) become
+\[
+\mathbbm{E}(Y|D=0,Z=2) = \mathbbm{E}(Y_{0,2}|C=0), \quad
+\mathbbm{E}(Y|D=1,Z=2) = \mathbbm{E}(Y_{0,1}|C=1).
+\]
+Using these expressions, the testable restrictions we consider here are 
+\[
+\mathbbm{E}(Y_0|C=0) = \mathbbm{E}(Y_{0,2}|C=0) \text{ and } \mathbbm{E}(Y_1|C=1) = \mathbbm{E}(Y_{1,2}|C=1).
+\]
+\todo[inline]{Need to talk about how why these are restrictions for choosers and non-choosers respectively. It's because they're the only people we can observe in the relevant $Y{d,2}$ state.}
+
+Because our approach is closely related to that of \cite{huber_mellace}, the following is a heuristic explanation rather than a fully-rigorous proof. 
+
+To begin, define the shorthand $p \equiv \mathbbm{E}(C=1) = \mathbbm{P}(D=1|Z=2)$.
+Because $Z$ was randomly assigned, a fraction $p$ of participants with $Z = 1$ have $C = 1$ and the distribution of $Y|Z=1$ is a mixture of $Y_1|C=1$ and $Y_1|C=0$ with mixing weights $p$ and $1 -p$.
+The participants with $C = 1$ must lie \emph{somewhere} in the distribution of $Y_0|Z=1$ so consider the two most extreme cases: they could occupy the bottom or the top $p\times 100\%$ of the distribution. 
+It follows that
+\[
+\mathbbm{E}(Y|Z=1,Y\leq y^1_{p}) \leq \mathbbm{E}(Y_1|C=1) \leq \mathbbm{E}(Y|Z=1,Y \geq y^1_{1-p})
+\]
+where $y^1_p$ and $y^1_{1-p}$ are the $p$ and $1 - p$ quantiles of the distribution of $Y_1$.
+These quantiles are point identified since $Y|Z=1$ has the same distribution as $Y_1$ under random assignment of $Z$.
+If $Y_{1,2} = Y_1$ then it follows that $\mathbbm{E}(Y|D=1,Z=2) = \mathbbm{E}(Y_1|C=1)$ yielding the bounds
+\[
+\mathbbm{E}(Y|Z=1,Y\leq y^1_{p}) \leq \mathbbm{E}(Y|D=1,Z=2) \leq \mathbbm{E}(Y|Z=1,Y \geq y^1_{1-p}).
+\]
+If either of these is violated, the exclusion restriction does not hold.
+
+\todo[inline]{Update from here down.}
+\[
+\mathbbm{E}(Y|Z=1,Y\leq ?) \leq \mathbbm{E}(Y|D=1,Z=2) \leq \mathbbm{E}(Y|Z=1,Y \geq ?)
+\]
+\[
+\mathbbm{E}(Y|Z=0,Y\leq ?) \leq \mathbbm{E}(Y|D=0,Z=2) \leq \mathbbm{E}(Y|Z=0,Y \geq ?)
+\]
+
+If $Y_1 = Y_{1,2}$ then $\mathbbm{E}(Y|D=1, Z=2)$ point identifies $\mathbbm{E}(Y_1|C=1)$.
 
 
-From the $Z=0$ arm we identify the distribution $F_0$ of $Y_0$, the potential outcome when forced into the no-commitment contract. Now, from the choice arm we know that around 90\% of people are $T=0$ types. Because choice was randomly assigned, the 90\% figure holds for all arms in the experiment. This tells us that $F_0$ is a 90\%-10\% mixture of $Y_0\;|\;T=0$ and $Y_0\;|\;T=1$. Cut out the bottom 10\% of $F_0$ and calculate the mean of this new distribution. Then cut out the top 10\% of $F_0$ and compute the mean of this new distribution. The result is an upper and lower bound for $\mathbb{E}[Y_0\;|\;T=0]$ that does not rely on the exclusion restriction. We can apply similar reasoning to bound $\mathbb{E}[Y_1\;|\;T=0]$ Combining the previous bounds gives a bound for the TuT that does not rely on the exclusion restriction, and analogous we can bound the ToT. \\
+$D = 1, Z=2$ means $C = 1$; $D = 0, Z=2$ means $C = 0$; 
+
+\todo[inline]{Update below here}
+Because the basic approach is similar to that of \cite{huber_mellace}, we give only a heuristic explanation here rather than a formal proof.
+
+In the absence of the exclusion restriction, the $Z=0$ arm of the experiment point identifies the distribution $F_{00}$ of $Y(d=0,z=0)$.
+This is a person's potential outcome when \emph{forced} into the no-commitment contract.
+Similarly, the $Z=1$ arm point identifies the distribution $F_{11}$ of $Y(d=1,z=0)$, the potential outcome when forced into the commitment contract.
+The $Z = 2$ arm point identifies $p_C \equiv \mathbbm{E}(C)$, the share of individuals who \emph{would choose commitment}, given the option.
+
+Because $Z$ is randomly assigned, $p_C = \mathbbm{E}(C) = \mathbbm{E}(C|Z=z)$ for any arm $z\in \{0, 1, 2\}$ of the experiment.
+This tells us that $F_{00}$ is a mixture distribution: a $p_C$ 
+
+\todo[inline]{Finish cleaning this up later...}
+This observation is useful for two reasons. First it allows us to bound the TuT and ToT effects without imposing the exclusion restriction.
+Second, by checking whether the TuT and ToT effects calculated under our exclusion restriction lie within the bounds, it allows us to potentially falsify \hl{XXXX}. 
+
+Now, from the choice arm we know that around 90\% of people are $T=0$ types. Because choice was randomly assigned, the 90\% figure holds for all arms in the experiment. This tells us that $F_0$ is a 90\%-10\% mixture of $Y_0\;|\;T=0$ and $Y_0\;|\;T=1$. Cut out the bottom 10\% of $F_0$ and calculate the mean of this new distribution. Then cut out the top 10\% of $F_0$ and compute the mean of this new distribution. The result is an upper and lower bound for $\mathbb{E}[Y_0\;|\;T=0]$ that does not rely on the exclusion restriction. We can apply similar reasoning to bound $\mathbb{E}[Y_1\;|\;T=0]$ Combining the previous bounds gives a bound for the TuT that does not rely on the exclusion restriction, and analogous we can bound the ToT. \\
 
 
 
+\todo[inline]{Presumably the numerical results and sentence that follows it need to be updated now that we've changed how we deal with censoring etc, yes? Which outcome are we looking at here} 
 The \cite{huber_mellace} bounds for the ToT \& TuT APR are respectively:
 \[\text{ToT} : [-481.8, 483.7]\quad\quad\quad\text{TuT} : [-17.9, 90.6]\]
 
-Note that since both TuT and ToT estimates from the LATE approach lies inside these bounds, we do not falsify the exclusion restriction. 
+Because the Note that since both TuT and ToT estimates from the LATE approach lies inside these bounds, we do not falsify the exclusion restriction. 
 
 
 \newpage

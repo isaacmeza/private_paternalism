@@ -46,7 +46,7 @@ gen reincidence_br =  !missing(days_second_pawns) & (days_second_pawns<=90) if f
 
 eststo clear
 
-foreach var of varlist reincidence reincidence_des reincidence_other reincidence_ar reincidence_br {
+foreach var of varlist reincidence reincidence_ar reincidence_br  reincidence_other reincidence_des {
 	
 	eststo : reg `var' i.t_prod if inlist(t_prod,1,2,4), vce(cluster suc_x_dia)
 	su `var' if e(sample) & t_prod==1
