@@ -8,8 +8,9 @@ version 17.0
 * Author:	Isaac M
 * Machine:	Isaac M 											
 * Date of creation:	-
-* Last date of modification: Sept. 26, 2022
+* Last date of modification: Feb. 28, 2023
 * Modifications: Redefinition of main outcomes.
+	- Prediction of confidence & OC
 * Files used:     
 		- 
 * Files created:  
@@ -202,7 +203,67 @@ foreach var of varlist dow suc  {
 
 drop num_arms_d1 visit_number_d1 dummy_dow1 dummy_suc1
 
+*Overconfidence (manually fitted)
+cap drop esample
+gen esample = .
+
+*Partition according to observed covariates
+reg des_i_c prestamo_i val_pren i.prenda_tipo genero edad masqueprepa pres_antes plan_gasto ahorros cta_tanda tent rec_cel faltas pb
+replace esample = 1 if e(sample)
+reg des_i_c prestamo_i val_pren i.prenda_tipo genero edad masqueprepa pres_antes plan_gasto tent  if missing(esample)
+replace esample = 2 if e(sample)
+reg des_i_c prestamo_i val_pren i.prenda_tipo genero masqueprepa pres_antes if missing(esample)
+replace esample = 3 if e(sample)
+reg des_i_c prestamo_i val_pren i.prenda_tipo genero if missing(esample)
+replace esample = 4 if e(sample)
+reg des_i_c prestamo_i val_pren i.prenda_tipo  if missing(esample)
+replace esample = 5 if e(sample)
+reg des_i_c prestamo_i val_pren  genero edad masqueprepa pres_antes plan_gasto tent  if missing(esample)
+replace esample = 6 if e(sample)
+reg des_i_c prestamo_i val_pren  genero edad  if missing(esample)
+replace esample = 7 if e(sample)
+reg des_i_c prestamo_i val_pren genero if missing(esample)
+replace esample = 8 if e(sample)
+reg des_i_c prestamo_i val_pren  if missing(esample)
+replace esample = 9 if e(sample)
+
+
+lasso logit des_i_c prestamo_i val_pren i.prenda_tipo genero edad masqueprepa pres_antes plan_gasto ahorros cta_tanda tent rec_cel faltas pb if esample==1 & t_prod==1, selection(cv, alllambdas) stop(0) grid(1000, ratio(1e-6)) rseed(1)
+predict pr_confidence_1 if esample==1 & inlist(t_prod,1,2,4)
+
+lasso logit des_i_c prestamo_i val_pren i.prenda_tipo genero edad masqueprepa pres_antes plan_gasto tent  if esample==2 & t_prod==1, selection(cv, alllambdas) stop(0) grid(1000, ratio(1e-6)) rseed(1)
+predict pr_confidence_2 if esample==2 & inlist(t_prod,1,2,4)
+
+lasso logit des_i_c prestamo_i val_pren i.prenda_tipo genero masqueprepa pres_antes if esample==3 & t_prod==1, selection(cv, alllambdas) stop(0) grid(1000, ratio(1e-6)) rseed(1)
+predict pr_confidence_3 if esample==3 & inlist(t_prod,1,2,4)
+
+lasso logit des_i_c prestamo_i val_pren i.prenda_tipo genero if esample==4 & t_prod==1, selection(cv, alllambdas) stop(0) grid(1000, ratio(1e-6)) rseed(1)
+predict pr_confidence_4 if esample==4 & inlist(t_prod,1,2,4)
+
+lasso logit des_i_c prestamo_i val_pren i.prenda_tipo if esample==5 & t_prod==1, selection(cv, alllambdas) stop(0) grid(1000, ratio(1e-6)) rseed(1)
+predict pr_confidence_5 if esample==5 & inlist(t_prod,1,2,4)
+
+lasso logit des_i_c prestamo_i val_pren  genero edad masqueprepa pres_antes plan_gasto tent if esample==6 & t_prod==1, selection(cv, alllambdas) stop(0) grid(1000, ratio(1e-6)) rseed(1)
+predict pr_confidence_6 if esample==6 & inlist(t_prod,1,2,4)
+
+lasso logit des_i_c prestamo_i val_pren  genero edad if esample==7 & t_prod==1, selection(cv, alllambdas) stop(0) grid(1000, ratio(1e-6)) rseed(1)
+predict pr_confidence_7 if esample==7 & inlist(t_prod,1,2,4)
+
+lasso logit des_i_c prestamo_i val_pren genero if esample==8 & t_prod==1, selection(cv, alllambdas) stop(0) grid(1000, ratio(1e-6)) rseed(1)
+predict pr_confidence_8 if esample==8 & inlist(t_prod,1,2,4)
+
+lasso logit des_i_c prestamo_i val_pren if esample==9 & t_prod==1, selection(cv, alllambdas) stop(0) grid(1000, ratio(1e-6)) rseed(1)
+predict pr_confidence_9 if esample==9 & inlist(t_prod,1,2,4)
+
+drop esample
+
+*Confidence prediction
+egen pr_confidence = rowtotal(pr_confidence_*) if inlist(t_prod,1,2,4)
 *Overconfidence
+gen OC = (pr_recup>pr_confidence*100) if inlist(t_prod,1,2,4) & !missing(pr_recup)
+gen cont_OC = pr_recup-pr_confidence*100 if inlist(t_prod,1,2,4) & !missing(pr_recup)
+
+
 	*Cross-validation LASSO
 cvlasso des_i_c prenda_tipo val_pren prestamo_i genero edad educacion pres_antes ///
 	plan_gasto ahorros cta_tanda tent rec_cel faltas , lopt seed(823) 
@@ -218,8 +279,8 @@ logit des_i_c `regressors'
 predict pr_prob
 replace pr_prob = pr_prob*100
 *Overconfident
-gen OC = (pr_recup>pr_prob) if (!missing(pr_recup) & !missing(pr_prob))
-gen cont_OC = pr_recup-pr_prob if (!missing(pr_recup) & !missing(pr_prob))
+gen OC_old = (pr_recup>pr_prob) if (!missing(pr_recup) & !missing(pr_prob))
+gen cont_OC_old = pr_recup-pr_prob if (!missing(pr_recup) & !missing(pr_prob))
 
 compress
 

@@ -87,7 +87,7 @@ foreach var of varlist apr des_c def_c fc_admin {
 
 
 *Save results	
-esttab using "$directorio/Tables/reg_results/tot_tut.csv", se r2 ${star} b(a2) ///
+esttab using "$directorio/Tables/reg_results/tot_tut_gmm.csv", se r2 ${star} b(a2) ///
 		scalars("ContrMean Control Mean"  ///
 		"ate_tut $H_0 : ATE-TuT=0$" ///
 		"ate_tot $H_0 : ATE-ToT=0$" ///
