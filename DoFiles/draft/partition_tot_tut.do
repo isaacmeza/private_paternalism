@@ -42,15 +42,15 @@ gen distressed = (f_estres==1)*(r_estress==1) if !missing(f_estres) & !missing(r
 gen tentacion = (tempt==3) if !missing(tempt)
 	
 
-matrix behavioral_te = J(11*2,8,.)
-matrix prob_weights = J(11*2,4,.)
-matrix prob_take = J(11*2,3,.)
+matrix behavioral_te = J(2*2,8,.)
+matrix prob_weights = J(2*2,4,.)
+matrix prob_take = J(2*2,3,.)
 
 local k = 1
 local j = 1
 
 
-foreach var of varlist pb confidence_100  confidence_50 genero fam_pide plan_gasto  ahorros otra_prenda cta_tanda distressed tentacion {
+foreach var of varlist  confidence_100  pb {
 	
 	reg choose_commitment `var', r 
 	local df = e(df_r)
@@ -104,7 +104,7 @@ svmat prob_take
 
 rename (behavioral_te2 behavioral_te5 prob_take2) (behavioral_te1_se behavioral_te4_se prob_take1_se)
 
-label define behavioral_var 1 "P.B." 2 "Sure-confidence" 3 "Half-confidence" 4 "Woman" 5 "Fam. asks" 6 "Makes budget" 7 "Savings" 8 "Extra pawn" 9 "ROSCA" 10 "Distressed" 11 "Tempted"
+label define behavioral_var   1 "Sure-confidence" 2 "P.B." 
 label values behavioral_te8 behavioral_var
 
 
@@ -150,18 +150,6 @@ gen sig_10_1 = behavioral_te11 + sign(behavioral_te11)*0.15 if behavioral_te31<0
 
 
 *TOT----------------------------------------------------------------------------
-twoway (bar behavioral_te10  indx_impar if behavioral_te30<0.1, horizontal) (bar behavioral_te11  indx_par if behavioral_te31<0.1, horizontal) ///
-	(bar behavioral_te10  indx_impar, horizontal fcolor("31 119 180%20")) (bar behavioral_te11  indx_par, horizontal fcolor("255 127 14%20")) ///
-	(scatter indx_impar sig_1_0, color(black) msymbol(x) mlwidth(medthick) msize(large)) ///
-	(scatter indx_impar sig_5_0, color(black) msymbol(x) mlwidth(medthick) msize(large)) ///
-	(scatter indx_impar sig_10_0, color(black) msymbol(x) mlwidth(medthick) msize(large)) ///	
-	(scatter indx_par sig_1_1, color(black) msymbol(x) mlwidth(medthick) msize(large)) ///
-	(scatter indx_par sig_5_1, color(black) msymbol(x) mlwidth(medthick) msize(large)) ///
-	(scatter indx_par sig_10_1, color(black) msymbol(x) mlwidth(medthick) msize(large)) ///	
-	(scatter indx_impar prob_weights30, msymbol(Oh) color(gs4%90) mlwidth(medthick) msize(vsmall)) (scatter indx_par prob_weights31, msymbol(Oh) color(gs4%90) mlwidth(medthick) msize(vsmall) ), xline(0, lpattern(solid) lwidth(medthick)) ylabel(3 "P.B." 7 "Sure confidence" 11 "Half-confidence" 15 "Woman" 19 "Fam. asks" 23 "Makes budget" 27 "Savings" 31 "Extra pawn" 35 "ROSCA" 39 "Distressed" 43 "Tempted") legend(order(1 "=0" 2 "=1") pos(6) rows(1))	
-graph export "$directorio/Figuras/tot_beh_partition_pr.pdf", replace
-	
-	
 drop sig_*	
 gen sig_1_0 = behavioural_tot_weighted_e0 + sign(behavioural_tot_weighted_e0)*0.10 if behavioral_te30<0.01
 gen sig_5_0 = behavioural_tot_weighted_e0 + sign(behavioural_tot_weighted_e0)*0.125 if behavioral_te30<0.05
@@ -172,40 +160,18 @@ gen sig_5_1 = behavioural_tot_weighted_e1 + sign(behavioural_tot_weighted_e1)*0.
 gen sig_10_1 = behavioural_tot_weighted_e1 + sign(behavioural_tot_weighted_e1)*0.15 if behavioral_te31<0.1
 
 
-twoway (bar behavioural_tot_weighted_e0  indx_impar if behavioral_te30<0.1, horizontal) (bar behavioural_tot_weighted_e1  indx_par if behavioral_te31<0.1, horizontal) ///
-	(bar behavioural_tot_weighted_e0  indx_impar, horizontal fcolor("31 119 180%20")) (bar behavioural_tot_weighted_e1  indx_par, horizontal fcolor("255 127 14%20")) ///
+twoway (bar behavioural_tot_weighted_e0  indx_impar, horizontal) (bar behavioural_tot_weighted_e1  indx_par, horizontal) ///
 	(scatter indx_impar sig_1_0, color(black) msymbol(x) mlwidth(medthick) msize(large)) ///
 	(scatter indx_impar sig_5_0, color(black) msymbol(x) mlwidth(medthick) msize(large)) ///
 	(scatter indx_impar sig_10_0, color(black) msymbol(x) mlwidth(medthick) msize(large)) ///	
 	(scatter indx_par sig_1_1, color(black) msymbol(x) mlwidth(medthick) msize(large)) ///
 	(scatter indx_par sig_5_1, color(black) msymbol(x) mlwidth(medthick) msize(large)) ///
 	(scatter indx_par sig_10_1, color(black) msymbol(x) mlwidth(medthick) msize(large)) ///	
-	, xline(0, lpattern(solid) lwidth(medthick)) ylabel(3 "P.B." 7 "Sure confidence" 11 "Half-confidence" 15 "Woman" 19 "Fam. asks" 23 "Makes budget" 27 "Savings" 31 "Extra pawn" 35 "ROSCA" 39 "Distressed" 43 "Tempted") legend(order(1 "=0" 2 "=1") pos(6) rows(1))
+	, xline(0, lpattern(solid) lwidth(medthick)) ylabel("") legend(order(1 "=0" 2 "=1") pos(6) rows(1))
 graph export "$directorio/Figuras/tot_beh_partition.pdf", replace
 
 	
 *TuT----------------------------------------------------------------------------	
-drop sig_*
-gen sig_1_0 = behavioral_te40 + sign(behavioral_te40)*0.10 if behavioral_te60<0.01
-gen sig_5_0 = behavioral_te40 + sign(behavioral_te40)*0.125 if behavioral_te60<0.05
-gen sig_10_0 = behavioral_te40 + sign(behavioral_te40)*0.15 if behavioral_te60<0.1
-
-gen sig_1_1 = behavioral_te41 + sign(behavioral_te41)*0.10 if behavioral_te61<0.01
-gen sig_5_1 = behavioral_te41 + sign(behavioral_te41)*0.125 if behavioral_te61<0.05
-gen sig_10_1 = behavioral_te41 + sign(behavioral_te41)*0.15 if behavioral_te61<0.1
-
-twoway (bar behavioral_te40  indx_impar if behavioral_te60<0.1, horizontal) (bar behavioral_te41  indx_par if behavioral_te61<0.1, horizontal) ///
-	(bar behavioral_te40  indx_impar, horizontal fcolor("31 119 180%20")) (bar behavioral_te41  indx_par, horizontal fcolor("255 127 14%20")) ///
-	(scatter indx_impar sig_1_0, color(black) msymbol(x) mlwidth(medthick) msize(large)) ///
-	(scatter indx_impar sig_5_0, color(black) msymbol(x) mlwidth(medthick) msize(large)) ///
-	(scatter indx_impar sig_10_0, color(black) msymbol(x) mlwidth(medthick) msize(large)) ///	
-	(scatter indx_par sig_1_1, color(black) msymbol(x) mlwidth(medthick) msize(large)) ///
-	(scatter indx_par sig_5_1, color(black) msymbol(x) mlwidth(medthick) msize(large)) ///
-	(scatter indx_par sig_10_1, color(black) msymbol(x) mlwidth(medthick) msize(large)) ///	
-	(scatter indx_impar prob_weights40, msymbol(Oh) color(gs4%90) mlwidth(medthick) msize(vsmall)) (scatter indx_par prob_weights41, msymbol(Oh) color(gs4%90) mlwidth(medthick) msize(vsmall) ), xline(0, lpattern(solid) lwidth(medthick)) ylabel(3 "P.B." 7 "Sure confidence" 11 "Half-confidence" 15 "Woman" 19 "Fam. asks" 23 "Makes budget" 27 "Savings" 31 "Extra pawn" 35 "ROSCA" 39 "Distressed" 43 "Tempted") legend(order(1 "=0" 2 "=1") pos(6) rows(1))
-graph export "$directorio/Figuras/tut_beh_partition_pr.pdf", replace
-
-	
 drop sig_*
 gen sig_1_0 = behavioural_tut_weighted_e0 + sign(behavioural_tut_weighted_e0)*0.10 if behavioral_te60<0.01
 gen sig_5_0 = behavioural_tut_weighted_e0 + sign(behavioural_tut_weighted_e0)*0.125 if behavioral_te60<0.05
@@ -216,15 +182,14 @@ gen sig_5_1 = behavioural_tut_weighted_e1 + sign(behavioural_tut_weighted_e1)*0.
 gen sig_10_1 = behavioural_tut_weighted_e1 + sign(behavioural_tut_weighted_e1)*0.15 if behavioral_te61<0.1
 	
 
-twoway (bar behavioural_tut_weighted_e0  indx_impar if behavioral_te60<0.1, horizontal) (bar behavioural_tut_weighted_e1  indx_par if behavioral_te61<0.1, horizontal) ///
-	(bar behavioural_tut_weighted_e0  indx_impar, horizontal fcolor("31 119 180%20")) (bar behavioural_tut_weighted_e1  indx_par, horizontal fcolor("255 127 14%20")) ///
+twoway (bar behavioural_tut_weighted_e0  indx_impar, horizontal) (bar behavioural_tut_weighted_e1  indx_par, horizontal) ///
 	(scatter indx_impar sig_1_0, color(black) msymbol(x) mlwidth(medthick) msize(large)) ///
 	(scatter indx_impar sig_5_0, color(black) msymbol(x) mlwidth(medthick) msize(large)) ///
 	(scatter indx_impar sig_10_0, color(black) msymbol(x) mlwidth(medthick) msize(large)) ///	
 	(scatter indx_par sig_1_1, color(black) msymbol(x) mlwidth(medthick) msize(large)) ///
 	(scatter indx_par sig_5_1, color(black) msymbol(x) mlwidth(medthick) msize(large)) ///
 	(scatter indx_par sig_10_1, color(black) msymbol(x) mlwidth(medthick) msize(large)) ///	
-	, xline(0, lpattern(solid) lwidth(medthick)) ylabel(3 "P.B." 7 "Sure confidence" 11 "Half-confidence" 15 "Woman" 19 "Fam. asks" 23 "Makes budget" 27 "Savings" 31 "Extra pawn" 35 "ROSCA" 39 "Distressed" 43 "Tempted") legend(order(1 "=0" 2 "=1") pos(6) rows(1))
+	, xline(0, lpattern(solid) lwidth(medthick)) ylabel(3  "Sure-confidence" 7 "P.B.", labsize(large) ) legend(order(1 "=0" 2 "=1") pos(6) rows(1))
 graph export "$directorio/Figuras/tut_beh_partition.pdf", replace	
 	
 
@@ -235,11 +200,10 @@ gen sig_5_0 = prob_take10 + sign(prob_take10)*0.0125 if prob_take30<0.05
 gen sig_10_0 = prob_take10 + sign(prob_take10)*0.015 if prob_take30<0.1
 
 		
-twoway (bar prob_take10 indx_impar if prob_take30<0.1, horizontal)  ///
-	(bar prob_take10  indx_impar, horizontal fcolor("31 119 180%20"))  ///
+twoway (bar prob_take10 indx_impar, horizontal)  ///
 	(scatter indx_impar sig_1_0, color(black) msymbol(x) mlwidth(medthick) msize(large)) ///
 	(scatter indx_impar sig_5_0, color(black) msymbol(x) mlwidth(medthick) msize(large)) ///
 	(scatter indx_impar sig_10_0, color(black) msymbol(x) mlwidth(medthick) msize(large)) ///		
-	, xline(0, lpattern(solid) lwidth(medthick)) ylabel(3 "P.B." 7 "Sure confidence" 11 "Half-confidence" 15 "Woman" 19 "Fam. asks" 23 "Makes budget" 27 "Savings" 31 "Extra pawn" 35 "ROSCA" 39 "Distressed" 43 "Tempted") legend(off) ytitle("")
+	, xline(0, lpattern(solid) lwidth(medthick)) ylabel(3  "Sure-confidence" 7 "P.B." ) legend(off) ytitle("")
 graph export "$directorio/Figuras/prtakeup_beh.pdf", replace
 		

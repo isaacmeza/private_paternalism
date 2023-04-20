@@ -284,8 +284,6 @@ gen cont_OC_old = pr_recup-pr_prob if (!missing(pr_recup) & !missing(pr_prob))
 
 compress
 
-save "$directorio/_aux/preMaster.dta", replace	
-
 *Define main outcomes 
 	* - We are keeping first visit. This visit may include multiple pawns, but this is fine since we cluster at the branch-day level.
 gen des_c = des_i_c
@@ -320,6 +318,7 @@ gen double apr_fa = apr_i_fa
 label var apr_fa "APR (fully adjusted)"
 
 
+save "$directorio/_aux/preMaster.dta", replace	
 *Keep only first visit
 keep if visit_number==1
 

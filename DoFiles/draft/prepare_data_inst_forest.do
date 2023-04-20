@@ -25,19 +25,34 @@ keep if inlist(t_prod,1,2,4)
 *Depvars
 replace apr = -apr
 gen eff = -fc_admin/prestamo
-replace plan_gasto = inlist(plan_gasto,1,2) if !missing(plan_gasto)
 
+
+*Behavioral variables
+gen confidence_100 = (pr_recup==100) if !missing(pr_recup)
+gen distressed = (f_estres==1)*(r_estress==1) if !missing(f_estres) & !missing(r_estress)
+gen tentacion = (tempt==3) if !missing(tempt)
+		
+	
 *IV
-gen choice_nsq = (prod==5) /*z=2, t=1*/
-gen choice_vs_control = (t_prod==4) if inlist(t_prod,4,1) 
-gen choice_nonsq = (prod!=4) /*z!=2, t!=0*/
-gen forced_fee_vs_choice = (t_prod==2) if inlist(t_prod,2,4)
+gen forced = choose==1 | t_prod==2
+gen choice_arm = (t_prod==4)
+
+
+*ToT
+ivregress 2sls eff $C0  edad  faltas val_pren_std genero pres_antes plan_gasto masqueprepa pb confidence_100 distressed tentacion (forced = choice_arm) if inlist(t_prod,1,4), vce(cluster suc_x_dia)
+*TuT
+ivregress 2sls eff $C0  edad  faltas val_pren_std genero pres_antes plan_gasto masqueprepa pb  (forced = choice_arm) if inlist(t_prod,2,4), vce(cluster suc_x_dia)
+
+
+
+su $C0  edad  faltas val_pren_std genero pres_antes plan_gasto masqueprepa pb confidence_100 distressed tentacion
+
 
 
 foreach var of varlist apr eff {
 	preserve	
 	*ToT
-	eststo : ivregress 2sls `var'  $C0  edad  faltas val_pren_std genero pres_antes plan_gasto masqueprepa pb (choice_nsq =  choice_vs_control) , vce(cluster suc_x_dia)
+	eststo : ivregress 2sls `var'   (choice_nsq =  choice_vs_control) , vce(cluster suc_x_dia)
 	cap drop esample_tot
 	gen esample_tot = e(sample)
 
@@ -47,9 +62,9 @@ foreach var of varlist apr eff {
 	gen esample_tut = e(sample)	
 		
 	keep if esample_tot==1 | esample_tut==1	
-	keep `var' $C0   edad  faltas val_pren_std genero pres_antes plan_gasto masqueprepa pb choice_nsq choice_vs_control choice_nonsq forced_fee_vs_choice esample_tot esample_tut prenda
+	keep `var' $C0  edad  faltas val_pren_std genero pres_antes plan_gasto masqueprepa pb forced choice_arm esample_tot esample_tut prenda
 
-	*Drop individuals without observables
+	*Mark individuals without observables
 	foreach varc of varlist edad faltas val_pren_std genero pres_antes plan_gasto masqueprepa pb { 
 		drop if missing(`varc') 
 	}

@@ -1,0 +1,948 @@
+%\documentclass[handout, 8pt]{beamer}
+\documentclass[8pt]{beamer}
+
+%\usetheme{Singapore}
+%\usefonttheme{serif} 
+\input{preambleBeamer.tex}
+
+
+
+\title{The Controlled Choice Design and Paternalism in Pawnshop Borrowing? \\
+Preliminary --comments welcome}
+\author{Craig McIntosh\inst{1} \and Isaac Meza\inst{2} \and Joyce Sadka\inst{3} \and Enrique Seira\inst{4} \and Francis J. DiTraglia\inst{5} }
+\institute[UTran]{\inst{1} UCSD, \inst{2} Harvard , \inst{3} ITAM , \inst{4} MSU , \inst{5} Oxford} 
+                      
+\date{April 2023}
+
+%\setbeamercolor{section in head/foot}{bg=darkcrimsonred}
+\setbeamersize{text margin left=11pt, text margin right=11pt}
+%\setbeamertemplate{section in toc}[square]
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+
+\begin{frame}[c, noframenumbering]%{\phantom{title page}}
+% The \phantom{title page} is a kludge to get the red bar on top
+\titlepage
+\end{frame}
+
+
+\section{Motivation}
+
+
+
+\begin{frame}{Motivation: Private paternalism}
+\begin{itemize}
+    \vfill \item Many institutions —firms, schools, financial contracts— restrict choice using built-in commitment mechanisms which help workers, students, borrowers overcome self-control problems
+    \begin{itemize}
+        \item Loans with fixed repayment schemes, homework due dates, etc.
+    \end{itemize}
+    \vfill \pause\item At the same time these firms hide these forcing mechanisms and don’t market their commitment features, potentially because demand for them is low.
+    \vfill  \item  Laibson (2018) argues that clients that benefit from commitment may underestimate its value, and that in such cases private paternalism (i.e. allocating them to commitment) could be beneficial.
+    \vfill  \pause\item  \textbf{We study the (a) benefits of imposing a structured repayment contract on financing cost, (b) whether there is demand for such structure, and (c) whether non-takers of such a commitment product would benefit from taking it.}
+\end{itemize}
+
+\end{frame}
+
+
+
+\section{Context}
+
+
+\begin{frame}{Context}
+\begin{columns}
+\begin{column}{.45\textwidth}
+\begin{figure}[H]
+    \begin{center}
+    \caption{Pawnshop}
+        \includegraphics[width=0.95\textwidth]{Figuras/empenio2.png}
+    \end{center}
+    \end{figure}
+\begin{figure}[H]
+    \begin{center}
+    \caption{Appraisers  inside a pawnshop}
+        \includegraphics[width=0.95\textwidth]{Figuras/empenio9.png}
+    \end{center}
+    \end{figure}    
+    \end{column}
+\begin{column}{.45\textwidth}
+\begin{figure}[H]
+    \begin{center}
+    \caption{Waiting for appraisal}
+        \includegraphics[width=0.95\textwidth]{Figuras/empenio11.png}
+    \end{center}
+    \end{figure}
+\begin{figure}[H]
+    \begin{center}
+    \caption{Lost pawns which are for sale}
+        \includegraphics[width=0.95\textwidth]{Figuras/empenio3.png}
+    \end{center}
+    \end{figure}    
+    \end{column}    
+    \end{columns}
+\end{frame}
+
+
+\begin{frame}{Context}
+\begin{itemize}
+    \vfill \item Pawn loans involve borrowers leaving valuable liquid assets as collateral in exchange for an immediate cash loan
+    \vfill \pause \item The loan is overcollateralized (loan is 70\% of appraised value) and collateral is liquid.
+    \begin{itemize}
+        \item The lender approves loans in a few minutes without income or credit history check $\rightarrow$ used for emergencies.
+    \end{itemize}
+  \vfill \pause \item Because the loan is overcollateralized and collateral is liquid, the lender may gain if the borrower defaults on the loan, especially if the borrower pays towards recovery on the way to default.
+    \vfill \pause  \item Among those that lose their pawn (60\%), 48\% paid a positive amount towards its recovery and on average paid 42\% of loan.
+    \vfill      \item This happens in spite (or because?) of 74\% of borrowers reporting a 100\% subjective probability recovery ex-ante. 
+    %\vfill   \item 13\% of borrowers are classified as present biased using the simple standard question.
+     \vfill \pause    \item In such an environment, one may ask if putting more structure/committment in payments may help borrowers recover their pawn.
+     \vfill \pause    \item Not only that: Will the structure/commitment be demanded by all (or most) people who benefit?
+        
+
+\end{itemize}
+\end{frame}
+
+
+
+
+
+\section{Contribution}
+
+\begin{frame}{Methodological Contribution}
+\begin{itemize}
+ %\vfill \item A context of particular interest to behavioral literature:  the demand for commitment in financial contracts (Laibson 1997, Bryan et al. 2010), and many more.
+ 
+   \vfill   \item Key quantity in debate about paternalism:  impacts on those who wouldn't elect to take the program versus impacts on those that do.  %How do treatment effects relate to selection?  
+    
+    %Broadly speaking there are two approaches: the structural approach and the reduced form approach.
+
+    %The structural approach combines instruments with a generalized Roy model and uses behavioral and statistical restrictions to extrapolate the causal effects for different sub-populations
+    
+    
+    %The structural approach allows both selection on unobservables and selection on gains at the cost of modeling these channels. In contrast, the reduced form approach assumes that there is no selection on gains after conditioning on a set of covariates 
+
+
+    \vfill \item  Large literature TE heterogeneity: \begin{itemize}
+        \item LATE-and-reweight:  Aronow \& Carnegie (2013); Angrist \& Fernandez Val (2013). \alert{Assume no selection on gains}
+        \item Structurally model selection:  Walters (2018) \alert{Need their parametric models to be correct}.
+        %TUT and ATE implied by LATE-and-re-weight differ sharply from his model-based estimates
+        \item MTE: Heckman \& Vytlacil MTE; Cornelissen et. al. (2018). \alert{Need instrumental variable with rich support, and separability of observed and unobserved determinants of TE.}
+        %\item Brinch et. al. (2017) - discrete $Z$ but under some additivity restrictions on the MTE curve
+        %\item Mogstad, Santos \& Torgovitsky (2018) - No parametric form assumption on MTE curve but only partial identification.
+    \end{itemize}
+
+    \vfill \item Our ``Controlled Choice'' design point identifies a number of relevant TE with mild assumptions
+    \begin{itemize}
+        \item Because we have two forcing-arms and a choice arm, we can use one IV to get at ToT, and a second IV to get at TuT.
+    \end{itemize}
+    
+    
+   \vfill  \item Consider winners and losers from paternalism.     
+
+%   \vfill \pause  \item Three-arm design:  Control, Choice (voluntary takeup=ITT), Forcing (universal=ATE).  We illustrate how to use standard exclusion restrictions to point identify:
+%     \begin{itemize}
+%         \item Treatment on the Treated (ToT) and 
+%         \item Treatment on the Untreated (TUT), also
+% 	\item Average Selection on Gains, Average Selection Bias, and Average Selection on Levels
+%     \end{itemize} 
+    
+  
+
+
+\end{itemize}
+\end{frame}
+
+
+
+
+\section{Outline}
+\begin{frame}{Outline}
+     \begin{itemize}
+         \vfill\item \textbf{Experimental Design}
+         \vfill\item Main results
+         \vfill\item Paternalism (...working on it)
+     \end{itemize}
+\end{frame}
+
+
+
+
+
+
+
+\section{Design}
+
+
+\begin{frame}{Pawn contract}
+    \begin{figure}[H]
+    \label{ExplanatoryMaterial}
+    \begin{center}
+        \includegraphics[width=0.45\textwidth]{Figuras/sq_contract.png}
+    \end{center}
+\end{figure}
+\end{frame}
+
+
+
+
+\begin{frame}{Structured payments contract}
+   \begin{itemize}
+       \vfill \item We designed a new contract that is identical to the status quo contract except that it enhances the regularity and salience of payments as a way to encourage repayment.
+         \begin{figure}[H]
+    \label{ExplanatoryMaterial}
+    \begin{center}
+        \includegraphics[width=0.40\textwidth]{Figuras/fc_contract.png}
+    \end{center}
+\end{figure}
+       
+   \end{itemize}
+    
+\end{frame}
+
+% \begin{frame}{Structured payments contract}
+%   \begin{itemize}
+     
+%       \vfill\item The purpose of the small fee was to mainly to make the structured schedule salient, not to be a large disincentive to be late. 
+%       \begin{itemize}
+%           \item Transportation cost to go to the branch to pay is on the same order of magnitude as the fee in average.
+%       \end{itemize}
+%       \vfill\item  The empirical literature provides some guidance that such a contract may decrease default and elicit demand.
+%       \begin{itemize}
+%           \item Field \& Pande (2008) find null effects of payment frequency on loan default for group lending (but samples are small and there is almost no default in the control). 
+    
+%         \item  Bauer et al. (2012) estimate a positive correlation between measured present bias and selecting into microfinance, which they interpret as demand for structured payments.
+%       \end{itemize}
+       
+%   \end{itemize}
+    
+% \end{frame}
+
+\begin{frame}{Data}
+\label{data}
+\begin{itemize}
+    \item Administrative data: 1 month before and 8 months after the experiment ended
+    \begin{itemize}
+        \item Unique identifier for each client and each pawn.
+        \item Value of the item, money loaned (70\%), date of pawning
+        \item For all payments: date and amounts
+        \item Fees incurred
+        \item Whether the client lost the pawn, renewed the contract
+    \end{itemize} 
+
+    \vfill \item Survey data
+    \begin{itemize}
+        \item During experiment, we asked clients to complete a 5-minute survey before going to the teller window to appraise their piece and before treatment status was known to them.
+        \item Demographics, proxies for income/wealth, education, present-biased preferences, experience pawning, if family or friends commonly asked for money, cost of going to branch, the subjective probability of recovering, the subjective value, etc.
+    \end{itemize}
+\end{itemize}    
+\end{frame}
+
+
+\begin{frame}{Main outcomes: financial cost and default}
+\label{fc_outcome}
+\begin{itemize}
+    \item We are interested in measuring the financial cost of borrowing, which very saliently includes the cost of defaulting on the loan and losing the pawn.
+    \item We will measure loan default using an indicator $\mathds{1}(\text{Default}_i)$, and the cost in pesos using the following definition that capture borrower outlays:
+\end{itemize}
+
+   \begin{equation*}
+    \text{Financial Cost}_i =  \underbrace{\sum_t P^i_{it}}_{\text{Pay to Interest}} + \underbrace{\sum_t P^f_{it}}_{\text{Pay to Fees}}  + \mathds{1}(\text{Default}_i) \times \left[\text{Pawn Val}_i + \underbrace{\sum_t P^c_{it}}_{\text{Pay to Capital}} \right]
+   \end{equation*}
+
+\vspace{.2in}
+\: \: \: \: APR: equivalent yearly interest generated by sum of payments:
+   \begin{equation*}
+    (\text{APR})_i =\left( 1 + \frac{\frac{\text{Financial Cost}_i}{\text{Appraised Value}_i}}{\text{loan term}_i}\right)^{\text{loan term}_i}-1 
+\end{equation*}
+
+   \vspace{.2in}
+\begin{itemize}
+    \item We \alert{will not talk about welfare}, only financial cost.
+    \begin{itemize}
+        \item Welfare would depend on reduced liquidity, anxiety from monthly payments, cost of going to branch, etc. We don't observe these.
+    \end{itemize}
+\end{itemize}
+\end{frame}
+
+
+
+
+
+
+
+\begin{frame}{Treatment arms}
+\label{treatment_arms}
+   \begin{itemize}
+    \vfill \item Randomization at the branch-day level.  Analysis at the pawn level.
+    \begin{itemize}
+        \vfill \item Control arm (1770 obs)
+       \vfill \item Forced Commitment arm (1954 obs)
+       \vfill \item Choice Commitment arm (2580 obs)
+    \end{itemize}
+    \vfill \item The existence of a choice arm allows us not only to measure if there is demand for such a contract, but who demands it, not only in demographic terms, but in terms of potential treatment effects (which include unobservables).
+   \vfill \item  This design is innovative and critical for our purposes, as it enables us to explore whether or not forcing people into a structured payment contract could be more beneficial than allowing choice for a significant fraction of them.
+\end{itemize}
+\end{frame}
+
+
+% \begin{frame}{Description}
+% \label{consort}
+% \begin{figure}[H]
+%      \caption{Experiment description}
+%     \label{exp_description}
+% \begin{center}
+%         \includegraphics[width=0.80\textwidth]{Figuras/consort.pdf}
+%   \end{center}
+% \end{figure}
+% \hyperlink{experimental_integrity}{\beamerbutton{Details}}
+
+% \end{frame}
+
+
+
+
+\begin{frame}{Experimental integrity}
+\label{experimental_integrity}
+    \begin{table}[H]
+\caption{Attrition table}
+\label{attrition_table}
+\begin{center}
+\small{\input{./Tables/Attrition.tex}}
+\end{center}
+\end{table}
+\end{frame}
+
+
+
+\begin{frame}{Balance and Summary statistics}
+    \begin{table}[H]
+%\caption{Summary statistics and Balance}
+\label{SS}
+\begin{center}
+\resizebox{.65\textwidth}{!}{
+\scriptsize{\input{./Tables/SS.tex}}
+}
+\end{center}
+%\textit{Do file: } \texttt{ss\_att.do}
+\end{table}
+% \hyperlink{data}{\beamerbutton{Back}}
+\end{frame}
+
+
+\begin{frame}{Outline}
+     \begin{itemize}
+         \vfill\item Experimental Design
+         \vfill\item \textbf{Main results}
+         \vfill\item Paternalism (...working on it)
+     \end{itemize}
+\end{frame}
+
+
+\section{Main Results}
+\begin{frame}{Main results: ITT}
+\label{main_results}
+
+
+\begin{itemize}
+    \item Financial cost reduced by \$379 pesos (20\% of mean). That is: charging fee + structure \textit{decreased} cost.
+    \item Default decreases by 6.5pp (15\% of mean).
+    \item APR decreases by 34 points, from mean of 184.
+\end{itemize}
+\vspace{.3in}
+\begin{table}[H]
+\begin{center}
+\resizebox{0.95\textwidth}{!}{
+\small{\input{./Tables/decomposition_main_te_pres1.tex}}
+}
+\end{center}
+\end{table}
+
+   \vfill 
+  \hyperlink{several_def_cost}{\beamerbutton{More}}
+
+\end{frame}
+
+
+
+
+\begin{frame}{Intermediate outcomes: forced-commitment}
+\label{intermediate_outcomes}
+ \begin{itemize}
+     \item \vfill \textbf{Speed of payment:} The first payment of the forced commitment contract  occurs 13 days earlier, increasing the fraction who recover on the first visit by 7.9 pp. Conditional on recovering, they recover 28 days faster.
+     
+    \item \vfill \textbf{Separating those who will not pay:} Commitment contract decreases fraction of borrowers making a payment and \textit{not} recovering by 7pp.
+    \begin{itemize}
+        \item Actually, among those that default, those in the forced commitment arm are 14pp less likely to have paid towards recovery. They also visit the branch less: as if the commitment contract makes them realize they will end up losing pawn anyway, and stop paying early on.
+    \end{itemize}
+    \end{itemize}
+
+   \vfill
+   
+   \hyperlink{mechanism_appendix}{\beamerbutton{Details}}
+\end{frame}
+
+
+\section{Paternalism}
+\begin{frame}{Choice and Heterogeneous Treatment Effects}
+\label{choice_hte}
+    \begin{itemize}
+    \vfill \item  So, forcing commitment decreases APR dramatically. 
+    
+    \vfill \item \textbf{Low demand:} In spite of this, given the opportunity, only 11\% of borrowers chose commitment.   
+    \begin{itemize}
+       \pause \item If the effect of commitment were homogeneous, this would be enough to conclude that the 89\% who did not choose it would have been financially better off if they had.
+       \item However, we test and reject the null hypothesis of homogeneous treatment effects (Chernozhuvok et. al. 2018).
+    \end{itemize}
+    
+    \vfill \item The borrowers who did not choose commitment could simply be those who don’t need it?
+    \pause \vfill \ item The distribution of TE (i.e. $Y_{1i}-Y_{0i}$) is not identified, as one person is only observed in one treatment. However, it can be bounded using the two marginal dist $F_1$ and $F_0$. \hyperlink{fan_park_bounds}{\beamerbutton{Fan \& Park bounds}}
+    \vfill \item \textbf{Many with benefits did not demand:} We find that at least 30\% of individual borrowers benefit from commitment $\implies$ many did not demand even though TE is positive for them.
+    \vfill \item Given our 3-armed experiment (+ imposing a mean exclusion restriction) allow us to estimate average TuT$>0$. %Furthermore, imposing the restriction for each cell of covariates and using Causal Forests gets us $F_{TUT}^{-1}(0.72)>0$.
+    \end{itemize}
+\end{frame}
+
+ 
+\begin{frame}{Identification afforded by experiment}
+
+\vspace{.2in}
+Notation: 
+\begin{itemize}
+    \item Potential outcomes $(Y_0,Y_1,C)$
+    \item Assignment: $Z \in \{0,1,2\}$, i.e. \{SQ,Com,Choice\}.  
+    \item Treatment: $D \in \{0,1\} $, i.e. \{SQ,Com\}.
+\end{itemize}
+
+\vspace{.2in}
+Assumptions:
+
+\begin{itemize}
+    \item $Z \independent (Y_0,Y_1,C)$, achieved by randomization
+    \item $D = \mathbbm{1}(Z_i \neq 2) Z + \mathbbm{1}(Z_i=2) C$, i.e. \alert{being assigned to a contract has same effect as choosing it} (e.g. used in compulsory school attendance and returns to schooling lit).
+\end{itemize}
+
+\vspace{.2in}
+Therefore:
+\begin{itemize}
+    \item  $Y_i = \mathbbm{1}(Z_i =0) Y_{i0} + \mathbbm{1}(Z_i = 1)  Y_{i1}  + \mathbbm{1}(Z_i = 2) \left[(1 - C_i) Y_{i0} + C_i Y_{i1} \right].$
+\end{itemize}
+
+\vspace{.2in}
+Prop:
+\begin{itemize}
+    \item ToT := $\mathbbm{E}(Y_{i1} - Y_{i0} | C_i = 1)$ is point-identified, and equals $\frac{\mathbbm{E}(Y_i|Z_i=2) - \mathbbm{E}(Y_i|Z_i =0)}{\mathbbm{E}(D_i|Z_i=2)} $
+     \item TuT := $\mathbbm{E}(Y_{i1} - Y_{i0} | C_i = 0)$ is point-identified, and equals $\frac{\mathbbm{E}(Y_i|Z_i=1) - \mathbbm{E}(Y_i|Z_i =2)}{1-\mathbbm{E}(D_i|Z_i=2)} $
+     \item Also identified: $ASG:=ToT-TuT$, $ASB:= \E[Y_0 | C=1]-\E[Y_0 | C=0]$, and $ASL:= \E[Y_1 | C=1]-\E[Y_1 | C=0]$. 
+\end{itemize}
+\end{frame}
+
+
+
+
+
+\begin{frame}{The ``Controlled Choice'' Design}
+\label{cc_design}
+\begin{itemize}
+    \item Recall that under one-sided non-compliance (no always-takers), LATE=ToT.
+\end{itemize}
+\vspace{.2in}
+\begin{figure}[H]
+    \begin{center}
+        \centering
+        \includegraphics[width=1.0\textwidth]{Figuras/tot_tut_intuition.png}
+    \end{center}
+\end{figure}   
+ \vfill
+\hyperlink{identification_randomized_choice}{\beamerbutton{Identification}}
+\end{frame}
+
+
+
+
+\begin{frame}{On avg. those that do not choose would benefit: TuT $>$ 0}
+\begin{itemize}
+    \vfill \item Commitment increases average financial benefit even for the subset of borrowers who \alert{don't choose to commit voluntarily}.
+    \vfill \item Coefficient ToT>TuT, but cannot reject equality due to large s.e. in ToT.
+    \vfill \item Results hold when imputing transport cost and lost wages per visit, and charge interest in amount paid (as a proxy for liquidity lost).
+\end{itemize}
+\vspace{.2in}
+\begin{table}[H]
+%those who are most likely to benefit from it and those whose outcomes are most adverse under the status quo.
+\label{tot_tut}
+\begin{center}
+\small{\input{./Tables/tot_tut_pres1.tex}}
+\end{center}
+\end{table}
+\end{frame}
+
+% Despite substantial treatment effect heterogeneity, most borrowers would experience higher financial benefits under a commitment contract : $F_{\operatorname{TUT}}^{-1}(0.72)>0$
+
+
+\begin{frame}{Effects on clients coming back}
+
+\begin{itemize}
+    \item Client forced into commitment is 20\% more likely to come back again and pawn.
+    \item Not mechanically from having recovered the pawned, since also pawn other pieces.
+    \item Not within the life of the loan, but after. So unlikely that is a liquidity story.
+    \item Conditional on recovery (endogenous), ``effect'' twice as big.
+\end{itemize}
+
+\vspace{.2in}
+\begin{table}[H]
+\begin{center}
+\footnotesize{\input{./Tables/repeat_loans.tex}}
+\end{center}
+\end{table}    
+\end{frame}
+
+
+
+\begin{frame}{Learning}
+    \label{learning_table}
+    \begin{itemize}
+    \item  Do people learn from Forced exposure to the program that they benefit from it?  
+    \vspace{.1in}
+    \item  Small sample (small power): focus on those that, after being either forced to commitment contract or to status quo, come back within a few months and are subject to choice arm.
+    \vspace{.1in}
+    \item  \textbf{No learning?} We don't find that being forced to the commitment contract makes them more likely to voluntarily chose commitment later.
+    %\vfill \item Are people learning? \hyperlink{learning_table}{\beamerbutton{Table}}
+ \end{itemize}  
+ \vspace{.2in}
+\begin{table}[H]
+\begin{center}
+\small{\input{./Tables/learning_exp_pres.tex}}
+\end{center}
+\end{table}
+ %\hyperlink{learning}{\beamerbutton{Back}}
+\end{frame}
+
+
+\begin{frame}{Fraction that forgo benefit}
+
+\vspace{.4in}
+    \centering Working on this...
+\end{frame}
+
+
+
+
+\begin{frame}{If commitment works, why don't people choose it?}
+    \begin{itemize}
+        \onslide<1>{\item Discounting}
+        \onslide<2-3>{\item Present-Bias}
+    \end{itemize}
+\vfill
+\only<1>{  
+ \begin{itemize}
+ \item Can impatience explain why not take up a contract that decreases overall cost?
+     \end{itemize}
+\begin{figure}[H]
+        \caption{Financial cost for different discount rates}
+    \label{fc_discount_rates}
+    \begin{center}
+        \centering
+        \includegraphics[width=0.50\textwidth]{Figuras/discount_effect_tut.pdf}
+    \end{center}
+\end{figure}   
+    \begin{itemize}
+    \item   Commitment contract imposes up-front costs for later benefits (collateral recovery).  
+   
+    \item  Requires an interest rate > 4,000\% to make NPV TuT insignificant. 
+    \end{itemize}
+}
+
+\only<2>{  
+  
+    \begin{itemize}
+    \item   Standard behavioral angle:  compliers are sophisticated time-inconsistent, non-compliers are a mix of naifs and the time consistent (who don't need commitment).  
+    \end{itemize}
+\begin{figure}[H]
+    \begin{center}
+        \centering
+        \includegraphics[width=0.65\textwidth]{Figuras/hyperbolicity_strata.png}
+    \end{center}
+\end{figure}   
+    \begin{itemize}
+    \item We have a survey measure of time inconsistency taken at baseline.
+    \item  Effect of forcing commitment should be entirely among the time-inconsistent.  Is this true?  No, but PB measure may not be good.
+    \end{itemize}
+}
+
+\only<3>{  
+  
+    \begin{itemize}
+    \item   We estimate the TuT conditional on $X_i=1 or X_i=1$ (say $X_i= PB_i$ or $=Confidence_i$) and see which subpouplations have larger TuT.
+
+\vspace{.3in}
+    \begin{align*}
+        1=& \frac{\mathbb{E}[Y_{1i}-Y_{0i} | D_i=0, X_i=1]}{TuT}\Pr(X_i=1 | D_i=0) \\
+        \quad &+ \frac{\mathbb{E}[Y_{1i}-Y_{0i}| D_i=0, X_i=0]}{TuT}\Pr(X_i=0 | D_i=0)
+    \end{align*}
+    
+%and we will say that the variable $B_i$ explains the ToT whenever one of the terms (ratio weighted by the probability) is statistically significant from zero, (close to one), and the other term is statistically zero.
+    \end{itemize}
+}
+\end{frame}
+
+
+\begin{frame}{Possible Behavioral explanations : TuT \& ToT by groups}
+
+\begin{itemize}
+    \item The TuT effect is concentrated on those that say they have 100\% of recovery. This is what we would expect if the Sure-confident don't demand because they think they don't need it (but are wrong).
+    \item Also on those with no PB (as measured by us).
+\end{itemize}
+\begin{columns}
+\begin{column}{.45\textwidth}
+    \begin{figure}[H]
+    \caption{TuT}
+        \includegraphics[width=1.1\textwidth]{Figuras/tut_beh_partition.pdf}
+\end{figure}
+\end{column}
+
+\begin{column}{.45\textwidth}
+    \begin{figure}[H]
+    \caption{ToT}
+        \includegraphics[width=1.1\textwidth]{Figuras/tot_beh_partition.pdf}
+\end{figure}
+\end{column}
+\end{columns}
+\end{frame}
+
+
+
+\begin{frame}{Predictors of take-up : $\Pr(Take-up)$}
+
+  
+
+   
+\begin{figure}[H]
+    \begin{center}
+        \includegraphics[width=0.9\textwidth]{Figuras/determinants_takeup_reg.pdf}
+    \end{center}
+    \end{figure}
+\end{frame}
+
+
+
+
+
+
+
+\section{Conclusion}
+\begin{frame}{Conclusion}
+    \begin{itemize}
+     \vfill \item Laibson has spoken of `veiled paternalism' in contexts where principals desire reliability; here we have a case of `veiled non-paternalism' where features encouraging default might be embedded.
+     \vfill \item Novel design to study essential heterogeneity: ``Controlled Choice''
+        %\begin{itemize}
+         %   \item Combine ``Controlled Choice'' with MTE: Can we extend results of Mogstad et al (2017) to use our ATE, TUT, and TOT as additional inequality restrictions that constrain partial identification bounds for MTEs?
+        %\end{itemize}
+        \vfill \item  APR reduced by 34\% in the commitment arm
+        \vfill  \item Results suggest selection on gains, but still large effects of imposing commitment on non-takers.
+        \vfill \item Mystery of low take-up combined with large TuT seems best explained by sure-confidence among pawnshop customers.
+        
+        %\vfill \item   Are those with a greater experience of pawning less sure-confident?  
+        \vfill \item Suggests mandated commitment-based contract structures in payday/pawnshop loans as a form of pro-poor regulation?
+        \vfill\item Finally:  how to target and who would be hurt if we instituted  paternalism? 
+        
+    \end{itemize}  
+\end{frame}
+
+\appendix
+
+
+
+\section{Appendix}
+
+
+\begin{frame}{Appendix}
+\vfill \centering APPENDIX
+\end{frame}
+
+
+
+
+\begin{frame}{Difference number in pawns}
+    \[Pawns \: per \: day_{jt} = \alpha_j + \gamma f(t) + \beta_b \mathbbm{1}(t \in MB)_{t} +\beta_a \mathbbm{1}(t \in MA)_{t}\]
+    
+    \begin{table}[H]
+\caption{Number of pawns balance before and after the experiment}
+\label{num_pawns_bal}
+\begin{center}
+\small{\input{./Tables/num_pawns_bal.tex}}
+\end{center}
+\end{table}
+
+\hyperlink{consort}{\beamerbutton{Back}}
+\end{frame}
+
+
+
+\begin{frame}{Histogram of payments}
+
+\begin{columns}
+\begin{column}{.33\textwidth}
+    \begin{figure}[H]
+    \caption{Status-quo}
+    \begin{center}
+        \includegraphics[width=\textwidth]{Figuras/hist_payments_sq.pdf}
+    \end{center}
+\end{figure}
+\end{column}
+
+\begin{column}{.33\textwidth}
+    \begin{figure}[H]
+    \caption{Forced commitment}
+    \begin{center}
+        \includegraphics[width=\textwidth]{Figuras/hist_payments_fc.pdf}
+    \end{center}
+\end{figure}
+\end{column}
+
+\begin{column}{.33\textwidth}
+    \begin{figure}[H]
+    \caption{Choice commitment}
+    \begin{center}
+        \includegraphics[width=\textwidth]{Figuras/hist_payments_cc.pdf}
+    \end{center}
+\end{figure}
+\end{column}
+\end{columns}
+
+
+    
+    \hyperlink{treatment_arms}{\beamerbutton{Back}}
+\end{frame}
+
+
+
+\begin{frame}{Distribution of financial cost (\$MXN)}
+    \begin{figure}
+     \centering
+        \includegraphics[width=.8\textwidth]{Figuras/hist_fc.pdf}
+    \end{figure}
+    
+    \hyperlink{fc_outcome}{\beamerbutton{Back}}
+
+\end{frame}
+
+
+\begin{frame}{Appraiser FE}
+\label{clerk_fe}
+\begin{table}[H]
+\begin{center}
+\resizebox{0.95\textwidth}{!}{
+\small{\input{./Tables/clerk_fe.tex}}
+}
+\end{center}
+ \scriptsize 
+ 
+%\textit{Do file: } \texttt{clerk\_fe.do}
+\end{table}
+    \hyperlink{main_results}{\beamerbutton{Back}}
+
+\end{frame}
+
+
+
+\begin{frame}{Several definitions of cost}
+\label{several_def_cost}
+\begin{table}[H]
+\caption{Effects on several definitions of cost}
+\label{table_robustness_fc}
+\begin{center}
+\resizebox{0.95\textwidth}{!}{
+\small{\input{./Tables/fc_robustness_pres.tex}}
+}
+\end{center}
+ \scriptsize 
+ 
+%\textit{Do file: } \texttt{fc\_robustness.do}
+\end{table}
+    \hyperlink{main_results}{\beamerbutton{Back}}
+
+\end{frame}
+
+
+
+\begin{frame}{Survival Graph}
+   \label{interpolation_censoring_imp}
+
+\begin{columns}
+\begin{column}{.45\textwidth}
+
+\begin{figure}[H]
+    \begin{center}
+    \caption{Ended}
+        \includegraphics[width=1.1\textwidth]{Figuras/survival_graph_ended.pdf}
+    \end{center}
+    \end{figure}
+
+    
+    \end{column}
+ 
+    
+\begin{column}{.45\textwidth}
+
+\begin{figure}[H]
+    \begin{center}
+    \caption{Recovery}
+        \includegraphics[width=1.1\textwidth]{Figuras/survival_graph_unpledge.pdf}
+    \end{center}
+    \end{figure}
+ 
+    
+    \end{column}    
+    \end{columns}
+\end{frame}
+
+
+\begin{frame}{Censoring}
+\label{censoring}
+    \begin{table}[H]
+\caption{Bounding censoring}
+\label{bounding_censoring}
+\begin{center}
+\resizebox{0.9\textwidth}{!}{
+\footnotesize{\input{./Tables/censoring_imp_pres.tex}}
+}
+\end{center}
+ \scriptsize 
+%\textit{Do file: } \texttt{censoring_imp.do, censoring_imp_pr.do}
+\end{table}
+
+
+\end{frame}
+
+
+\begin{frame}{Interpolation on bounding censoring}
+    
+\begin{figure}[H]
+        \caption{Significance area for Default}
+  
+    \begin{center}
+        \includegraphics[width=0.75\textwidth]{Figuras/frontera_sig_def_imp.pdf}
+    \end{center}
+\end{figure}
+ \hyperlink{main_results}{\beamerbutton{Back}}
+\end{frame}
+
+
+
+% \begin{frame}{Contract terms}
+
+% \begin{figure}[H]
+%      \caption{Contract Terms Summary}
+%     \label{PaperSlip}
+%     \begin{center}
+%         \includegraphics[width=0.65\textwidth]{Figuras/TicketLenderP.png}
+
+%     \end{center}
+
+% \end{figure}
+% \end{frame}
+
+\begin{frame}{Intermediate outcomes}
+\label{mechanism_appendix}
+
+\begin{table}[H]
+\caption{Intermediate outcomes}
+\begin{center}
+\footnotesize{\input{./Tables/mechanism1_pres.tex}}
+\end{center}
+\end{table}
+\vfill
+\hyperlink{intermediate_outcomes}{\beamerbutton{Back}}
+\end{frame}
+
+\begin{frame}{Intermediate outcomes}
+
+\begin{table}[H]
+\caption{Intermediate outcomes}
+\begin{center}
+\footnotesize{\input{./Tables/mechanism2_pres.tex}}
+\end{center}
+\end{table}
+\vfill
+\hyperlink{intermediate_outcomes}{\beamerbutton{Back}}
+\end{frame}
+
+
+\begin{frame}{Intermediate outcomes}
+
+    \begin{table}[H]
+\caption{Intermediate outcomes}
+\begin{center}
+\footnotesize{\input{./Tables/mechanism3_pres.tex}}
+\end{center}
+\end{table}
+\vfill
+\hyperlink{intermediate_outcomes}{\beamerbutton{Back}}
+\end{frame}
+
+
+
+
+
+
+\begin{frame}{Bounding Individual Treatment Effects}
+\label{fan_park_bounds}    
+
+\begin{figure}[H]
+    \caption{Fan \& Park bounds for benefit in effective FC }
+    
+    \begin{center}
+        \includegraphics[width=0.75\textwidth]{Figuras/fan_park_bounds_fc_admin.pdf}
+    \end{center}
+   
+\end{figure}
+ \hyperlink{choice_hte}{\beamerbutton{Back}}
+\end{frame}
+
+
+ 
+ 
+\begin{frame}{Identification of treatment parameters}
+\label{identification_randomized_choice}
+\begin{equation*}
+    Y_i = \mathbbm{1}(Z_i =0) Y_{i0} + \mathbbm{1}(Z_i = 1)  Y_{i1}  + \mathbbm{1}(Z_i = 2) \left[(1 - C_i) Y_{i0} + C_i Y_{i1} \right].
+\label{eq:potentialOutcomes}
+\end{equation*}
+
+    Viewing $Z_i$ as an instrumental variable, the randomized choice design can be interpreted as a \emph{pair} of RCTs, each subject to one-sided non-compliance. \\
+    \begin{itemize}
+        \item The first of these compares $Z_i=0$ to $Z_i = 2$.  This setting is identical to a ``randomized encouragement'' design in which treatment is only available to those who are encouraged: $Z_i = 2$. Under this interpretation, those with $C_i = 1$ are ``the compliers'' and it follows that 
+\begin{equation*}
+\frac{\mathbbm{E}(Y_i|Z_i=2) - \mathbbm{E}(Y_i|Z_i =0)}{\mathbbm{E}(D_i|Z_i=2)-\mathbbm{E}(D_i|Z_i=0)}  = \mathbbm{E}(Y_{i1} - Y_{i0}|C_i = 1)
+\label{eq:ToT}
+\end{equation*}
+
+\item The second considers $Z_i = 1$ to be the ``encouragement'' and compare the outcomes for these individuals to those with $Z_i = 2$.
+\begin{equation*}
+\frac{\mathbbm{E}(Y_i|Z_i=1) - \mathbbm{E}(Y_i|Z_i =2)}{\mathbbm{E}(D_i|Z_i=1)-\mathbbm{E}(D_i|Z_i=2)}  = \mathbbm{E}(Y_{i1} - Y_{i0} | C_i = 0)
+\label{eq:TuT}
+\end{equation*}
+
+
+\item Because non-compliance is one-sided only, LATE=ToT in one case (since treated=compliers+always takers, but there are no always takers, as they cannot take without being assigned) and LATE=TuT in the other.
+
+\end{itemize}
+\hyperlink{cc_design}{\beamerbutton{Back}}
+
+
+\end{frame}
+
+
+
+
+
+\end{document}
+
+
+
+
+
+

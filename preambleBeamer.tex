@@ -49,6 +49,9 @@
   \smash{\color{red}\fboxrule=1pt\relax\fboxsep=2pt\relax%
   \llap{\rlap{\fbox{\vphantom{0}\makebox[#1]{}}}~}}\ignorespaces
 }
+\usepackage{appendixnumberbeamer}
+
+\newcommand{\E}{\mathbb{E}}
 
 % Code for Hiding Columns in Tables
 \newcolumntype{H}{>{\setbox0=\hbox\bgroup}c<{\egroup}@{}}
@@ -65,3 +68,24 @@
 \usepackage[natbib = true, backend = biber, style  = authoryear-icomp]{biblatex}
 \addbibresource{References.bib}
 
+\usepackage{setspace}
+\setbeamercovered{transparent}
+
+%gets rid of navigation symbols
+\setbeamertemplate{navigation symbols}{}
+
+\setbeameroption{show notes}
+%\setbeameroption{show only notes}
+%\setbeameroption{hide notes}
+
+% A simple slide counter at the bottom of the slide
+\setbeamertemplate{footline}{
+   \begin{beamercolorbox}[ht=4ex,leftskip=0.3cm,rightskip=0.3cm]{author in head/foot}
+    \vspace{0.1cm}
+    \hfill \insertframenumber / \inserttotalframenumber
+  \end{beamercolorbox}
+   \vspace*{0.1cm}
+} 
+
+\newcommand\independent{\protect\mathpalette{\protect\independenT}{\perp}}
+\def\independenT#1#2{\mathrel{\rlap{$#1#2$}\mkern2mu{#1#2}}}

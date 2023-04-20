@@ -23,6 +23,30 @@ of a given pawn.
 *******************************************************************************/
 */
 
+import excel "$directorio/Raw/Claves valuadores.xlsx", sheet("Claves valuadores") firstrow clear
+keep NombreValuador ClaveValuador ID
+duplicates drop
+rename (ClaveValuador ID) (valuador_id suc)
+
+*Remove special characters
+replace NombreValuador = stritrim(trim(itrim(upper(NombreValuador))))
+
+gen newname = "" 
+gen length = length(NombreValuador) 
+su length, meanonly 
+
+forval i = 1/`r(max)' { 
+     local char substr(NombreValuador, `i', 1) 
+     local OK inrange(`char', "a", "z") | inrange(`char', "A", "Z")  | `char'==" "
+     qui replace newname = newname + `char' if `OK' 
+}
+replace NombreValuador = newname
+drop newname length
+encode NombreValuador, gen(valuador)
+
+keep valuador_id valuador suc
+save "$directorio/DB/clave_valuadores.dta", replace
+
 
 *import excel "$directorio/Raw/20131014Consilidacion_Agosto_2013.xlsx", sheet("Hoja1") firstrow clear
 *save "$directorio/Raw/20131014Consilidacion_Agosto_2013.dta",	replace
@@ -32,15 +56,16 @@ set seed 10
 *Recoding of variables
 rename Sucursal suc
 rename ClaveMovimiento clave_movimiento
-rename Valuador valuador
+rename Valuador valuador_id
 rename FechaMovimiento fecha_movimiento
 rename FechaIngreso fecha_inicial
 rename NúmPrenda prenda
 rename MontoPréstamo prestamo_i
 rename ImporteMovimiento importe
 
+merge m:1 suc valuador_id using "$directorio/DB/clave_valuadores.dta", nogen
 
-foreach X of varlist valuador clave_movimiento { 
+foreach X of varlist valuador_id clave_movimiento { 
 encode `X', gen(`X'_)
 drop `X'
 rename `X'_ `X' 
@@ -71,6 +96,7 @@ label define lab_mov      ///
 	
 	
 label var suc "Branch"
+label var valuador_id "Appraiser_id (not unique)"
 label var valuador "Appraiser"
 label var clave_movimiento "Movement type"
 
