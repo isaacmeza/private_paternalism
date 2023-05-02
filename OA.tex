@@ -274,7 +274,7 @@
 
 
 \begin{figure}[H]
-    \caption{Partitoin of TuT \& ToT effect by behavioral variables.}
+    \caption{Partition of TuT \& ToT effect by behavioral variables.}
     \label{tut_beh_partition}
     \begin{center}
     \begin{subfigure}{0.475\textwidth}
@@ -1066,25 +1066,23 @@ We use \cite{atheygrf} \texttt{causal\_forest} of the \texttt{grf} library in $R
     \label{interactions_takeup}
     \begin{center}
     \begin{subfigure}{0.45\textwidth}
-        \caption{with Fee Arm}
+        \caption{PLM}
         \centering
-        \includegraphics[width=\textwidth]{Figuras/pago_frec_vol_fee_interactions_rf.pdf}
+        \includegraphics[width=\textwidth]{Figuras/determinants_takeup_reg.pdf}
     \end{subfigure}
     \begin{subfigure}{0.45\textwidth}
-        \caption{with Promise Arm}
+        \caption{Logit}
         \centering
-        \includegraphics[width=\textwidth]{Figuras/pago_frec_vol_promise_interactions_rf.pdf}
+        \includegraphics[width=\textwidth]{Figuras/determinants_takeup_logit.pdf}
     \end{subfigure}
     \end{center}
      \scriptsize
-      %\footnotesize{ \textit{Do file: }  \texttt{analyze\_fvp.do}}
+      %\footnotesize{ \textit{Do file: }  \texttt{determinants_takeup.do}}
 \end{figure}
 
 
 \scriptsize 
-\noindent This figure reports bivariate regressions of the form $\widehat{TakeUp} = \alpha + \beta \: X_i + \epsilon_i$, where $\widehat{TakeUp}$ is the prediction using random forests. The figure reports the $\beta$ coefficients for different $X_i$'s along with 95\% confidence intervals. Panel (a) focuses on take up in the arm where clients could chose among the fee-commitment contract and the status quo contract. Panel (b) focuses on the arm where clients could chose among the promise-commitment contract and the status quo contract. Using random forests we can predict who takes up the fee-forcing contract with 85\% accuracy out of sample.\footnote{Correcting for the fact that most chose the status-quo contract using the method of SMOTE, \cite{smote} we find an accuracy rate of 75\%.} Which suggests that choice among contracts is not purely random. This figure shows that the more educated, those that report that their family typically asks for money, those that make a monthly budget of expenses, and those that ask for a remainder of their due payments (and marginally those we classify as present-biased) are more likely to chose the fee-commitment contract if given the choice. The opposite holds for clients that are more economically vulnerable (can barely pay for food, electricity, etc) and those that report being more stressed.
-
-
+\noindent This figure reports bivariate (and multivariate) regressions of the form $TakeUp = \alpha + \beta \: X_i + \epsilon_i$. The figure reports the $\beta$ coefficients for different $X_i$'s along with 95\% confidence intervals. Panel (a) uses a linear model. Panel (b) specifies a logit model.
 
 \subsection{Selection on gains}
 

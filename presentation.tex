@@ -7,8 +7,7 @@
 
 
 
-\title{The Controlled Choice Design and Paternalism in Pawnshop Borrowing? \\
-Preliminary --comments welcome}
+\title{The Controlled Choice Design and Paternalism in Pawnshop Borrowing}
 \author{Craig McIntosh\inst{1} \and Isaac Meza\inst{2} \and Joyce Sadka\inst{3} \and Enrique Seira\inst{4} \and Francis J. DiTraglia\inst{5} }
 \institute[UTran]{\inst{1} UCSD, \inst{2} Harvard , \inst{3} ITAM , \inst{4} MSU , \inst{5} Oxford} 
                       
@@ -117,7 +116,15 @@ Preliminary --comments welcome}
 \begin{itemize}
  %\vfill \item A context of particular interest to behavioral literature:  the demand for commitment in financial contracts (Laibson 1997, Bryan et al. 2010), and many more.
  
-   \vfill   \item Key quantity in debate about paternalism:  impacts on those who wouldn't elect to take the program versus impacts on those that do.  %How do treatment effects relate to selection?  
+   \vfill   \item Key quantity in debate about paternalism:  impacts on those who wouldn't elect to take the program versus impacts on those that do.   \begin{itemize}
+       \item Oreopoulos 2006: effect of mandatory high school laws.
+       \item Fowlie et al. 2021: defaulting customers into variable electricity pricing.
+   \end{itemize} 
+   
+   
+   
+   
+   %How do treatment effects relate to selection?  
     
     %Broadly speaking there are two approaches: the structural approach and the reduced form approach.
 
@@ -165,7 +172,7 @@ Preliminary --comments welcome}
      \begin{itemize}
          \vfill\item \textbf{Experimental Design}
          \vfill\item Main results
-         \vfill\item Paternalism (...working on it)
+         \vfill\item Paternalism
      \end{itemize}
 \end{frame}
 
@@ -334,13 +341,32 @@ Preliminary --comments welcome}
 \end{frame}
 
 
+
+
+\begin{frame}
+\textbf{Predictors of take-up : $\Pr(Take-up)$}
+
+\begin{figure}[H]
+    \begin{center}
+        \includegraphics[width=0.9\textwidth]{Figuras/determinants_takeup_reg.pdf}
+    \end{center}
+    \end{figure}
+\end{frame}
+
+
+
+
+
 \begin{frame}{Outline}
      \begin{itemize}
          \vfill\item Experimental Design
          \vfill\item \textbf{Main results}
-         \vfill\item Paternalism (...working on it)
+         \vfill\item Paternalism 
      \end{itemize}
 \end{frame}
+
+
+
 
 
 \section{Main Results}
@@ -482,6 +508,36 @@ Prop:
 % Despite substantial treatment effect heterogeneity, most borrowers would experience higher financial benefits under a commitment contract : $F_{\operatorname{TUT}}^{-1}(0.72)>0$
 
 
+
+
+
+
+\begin{frame}{Fraction that forgo benefit}
+
+
+    \label{choose_wrong}
+    
+        \begin{figure}{\textwidth}
+        \caption{Mistakes in choice arm}
+        \centering
+        \includegraphics[width=0.65\textwidth]{Figuras/line_cw_apr_tot_tut.pdf}
+        \end{figure}
+
+\begin{itemize}
+    \item   Use Random Forest to estimate ToT, TUT conditional on covariates.
+    \item $>$ 70\% of non-choosers would have seen some benefit from assignment to commitment.
+    \item  $<$ 20\% of choosers made a mistake.
+\end{itemize}        
+
+
+\end{frame}
+
+
+
+
+
+
+
 \begin{frame}{Effects on clients coming back}
 
 \begin{itemize}
@@ -519,14 +575,6 @@ Prop:
 \end{table}
  %\hyperlink{learning}{\beamerbutton{Back}}
 \end{frame}
-
-
-\begin{frame}{Fraction that forgo benefit}
-
-\vspace{.4in}
-    \centering Working on this...
-\end{frame}
-
 
 
 
@@ -614,17 +662,9 @@ Prop:
 
 
 
-\begin{frame}{Predictors of take-up : $\Pr(Take-up)$}
 
-  
 
-   
-\begin{figure}[H]
-    \begin{center}
-        \includegraphics[width=0.9\textwidth]{Figuras/determinants_takeup_reg.pdf}
-    \end{center}
-    \end{figure}
-\end{frame}
+
 
 
 

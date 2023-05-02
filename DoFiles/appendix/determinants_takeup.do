@@ -32,9 +32,6 @@ local self_control  pb impatience hace_presupuesto tentado rec_cel
 local experiencia pres_antes cta_tanda pr_recup 
 local otros  edad genero masqueprepa estresado_seguido low_cost low_time
  
-logit choose_commitment `familia' `ingreso' `self_control' `experiencia' `otros', r
- logit choose_commitment pb, r
- 
  
 local alpha = .05 // for 95% confidence intervals 
  
