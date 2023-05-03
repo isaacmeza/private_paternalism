@@ -281,6 +281,8 @@ replace pr_prob = pr_prob*100
 *Overconfident
 gen OC_old = (pr_recup>pr_prob) if (!missing(pr_recup) & !missing(pr_prob))
 gen cont_OC_old = pr_recup-pr_prob if (!missing(pr_recup) & !missing(pr_prob))
+*Sure confidence
+gen confidence_100 = (pr_recup==100) if !missing(pr_recup)
 
 compress
 

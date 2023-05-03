@@ -32,14 +32,6 @@ replace ref_c = -ref_c*100
 gen Z = 0 if t_prod==1
 replace Z = 1 if t_prod==2
 replace Z = 2 if t_prod==4
-
-
-*Behavioral variables
-gen confidence_100 = (pr_recup==100) if !missing(pr_recup)
-gen confidence_50 = (pr_recup>=50) if !missing(pr_recup)
-
-gen distressed = (f_estres==1)*(r_estress==1) if !missing(f_estres) & !missing(r_estress)
-gen tentacion = (tempt==3) if !missing(tempt)
 	
 
 matrix behavioral_te = J(2*2,8,.)

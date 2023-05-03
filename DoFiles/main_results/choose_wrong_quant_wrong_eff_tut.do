@@ -31,9 +31,9 @@ version 17.0
 
 
 *Load data with *_te predictions (created in te_grf.R)
-import delimited "$directorio/_aux/eff_te_grf.csv", clear
+import delimited "$directorio/_aux/eff_tut_te_grf.csv", clear
 merge 1:1 prenda using "$directorio/DB/Master.dta", nogen keep(3)
-keep if t_prod==4	
+keep if t_prod==1	
 
 ********************************************************************************
 gen tau_sim = . 
@@ -61,11 +61,11 @@ forvalues rep = 1/`rep_num' {
 	local k = 1
 	forvalues i = -100(5)100 {
 		qui {
-		
+
 		*If we were to force everyone to the FEE contract, how many would be
 		* benefited from this policy?
 		replace bfa = .
-		replace bfa = (tau_sim>`=`i'/100') if !missing(tau_sim) & t_prod==4
+		replace bfa = (tau_sim>`=`i'/100') if !missing(tau_sim) & t_prod==1
 		bootstrap r(mean),  reps(25) level(99): su bfa
 		estat bootstrap, all
 		mat point_estimate = e(b)
@@ -102,11 +102,11 @@ forvalues i = -100(5)100 {
 	}
 
 gen threshold = (_n-21)*5 if (_n-1)*5<=200
-save "$directorio/_aux/choose_wrong.dta", replace
+save "$directorio/_aux/choose_wrong_itt.dta", replace
 
 **************************************PLOTS*************************************
 
-use "$directorio/_aux/choose_wrong.dta", clear 
+use "$directorio/_aux/choose_wrong_itt.dta", clear 
 
 	
 	twoway 	(rarea bfa_normal_l bfa_normal_h threshold, fcolor(navy) fintensity(40)) ///
@@ -116,4 +116,4 @@ use "$directorio/_aux/choose_wrong.dta", clear
 			graphregion(color(white)) xtitle("APR threshold") ///
 			ytitle("% benefitted", axis(1)) ///
 			ylabel(0(10)100, axis(1)) xline(0, lcolor(black) lwidth(medthick) lpattern(dash))
-	graph export "$directorio/Figuras/line_better_forceall_apr_te_cf.pdf", replace
+	graph export "$directorio/Figuras/line_better_forceall_itt_apr_te_cf.pdf", replace

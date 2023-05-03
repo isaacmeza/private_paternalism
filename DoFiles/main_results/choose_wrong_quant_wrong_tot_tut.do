@@ -45,6 +45,7 @@ rename inst_hat_oobvarianceestimates inst_oobvarianceestimates_0
 merge 1:1 prenda using `temp_tot', nogen
 
 merge 1:1 prenda using "$directorio/DB/Master.dta", nogen keep(3)
+keep if inlist(t_prod,4)
 
 ********************************************************************************
 gen tau_sim_1 = . 
@@ -77,7 +78,7 @@ forvalues i = -100(5)100 {
 	local k = `k' + 1
 	}
 
-	
+
 local rep_num = 100
 forvalues rep = 1/`rep_num' {
 	di "`rep'"
@@ -157,7 +158,7 @@ save "$directorio/_aux/choose_wrong_tot_tut.dta", replace
 
 use "$directorio/_aux/choose_wrong_tot_tut.dta", clear
 	
-	twoway 	(rarea cwf_normal_l cwf_normal_h threshold, lcolor(navy%5) fcolor(navy) fintensity(50)) ///
+twoway 	(rarea cwf_normal_l cwf_normal_h threshold, lcolor(navy%5) fcolor(navy) fintensity(50)) ///
 			(line cwf threshold, lpattern(solid) lwidth(medthick) lcolor(navy)) ///
 			(scatter cwf threshold, connect(l)  msymbol(x) color(navy) ) ///
 			(rarea cwf_nonchoose_l cwf_nonchoose_h threshold, lcolor(dkgreen%5) fcolor(dkgreen%60) fintensity(40)) ///
@@ -171,7 +172,7 @@ use "$directorio/_aux/choose_wrong_tot_tut.dta", clear
 			graphregion(color(white)) xtitle("APR threshold") ///
 			ytitle("% of relevant group making mistakes") ///
 			ylabel(0(10)100) xline(0, lcolor(black) lwidth(medthick) lpattern(dash))
-	graph export "$directorio/Figuras/line_cw_apr_tot_tut.pdf", replace
+graph export "$directorio/Figuras/line_cw_apr_tot_tut.pdf", replace
 	
 	
 *-------------------------------------------------------------------------------

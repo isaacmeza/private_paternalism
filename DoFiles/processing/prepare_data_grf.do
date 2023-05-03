@@ -8,7 +8,7 @@ version 17.0
 * Author:	Isaac M
 * Machine:	Isaac M 											
 * Date of creation:	October. 5, 2021
-* Last date of modification: October. 19, 2021
+* Last date of modification: May. 02, 2023
 * Modifications: 		
 * Files used:     
 		- Master.dta
@@ -29,15 +29,15 @@ sort NombrePignorante fecha_inicial
 keep apr def_c des_c fc_admin /// *Dependent variables
 	pro_* fee NombrePignorante prenda fecha_inicial  /// *Admin variables
 	$C0 suc_x_dia /// *Controls
-	edad  faltas val_pren_std genero pres_antes plan_gasto masqueprepa pb
+	edad  faltas val_pren_std genero pres_antes plan_gasto masqueprepa pb confidence_100
 
 order apr def_c des_c fc_admin /// *Dependent variables
 	pro_* fee NombrePignorante prenda fecha_inicial  /// *Admin variables
 	$C0 suc_x_dia /// *Controls
-	edad  faltas val_pren_std genero pres_antes plan_gasto masqueprepa pb
+	edad  faltas val_pren_std genero pres_antes plan_gasto masqueprepa pb confidence_100
 
 	*Drop individuals without observables
-foreach var of varlist edad faltas val_pren_std genero pres_antes plan_gasto masqueprepa pb { 
+foreach var of varlist val_pren_std confidence_100 genero pres_antes edad plan_gasto faltas masqueprepa pb { 
 	drop if missing(`var') 
 	}
 	

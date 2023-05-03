@@ -32,6 +32,8 @@ version 17.0
 
 import delimited "$directorio/_aux/eff_te_grf.csv", clear
 merge 1:1 prenda using "$directorio/DB/Master.dta", nogen keep(3)
+keep if t_prod==4	
+
 
 ********************************************************************************
 gen Y = eff

@@ -81,10 +81,10 @@ foreach depvar in  apr des_c  def_c  fc_admin {
 	*Load data with BLP
 	import delimited "$directorio/_aux/grf_`arm'_`depvar'_blp.csv", clear
 	
-	matrix blp_i = J(10, 6, .)
-	matrix blp = J(10, 6, .)
+	matrix blp_i = J(9, 6, .)
+	matrix blp = J(9, 6, .)
 	local row = 1
-	foreach name in "subj.loan.value" "income.index" "p.bias" "makes.budget" "pawn.before" "age" "female" "more.high.school"  {
+	foreach name in "subj.loan.value" "income.index" "p.bias" "sure.confidence" "makes.budget" "pawn.before" "age" "female" "more.high.school"  {
 		
 		* Individual effect
 		matrix blp_i[`row',1] = `row'
@@ -124,10 +124,10 @@ foreach depvar in  apr des_c  def_c  fc_admin {
 	matrix colnames blp_i = "k" "beta" "se" "p" "lo" "hi"
 	matrix colnames blp = "k" "beta" "se" "p" "lo" "hi"
 	mat rownames blp_i =  "Subjective value (std)" ///
-		 "Income index" "Present bias"  "Makes budget" "Pawn before" ///
+		 "Income index" "Present bias" "Sure-confidence" "Makes budget" "Pawn before" ///
 		 "Age"  "Gender" "More high school" 	 
 	mat rownames blp =  "Subjective value (std)" ///
-		 "Income index" "Present bias"  "Makes budget" "Pawn before" ///
+		 "Income index" "Present bias" "Sure-confidence" "Makes budget" "Pawn before" ///
 		 "Age"  "Gender" "More high school"		 
 	
 	*Load data with heterogeneous predictions & propensities 
@@ -137,9 +137,9 @@ foreach depvar in  apr des_c  def_c  fc_admin {
 
 	local alpha = .05 // for 95% confidence intervals 
 
-	matrix blp_reg = J(10, 6, .)
+	matrix blp_reg = J(9, 6, .)
 	local row = 1
-	foreach var of varlist val_pren_std faltas pb plan_gasto pres_antes edad genero masqueprepa {
+	foreach var of varlist val_pren_std faltas pb confidence_100 plan_gasto pres_antes edad genero masqueprepa {
 		
 		qui reg tau_hat_oobpredictions `var', r
 		local df = e(df_r)	
@@ -160,7 +160,7 @@ foreach depvar in  apr des_c  def_c  fc_admin {
 	matrix colnames blp_reg = "k" "beta" "se" "p" "lo" "hi"
 
 	mat rownames blp_reg =  "Subjective value (std)" ///
-		 "Income index" "Present bias"  "Makes budget" "Pawn before" ///
+		 "Income index" "Present bias" "Sure-confidence" "Makes budget" "Pawn before" ///
 		 "Age"  "Gender" "More high school"	
 			 
 	coefplot (matrix(blp_i[,2]), offset(0.06) ci((blp_i[,5] blp_i[,6]))  ciopts(lcolor(gs4))) ///
