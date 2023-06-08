@@ -32,14 +32,14 @@ version 17.0
 
 *Load data with forest predictions (created in tot_tut_instr_forest.R)
 
-import delimited "$directorio/_aux/tot_eff_instr_forest.csv", clear
+import delimited "$directorio/_aux/tot_apr_instr_forest.csv", clear
 tempfile temp_tot
 rename inst_hat_oobpredictions inst_hat_1
 rename inst_hat_oobvarianceestimates inst_oobvarianceestimates_1
 save `temp_tot'
 
 
-import delimited "$directorio/_aux/tut_eff_instr_forest.csv", clear
+import delimited "$directorio/_aux/tut_apr_instr_forest.csv", clear
 rename inst_hat_oobpredictions inst_hat_0
 rename inst_hat_oobvarianceestimates inst_oobvarianceestimates_0
 merge 1:1 prenda using `temp_tot', nogen
@@ -67,7 +67,7 @@ gen cwf_nonchoose_l = .
 gen cwf_nonchoose_h = .
 
 local k = 1
-forvalues i = -100(5)100 {
+forvalues i = -100(5)100  {
 	gen cwf_normal_l`k' = .
 	gen cwf_normal_h`k' = .
 	gen cwf_choose_l`k' = .
@@ -86,9 +86,9 @@ forvalues rep = 1/`rep_num' {
 	replace tau_sim_1 = rnormal(inst_hat_1, sqrt(inst_oobvarianceestimates_1))	
 	replace tau_sim_0 = rnormal(inst_hat_0, sqrt(inst_oobvarianceestimates_0))	
 
-*Computation of people that makes mistakes in the choice arm according to estimated counterfactual
+	*Computation of people that makes mistakes in the choice arm according to estimated counterfactual
 	local k = 1
-	forvalues i = -100(5)100 {
+	forvalues i = -100(5)100  {
 		qui {
 		*Classify the percentage of wrong decisions
 		* people who look like person i and chose the no-commitment contract would have been better off had they chosen commitment : (tau_sim_0>`i' & pro_6==1)
@@ -139,7 +139,7 @@ foreach var of varlist  cwf cwf_choose cwf_nonchoose {
 
 *Distribution of the CI
 local k = 1
-forvalues i = -100(5)100 {
+forvalues i = -100(5)100  {
 	foreach vr in cwf_normal cwf_nonchoose cwf_choose {
 		su `vr'_l`k', d
 		replace `vr'_l = `r(p5)' in `k'
@@ -151,7 +151,7 @@ forvalues i = -100(5)100 {
 	local k = `k' + 1
 	}
 
-gen threshold = (_n-21)*5 if (_n-1)*5<=200
+gen threshold = -100 + (_n-1)*5 if (_n-1)*5<=200
 save "$directorio/_aux/choose_wrong_tot_tut.dta", replace
 
 **************************************PLOTS*************************************
@@ -170,7 +170,7 @@ twoway 	(rarea cwf_normal_l cwf_normal_h threshold, lcolor(navy%5) fcolor(navy) 
 			, legend(order(3 "Choice commitment"  ///
 				6 "Non-choosers" 9 "Choosers") pos(6) rows(1))  ///
 			graphregion(color(white)) xtitle("APR threshold") ///
-			ytitle("% of relevant group making mistakes") ///
+			ytitle("% of relevant group with positive TE") ///
 			ylabel(0(10)100) xline(0, lcolor(black) lwidth(medthick) lpattern(dash))
 graph export "$directorio/Figuras/line_cw_apr_tot_tut.pdf", replace
 	

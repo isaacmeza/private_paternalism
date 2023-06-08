@@ -101,7 +101,7 @@ forvalues i = -100(5)100 {
 	local k = `k' + 1
 	}
 
-gen threshold = (_n-21)*5 if (_n-1)*5<=200
+gen threshold = -100 + (_n-1)*5 if (_n-1)*5<=200
 save "$directorio/_aux/choose_wrong.dta", replace
 
 **************************************PLOTS*************************************
@@ -109,11 +109,11 @@ save "$directorio/_aux/choose_wrong.dta", replace
 use "$directorio/_aux/choose_wrong.dta", clear 
 
 	
-	twoway 	(rarea bfa_normal_l bfa_normal_h threshold, fcolor(navy) fintensity(40)) ///
-			(line better_forceall threshold, lpattern(solid) lwidth(medthick) lcolor(navy)) ///
-			(scatter better_forceall threshold,  msymbol(x) color(navy) ) ///
-			, legend(off) scheme(s2mono) ///
-			graphregion(color(white)) xtitle("APR threshold") ///
-			ytitle("% benefitted", axis(1)) ///
-			ylabel(0(10)100, axis(1)) xline(0, lcolor(black) lwidth(medthick) lpattern(dash))
-	graph export "$directorio/Figuras/line_better_forceall_apr_te_cf.pdf", replace
+twoway 	(rarea bfa_normal_l bfa_normal_h threshold, fcolor(navy) fintensity(40)) ///
+	(line better_forceall threshold, lpattern(solid) lwidth(medthick) lcolor(navy)) ///
+	(scatter better_forceall threshold,  msymbol(x) color(navy) ) ///
+	, legend(off)  ///
+	graphregion(color(white)) xtitle("APR threshold") ///
+	ytitle("% benefitted", axis(1)) ///
+	ylabel(0(10)100, axis(1)) xline(0, lcolor(black) lwidth(medthick) lpattern(dash))
+graph export "$directorio/Figuras/line_better_forceall_apr_te_cf.pdf", replace

@@ -50,6 +50,34 @@ export delimited "$directorio/_aux/heterogeneity_grf.csv", replace nolabel
 use "$directorio/DB/Master.dta", clear
 
 sort NombrePignorante fecha_inicial
+replace apr = -fc_admin/prestamo
+replace fc_admin = -fc_admin
+
+*Covariates - Randomization - Outcomes
+keep apr def_c des_c fc_admin /// *Dependent variables
+	pro_* fee NombrePignorante prenda fecha_inicial  /// *Admin variables
+	suc_x_dia /// *Controls
+	edad genero pres_antes masqueprepa 
+
+order apr def_c des_c fc_admin /// *Dependent variables
+	pro_* fee NombrePignorante prenda fecha_inicial  /// *Admin variables
+	suc_x_dia /// *Controls
+	edad genero pres_antes masqueprepa 
+
+	*Drop individuals without observables
+foreach var of varlist  genero pres_antes edad masqueprepa { 
+	drop if missing(`var') 
+	}
+	
+export delimited "$directorio/_aux/heterogeneity_simple_grf.csv", replace nolabel
+
+
+********************************************************************************
+
+
+use "$directorio/DB/Master.dta", clear
+
+sort NombrePignorante fecha_inicial
 
 *Covariates - Randomization - Outcomes
 keep apr def_c des_c fc_admin /// *Dependent variables

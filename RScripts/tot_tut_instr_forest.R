@@ -10,7 +10,7 @@ library(rattle)
 library(broom)
 
 # SET WORKING DIRECTORY
-setwd('C:/Users/isaac/Dropbox/Apps/Overleaf/Donde2020')
+setwd('C:/Users/isaac/Dropbox/Apps/Overleaf/Donde2022')
 set.seed(1)
 
 
@@ -26,19 +26,23 @@ rename_var = function(df) {
     "dummy_suc4",
     "dummy_suc5",
     "dummy_suc6",
-    "num_arms_d2",
-    "num_arms_d3",
-    "num_arms_d4",
-    "num_arms_d5",
-    "num_arms_d6", 
     "edad",
     "faltas",
-    "val_pren_std",
-    "genero",
+    "c_trans",
+    "t_llegar",
+    "fam_pide",
+    "ahorros",
+    "t_consis1",
+    "t_consis2", 
+    "confidence_100",
+    "hace_presupuesto",
+    "tentado",
+    "rec_cel",
     "pres_antes",
-    "plan_gasto",
+    "cta_tanda",
+    "genero",
     "masqueprepa",
-    "pb"
+    "estresado_seguido"
   ),
   c(
     "tuesday",
@@ -51,19 +55,23 @@ rename_var = function(df) {
     "branch.4",
     "branch.5",
     "branch.6",
-    "num.exp.arms.2",
-    "num.exp.arms.3",
-    "num.exp.arms.4",
-    "num.exp.arms.5",
-    "num.exp.arms.6",
     "age",
-    "income.index",
-    "subj.loan.value",
-    "female",
-    "pawn.before",
+    "trouble.paying.bills",
+    "transport.cost",
+    "transport.time",
+    "fam.asks",
+    "savings",
+    "patience",
+    "future.patience", 
+    "sure.confidence",
     "makes.budget",
+    "tempted",
+    "sms.reminder",
+    "pawn.before",
+    "rosca",
+    "female",
     "more.high.school",
-    "p.bias"
+    "stressed"
   ))
 }
 
@@ -146,6 +154,8 @@ fit_instr_forest = function(xvar, wvar, yvar, zvar, dta, nme) {
   write_csv(data.out, filename_out)
 }  
 
+
+
 ###################################################################  
 ###################################################################  
 
@@ -167,22 +177,18 @@ tut_copy <- tut
 rename_var(tot)
 rename_var(tut)
 
-###################################################################  
-###################################################################  
-
-
 # PREPARE VARIABLES
-X_tot <- select(tot,-c(apr, choice_nsq, choice_nonsq, forced_fee_vs_choice, choice_vs_control,
+X_tot <- select(tot,-c(apr, forced, choice_arm, 
                        esample_tot, esample_tut, prenda))
 Y_tot <- select(tot,apr)
-W_tot <- as.numeric(tot$choice_nsq == 1)
-Z_tot <- as.numeric(tot$choice_vs_control == 1)
+W_tot <- as.numeric(tot$forced == 1)
+Z_tot <- as.numeric(tot$choice_arm == 1)
 
-X_tut <- select(tut,-c(apr, choice_nsq, choice_nonsq, forced_fee_vs_choice, choice_vs_control,
+X_tut <- select(tut,-c(apr, forced, choice_arm, 
                        esample_tot, esample_tut, prenda))
 Y_tut <- select(tut,apr)
-W_tut <- as.numeric(tut$choice_nonsq == 1)
-Z_tut <- as.numeric(tut$forced_fee_vs_choice == 1)
+W_tut <- as.numeric(tut$forced == 1)
+Z_tut <- as.numeric(tut$choice_arm == 1)
 
 ###################################################################  
 ###################################################################  
@@ -196,51 +202,4 @@ print(alfa)
 # ESTIMATE MODEL
 mapply(fit_instr_forest, list(X_tot, X_tut),  list(W_tot, W_tut), list(Y_tot, Y_tut), list(Z_tot, Z_tut),
        list(tot_copy, tut_copy), c("tot_apr", "tut_apr"))
-
-
-###################################################################  ###################################################################  
-
-require("dplyr")
-
-tot_tut <- read_csv('./_aux/tot_tut_eff.csv') 
-
-data_in <- tot_tut %>%
-  mutate_all(~ifelse(is.na(.), median(., na.rm = TRUE), .))  
-
-tot <- data_in %>% 
-  filter(esample_tot == 1) 
-tut <- data_in %>% 
-  filter(esample_tut == 1) 
-
-tot_copy <- tot
-tut_copy <- tut
-
-rename_var(tot)
-rename_var(tut)
-
-# PREPARE VARIABLES
-X_tot <- select(tot,-c(eff, choice_nsq, choice_nonsq, forced_fee_vs_choice, choice_vs_control,
-                       esample_tot, esample_tut, prenda))
-Y_tot <- select(tot,eff)
-W_tot <- as.numeric(tot$choice_nsq == 1)
-Z_tot <- as.numeric(tot$choice_vs_control == 1)
-
-X_tut <- select(tut,-c(eff, choice_nsq, choice_nonsq, forced_fee_vs_choice, choice_vs_control,
-                       esample_tot, esample_tut, prenda))
-Y_tut <- select(tut,eff)
-W_tut <- as.numeric(tut$choice_nonsq == 1)
-Z_tut <- as.numeric(tut$forced_fee_vs_choice == 1)
-
-###################################################################  
-###################################################################  
-
-
-# OVERLAP ASSUMPTION
-alfa <- mapply(opt_alfa, list(X_tot, X_tut),  list(W_tot, W_tut))
-print(alfa)  
-
-
-# ESTIMATE MODEL
-mapply(fit_instr_forest, list(X_tot, X_tut),  list(W_tot, W_tut), list(Y_tot, Y_tut), list(Z_tot, Z_tut),
-       list(tot_copy, tut_copy), c("tot_eff", "tut_eff"))
 

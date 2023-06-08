@@ -130,7 +130,7 @@ Does learning eventually overcome the low demand for commitment? For learning to
 %While forcing individuals into commitment does not cause them to demand it in subsequent loans, \textcolor{red}{in Table \ref{iv_pf}} we show observational evidence of `learning by not doing’:  individuals offered commitment who elect not to take it and subsequently default \textit{do} learn about the benefits of commitment, demanding commitment loans at higher rates on subsequent pawn contracts when given the choice.  Finally, while we are working with a lender who has a social mission and is interested in understanding how to help borrowers, there is no free lunch.  The dramatic improvements in borrower income arising from the commitment contract come directly from the pockets of lenders, reinforcing that the pawn industry as a whole has a strong interest in retaining the status quo.
 
 %Replace this paragraph with discussion of optimal targeting of paternalism
-Our results suggest that pawn lending markets capture borrower wealth in ways not well summarized by interest rates. By over-collateralizing and then structuring loan contracts in a manner encouraging of default, lenders are able to extract substantial value independent of the interest charged.  Further, the `nudge’ approach generally favored by the behavioral literature (voluntary commitment) may not be adequate. We hesitate to give precise policy recommendations since we don't have good measures of welfare. Even though the monthly payment contract dramatically reduces financial cost, it could potentially generate lower (or higher) anxiety. Moreover, frequent payment requirements may decrease welfare of highly impatient borrowers.\footnote{The paper presents an back of the envelope exercise that suggests annual discount rates of 4000 are necessary to nullify the reductions in financial cost we estimate. \hl{Note also that since the fee for skipping payment is 2\%, the iliquidity imposed by the contract is bounded.}} %Second, given the non-standard nature of the finding, it is likely that we would have to adopt and estimate a particular behavioral model of demand for commitment, which we don't need to do to make the point that TuT is positive.
+Our results suggest that pawn lending markets capture borrower wealth in ways not well summarized by interest rates. By over-collateralizing and then structuring loan contracts in a manner encouraging of default, lenders are able to extract substantial value independent of the interest charged.  Further, the `nudge’ approach generally favored by the behavioral literature (voluntary commitment) may not be adequate. We hesitate to give precise policy recommendations since we don't have good measures of welfare. Even though the monthly payment contract dramatically reduces financial cost, it could potentially generate lower (or higher) anxiety. Moreover, frequent payment requirements may decrease welfare of highly impatient borrowers.\footnote{The paper presents an back of the envelope exercise that suggests annual discount rates of 4000 are necessary to nullify the reductions in financial cost we estimate. \hl{Note also that since the fee for skipping payment is 2\%, the illiquidity imposed by the contract is bounded.}} %Second, given the non-standard nature of the finding, it is likely that we would have to adopt and estimate a particular behavioral model of demand for commitment, which we don't need to do to make the point that TuT is positive.
 
 %we estimate that over 50\% of the borrowers in our study are naïve hyperbolics in the sense that they would benefit from commitment but will not choose it.  While our results are driven by the intersection of overcollateralization and a potential selection of the borrower pool towards myopia and short-term financial thinking, these attributes are likely to be present in many types of pro-poor financial markets where individuals lack the credit histories to be able to leverage short-term credit without collateral. This suggests that regulators of such markets should include what is paid through equilibrium default as part of the financing cost (not done now), and to consider imposing structured lending products that tilt the scales towards allowing borrowers to repay.  While commitment-style repayment contracts decrease effective liquidity by requiring faster repayment of a given loan, the improvement in expected borrower returns are so substantial as to prove welfare improving at all but the most astronomical discount rates.  
 
@@ -468,18 +468,20 @@ In a world of heterogeneous treatment effects, however, low demand for commitmen
 The borrowers who did not choose commitment could simply be those who don't need it. 
 Indeed, we find strong evidence that the effect of forced commitment varies substantially across individuals in our experiment: Appendix \ref{append:chernozhukov} tests and rejects the null hypothesis of homogeneous treatment effects, following the methodology of \cite{chernozhukov2018generic}.
 So the question remains: do the \hl{89\%} who do not choose commitment know something about their personal situations that we as researchers do not, or are most people in the choice arm making a costly mistake? 
-In this section we now present a range of econometric exercises that shed light on this question, leveraging unique features of our experimental design. 
+In this section we present a number of econometric exercises that shed light on this question, leveraging unique features of our experimental design. 
 Despite substantial treatment effect heterogeneity, most borrowers would experience lower financial costs under a commitment contract. 
 Indeed, commitment lowers average financial costs even for the subset of borrowers who would \emph{not} choose to commit voluntarily.
 To simplify the exposition in this and all sections that follow, we re-define all outcome variables so that \emph{beneficial} treatment effects are \emph{positive}. Using this convention, a positive treatment effect of commitment on financial cost, for example, reflects the average cost \emph{savings} caused by commitment.
 
-\subsubsection{Bounding the Distribution of Individual Treatment Effects}
+\subsection{Bounding the Distribution of Individual Treatment Effects}
+\label{sec:bounds}
 
-If we knew the distribution $F_\Delta$ of individual treatment effects $\Delta_i \equiv Y_{i1} - Y_{i0}$, it would be easy assess how many individuals would win and lose under paternalism, along with the magnitude of any individual harm. 
-%simply calculate $\mathbbm{P}(\Delta_i < 0)$.
-Because we can never observe both $Y_{i0}$ and $Y_{i1}$ for the same borrower, $F_\Delta$ cannot be identified. 
-It can, however, be bounded. 
-%Using these bounds, we now show that more than \hl{11\%} of individual borrowers benefit from commitment.
+If we knew the distribution of individual treatment effects, it would be easy assess how many individuals would win and lose under a policy of universal forced commitment, along with the magnitude of any individual harm. 
+Because we can never simultaneously observe the same borrower in both the control and commitment arms, however, the distribution of individual treatment effects cannot be point identified.
+It can, however, be bounded.
+We begin our exploration of heterogeneous treatment effects by computing assumption-free bounds on the share of individuals who benefit from forced commitment. 
+
+Let $Y_{i0}$ be borrower $i$'s potential outcome under the control condition, $Y_{i1}$ be her potential outcome under forced commitment, and $\Delta_i \equiv Y_{i0} - Y_{i1}$.
 Because it randomly assigns borrowers to the control and forced arms, our experimental design point identifies the marginal distributions of $Y_{i0}$ and $Y_{i1}$, call them $F_0$ and $F_1$.
 Now, define the functions $\underline{F}$ and $\overline{F}$ as follows:
 \[
@@ -489,27 +491,32 @@ Now, define the functions $\underline{F}$ and $\overline{F}$ as follows:
 Since $F_0$ and $F_1$ are point identified, so are $\underline{F}$ and $\overline{F}$.
 \cite{fan2010sharp} show that the sharp (best possible) pointwise bounds for $F_\Delta$ are given by $\underline{F}(\delta) \leq F_\Delta(\delta) \leq \overline{F}(\delta)$
 These bounds are simple to compute, and can be surprisingly informative. 
-Here we use them to bound the fraction of borrowers who benefit from commitment. 
-Given the way that we have defined our outcome variables, this is the share of borrowers whose treatment effect is \emph{positive}, i.e.\ $1 - F_\Delta(0)$. 
+Here we use them to bound the fraction of borrowers who benefit from forced commitment. 
+Given the way that we have defined our outcome variables, this is the share of borrowers whose treatment effect is positive, i.e.\ $\mathbb{P}(\Delta_i > 0) = 1 - F_\Delta(0)$. 
 To construct the sharp bounds for this quantity, we simply substitute $\delta = 0$ into the preceding equations and estimate $F_0$ and $F_1$ using their empirical analogues constructed from the forced commitment and forced no-commitment arms of the experiment.
 
 Figure \ref{fig:FanPark} plots the sharp bounds for $F_{\delta}$ based on the APR outcome defined above in Section \ref{costs}. Our point estimates of $\underline{F}(0)$ and $\overline{F}_0$ are \hl{XXXX} and \hl{XXXX} respectively, with associated 95\% confidence intervals of \hl{XXXX} and \hl{XXXX}.\footnote{Confidence intervals are constructed using \hl{XXXX} bootstrap. See \cite{fan2010sharp} for details.}
-%\todo[inline]{Issac: add in the confidence interval at $\delta = 0$ along with the figure \ref{fan_park_bounds}. These need to be the results that do not use covariates and we need to be careful about the sign convention for our effects. Frank follow-up to add 1-2 sentences discussing the results. Presumably we find that $F_\Delta(0) > 0.11$ this means that at least some people who choose not to commit \emph{must} be making a mistake, although we don't know who they are and this doesn't tell us how large the mistake is.}
-An alternative way of presenting the \cite{fan2010sharp} bounds is in terms of quantiles of the distribution of $\Delta$. Let $0 < q < 1$, and define $Q_0, Q_1, Q$ to be the quantile functions corresponding to $F_0, F_1$ and $F_\Delta$.\footnote{In other words, $Q_0(q) \equiv \inf \{x | F(x) \geq q\}$ and so on.} Then the sharp bound for $Q_\Delta(q)$ is given by $\underline{Q}(q) \leq Q(q) \leq \overline{Q}(q)$ where
-\[
-\overline{Q}(q) \equiv \inf_{u \in [q,1]} [Q_1(u) - Q_0(u - q)], \quad
-\underline{Q}(q) \equiv \sup_{u\in [0,q]} [Q_1(u) - Q_0(1 + u - q)]
-\]
-By substituting $q = 0.11$, these expressions allow us to bound the 11th percentile of the distribution of $\Delta$. Under a stylized Roy model in which borrowers with the largest (negative) treatment effects choose commitment, $Q(0.11)$ equals the treatment effect for the borrower at the margin of indifference between choosing commitment. 
-Our point estimates for the lower and upper bounds $\underline{Q}(0.11)$ and $\overline{Q}(0.11)$ are \hl{XXXX} and \hl{XXXX} with corresponding 95\% confidence intervals \hl{XXXX} and \hl{XXXX}.\footnote{Again, confidence intervals are constructed using \hl{XXXX} bootstrap as describe in \cite{fan2010sharp}.}
-%\todo[inline]{Issac: add the interval for $Q(0.11)$. Again, this needs to be without covariates and we need to be careful about the sign convention for our effects. Maybe we don't need a second figure with the confidence bands for the whole quantile function. Frank: add a sentence or two discussing the results. Presumably the aforementioned quantile is indeed negative and fairly large.}
-Both ways of presenting the bounds yield the same conclusion: at least some borrowers who would benefit from commitment \emph{do not choose it} when offered. 
+\todo[inline]{Need a sentence saying what the results are: at least such and such percent benefit from forced commitment}
+
+%An alternative way of presenting the \cite{fan2010sharp} bounds is in terms of quantiles of the distribution of $\Delta$. Let $0 < q < 1$, and define $Q_0, Q_1, Q$ to be the quantile functions corresponding to $F_0, F_1$ and $F_\Delta$.\footnote{In other words, $Q_0(q) \equiv \inf \{x | F(x) \geq q\}$ and so on.} Then the sharp bound for $Q_\Delta(q)$ is given by $\underline{Q}(q) \leq Q(q) \leq \overline{Q}(q)$ where
+%\[
+%\overline{Q}(q) \equiv \inf_{u \in [q,1]} [Q_1(u) - Q_0(u - q)], \quad
+%\underline{Q}(q) \equiv \sup_{u\in [0,q]} [Q_1(u) - Q_0(1 + u - q)]
+%\]
+%By substituting $q = 0.11$, these expressions allow us to bound the 11th percentile of the distribution of $\Delta$. Under a stylized Roy model in which borrowers with the largest (negative) treatment effects choose commitment, $Q(0.11)$ equals the treatment effect for the borrower at the margin of indifference between choosing commitment. 
+%Our point estimates for the lower and upper bounds $\underline{Q}(0.11)$ and $\overline{Q}(0.11)$ are \hl{XXXX} and \hl{XXXX} with corresponding 95\% confidence intervals \hl{XXXX} and \hl{XXXX}.\footnote{Again, confidence intervals are constructed using \hl{XXXX} bootstrap as describe in \cite{fan2010sharp}.}
+%%\todo[inline]{Issac: add the interval for $Q(0.11)$. Again, this needs to be without covariates and we need to be careful about the sign convention for our effects. Maybe we don't need a second figure with the confidence bands for the whole quantile function. Frank: add a sentence or two discussing the results. Presumably the aforementioned quantile is indeed negative and fairly large.}
+%Both ways of presenting the bounds yield the same conclusion: at least some borrowers who would benefit from commitment \emph{do not choose it} when offered. 
 
 
 \subsection{Potential Outcomes and Exclusion}
 \label{sec:potentialOutcomes}
 
-To understand the relationship between choice and heterogeneous treatment effects, it is important to be precise about the potential outcomes in our empirical setting.
+Our assumption-free bounds from the preceding section show that more than 11\% of borrowers would benefit from a policy of forced commitment. 
+Intuitively, this seems to suggest that some of the 89\% of borrowers in the choice arm who did \emph{not} choose commitment would have faced lower borrowing costs if they had.
+Making this intuition precise, however, requires a careful consideration of the relationship between choice and heterogeneous treatment effects. 
+To this end, we now provide a full definition of the potential outcomes in our empirical setting, and introduce a pair of assumptions that will allow us to go beyond the assumption-free bounds from above.
+
 Let $Z_i \in \{0, 1, 2\}$ denote the treatment arm to which to participant $i$ was assigned: $Z_i = 0$ denotes the forced no-commitment arm, $Z_i = 1$ denotes the forced commitment arm, and $Z_i = 2$ denotes the choice arm. 
 Now let $D_i$ be the treatment that participant $i$ actually \emph{received}, where $D_i = 0$ denotes no-commitment and $D_i = 1$ denotes commitment. 
 We assume perfect compliance in the $Z_i = 0$ and $Z_i = 1$ arms.\footnote{For more discussion on this point, see Section \ref{sec:integrity} above.}
@@ -526,46 +533,46 @@ D_i = \mathbbm{1}(Z_i \neq 2) Z_i + \mathbbm{1}(Z_i = 2) C_i.
 We maintain the stable unit treatment value assumption (SUTVA) throughout. 
 This means that borrower $i$'s outcomes depend only on her \emph{own} values of $Z_i$ and $D_i$, not those of any other person in the experiment: there are no \emph{spillovers}. 
 Under this assumption, a fully general model for the potential outcomes in our experiment would take the form $Y_i(d, z)$ for $d\in \{0,1\}$ and $z \in \{0, 1, 2\}$, allowing participant $i$'s potential outcome to depend \emph{both} on the treatment she actually receives, $D_i$, and the experimental arm to which she is assigned, $Z_i$. 
-This model is too general, however, to identify meaningful causal effects. 
-For this reason, we impose two exclusion restrictions.
-Before stating them, we first define some additional notation.
-In particular, because any anyone with $Z_i = 0$ has $D_i = 0$ under our experimental design, we abbreviate the potential outcome $Y_i(d=0,z=0)$ as $Y_{i0}$. 
-Similarly, as anyone with $Z_i = 1$ has $D_i = 1$, we abbreviate $Y_i(d=1,z=1)$ as $Y_{i1}$. 
-Our first exclusion restriction is relevant only for non-choosers, individuals with $C_i = 0$, because they are the only borrowers for whom $D_i = 0$ when $Z_i = 2$.
-We assume that
+This model is too general, however, to point identify meaningful causal effects. 
+For this reason, we consider two exclusion restrictions.
+
+Before stating these restrictions, we first define some additional notation.
+Because our experimental design implies that any borrower with with $Z_i = 0$ has $D_i = 0$, we abbreviate the potential outcome $Y_i(d=0,z=0)$ as $Y_{i0}$. 
+Similarly, since any borrower with $Z_i = 1$ has $D_i = 1$, we abbreviate $Y_i(d=1,z=1)$ as $Y_{i1}$. 
+This is in keeping with our notation from section \ref{sec:bounds} above.
+Using this notation, our first exclusion restriction is given by
 \begin{equation}
 Y_i(d=0,z=2) = Y_i(d=0,z=0) \equiv Y_{i0}.
 \label{eq:exclusion0}
 \end{equation}
-Equation \ref{eq:exclusion0} implies that every non-chooser experiences the same potential outcome when assigned to the control arm as when assigned to the choice arm.  
-Our second exclusion is relevant only for choosers, individuals $C_i =1$, because they are the only borrowers for whom $D_i = 1$ when $Z_i = 2$.
-We assume that 
+Equation \ref{eq:exclusion0} only restricts the potential outcomes of non-choosers,  individuals with $C_i = 0$, because they are the only borrowers for whom $D_i = 0$ when $Z_i = 2$.
+In words, this condition assumes that every non-chooser experiences the same potential outcome regardless of whether she is assigned to the choice arm or the control arm.
+Similarly, our second exclusion restriction is given by
 \begin{equation}
 Y_i(d=1,z=2) = Y_i(d=1,z=1)\equiv Y_{i1}.
 \label{eq:exclusion1}
 \end{equation}
-Equation \ref{eq:exclusion1} implies that every chooser experiences the same potential outcome when assigned to the treatment arm as when assigned to the choice arm. 
-Mathematically \eqref{eq:exclusion0} and \eqref{eq:exclusion0} have the same structure as the standard TOT or LATE exclusion restriction that $Y_i(d,z)$ depends only on $d$, not on $z$. 
-Substantively, however, they are slightly different as there is no analogue of the ``chosen'' versus ``forced'' treatment distinction in the usual LATE setting.\footnote{See \cite{chamberlain2011bayesian}, who uses an assumption very similar to our exclusion restrictions to develop a theory of optimal treatment choice for an individual who has access to data from an RCT.} 
-Both \eqref{eq:exclusion0} and \eqref{eq:exclusion1} are plausible in our empirical setting. 
-Moreover, each has testable implications that we fail to reject: see Appendix \ref{append:exclusion} for details. Under \eqref{eq:exclusion0} and \eqref{eq:exclusion1}, each participant's observed outcome $Y_i$ is related to her potential outcomes $(Y_{i0}, Y_{i1})$ according to  
+Equation \ref{eq:exclusion1} only restricts the potential outcomes of choosers, individuals with $C_i =1$, because they are the only borrowers for whom $D_i = 1$ when $Z_i = 2$.
+In words, this condition assumes that every chooser experiences the same potential outcome regardless of whether she is assigned to the treatment arm or the choice arm.
+
+Mathematically \eqref{eq:exclusion0} and \eqref{eq:exclusion1} have the same structure as the standard LATE exclusion restriction that $Y_i(d,z)$ depends only on $d$, not on $z$. 
+Substantively, however, they are slightly different, given that there is no explicit reference to the ``chosen'' versus ``forced'' treatment distinction in the usual LATE setup.\footnote{For related discussion, see \cite{chamberlain2011bayesian} who uses an assumption similar to our exclusion restrictions to develop a theory of optimal treatment choice for an individual who has access to data from an RCT.} 
+In essence, \eqref{eq:exclusion0} and \eqref{eq:exclusion1} assume that being assigned a particular treatment has the same result as choosing it for yourself, provided that you are assigned the same treatment that you \emph{would have chosen}. 
+If the mere fact of having been given a choice has a direct effect on outcomes, one or both of our exclusion restrictions will be violated.
+One can imagine situations in which this might be the case.
+For example, even someone who would have voluntarily chosen to undergo drug rehabilitation, given the choice, might respond differently when coerced.
+In our empirical setting, however, both \eqref{eq:exclusion0} and \eqref{eq:exclusion1} are plausible. 
+Moreover, each has testable implications that we fail to reject.
+For details, see Appendix \ref{append:exclusion}.
+
+Under the exclusion restrictions from \eqref{eq:exclusion0} and \eqref{eq:exclusion1}, each participant's observed outcome $Y_i$ is related to her potential outcomes $(Y_{i0}, Y_{i1})$ according to  
 \begin{equation}
     Y_i = \mathbbm{1}(Z_i =0) Y_{i0} + \mathbbm{1}(Z_i = 1)  Y_{i1}  + \mathbbm{1}(Z_i = 2) \left[(1 - C_i) Y_{i0} + C_i Y_{i1} \right].
 \label{eq:potentialOutcomes}
 \end{equation}
-%\todo[inline]{Fix labels!}
-%Accordingly, we impose the following standard exclusion restriction:
-%\begin{equation}
-%Y_i(d=0, z=0) = Y_i(d=0, z=2) \equiv Y_{i0}, \quad
-%Y_i(d=1, z=1) = Y_i(d=1, z=2) \equiv Y_{i1}.
-%\label{eq:exclusion}
-%\end{equation}
-%Equation \ref{eq:exclusion} says that each participant's potential outcome is the same regardless of whether she \emph{chooses} a particular treatment $D=d$ or is \emph{assigned} the same treatment. Viewing $Z_i$ as an instrumental variable (IV) for the treatment $D_i$, \eqref{eq:exclusion} amounts to the usual IV exclusion restriction.
-%
-%\todo[inline]{END Fix labels!}
 Equation \ref{eq:potentialOutcomes} is the key to understanding the results that follows. 
-By randomly assigning $Z_i=0$ and $Z_i = 1$, our experiment identifies the marginal distributions of $Y_{i0}$ and $Y_{i1}$ in the population as a whole. 
-By randomly assigning $Z_i=2$, it likewise identifies the share of choosers ($C_i = 1$), the distribution of $Y_{i1}$ for choosers, and the distribution of $Y_{i0}$ for non-choosers ($C_i = 0$).
+As noted above, by randomly assigning $Z_i=0$ and $Z_i = 1$ our experiment identifies the marginal distributions of $Y_{i0}$ and $Y_{i1}$ in the population as a whole. 
+By randomly assigning $Z_i=2$, it likewise point identifies the share of choosers ($C_i = 1$), the distribution of $Y_{i1}$ for choosers, and the distribution of $Y_{i0}$ for non-choosers ($C_i = 0$).
 Because $Z_i$ is assigned independently of pre-treatment covariates $X_i$, our design also identifies the corresponding \emph{conditional} distributions of $Y_{i0}$ and $Y_{i1}$ given $X_i$. 
 %These distributions are the ingredients that we use below to explore the importance of paternalism. 
 
@@ -621,9 +628,9 @@ Because $Z_i$ is assigned independently of pre-treatment covariates $X_i$, our d
 \subsection{The ``Controlled Choice'' Design}
 \label{sec:randchoice}
 
-Above we used outcome data from the forced arms ($Z_i\neq 2$) along with the commitment take-up rate in the choice arm ($Z_i = 2$) to argue that at least some of the \hl{89\%} of participants who did \emph{not} choose commitment would have been better off if they had. 
-By additionally examining \emph{outcome data} in the choice arm, it is possible to say more. 
-We now show how our experimental design, henceforth the ``controlled choice design,'' point identifies a number of interesting and economically-relevant causal quantities without the need for additional structural restrictions.
+%Above we used outcome data from the forced arms ($Z_i\neq 2$) along with the commitment take-up rate in the choice arm ($Z_i = 2$) to argue that at least some of the \hl{89\%} of participants who did \emph{not} choose commitment would have been better off if they had. 
+%By additionally examining \emph{outcome data} in the choice arm, it is possible to say more. 
+We now show how our experimental design, henceforth the ``controlled choice design,'' combined with the exclusion restrictions from \eqref{eq:exclusion0} and \eqref{eq:exclution1} can be used to point identify a number of interesting and economically-relevant causal quantities without the need for additional structural restrictions.
 First we identify the treatment on the treated (ToT) and treatment on the untreated (TuT) effects, defined as follows:
 \[
 \text{ToT} \equiv \mathbbm{E}(Y_{i1} - Y_{i0} | C_i = 1), \quad
@@ -732,7 +739,7 @@ As in the case of the ASG from above, inference for the ASB and ASL can be carri
 These calculations are also automated in our companion STATA package.
 For details, see Appendix \ref{append:randchoice}.
 
-\todo[inline]{Possibly add some discussion here of Craig's idea: using the controlled choice design to study ``targeting''}
+%\todo[inline]{Possibly add some discussion here of Craig's idea: using the controlled choice design to study ``targeting''}
 
 %A unique feature of our design is the randomized assignment to treatment (forced commitment), control (forced no-commitment), and choice of treatment. 
 
@@ -756,8 +763,8 @@ For details, see Appendix \ref{append:randchoice}.
 %\[ToT = \frac{\beta^C}{p}; \qquad\quad TuT = \frac{(\beta^F - \beta^C)}{(1-p)}; \qquad\quad (ToT-TuT) = \frac{\beta^C}{p}- \frac{(\beta^F - \beta^C)}{(1-p)}. \]
 
 Table \ref{tot_tut} calculates the causal quantities described above--ToT, TuT, ASG, ASB, and ASL--for our experimental data, along with robust standard errors for each. 
-For purposes of comparison, the table also presents the ATE results from Section \hl{XXXX} above (row 1), along with the corresponding average potential outcomes $\mathbbm{E}[Y_0]$ and $\mathbbm{E}[Y_1]$ (rows 4--5).
-The columns of the table correspond to different outcome variables, defined as in Section \hl{XXXX} above.
+For purposes of comparison, the table also presents the ATE results from Section \ref{experiment} above (row 1), along with the corresponding average potential outcomes $\mathbbm{E}[Y_0]$ and $\mathbbm{E}[Y_1]$ (rows 4--5).
+The columns of the table correspond to different outcome variables, defined as in Section \ref{costs} above.
 For all four outcome definitions, the TuT effect is positive, statistically and economically significant, and comparable in magnitude to the ATE.
 In other words: commitment is \emph{beneficial}, on average, to the people who \emph{would not choose it}, and these benefits are large.
 The estimated ToT effects are positive and larger still.
@@ -780,7 +787,7 @@ Overall, Table \ref{tot_tut} suggests that commitment works and the ``right peop
 \subsection{Why is paternalism working in this context?}
 \label{why_paternalism}
 
-The behavioral literature has highlighted voluntary commitment as an attractive way of allowing the `right' people to self-select.  A discussion of compulsory commitment is necessarily paternalistic, and by its nature focuses on impacts among those who would not have selected commitment voluntarily.  From the lens of rational choice it is unsurprising that we find the $\text{ToT}>\text{TuT}$, but the argument for compulsory treatment centers on the more  surprising result that we find $\text{TuT}>0$.  Hence an investigation of the case for paternalism requires that we delve into understanding why individuals who should apparently have chosen the intervention did not do so.
+The behavioral literature has highlighted voluntary commitment as an attractive way of allowing the `right' people to self-select.  A discussion of compulsory commitment is necessarily paternalistic, and by its nature focuses on impacts among those who would not have selected commitment voluntarily.  From the lens of rational choice it is unsurprising that we find the $\text{ToT}>\text{TuT}$, but the argument for compulsory treatment centers on the more surprising result that we find $\text{TuT}>0$.  Hence an investigation of the case for paternalism requires that we delve into understanding why individuals who should apparently have chosen the intervention did not do so.
 
 Discounting is one explanation for our results.  Using no discounting we find a decrease in the financial cost of credit, but the intervention inherently imposes up-front costs (early payment) in return for delayed benefits (recovery of pawn).  Highly impatient individuals might therefore rationally choose not comply although our measure would show a benefit for them.  To investigate this we can calculate the Net Present Value of the $TUT$ on financial cost given the average timing of repayment and pawn recovery at different discount rates.  Figure \ref{fc_discount_rates} shows the results of this exercise, illustrating that non-choosers continue to see significant decreases in NPV financial costs up to monthly discount rates of 40\%, and the NPV remains negative for rates up to 90\% per month.  Given that only 30\% of the sample reports a monthly discount rate above 50\%, we think that discounting is unlikely to explain non-compliance among those who appear to benefit. 
 
@@ -1181,6 +1188,20 @@ In sum, we find that the Forced commitment contract clients pays 13.8 days earli
 \end{figure}
 
 
+\begin{figure}[H]
+    \caption{Determinants of choice}
+    \label{determinants_choose}
+    \begin{center}
+    \begin{subfigure}{0.75\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/determinants_choose_commitment.pdf}
+    \end{subfigure}
+    \end{center}
+      \scriptsize
+
+      The above figure shows the determinants in a bivariate and multivariate OLS regression of choosing commitment. Choice commitment is a binary variable equal to one, whenever subjects choose the forced commitment contract in the choice arm. 
+%\textit{Do file: } \texttt{determinants_choice_sure_confidence.do}       
+\end{figure}
 
 \begin{figure}[H]
     \caption{Histogram of payments}
@@ -1252,7 +1273,23 @@ In sum, we find that the Forced commitment contract clients pays 13.8 days earli
     \end{subfigure}
     \end{center}
     
-%\textit{Do file: } \texttt{fan\_park\_bnds,do}       
+%\textit{Do file: } \texttt{fan\_park\_bnds.do}       
+\end{figure}
+
+
+\begin{figure}[H]
+    \caption{Determinants sure confidence}
+    \label{determinants_sure}
+    \begin{center}
+    \begin{subfigure}{0.75\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/determinants_confidence_100.pdf}
+    \end{subfigure}
+    \end{center}
+      \scriptsize
+
+      The above figure shows the determinants in a bivariate and multivariate OLS regression of sure confidence among the non-choosers. Sure confidence is a binary variable defined to be one when people report a 100\% probability of recovery.
+%\textit{Do file: } \texttt{determinants_choice_sure_confidence.do}       
 \end{figure}
 
 
@@ -1304,37 +1341,66 @@ In sum, we find that the Forced commitment contract clients pays 13.8 days earli
 \cleardoublepage
 
 
+\begin{figure}[H]
+    \caption{Wide and narrow forests}
+    \label{wide_narrow_forests}
+    \begin{center}
+    \begin{subfigure}{0.75\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/scatter_hist_wide_narrow.pdf}
+    \end{subfigure}
+    \end{center}
+      \scriptsize
+
+%\textit{Do file: } \texttt{wide_narrow_forests.do}       
+\end{figure}
+
+
+\begin{figure}[H]
+    \caption{Targeting rules}
+    \label{targeting_rules}
+    \begin{center}
+    \begin{subfigure}{0.75\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/wide_narrow_rule.pdf}
+    \end{subfigure}
+    \end{center}
+      \scriptsize
+
+%\textit{Do file: } \texttt{wide_narrow_forests.do}       
+\end{figure}
+
 
 
 
 
     
-\begin{figure}[H]
-    \caption{Negative selection on treatment effects}
-    \label{benefit_vs_choice_cdf}
-    \begin{center}
-    \begin{subfigure}{0.475\textwidth}
-        \caption{APR benefit}
-        \centering
-        \includegraphics[width=\textwidth]{Figuras/cdf_predchoose_tau_apr.pdf}
-    \end{subfigure}
-    \begin{subfigure}{0.475\textwidth}
-        \caption{Repayment}
-        \centering
-        \includegraphics[width=\textwidth]{Figuras/cdf_predchoose_tau_des.pdf}
-    \end{subfigure}
-    \begin{subfigure}{0.475\textwidth}
-        \caption{Default}
-        \centering
-        \includegraphics[width=\textwidth]{Figuras/cdf_predchoose_tau_def.pdf}
-    \end{subfigure}
-    \end{center}
-     \scriptsize    CDF of the heterogeneous treatment effect for choosers vs non-choosers. The dotted line below indicates the points where the difference in the distributions is significant.  Instead of a single global null hypothesis (that the two CDFs are identical), there is a continuum of individual null hypotheses of CDF equality at each point. This methodology was proposed by \cite{GOLDMAN2018143}.
+% \begin{figure}[H]
+%     \caption{Negative selection on treatment effects}
+%     \label{benefit_vs_choice_cdf}
+%     \begin{center}
+%     \begin{subfigure}{0.475\textwidth}
+%         \caption{APR benefit}
+%         \centering
+%         \includegraphics[width=\textwidth]{Figuras/cdf_predchoose_tau_apr.pdf}
+%     \end{subfigure}
+%     \begin{subfigure}{0.475\textwidth}
+%         \caption{Repayment}
+%         \centering
+%         \includegraphics[width=\textwidth]{Figuras/cdf_predchoose_tau_des.pdf}
+%     \end{subfigure}
+%     \begin{subfigure}{0.475\textwidth}
+%         \caption{Default}
+%         \centering
+%         \includegraphics[width=\textwidth]{Figuras/cdf_predchoose_tau_def.pdf}
+%     \end{subfigure}
+%     \end{center}
+%      \scriptsize    CDF of the heterogeneous treatment effect for choosers vs non-choosers. The dotted line below indicates the points where the difference in the distributions is significant.  Instead of a single global null hypothesis (that the two CDFs are identical), there is a continuum of individual null hypotheses of CDF equality at each point. This methodology was proposed by \cite{GOLDMAN2018143}.
      
      
-     \hl{Isaac : If I recall correctly we agreed to not work with the propensities. Besides this is giving us different results(?) - this was due to not using actual choosers and the prop. score model not being very good. Thus this will be removed? }
-          %\footnotesize{ \textit{Do file: }  \texttt{benefit\_choice.do}}
-\end{figure}
+%      \hl{Isaac : If I recall correctly we agreed to not work with the propensities. Besides this is giving us different results(?) - this was due to not using actual choosers and the prop. score model not being very good. Thus this will be removed? }
+%           %\footnotesize{ \textit{Do file: }  \texttt{benefit\_choice.do}}
+% \end{figure}
 
 
 

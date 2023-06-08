@@ -10,8 +10,10 @@ library(rattle)
 library(broom)
 
 # SET WORKING DIRECTORY
-setwd('C:/Users/isaac/Dropbox/Apps/Overleaf/Donde2020')
+setwd('C:/Users/isaac/Dropbox/Apps/Overleaf/Donde2022')
 set.seed(1)
+
+source("./RScripts/best_tree.R")
 
 fun_threshold_alpha = function(alpha, g) {
   lambda = 1/(alpha*(1-alpha))
@@ -39,19 +41,23 @@ te_grf <- function(data_in, outcome_var, name) {
     "dummy_suc4",
     "dummy_suc5",
     "dummy_suc6",
-    "num_arms_d2",
-    "num_arms_d3",
-    "num_arms_d4",
-    "num_arms_d5",
-    "num_arms_d6", 
     "edad",
     "faltas",
-    "val_pren_std",
-    "genero",
+    "c_trans",
+    "t_llegar",
+    "fam_pide",
+    "ahorros",
+    "t_consis1",
+    "t_consis2", 
+    "confidence_100",
+    "hace_presupuesto",
+    "tentado",
+    "rec_cel",
     "pres_antes",
-    "plan_gasto",
+    "cta_tanda",
+    "genero",
     "masqueprepa",
-    "pb"
+    "estresado_seguido"
   ),
   c(
     "tuesday",
@@ -64,19 +70,23 @@ te_grf <- function(data_in, outcome_var, name) {
     "branch.4",
     "branch.5",
     "branch.6",
-    "num.exp.arms.2",
-    "num.exp.arms.3",
-    "num.exp.arms.4",
-    "num.exp.arms.5",
-    "num.exp.arms.6",
     "age",
-    "income.index",
-    "subj.loan.value",
-    "female",
-    "pawn.before",
+    "trouble.paying.bills",
+    "transport.cost",
+    "transport.time",
+    "fam.asks",
+    "savings",
+    "patience",
+    "future.patience", 
+    "sure.confidence",
     "makes.budget",
+    "tempted",
+    "sms.reminder",
+    "pawn.before",
+    "rosca",
+    "female",
     "more.high.school",
-    "p.bias"
+    "stressed"
   ))
   
   require("dplyr")
@@ -224,8 +234,16 @@ te_grf <- function(data_in, outcome_var, name) {
   write_csv(ate, filename_ate)
   print(ate)
   
+  # BEST TREE
+  best_tree_info <- find_best_tree(tau.forest, "causal")
+  
+  # Tree Plot
+  tree.plot = plot(get_tree(tau.forest, best_tree_info$best_tree))
+  filename_pl <- paste("Figuras/crf_", name, ".svg", sep="") 
+  cat(DiagrammeRsvg::export_svg(tree.plot), file=filename_pl)
+  
   # Causal Tree
-  tree <- causalTree(data.matrix(select(data_train,outcome_var)) ~ . -fee_arms-prenda-insample ,
+  tree <- causalTree(as.formula(paste(outcome_var, ". -fee_arms-prenda-insample", sep=" ~ ")) ,
                      data = data_train, treatment = data_train$fee_arms,
                      split.Rule = "CT", cv.option = "CT", split.Honest = T, cv.Honest = T, split.Bucket = F, 
                      xval = 5, cp = 0, minsize = 20, propensity = 0.5)
@@ -237,6 +255,31 @@ te_grf <- function(data_in, outcome_var, name) {
   dev.off()
   cat(ct)
   
+  # Fit-the-Fit
+  X_narrow <- select(data_test,c(age,female,makes.budget,more.high.school))
+  Y_fit <- tau_hat_oob$predictions
+  fit_fit = regression_forest(X_narrow,Y_fit,
+                              num.trees = 3000,
+                              sample.weights = NULL,
+                              clusters = NULL,
+                              equalize.cluster.weights = FALSE,
+                              sample.fraction = 0.5,
+                              mtry = min(ceiling(sqrt(ncol(X)) + 20), ncol(X)),
+                              min.node.size = 5,
+                              honesty = TRUE,
+                              honesty.fraction = 0.5,
+                              honesty.prune.leaves = TRUE,
+                              alpha = 0.05,
+                              imbalance.penalty = 0,
+                              ci.group.size = 2,
+                              tune.parameters = c("alpha", "imbalance.penalty"),
+                              tune.num.trees = 500,
+                              tune.num.reps = 200,
+                              tune.num.draws = 2000,
+                              compute.oob.predictions = TRUE,
+                              num.threads = NULL,
+                              seed = 1)
+  pr_narrow = predict(fit_fit, estimate.variance = TRUE)
   
   # Variable importance
   var_imp <- variable_importance(tau.forest)
@@ -285,7 +328,8 @@ te_grf <- function(data_in, outcome_var, name) {
   # Save results
   data.out <- add_column(data_copy, tau_hat_oob$predictions, tau_hat_oob$variance.estimates,
                          pr_mu1$predictions, pr_mu1$variance.estimates,
-                         pr_mu0$predictions, pr_mu0$variance.estimates)
+                         pr_mu0$predictions, pr_mu0$variance.estimates,
+                         pr_narrow$predictions, pr_narrow$variance.estimates)
   filename_out <- paste("_aux/", name, "_te_grf.csv", sep="")
   write_csv(data.out, filename_out)
 }  
@@ -295,15 +339,7 @@ te_grf <- function(data_in, outcome_var, name) {
 
 # READ DATASET
 apr <- read_csv('./_aux/apr_te_heterogeneity.csv') 
-eff <- read_csv('./_aux/eff_te_heterogeneity.csv') 
-def <- read_csv('./_aux/def_te_heterogeneity.csv') 
-des <- read_csv('./_aux/des_te_heterogeneity.csv') 
-
 
 #####################################################
-
 te_grf(apr,"apr","apr") 
-te_grf(eff,"eff","eff") 
-te_grf(def,"def_c","def") 
-te_grf(des,"des_c","des") 
 

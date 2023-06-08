@@ -10,7 +10,7 @@ library(rattle)
 library(broom)
 
 # SET WORKING DIRECTORY
-setwd('C:/Users/isaac/Dropbox/Apps/Overleaf/Donde2020')
+setwd('C:/Users/isaac/Dropbox/Apps/Overleaf/Donde2022')
 set.seed(1)
 
 source("./RScripts/best_tree.R")
@@ -48,11 +48,6 @@ heterogeneity_effect <- function(data_in,treatment_var,outcome_var,writedata,ext
       "dummy_suc4",
       "dummy_suc5",
       "dummy_suc6",
-      "num_arms_d2",
-      "num_arms_d3",
-      "num_arms_d4",
-      "num_arms_d5",
-      "num_arms_d6", 
       "suc_x_dia",
       "edad",
       "faltas",
@@ -61,7 +56,8 @@ heterogeneity_effect <- function(data_in,treatment_var,outcome_var,writedata,ext
       "pres_antes",
       "plan_gasto",
       "masqueprepa",
-      "pb"
+      "pb",
+      "confidence_100"
     ),
     c(
       "tuesday",
@@ -74,11 +70,6 @@ heterogeneity_effect <- function(data_in,treatment_var,outcome_var,writedata,ext
       "branch.4",
       "branch.5",
       "branch.6",
-      "num.exp.arms.2",
-      "num.exp.arms.3",
-      "num.exp.arms.4",
-      "num.exp.arms.5",
-      "num.exp.arms.6",
       "suc_x_dia",
       "age",
       "income.index",
@@ -87,7 +78,8 @@ heterogeneity_effect <- function(data_in,treatment_var,outcome_var,writedata,ext
       "pawn.before",
       "makes.budget",
       "more.high.school",
-      "p.bias"
+      "p.bias",
+      "sure.confidence"
     ))
   }
   
