@@ -269,24 +269,44 @@ graph export "$directorio/Figuras/wide_narrow_rule.pdf", replace
 
 *-------------------------------------------------------------------------------
 
+*Choice type error (choose_wrong_quant_wrong_tot_tut.do)
+replace threshold = -1000.5 if missing(threshold)
+merge m:m threshold using "$directorio/_aux/choose_wrong_tot_tut.dta", nogen keepusing(cwf cwf_choose cwf_nonchoose) keep(1 3)
+replace threshold = . if threshold==-1000.5 
+
+
 *Table with both type errors
 putexcel set "$directorio\Tables\hit_miss_rule.xlsx", sheet("hit_miss_rule") modify
 
-*Type I
+*Universal paternalism
 su better_forceall if threshold==0
+	*Control
 putexcel H5 = matrix(`r(mean)')
+	*Commitment
 putexcel I6 = matrix(`=100-`r(mean)'')
   
+*Narrow rule (RF)  
 su type_i if threshold==0  
 putexcel H8 = matrix(`r(mean)')
 su type_ii if threshold==0  
 putexcel I8 = matrix(`r(mean)')
 
+*Narrow rule (Logit)  
 su type_i_lg if threshold==0  
 putexcel H9 = matrix(`r(mean)')
 su type_ii_lg if threshold==0  
 putexcel I9 = matrix(`r(mean)')
 
+*Choice  
+	*Non-choosers incorrectly assigned to control
+su cwf_nonchoose if threshold==0  
+putexcel H10 = matrix(`r(mean)')
+	*Choosers incorrectly assigned to control
+su cwf_choose if threshold==0  
+putexcel I10 = matrix(`r(mean)')
+	*Weighted sum
+su cwf if threshold==0  
+putexcel J10 = matrix(`r(mean)')
 	
 *-------------------------------------------------------------------------------
 
