@@ -339,7 +339,7 @@ Finally, Panel E of this table conducts a logit prediction model that uses all o
         \caption{Effect of Prior Assignment on Subsequent Choice}
     \label{learning_table}
 \begin{center}
-\scriptsize{\input{./Tables/learning_exp_pres.tex}}
+\scriptsize{\input{./Tables/learning_exp.tex}}
 \end{center}
  \scriptsize  This table uses a Linear Probability Model to examine whether randomized treatment assignment on a prior loan taken during the experimental period drives the likelihood of selecting into the commitment product for individuals who go to a branch featuring Choice after the experiment.
 \end{table}
@@ -368,13 +368,13 @@ Finally, Panel E of this table conducts a logit prediction model that uses all o
 \subsection{Sure confidence and present bias}
 
 \begin{figure}[H]
-    \caption{Partition of TuT by behavioral variables.}
+    \caption{Partition of TUT by behavioral variables.}
     \label{tut_beh_partition}
     \begin{center}
         \centering
         \includegraphics[width=0.55\textwidth]{Figuras/tut_beh_partition.pdf} 
     \end{center}
-     \scriptsize  This figure performs a partition of the Treatment on the Untreated, estimating the share of the effect that arises within each of two binary categories.  The top bars examine present bias (individuals are more impatient over one-month time horizon than they are between three and four months).  The bottom bars examine sure confidence (individual reports 100\% probability of repaying at time of taking loan).  Blue bar is the component arising from those without the trait, orange bar from those with the trait. 
+     \scriptsize  This figure performs a partition of the Treatment on the Untreated (FC), estimating the share of the effect that arises within each of two binary categories.  The top bars examine present bias (individuals are more impatient over one-month time horizon than they are between three and four months).  The bottom bars examine sure confidence (individual reports 100\% probability of repaying at time of taking loan).  Blue bar is the component arising from those without the trait, orange bar from those with the trait. 
       %\footnotesize{ \textit{Do file: }  \texttt{partition_tot_tut.do}
 \end{figure}
 
@@ -390,26 +390,25 @@ Fortunately for us, it turns out that one distribution first-order-stochasticall
 
 \vspace{.2in}
 \begin{figure}[H]
-        \caption{Empirical CDF of Financial Cost: fee-forcing vs status-quo \textcolor{red}{\hl{MAY NEED UPDATING}}}
+        \caption{Empirical CDF of Financial Cost: Forced commitment vs Control }
     \label{ecdf_fc}
+    
     \begin{center}
+       \begin{subfigure}{0.49\textwidth}
+        \caption{APR}
         \centering
-        \includegraphics[width=0.55\textwidth]{Figuras/cdf_fc_pro_2.pdf}
+        \includegraphics[width=\textwidth]{Figuras/cdf_apr.pdf}
+    \end{subfigure} 
+   \begin{subfigure}{0.49\textwidth}
+        \caption{Financial cost}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/cdf_fc_admin.pdf}
+    \end{subfigure} 
     \end{center}
-    \scriptsize This figure plots the empirical cumulative distribution of financial cost. It does this separately for the fee-forcing contract and for the status-quo contract. The doted line at the bottom is the difference of the status-quo CDF minus the fee-forcing CDF. It shows that the CDF of the status quo contract is always below that of the fee-forcing (and this difference is significant for the points indicated by the blue line), and therefore that the former first-order stochastically dominates the later for weakly decreasing utility functions; see Proposition \ref{eq_fosd}.
-    % \texttt{ecdf\_fc.do}}
+    \scriptsize This figure plots the empirical cumulative distribution of financial cost. It does this separately for the fee-forcing contract and for the status-quo contract. The dotted line at the bottom is the difference of the control CDF minus the forced CDF arm. It shows that the CDF of the status quo contract is always below that of the fee-forcing (and this difference is significant for the points indicated by the blue line), and therefore that the former first-order stochastically dominates the later for weakly decreasing utility functions; see Proposition \ref{eq_fosd}.
+    % \texttt{fosd_ecdf.do}}
 \end{figure}
 
-\begin{figure}[H]
-        \caption{Empirical CDF of APR: fee-focing vs status-quo \textcolor{red}{\hl{MAY NEED UPDATING}}}
-    \label{ecdf_fc}
-    \begin{center}
-        \centering
-        \includegraphics[width=0.55\textwidth]{Figuras/cdf_eff_pro_2.pdf}
-    \end{center}
-    \scriptsize This figure plots the empirical cumulative distribution of financial cost. It does this separately for the fee-forcing contract and for the status-quo contract. The doted line at the bottom is the difference of the status-quo CDF minus the fee-forcing CDF. It shows that the CDF of the status quo contract is always below that of the fee-forcing (and this difference is significant for the points indicated by the blue line), and therefore that the former first-order stochastically dominates the later for weakly decreasing utility functions; see Proposition \ref{eq_fosd}.
-    % \texttt{ecdf\_eff.do}}
-\end{figure}
 
 
 \vspace{.2in}
@@ -539,7 +538,7 @@ If treatment effects are homogeneous we must have $\beta_2 = 0$. Rejecting this 
 
 \todo[inline]{Discuss the results here.}
 
-\todo[inline]{Issac: re-run this exercise with removing the propensity score weights $p(Z)$. Presumably it shouldn't change anything, but it's simpler to explain what we do and probably less noisy
+\todo[inline]{Issac: re-run this exercise with removing the propensity score weights $p(Z)$. Presumably it shouldn't change anything, but it's simpler to explain what we do and probably less noisy}
 
 \begin{table}[H]
 \begin{center}
@@ -547,7 +546,7 @@ If treatment effects are homogeneous we must have $\beta_2 = 0$. Rejecting this 
 \end{center}
 \end{table}
 
-}
+
 
 \todo[inline]{Some Questions for Issac: (1) How are we carrying out the sample splitting? If we cluster standard errors at the branch-day level, we should take this into account when we split. (2) How are you carrying out inference for $\beta_2$? Chernozhukov et al discuss two approaches: ``conditional'' and ``variational.'' The former is simpler as it conditions on the training/test split. The latter is a bit more involved, since one accounts for uncertainty arising from different splits. (3) What are the details of the random forest procedure employed here? (Tuning parameters choice, etc.) We should put them into the appendix.}
 
@@ -560,8 +559,10 @@ If treatment effects are homogeneous we must have $\beta_2 = 0$. Rejecting this 
 \label{append:randchoice}
 
 
-This appendix provides formal proofs of the results described in Section \ref{sec:randchoice}, using the notation and assumptions described in Section \ref{sec:potentialOutcomes}. To simplify the presentation, we omit $i$ subscripts throughout this section.
-The following assumption collects our exclusion restriction and the key features of our experimental design.
+This appendix provides proofs of the results described in Section \ref{sec:randchoice}, using the notation and assumptions described in Section \ref{sec:potentialOutcomes}. 
+To simplify the presentation, we omit $i$ subscripts throughout this section.
+We also use the shorthand $Z_0 \equiv \mathbbm{1}(Z=0)$, $Z_1 \equiv \mathbbm{1}(Z=1)$, and $Z_2 \equiv\mathbbm{1}(Z=2)$.
+For convenience, the following assumption collects our exclusion restriction and the key features of the constrained choice design.
 
 \begin{assumption}\mbox{}
 \label{assump:randchoice}
@@ -573,14 +574,20 @@ The following assumption collects our exclusion restriction and the key features
 \end{assumption}
 
 
-\begin{lem}\mbox{}
+\subsection{Point Identification}
+
+We first show that the TOT, TUT, ASB, and ASL effects are point identified under the constrained choice design.
+It follows that the ASG effect, $(\text{TOT} - \text{TUT})$, is likewise point identified. 
+
+\begin{lem}
+Under Assumption \ref{assump:randchoice},
 \label{lem_randchoice}
    \begin{enumerate}[(i)]
        \item $\mathbbm{E}(D|Z=2) = \mathbb{P}(C=1)$
        \item $\mathbbm{E}(Y|Z=0) = \mathbbm{E}(Y_0)$
        \item $\mathbbm{E}(Y|Z=1) = \mathbbm{E}(Y_1)$
        \item $\mathbbm{E}(Y|D=0,Z=2) = \mathbbm{E}(Y_0|C=0)$
-       \item $\mathbbm{E}(Y|D=1,Z=2) = \mathbbm{E}(Y_1|C=1)$
+       \item $\mathbbm{E}(Y|D=1,Z=2) = \mathbbm{E}(Y_1|C=1)$.
    \end{enumerate} 
 \end{lem}
 
@@ -593,19 +600,19 @@ Now, $Z=2$ implies that $D=0$ if and only if $C=0$. Hence,
 \mathbbm{E}(Y|D=0, Z=2) = \mathbbm{E}(Y_0|D=0, Z=2) = \mathbbm{E}(Y_0|C=0, Z=2)=\mathbbm{E}(Y_0|C=0)
 \]
 establishing part (iv).
-Similarly, $Z=2$ implies that $D=1$ if and only if $C=1$ and hence
+For part (v) $Z=2$ implies that $D=1$ if and only if $C=1$ and hence
 \[
-\mathbbm{E}(Y|D=1, Z=2) = \mathbbm{E}(Y_1|D=1, Z=2) = \mathbbm{E}(Y_1|C=1, Z=2)= \mathbbm{E}(Y_1|C=1)
+\mathbbm{E}(Y|D=1, Z=2) = \mathbbm{E}(Y_1|D=1, Z=2) = \mathbbm{E}(Y_1|C=1, Z=2)= \mathbbm{E}(Y_1|C=1). %\qedhere
 \]
-establishing part (v).
 \end{proof}
 
-\begin{prop} \mbox{}
+\begin{prop} 
+Under Assumption \ref{assump:randchoice},
     \begin{enumerate}[(i)]
-        \item $\text{ToT} \equiv \mathbbm{E}(Y_1 - Y_0|C=1)  = \displaystyle \frac{\mathbbm{E}(Y|Z=2) - \mathbbm{E}(Y|Z=0)}{\mathbbm{E}(D|Z=2)}$
-        \item $\text{TuT} \equiv \mathbbm{E}(Y_1 - Y_0|C=0) = \displaystyle \frac{\mathbbm{E}(Y|Z=1) - \mathbbm{E}(Y|Z=2)}{1 - \mathbbm{E}(D|Z=2)}$
+        \item $\text{TOT} \equiv \mathbbm{E}(Y_1 - Y_0|C=1)  = \displaystyle \frac{\mathbbm{E}(Y|Z=2) - \mathbbm{E}(Y|Z=0)}{\mathbbm{E}(D|Z=2)}$
+        \item $\text{TUT} \equiv \mathbbm{E}(Y_1 - Y_0|C=0) = \displaystyle \frac{\mathbbm{E}(Y|Z=1) - \mathbbm{E}(Y|Z=2)}{1 - \mathbbm{E}(D|Z=2)}$
         \item $\text{ASB} \equiv \mathbbm{E}(Y_0|C=1) - \mathbbm{E}(Y_0|C=0) = \displaystyle \frac{\mathbbm{E}(Y|Z=0) - \mathbbm{E}(Y|Z=2,D=0)}{\mathbbm{E}(D|Z=2)}$
-        \item $\text{ASL} \equiv \mathbbm{E}(Y_1|C=1) - \mathbbm{E}(Y_1|C=0) = \displaystyle \frac{\mathbbm{E}(Y|Z=2,D=1) - \mathbbm{E}(Y|Z=1)}{1 - \mathbbm{E}(D|Z=2)}$
+        \item $\text{ASL} \equiv \mathbbm{E}(Y_1|C=1) - \mathbbm{E}(Y_1|C=0) = \displaystyle \frac{\mathbbm{E}(Y|Z=2,D=1) - \mathbbm{E}(Y|Z=1)}{1 - \mathbbm{E}(D|Z=2)}$.
     \end{enumerate}
 \end{prop}
 
@@ -616,10 +623,11 @@ By Lemma \ref{lem_randchoice}(ii) and iterated expectations
 \mathbbm{E}(Y|Z=0) = \mathbbm{E}(Y_0) = \mathbbm{E}(Y_0|C=0) \mathbbm{P}(C=0) + \mathbbm{E}(Y_0|C=1) \mathbbm{P}(C=1).
 \]
 Re-arranging and substituting Lemma \ref{lem_randchoice}(i) and (iv),
-\begin{equation}
-\mathbbm{E}(Y_0|C=1)  = \frac{\mathbbm{E}(Y|Z=0) - \mathbbm{E}(Y_0|C=0) \mathbbm{P}(C=0)}{\mathbbm{P}(C=1)} =  \frac{\mathbbm{E}(Y|Z=0) - \mathbbm{E}(Y|Z=2,D=0) \mathbbm{E}(1 - D|Z=2)}{\mathbbm{E}(D|Z=2)}.
+\begin{align}
+\mathbbm{E}(Y_0|C=1)  &= \frac{\mathbbm{E}(Y|Z=0) - \mathbbm{E}(Y_0|C=0) \mathbbm{P}(C=0)}{\mathbbm{P}(C=1)}\nonumber\\ 
+&=  \frac{\mathbbm{E}(Y|Z=0) - \mathbbm{E}(Y|Z=2,D=0) \mathbbm{E}(1 - D|Z=2)}{\mathbbm{E}(D|Z=2)}.
 \label{eq:Y0C1}
-\end{equation}
+\end{align}
 Part (i) follows by combining \eqref{eq:Y0C1} with Lemma \ref{lem_randchoice}(v) and simplifying; part (iii) follows by combining \eqref{eq:Y0C1} with Lemma \ref{lem_randchoice}(iv) and simplifying.
 Similarly, for parts (ii) and (iv) we require an expression for $\mathbbm{E}(Y_1|C=0)$ in terms of observables.
 By Lemma \ref{lem_randchoice}(iii) and iterated expectations,
@@ -627,15 +635,219 @@ By Lemma \ref{lem_randchoice}(iii) and iterated expectations,
 \mathbbm{E}(Y|Z=1) = \mathbbm{E}(Y_1) = \mathbbm{E}(Y_1|C=0)\mathbbm{P}(C=0) + \mathbbm{E}(Y_1|C=1) \mathbbm{P}(C=1).
 \]
 Re-arranging and substituting Lemma \ref{lem_randchoice}(i) and (v),
-\begin{equation}
+\begin{align}
 \mathbbm{E}(Y_1|C=0) 
-= \frac{\mathbbm{E}(Y|Z=1) - \mathbbm{E}(Y_1|C=1)\mathbbm{P}(C=1)}{\mathbb{P}(D=0)} =\frac{\mathbbm{E}(Y|Z=1) - \mathbbm{E}(Y|Z=2,D=1)\mathbbm{E}(D|Z=2)}{\mathbb{E}(1-D|Z=2)}.
+&= \frac{\mathbbm{E}(Y|Z=1) - \mathbbm{E}(Y_1|C=1)\mathbbm{P}(C=1)}{\mathbb{P}(D=0)} \nonumber\\
+&=\frac{\mathbbm{E}(Y|Z=1) - \mathbbm{E}(Y|Z=2,D=1)\mathbbm{E}(D|Z=2)}{\mathbb{E}(1-D|Z=2)}.
 \label{eq:Y1C0}
-\end{equation}
+\end{align}
 Part (ii) follows by combining \eqref{eq:Y1C0} with Lemma \ref{lem_randchoice}(iv) and simplifying; part (iv) follows by combining \eqref{eq:Y1C0} with Lemma \ref{lem_randchoice}(v) and simplifying.
 \end{proof}
 
-\todo[inline]{It looks like I still need to paste in the derivations of the ``regression'' approach to identifying the effects of interest. I will do this pronto! -Frank}
+\subsection{Regression-based Estimation of TOT, TUT, ASG, ASL, and ASB}
+
+We now show how a collection of just-identified, linear IV regressions can be used to consistently estimate the ATE, TOT, and TUT effects, along with each of the ingredients needed to construct the ASL and ASB. 
+These results are used below to provide a recipe for cluster-robust inference for the ASG, ASL, and ASB effects.
+The first result provides a regression-based approach to estimate the ATE and TOT.
+
+\begin{prop} 
+Under Assumption \ref{assump:randchoice},
+\[
+Y = \mathbbm{E}(Y_0) + \text{ATE}\times Z_1 + \text{TOT} \times Z_2 D + U
+\]
+where $\mathbb{E}(U|Z) = 0$.
+Therefore, under standard regularity conditions, an IV regression of $Y$ on an intercept, $Z_1$ and $Z_2 D$ with instruments $(1, Z_1, Z_2)$ provides a consistent estimator of the ATE and TOT effects.
+\end{prop}
+
+\begin{proof}
+By Assumption \ref{assump:randchoice} (iii),
+\begin{align*}
+Y &= Z_0 Y_0 + Z_1 Y_1 + Z_2[(1 - C) Y_0 + CY_1]\\
+&= (Z_0 + Z_2)Y_0 + Z_1 Y_1 + Z_2C(Y_1 - Y_0)\\
+&= (Z_0 + Z_1 + Z_2)Y_0 + Z_1 (Y_1 - Y_0) + Z_2D(Y_1 - Y_0)\\
+&= Y_0 + Z_1 (Y_1 - Y_0) + Z_2D(Y_1 - Y_0).
+\end{align*}
+since $Z_2 D = Z_2 C$ and $(Z_0 + Z_1 + Z_2) = 1$.
+Thus, defining 
+\[
+U \equiv [Y_0 - \mathbbm{E}(Y_0)] + Z_1[(Y_1 - Y_0) - \text{ATE}] + Z_2 D[(Y_1 - Y_0) - \text{TOT}]
+\]
+by construction we have
+\[
+Y = \mathbbm{E}(Y_0) + \text{ATE} \times Z_1 + \text{TOT} \times Z_2 D+ U.
+\]
+Now, since $Z_2 D = Z_2 C$ and $Z$ is independent of $(Y_1, Y_0)$ by Assumption \ref{assump:randchoice} (i), we have
+\begin{align*}
+\mathbbm{E}(U|Z) &= [\mathbbm{E}(Y_0|Z) - \mathbbm{E}(Y_0)]  + Z_1[\mathbbm{E}(Y_1 - Y_0|Z) - \text{ATE}] +  \mathbbm{E}\left[Z_2 D\left\{(Y_1 - Y_0) - \text{TOT}\right\}|Z\right]\\
+&= [\mathbbm{E}(Y_0) - \mathbbm{E}(Y_0)]  + Z_1[\mathbbm{E}(Y_1 - Y_0) - \text{ATE}] + Z_2 \mathbbm{E}\left[C\left\{(Y_1 - Y_0) - \text{TOT}\right\}|Z\right]\\
+&= Z_2 \mathbbm{E}\left[C\left\{(Y_1 - Y_0) - \text{TOT}\right\}|Z\right].
+\end{align*}
+Finally, by iterated expectations
+\begin{align*}
+\mathbbm{E}\left[C\left\{(Y_1 - Y_0) - \text{TOT}\right\}|Z\right] &=  \mathbbm{P}(C=1|Z) \left[\mathbbm{E}(Y_1 - Y_0|C=1,Z)  - \text{TOT}\right]\\
+&= \mathbbm{P}(C=1)\left[\mathbbm{E}(Y_1 - Y_0|C=1) - \text{TOT} \right]=0
+\end{align*}
+since $Z$ is conditionally independent of $(Y_0, Y_1)$ given $C$, an implication of \ref{assump:randchoice} (i).
+\end{proof}
+
+The next proposition provides regression-based estimates of the ATE and TUT.
+\begin{prop}
+Under Assumption \ref{assump:randchoice}
+\[
+Y = \mathbbm{E}(Y_1) + \text{ATE}\times -Z_0 + \text{TUT} \times -Z_2 (1 - D) + V
+\] 
+where $\mathbb{E}(V|Z) = 0$.
+Therefore, under standard regularity conditions, an IV regression of $Y$ on an intercept, $-Z_0$ and $-Z_2(1-D)$ with instruments $(1, Z_0, Z_2)$ provides consistent estimates of the ATE and TUT effects.
+\end{prop}
+
+\begin{proof}
+By Assumption \ref{assump:randchoice} (iii),
+\begin{align*}
+Y &= Z_0 Y_0 + Z_1 Y_1 + Z_2[(1 - C) Y_0 + CY_1]\\
+&= Z_0 Y_0 + Z_1 Y_1 + Z_2[(1 - C) (Y_0 - Y_1) + Y_1]\\
+&= Z_0 Y_0 + (Z_1 + Z_2) Y_1 + Z_2(1 - C) (Y_0 - Y_1) \\
+&= Z_0 Y_0 + (1 - Z_0) Y_1 + Z_2(1 - D) (Y_0 - Y_1) \\
+&= Y_1 - Z_0 (Y_1 - Y_0) - Z_2(1 - D) (Y_1 - Y_0)
+\end{align*}
+since $Z_2(1 - C)= Z_2(1 - D)$ and $(Z_1 + Z_2) = 1 - Z_0$.
+Thus, defining 
+\[
+V \equiv [Y_1 - \mathbb{E}(Y_1)] - Z_0[(Y_1 - Y_0) - \text{ATE}] - Z_2(1 - D)[(Y_1 - Y_0) - \text{TUT}]
+\]
+by construction we have
+\[
+Y = \mathbb{E}(Y_1) + \text{ATE} \times -Z_0 + \text{TUT} \times -Z_2(1 - D) + V.
+\]
+Now, since $Z_2(1 - D) = Z_2 (1 - C)$ and $Z$ is independent of $(Y_0, Y_1)$ by Assumption \ref{assump:randchoice} (i),
+\begin{align*}
+\mathbb{E}(V|Z) &= [\mathbb{E}(Y_1|Z) - \mathbb{E}(Y_1)] - Z_0[\mathbb{E}(Y_1 - Y_0|Z) - \text{ATE}] - \mathbb{E}[Z_2(1 - D)\left\{(Y_1 - Y_0) - \text{TUT}\right\}|Z]\\
+&= [\mathbb{E}(Y_1) - \mathbb{E}(Y_1)] - Z_0[\mathbb{E}(Y_1 - Y_0) - \text{ATE}] - Z_2\mathbb{E}[(1 - C)\left\{(Y_1 - Y_0) - \text{TUT}\right\}|Z]\\
+&= -Z_2\mathbb{E}[(1 - C)\left\{(Y_1 - Y_0) - \text{TUT}\right\}|Z].
+\end{align*}
+Finally, by iterated expectations,
+\begin{align*}
+\mathbb{E}[(1 - C)\left\{(Y_1 - Y_0) - \text{TUT}\right\}|Z]&= \mathbb{P}(C=0|Z)\left[ \mathbb{E}(Y_1 - Y_0|C=0, Z) - \text{TUT}\right]\\
+&= \mathbb{P}(C=0|Z) \left[ \mathbb{E}(Y_1 - Y_0|C=0) - \text{TUT}\right] = 0
+\end{align*}
+since $Z$ is conditionally independent of $(Y_0, Y_1)$ given $C$, an implication of Assumption \ref{assump:randchoice} (i).
+\end{proof}
+
+Since $\text{ASG} = \text{TOT} - \text{TUT}$, the preceding two propositions provide consistent estimates of $\text{ASG}$ effect.
+The $\text{ASB}$ effect, $\mathbbm{E}(Y_0|C=1) - \mathbb{E}(Y_0|C=0)$, can likewise be estimated by taking the difference of coefficients across two linear IV regressions, as shown in the following proposition.
+
+\begin{prop}
+Under Assumption \ref{assump:randchoice}
+\begin{align}
+\label{eq:ASB0}
+    (1 - D) Y &= \mathbbm{E}(Y_{0}) \times Z_0 + \mathbbm{E}(Y_{0}|C=0) \times (1 - D)Z_2 + U_{0}\\
+\label{eq:ASB1}
+    (1 - D) Y &= \mathbbm{E}(Y_{0}) \times(Z_0 + Z_2) + \mathbbm{E}(Y_{0}|C=1)\times -DZ_2 + U_{1}
+\end{align}
+where $\mathbbm{E}(U_0|Z) = \mathbbm{E}(U_1|Z) = 0$.
+Thus, under standard regularity conditions, an IV regression of $(1 - D)Y$ on $Z_0$ and $(1 - D)Z_2$ with instruments $(Z_0, Z_2)$ and no intercept provides consistent estimates of $\mathbb{E}(Y_0)$ and $\mathbb{E}(Y_0|C=0)$. 
+Similarly, an IV regression of $(1 - D)Y$ on $(Z_0 + Z_2)$ and $-DZ_2$ with instruments $(Z_0, Z_2)$ and no intercept provides consistent estimates of $\mathbb{E}(Y_0)$ and $\mathbb{E}(Y_0|C=1)$.
+\end{prop}
+
+\begin{proof}
+Assumption \ref{assump:randchoice} (ii) implies $(1 - D) = Z_0 + Z_2(1 - C)$. Hence, by Assumption \ref{assump:randchoice} (iii),
+\begin{align*}
+(1 - D)Y &=  [Z_0 + Z_2 (1 - C)]\left\{Z_0 Y_0 + Z_1 Y_1 + Z_2[(1 - C) Y_0 + CY_1]\right\}\\
+&= Z_0 Y_0 + Z_2 (1 - C) [(1 - C) Y_0 + C Y_1]\\
+&= Z_0 Y_0 + Z_2 (1 - C) Y_0.
+\end{align*}
+because $Z_j^2 = Z_j$ for any $j$ and $Z_j Z_k = 0$ for any $j \neq k$ and, similarly, $(1 - C)^2 = (1 - C)$ and $C (1 - C) = 0$.
+Therefore, since $Z_2 (1 - C) = Z_2 (1 - D)$,
+\begin{align*}
+(1 - D)Y &= Z_0 Y_0 + Z_2 (1 - D) Y_0\\
+(1 - D)Y &= (Z_0 + Z_2) Y_0 + (-DZ_2) Y_0. 
+\end{align*}
+Now, defining
+\begin{align*}
+U_0 &\equiv Z_0 [Y_0 - \mathbbm{E}(Y_0)] + Z_2(1 - D)[Y_0 - \mathbbm{E}(Y_0|C=0)]\\
+U_1 &\equiv (Z_0 + Z_2)[Y_0 - \mathbbm{E}(Y_0)] + (-Z_2 D)[Y_0 - \mathbbm{E}(Y_0|C=1)]
+\end{align*}
+by construction, we have
+\begin{align*}
+Y &= \mathbbm{E}(Y_0) \times Z_0 + \mathbbm{E}(Y_0|C=0) \times Z_2(1 - D) + U_0\\
+Y &= \mathbbm{E}(Y_0) \times (Z_0 + Z_2)+ \mathbbm{E}(Y_0|C=1) (-Z_2D) + U_1.
+\end{align*}
+Finally, since $Z_2(1-D) = Z_2(1 - C)$, and $Z$ is independent of $Y_0$,  
+\begin{align*}
+\mathbbm{E}(U_0|Z) &= Z_0[\mathbbm{E}(Y_0|Z) - \mathbbm{E}(Y_0)] + Z_2\mathbbm{E}\{(1 - C) [Y_0 - \mathbbm{E}(Y_0|C=0) |Z\}\\
+&= Z_2 \mathbbm{E}[Y_0 - \mathbbm{E}(Y_0|C=0) | C = 0, Z] = 0
+\end{align*}
+where the final two steps follow by iterated expectations and the fact that  $Z$ is conditionally independent of $Y_0$ given $C$. 
+Since $Z_2 D = Z_2 C$, a nearly identical argument gives
+\begin{align*}
+\mathbbm{E}(U_1|Z) &= (Z_0 + Z_2)[Y_0 - \mathbbm{E}(Y_0|Z)] -Z_2\mathbbm{E}\{C [Y_0 - \mathbbm{E}(Y_0|C=1) |Z\}\\
+&= -Z_2 \mathbbm{E}[Y_0 - \mathbbm{E}(Y_0|C=0) | C = 1, Z] = 0. \qedhere
+\end{align*}
+\end{proof}
+
+
+The next results shows that the $\text{ASL}$ effect, $\mathbbm{E}(Y_1|C=1) - \mathbb{E}(Y_1|C=0)$, can be estimated as the difference of coefficients across two linear IV regressions, as shown in the following proposition.
+
+\begin{prop}
+Under Assumption \ref{assump:randchoice},
+\begin{align}
+\label{eq:ASL0}
+    D Y &= \mathbbm{E}(Y_{1}) \times(Z_1 + Z_2) + \mathbbm{E}(Y_{1}|C=0)\times (D - 1)Z_2 + V_{0}\\
+\label{eq:ASL1}
+    D Y &= \mathbbm{E}(Y_{1}) \times Z_1 + \mathbbm{E}(Y_{1}|C=1)\times D Z_2+ V_{1}
+\end{align}
+where $\mathbbm{E}(V_0|Z) = \mathbbm{E}(V_1|Z) = 0$.
+Thus, under standard regularity conditions, an IV regression of $DY$ on $(Z_1 + Z_2)$ and $-Z_2(1 - D)$ with instruments $(Z_1, Z_2)$ and no intercept provides consistent estimates of $\mathbb{E}(Y_1)$ and $\mathbb{E}(Y_1|C=1)$.
+Similarly, an IV regression of $DY$ on $Z_1$ and $DZ_2$ with instruments $(Z_1, Z_2)$ and no intercept provides consistent estimates of $\mathbb{E}(Y_1)$ and $\mathbb{E}(Y_1|C=1)$. 
+\end{prop}
+
+
+\begin{proof}
+By Assumption \ref{assump:randchoice}, $D = Z_1 + Z_2 C$. Hence, by Assumption \ref{assump:randchoice} (iii),
+\begin{align*}
+DY &=  (Z_1 + Z_2 C)\left\{Z_0 Y_0 + Z_1 Y_1 + Z_2[(1 - C) Y_0 + CY_1]\right\}\\
+&= Z_1 Y_1 + Z_2 C[(1 -C) Y_0 + C Y_1]\\
+&= Z_1 Y_1 + Z_2 C Y_1
+\end{align*}
+because $Z_j^2 = Z_j$ for any $j$ and $Z_j Z_k = 0$ for any $j \neq k$ and, similarly, $(1 - C)^2 = (1 - C)$ and $C (1 - C) = 0$. Therefore, since $Z_2 (1 - C) = Z_2 (1 - D)$,
+\begin{align*}
+ DY &= (Z_1 + Z_2)Y_1 + Z_2 (D - 1) Y_1\\
+ DY &= Z_1 Y_1 + Z_2 D Y_1.
+\end{align*}
+Now, defining
+\begin{align*}
+V_0 &= (Z_1 + Z_2)[Y_1 - \mathbbm{E}(Y_1)] + Z_2(D - 1)[Y_1 - \mathbbm{E}(Y_1|C=0)]\\
+V_1 &= Z_1[Y_1 - \mathbbm{E}(Y_1)] + Z_2D[Y_1 - \mathbbm{E}(Y_1|C=1)]
+\end{align*}
+by construction we have
+\begin{align*}
+Y &= \mathbbm{E}(Y_1) \times (Z_1 + Z_2) + \mathbbm{E}(Y_1 | C = 0) \times Z_2 (D - 1) + V_0\\
+Y &= \mathbbm{E}(Y_1) \times Z_1 + \mathbbm{E}(Y_1 | C = 1) \times Z_2 D + V _1.
+\end{align*}
+Finally, since $Z_2(1 - D) = Z_2(1 - C)$ and $Z$ is independent of $Y_1$,
+\begin{align*}
+\mathbbm{E}(V_0|Z) &= (Z_1 + Z_2) [\mathbbm{E}(Y_1|Z) - \mathbbm{E}(Y_1) ]  - Z_2 \mathbbm{E}\{(1 - C)  [Y_1 - \mathbbm{E}(Y_1 | C=0)|Z\} \\
+&= -Z_2 \mathbbm{E}[Y_1 - \mathbbm{E}(Y_1 | C=0)|C=0, Z] = 0
+\end{align*}
+where the final two steps follow by iterated expectations and the fact that  $Z$ is conditionally independent of $Y_1$ given $C$. 
+Since $Z_2 D = Z_2 C$, a nearly identical argument gives
+\begin{align*}
+\mathbbm{E}(V_1|Z) &= Z_1 [\mathbbm{E}(Y_1 | Z) - \mathbbm{E}(Y_1)]  + Z_2 \mathbbm{E}\{C  [Y_1 - \mathbbm{E}(Y_1 | C=1)|Z\} \\
+&= Z_2 \mathbbm{E}[Y_1 - \mathbbm{E}(Y_1 | C=1)|C=1, Z] = 0. \qedhere
+\end{align*}
+\end{proof}
+
+
+
+\todo[inline]{Update below here}
+
+\subsection{Inference for ASG, ASB, and ASL}
+We now explain how to carry out cluster-robust inference for the ASG, ASB, and ASL effects, as implemented in our companion STATA package.
+
+For purposes of inference, both the ASB and ASL can be re-written as the difference of coefficients from a pair of just-identified linear IV regressions, namely
+
+As in the case of the ASG, inference for the ASB and ASL can be carried out by saving the residuals from \eqref{eq:ASB0}--\eqref{eq:ASL1}. 
+
+\todo[inline]{Add something about the TUT decomposition and covariates? Probably just a few sentences at most.}
 
 %\begin{proof}
 %For part (iii), note that 
@@ -702,15 +914,17 @@ Using these expressions, the testable restrictions we consider here are as follo
 \label{eq:exclusion_append1}
 \mathbbm{E}(Y_1|C=1) &= \mathbbm{E}(Y_{1,2}|C=1).
 \end{align}
-Equation \ref{eq:exclusion_append0} is a restriction on the potential outcomes of non-choosers that we use to point identify the TuT.
-In contrast, Equation \ref{eq:exclusion_append1} is a restriction on the potential outcomes of choosers that we use to point identify the ToT.
-Because they involve different groups of people, it is entirely possible for one of these equalities to hold when the other fails.
-For this reason, we consider each in turn.
-Our approach is closely related to a bounding approach used by \cite{huber_mellace} and \cite{BinaryRegressor}, among others.
+Equation \ref{eq:exclusion_append0} is a restriction on the average potential outcomes of non-choosers that we use to point identify the TUT effect.
+It says that someone who \emph{would} choose the control condition when given a choice, experiences the same potential outcome, on average, when \emph{assigned} to the control condition.
+Equation \ref{eq:exclusion_append1} is a restriction on the average potential outcomes of choosers that we use to point identify the TOT effect.
+It says that someone who \emph{would} choose the commitment contract when given a choice, experiences the same potential outcome, on average, when \emph{assigned} to this condition.
+Because they refer to different groups of people, either of \eqref{eq:exclusion_append0}  and \eqref{eq:exclusion_append1} could hold when the other is violated.
+For this reason we consider each in turn.
+Our approach is closely related arguments from \cite{huber_mellace} and \cite{BinaryRegressor}, among others.
 As such, the following is a heuristic explanation rather than a fully-rigorous proof.
 See the aforementioned papers for more details of how to make this argument fully rigorous.
 
-Consider first Equation \ref{eq:exclusion_append0}.
+Consider first \eqref{eq:exclusion_append0}.
 Let $p \equiv \mathbbm{P}(C=1) = \mathbbm{P}(D=1|Z=2)$ denote the share of choosers in the population.
 This value is point identified regardless of whether the exclusion restriction holds.
 Because $Z$ was randomly assigned, a fraction $p$ of borrowers with $Z=0$ are choosers while the remaining $(1-p)$ are non-choosers.
@@ -732,10 +946,10 @@ Therefore, if the exclusion restriction for non-choosers holds, we must have
 \mathbb{E}\left(Y|Z=0, Y\leq y^0_{1-p}\right)\leq \mathbb{E}(Y|D=0,Z=2) \leq \mathbb{E}\left(Y|Z=0, Y \leq y^0_p\right).
 \label{eq:testable0}
 \end{equation}
-Equation \ref{eq:testable0} provides a pair of testable implications of Equation \ref{eq:exclusion_append0}.
+Equation \ref{eq:testable0} provides a pair of testable implications of \eqref{eq:exclusion_append0}.
 If either inequality is violated, then the exclusion restriction for non-choosers fails.
 
-We can use an analogous approach to construct testable implications for Equation \ref{eq:exclusion_append1}. 
+We can use an analogous approach to construct testable implications for \ref{eq:exclusion_append1}. 
 Because $Z$ was randomly assigned, a fraction $p$ of participants with $Z = 1$ are choosers so the distribution of $Y|Z=1$ is a mixture of $Y_1|C=1$ and $Y_1|C=0$ with mixing weights $p$ and $1 -p$.
 The participants with $C = 1$ must lie \emph{somewhere} in the distribution of $Y_0|Z=1$ so again consider the two most extreme cases: they could occupy the bottom or the top $p\times 100\%$ of the distribution. 
 Hence,
@@ -751,13 +965,12 @@ If Equation \ref{eq:exclusion_append1} holds, however, we know that $\mathbb{E}(
 \end{equation}
 If either inequality is violated, then the exclusion restriction from Equation \ref{eq:exclusion_append1} fails.
 
-\todo[inline]{Update from here down.}
 
-\todo[inline]{Presumably the numerical results and sentence that follows it need to be updated now that we've changed how we deal with censoring etc, yes? Which outcome are we looking at here} 
-The \cite{huber_mellace} bounds for the ToT \& TuT APR are respectively:
-\[\text{ToT} : [-481.8, 483.7]\quad\quad\quad\text{TuT} : [-17.9, 90.6]\]
+\todo[inline]{@Issac: Presumably the numerical results and sentence that follows it need to be updated now that we've changed how we deal with censoring etc, yes? Which outcome are we looking at here} 
+The \cite{huber_mellace} bounds for the TOT \& TUT APR are respectively:
+\[\text{TOT} : [-481.8, 483.7]\quad\quad\quad\text{TUT} : [-17.9, 90.6]\]
 
-Because the Note that since both TuT and ToT estimates from the LATE approach lies inside these bounds, we do not falsify the exclusion restriction. 
+Because the Note that since both TUT and ToT estimates from the LATE approach lies inside these bounds, we do not falsify the exclusion restriction. 
 
 
 \newpage
@@ -766,135 +979,135 @@ Because the Note that since both TuT and ToT estimates from the LATE approach li
 
 
 
-\section{LATE: ToT \& TuT}
-\vspace{.2in}
-\normalsize
-\linespread{1.25}
-%Really force it to normal size and linespread
-\normalsize
-\linespread{1.25}
-
- Recall that $Z_i$ is the observed, randomly assigned experimental allocation, where $Z_i=0$ denotes the control arm, $Z_i=1$ denotes the forced-fee arm, and $Z_i=2$ is the choice arm.  Let $C_i$ be the unobserved choice type. $C_i=0$ when individual $i$ does not choose commitment  given the choice and $C_i=1$ when chooses commitment given the choice. Finally, $D_i = Z_i\times \mathds{1}(Z_i\neq 2) + C_i\times \mathds{1}(Z_i=2)$ is the observed treatment indicator, and $Y(d,z)$ is the potential outcome function for $d=0,1$, and $z=0,1,2$. 
-
- To identify assortative selection we first need to estimate the following quantities: $\mathbb{E}(Y_1-Y_0\;|\;C=1)$ the Treatment on the Treated (ToT), and $\mathbb{E}(Y_1-Y_0\;|\;C=0)$ the Treatment on the Untreated (TuT). 
-
- To point identify the above quantities, we make the following assumptions.
-
- \begin{assumption}[Exclusion Restriction]
-$Z$ only affects $Y$ through its effect on $D$ : $C(d,z) = C(d)$
- \end{assumption}
-
-  \begin{assumption}[Independence Assumption]
-$Z \perp (Y_0, Y_1, C)$
- \end{assumption}
-
-The following intermediate Lemmas will help us derive that both ToT and TuT are point identified.
-
-\begin{lem}
-$\Pr(C=1) = \E[D\;|\;Z=2]$
-\end{lem}
-\begin{proof}
-Since $C\perp Z$, 
-$$\E[D\;|\;Z=2] = \E[Z\times \mathds{1}(Z\neq 2)+ C\times\mathds{1}(Z=2)\;|Z=2] = \E[C\;|\;Z=2] = \E[C] = \Pr(C=1)$$
-\end{proof}
-
-
-\begin{lem}
-$\E[Y_0] = \E[Y\;|\;Z=0]$
-\end{lem}
-\begin{proof}
-Since $Z\perp Y_0$, 
-\begin{align*}
-\E[Y\;|\;Z=0] =& \E[\mathds{1}(Z=0)Y_0+\mathds{1}(Z=1)Y_1+\mathds{1}(Z=2)\{(1-C)Y_0+CY_1\})\;|\;Z=0]\\   
-=&\E[Y_0\;|\;Z=0] = \E[Y_0]
-\end{align*}
-\end{proof}
-
-
-\begin{lem}
-$\E[Y_1] = \E[Y\;|\;Z=1]$
-\end{lem}
-\begin{proof}
-Since $Z\perp Y_1$, 
-\begin{align*}
-\E[Y\;|\;Z=1] =\E[Y_1\;|\;Z=1] = \E[Y_1]
-\end{align*}
-\end{proof}
-
-
-\begin{lem}
-$\E[Y_0\;|\;C=0] = \E[Y\;|\; D=0,Z=2]$
-\end{lem}
-\begin{proof}
-If $Z=2$, then $D=0$ if and only if $C=0$. Hence,
-\[\E[Y\;|\;D=0, Z=2] = \E[Y_0\;|\;D=0, Z=2] = E[Y_0\;|\;C=0, Z=2]=\E[Y_0\;|\;C=0]\]
-since $Y_0\perp C\;|\;Z$
-\end{proof}
-
-\begin{lem}
-$\E[Y_1\;|\;C=1] = \E[Y\;|\; D=1,Z=2]$
-\end{lem}
-\begin{proof}
-If $Z=2$, then $D=1$ if and only if $C=1$. Hence,
-\[\E[Y\;|\;D=1, Z=2] = \E[Y_1\;|\;D=1, Z=2] = E[Y_1\;|\;C=1, Z=2]=\E[Y_1\;|\;C=1]\]
-since $Y_1\perp C\;|\;Z$
-\end{proof}
-
-\begin{theorem} $\E[Y_1-Y_0\;|\; C=1]$ is point identified
-\end{theorem}
-
-\begin{proof}
-Since $\E[Y_1\;|\; C=1] = \E[Y\;|\; D=1, Z=2]$ by Lemma 5, it suffices to show that $\E[Y_1\;|\;C=0]$ is point identified. By iterated expectations:
-\[E[Y_0] = \E_C\E[Y_0\;|\;C] = (1-p)\E[Y_0\;|\;C=0]+p\E[Y_0\;|\;C=1]\]
-where $p:=\E[C]=\Pr(C=1)$, and re-arranging,
-\[\E[Y_0\;|\;C=1] = \frac{1}{p}\left(E[Y_0] -(1-p)\E[Y_0\;|\;C=0]\right)\]
-Finally, substituting the result of Lemmas 1, 2, and 4, we obtain
-\[\E[Y_0\;|\;C=1] =\frac{1}{\E[D\;|\;Z=2]}\left\{\E[Y\;|\;Z=0]-(1-\E[D\;|\;Z=2])\E[Y\;|\;D=0, Z=2]\right\}\]
-and the RHS is a function of observed data only.
-\end{proof}
-
-\begin{theorem} $\E[Y_1-Y_0\;|\; C=0]$ is point identified
-\end{theorem}
-
-\begin{proof}
-Since $\E[Y_0\;|\; C=0] = \E[Y\;|\; D=0, Z=2]$ by Lemma 4, it suffices to show that $\E[Y_0\;|\;C=1]$ is point identified. By iterated expectations:
-\[E[Y_1] = \E_C\E[Y_1\;|\;C] = (1-p)\E[Y_1\;|\;C=0]+p\E[Y_1\;|\;C=1]\]
-where $p:=\E[C]=\Pr(C=1)$, and re-arranging,
-\[\E[Y_1\;|\;C=0] = \frac{1}{1-p}\left(E[Y_1] -p\E[Y_1\;|\;C=1]\right)\]
-Finally, substituting the result of Lemmas 1, 3, and 5, we obtain
-\[\E[Y_1\;|\;C=0] =\frac{1}{1-\E[D\;|\;Z=2]}\left\{\E[Y\;|\;Z=1]-\E[D\;|\;Z=2]\E[Y\;|\;D=1, Z=2]\right\}\]
-and the RHS is a function of observed data only.
-\end{proof}
+%\section{LATE: TOT \& TUT}
+%\vspace{.2in}
+%\normalsize
+%\linespread{1.25}
+%%Really force it to normal size and linespread
+%\normalsize
+%\linespread{1.25}
+%
+% Recall that $Z_i$ is the observed, randomly assigned experimental allocation, where $Z_i=0$ denotes the control arm, $Z_i=1$ denotes the forced-fee arm, and $Z_i=2$ is the choice arm.  Let $C_i$ be the unobserved choice type. $C_i=0$ when individual $i$ does not choose commitment  given the choice and $C_i=1$ when chooses commitment given the choice. Finally, $D_i = Z_i\times \mathds{1}(Z_i\neq 2) + C_i\times \mathds{1}(Z_i=2)$ is the observed treatment indicator, and $Y(d,z)$ is the potential outcome function for $d=0,1$, and $z=0,1,2$. 
+%
+% To identify assortative selection we first need to estimate the following quantities: $\mathbb{E}(Y_1-Y_0\;|\;C=1)$ the Treatment on the Treated (TOT), and $\mathbb{E}(Y_1-Y_0\;|\;C=0)$ the Treatment on the Untreated (TUT). 
+%
+% To point identify the above quantities, we make the following assumptions.
+%
+% \begin{assumption}[Exclusion Restriction]
+%$Z$ only affects $Y$ through its effect on $D$ : $C(d,z) = C(d)$
+% \end{assumption}
+%
+%  \begin{assumption}[Independence Assumption]
+%$Z \perp (Y_0, Y_1, C)$
+% \end{assumption}
+%
+%The following intermediate Lemmas will help us derive that both TOT and TUT are point identified.
+%
+%\begin{lem}
+%$\Pr(C=1) = \E[D\;|\;Z=2]$
+%\end{lem}
+%\begin{proof}
+%Since $C\perp Z$, 
+%$$\E[D\;|\;Z=2] = \E[Z\times \mathds{1}(Z\neq 2)+ C\times\mathds{1}(Z=2)\;|Z=2] = \E[C\;|\;Z=2] = \E[C] = \Pr(C=1)$$
+%\end{proof}
+%
+%
+%\begin{lem}
+%$\E[Y_0] = \E[Y\;|\;Z=0]$
+%\end{lem}
+%\begin{proof}
+%Since $Z\perp Y_0$, 
+%\begin{align*}
+%\E[Y\;|\;Z=0] =& \E[\mathds{1}(Z=0)Y_0+\mathds{1}(Z=1)Y_1+\mathds{1}(Z=2)\{(1-C)Y_0+CY_1\})\;|\;Z=0]\\   
+%=&\E[Y_0\;|\;Z=0] = \E[Y_0]
+%\end{align*}
+%\end{proof}
+%
+%
+%\begin{lem}
+%$\E[Y_1] = \E[Y\;|\;Z=1]$
+%\end{lem}
+%\begin{proof}
+%Since $Z\perp Y_1$, 
+%\begin{align*}
+%\E[Y\;|\;Z=1] =\E[Y_1\;|\;Z=1] = \E[Y_1]
+%\end{align*}
+%\end{proof}
+%
+%
+%\begin{lem}
+%$\E[Y_0\;|\;C=0] = \E[Y\;|\; D=0,Z=2]$
+%\end{lem}
+%\begin{proof}
+%If $Z=2$, then $D=0$ if and only if $C=0$. Hence,
+%\[\E[Y\;|\;D=0, Z=2] = \E[Y_0\;|\;D=0, Z=2] = E[Y_0\;|\;C=0, Z=2]=\E[Y_0\;|\;C=0]\]
+%since $Y_0\perp C\;|\;Z$
+%\end{proof}
+%
+%\begin{lem}
+%$\E[Y_1\;|\;C=1] = \E[Y\;|\; D=1,Z=2]$
+%\end{lem}
+%\begin{proof}
+%If $Z=2$, then $D=1$ if and only if $C=1$. Hence,
+%\[\E[Y\;|\;D=1, Z=2] = \E[Y_1\;|\;D=1, Z=2] = E[Y_1\;|\;C=1, Z=2]=\E[Y_1\;|\;C=1]\]
+%since $Y_1\perp C\;|\;Z$
+%\end{proof}
+%
+%\begin{theorem} $\E[Y_1-Y_0\;|\; C=1]$ is point identified
+%\end{theorem}
+%
+%\begin{proof}
+%Since $\E[Y_1\;|\; C=1] = \E[Y\;|\; D=1, Z=2]$ by Lemma 5, it suffices to show that $\E[Y_1\;|\;C=0]$ is point identified. By iterated expectations:
+%\[E[Y_0] = \E_C\E[Y_0\;|\;C] = (1-p)\E[Y_0\;|\;C=0]+p\E[Y_0\;|\;C=1]\]
+%where $p:=\E[C]=\Pr(C=1)$, and re-arranging,
+%\[\E[Y_0\;|\;C=1] = \frac{1}{p}\left(E[Y_0] -(1-p)\E[Y_0\;|\;C=0]\right)\]
+%Finally, substituting the result of Lemmas 1, 2, and 4, we obtain
+%\[\E[Y_0\;|\;C=1] =\frac{1}{\E[D\;|\;Z=2]}\left\{\E[Y\;|\;Z=0]-(1-\E[D\;|\;Z=2])\E[Y\;|\;D=0, Z=2]\right\}\]
+%and the RHS is a function of observed data only.
+%\end{proof}
+%
+%\begin{theorem} $\E[Y_1-Y_0\;|\; C=0]$ is point identified
+%\end{theorem}
+%
+%\begin{proof}
+%Since $\E[Y_0\;|\; C=0] = \E[Y\;|\; D=0, Z=2]$ by Lemma 4, it suffices to show that $\E[Y_0\;|\;C=1]$ is point identified. By iterated expectations:
+%\[E[Y_1] = \E_C\E[Y_1\;|\;C] = (1-p)\E[Y_1\;|\;C=0]+p\E[Y_1\;|\;C=1]\]
+%where $p:=\E[C]=\Pr(C=1)$, and re-arranging,
+%\[\E[Y_1\;|\;C=0] = \frac{1}{1-p}\left(E[Y_1] -p\E[Y_1\;|\;C=1]\right)\]
+%Finally, substituting the result of Lemmas 1, 3, and 5, we obtain
+%\[\E[Y_1\;|\;C=0] =\frac{1}{1-\E[D\;|\;Z=2]}\left\{\E[Y\;|\;Z=1]-\E[D\;|\;Z=2]\E[Y\;|\;D=1, Z=2]\right\}\]
+%and the RHS is a function of observed data only.
+%\end{proof}
+%
+%
+%\begin{figure}[H]
+%    \caption{Bootstrap inference for the difference between TOT-TUT}
+%    \label{bootstrap_tot_tut}
+%    \begin{center}
+%    \begin{subfigure}{0.31\textwidth}
+%        \caption{Simple}
+%        \centering
+%        \includegraphics[width=\textwidth]{Figuras/tot_tut_btsp1.pdf}
+%    \end{subfigure}
+%    \begin{subfigure}{0.31\textwidth}
+%        \caption{Admin controls}
+%        \centering
+%        \includegraphics[width=\textwidth]{Figuras/tot_tut_btsp2.pdf}
+%    \end{subfigure}
+%    \begin{subfigure}{0.31\textwidth}
+%        \caption{Admin + Survey controls}
+%        \centering
+%        \includegraphics[width=\textwidth]{Figuras/tot_tut_btsp3.pdf}
+%    \end{subfigure}
+%  
+%    \end{center}
+%     \scriptsize  Given that all of the arms are effectively randomly sampled form the same pool, we can also estimate the TOT and TUT with the pooled regression: $Y_i = \beta_0\mathds{1}(Z_i=0)+\beta_1\mathds{1}(Z_i=1)+\beta_2\mathds{1}(Z_i=2)+ \epsilon_i$, and then this test statistic just becomes the F-test on $\frac{\widehat{\beta_2}-\widehat{\beta_0}}{p}$ for the TOT, $\frac{\widehat{\beta_1}-\widehat{\beta_2}}{1-p}$ for the TUT, and an F-test on the difference between these two quantities to test whether the gains are different between compliers and non-compliers. Recognizing the stochastic nature of the compliance rate, we also bootstrap this quantity before running the previous regression. The red line shows the point estimate for the difference between TOT-TUT, and the gray bar in the x-axis shows a 95\% confidence interval for this difference. Panel (a) shows the difference between the TOT and TUT without any controls, while panel (b) and (c) adds admin controls and admin + survey controls respectively.
+%          %\footnotesize{ \textit{Do file: }  \texttt{tot\_tut.do}}
+%\end{figure}
 
 
 \begin{figure}[H]
-    \caption{Bootstrap inference for the difference between ToT-TuT}
-    \label{bootstrap_tot_tut}
-    \begin{center}
-    \begin{subfigure}{0.31\textwidth}
-        \caption{Simple}
-        \centering
-        \includegraphics[width=\textwidth]{Figuras/tot_tut_btsp1.pdf}
-    \end{subfigure}
-    \begin{subfigure}{0.31\textwidth}
-        \caption{Admin controls}
-        \centering
-        \includegraphics[width=\textwidth]{Figuras/tot_tut_btsp2.pdf}
-    \end{subfigure}
-    \begin{subfigure}{0.31\textwidth}
-        \caption{Admin + Survey controls}
-        \centering
-        \includegraphics[width=\textwidth]{Figuras/tot_tut_btsp3.pdf}
-    \end{subfigure}
-  
-    \end{center}
-     \scriptsize  Given that all of the arms are effectively randomly sampled form the same pool, we can also estimate the ToT and TuT with the pooled regression: $Y_i = \beta_0\mathds{1}(Z_i=0)+\beta_1\mathds{1}(Z_i=1)+\beta_2\mathds{1}(Z_i=2)+ \epsilon_i$, and then this test statistic just becomes the F-test on $\frac{\widehat{\beta_2}-\widehat{\beta_0}}{p}$ for the ToT, $\frac{\widehat{\beta_1}-\widehat{\beta_2}}{1-p}$ for the TuT, and an F-test on the difference between these two quantities to test whether the gains are different between compliers and non-compliers. Recognizing the stochastic nature of the compliance rate, we also bootstrap this quantity before running the previous regression. The red line shows the point estimate for the difference between ToT-TuT, and the gray bar in the x-axis shows a 95\% confidence interval for this difference. Panel (a) shows the difference between the ToT and TuT without any controls, while panel (b) and (c) adds admin controls and admin + survey controls respectively.
-          %\footnotesize{ \textit{Do file: }  \texttt{tot\_tut.do}}
-\end{figure}
-
-
-\begin{figure}[H]
-     \caption{ToT-TuT CDF}
+     \caption{TOT-TUT CDF}
      \label{tot_tut_ecdf}
     \begin{center}
     \begin{subfigure}{0.6\textwidth}
@@ -903,7 +1116,7 @@ and the RHS is a function of observed data only.
     \end{subfigure}
     \end{center}
     \scriptsize
-       Equipped with estimates for the ToT and TuT for each individual $i$ from an Instrumental Random Forest we compute the ECDF for this quantities. The solid line is the ECDF for the ToT, the dashed line is the ECDF for the TuT, and the dotted line plots the difference between the ToT and the TuT - the blue dashed line in the x-axis shows the points where this difference is significant. The bold black interval at the bottom of the graph is the mean for the ToT distribution (0.07), while the gray interval shows the mean for the TuT distribution (0.10).
+       Equipped with estimates for the TOT and TUT for each individual $i$ from an Instrumental Random Forest we compute the ECDF for this quantities. The solid line is the ECDF for the TOT, the dashed line is the ECDF for the TUT, and the dotted line plots the difference between the TOT and the TUT - the blue dashed line in the x-axis shows the points where this difference is significant. The bold black interval at the bottom of the graph is the mean for the TOT distribution (0.07), while the gray interval shows the mean for the TUT distribution (0.10).
        
           %\footnotesize{ \textit{Do file: }  \texttt{tot\_tut\_insforest.do}}
 \end{figure}
@@ -917,7 +1130,7 @@ and the RHS is a function of observed data only.
         \includegraphics[width=\textwidth]{Figuras/exclusion_restriction.pdf}
     \end{subfigure}
     \end{center}
-    \scriptsize This figure serves as a test for the exclusion restriction in the point identification for the ToT and the TuT. It shows the effect on the effective cost/loan ratio for the forced-fee arm and the choice arm, together with the decomposition of the choosers and non-choosers. Note that a) being forced into the treatment (Forced fee) has the same effect as choosing it (Choosers), and b) not choosing the treatment (Non chooser) has no effect with respect to the control.
+    \scriptsize This figure serves as a test for the exclusion restriction in the point identification for the TOT and the TUT. It shows the effect on the effective cost/loan ratio for the forced-fee arm and the choice arm, together with the decomposition of the choosers and non-choosers. Note that a) being forced into the treatment (Forced fee) has the same effect as choosing it (Choosers), and b) not choosing the treatment (Non chooser) has no effect with respect to the control.
     
           %\footnotesize{ \textit{Do file: }  \texttt{exclusion\_restriction.do}}
 \end{figure}
@@ -953,27 +1166,27 @@ and the RHS is a function of observed data only.
     \begin{subfigure}{.45\textwidth}
       \caption{Financial cost (in MXN)}
         \centering
-        \includegraphics[width=\textwidth]{Figuras/he_dist_fc_admin_pro_2.pdf}
+        \includegraphics[width=\textwidth]{Figuras/he_dist_fc_admin.pdf}
     \end{subfigure}
      \begin{subfigure}{0.45\textwidth}
     \caption{Effective APR}
        \centering
-      \includegraphics[width=\textwidth]{Figuras/he_dist_apr_pro_2.pdf}
+      \includegraphics[width=\textwidth]{Figuras/he_dist_eff.pdf}
     \end{subfigure}
      \begin{subfigure}{0.45\textwidth}
     \caption{Default}
        \centering
-      \includegraphics[width=\textwidth]{Figuras/he_dist_def_c_pro_2.pdf}
+      \includegraphics[width=\textwidth]{Figuras/he_dist_def_c.pdf}
     \end{subfigure}  
      \begin{subfigure}{0.45\textwidth}
     \caption{Recovery}
        \centering
-      \includegraphics[width=\textwidth]{Figuras/he_dist_des_c_pro_2.pdf}
+      \includegraphics[width=\textwidth]{Figuras/he_dist_des_c.pdf}
     \end{subfigure}      
     \end{center}
          \scriptsize
      This Figure plots the densities of the CATE emerging from the Athey et al. (2019) random forest, along with the upper and lower confidence bounds.  
-  %\footnotesize{ } \textit{Do file: }  \texttt{analyze\_grf\_single\_arm.do}
+  %\footnotesize{ } \textit{Do file: }  \texttt{cate_dist.do}
 \end{figure}
 
 \begin{figure}[H]

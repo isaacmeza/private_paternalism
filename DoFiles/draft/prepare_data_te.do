@@ -34,13 +34,13 @@ replace apr = -apr
 
 *Covariates 
 keep apr fee_arms $C0 ///
-	edad faltas c_trans t_llegar /// *Continuous covariates
+	prestamo edad faltas c_trans t_llegar /// *Continuous covariates
 	fam_pide ahorros t_consis1 t_consis2 confidence_100  hace_presupuesto tentado rec_cel pres_antes cta_tanda genero masqueprepa estresado_seguido  /// *Dummy variables
 	prenda insample suc_x_dia
 
 *order 
 order apr fee_arms $C0 ///
-	edad faltas c_trans t_llegar /// *Continuous covariates
+	prestamo edad faltas c_trans t_llegar /// *Continuous covariates
 	fam_pide ahorros t_consis1 t_consis2 confidence_100  hace_presupuesto tentado rec_cel pres_antes cta_tanda genero masqueprepa estresado_seguido  /// *Dummy variables
 	prenda insample suc_x_dia
 	
@@ -70,14 +70,14 @@ gen apr_narrow = -apr
 *Covariates 
 keep apr_narrow fee_arms ///
 	 /// *Controls
-	edad   /// *Continuous covariates
+	prestamo edad   /// *Continuous covariates
 	genero pres_antes  masqueprepa  /// *Dummy variables
 	prenda insample 
 
 *order 
 order apr_narrow fee_arms ///
 	 /// *Controls
-	edad   /// *Continuous covariates
+	prestamo edad   /// *Continuous covariates
 	genero pres_antes  masqueprepa  /// *Dummy variables
 	prenda insample 
 	
@@ -95,6 +95,110 @@ foreach var of varlist edad {
 	}
 
 export delimited "$directorio/_aux/apr_narrow_te_heterogeneity.csv", replace nolabel
+
+
+
+********************************************************************************
+
+use "$directorio/DB/Master.dta", clear
+keep if inlist(t_prod,1,2,4)
+
+gen fee_arms = inlist(prod, 2 , 4 , 5) & !missing(prod)
+gen insample = !missing(pro_2)
+replace fc_admin = -fc_admin
+
+
+*Covariates 
+keep fc_admin fee_arms $C0 ///
+	prestamo edad faltas c_trans t_llegar /// *Continuous covariates
+	fam_pide ahorros t_consis1 t_consis2 confidence_100  hace_presupuesto tentado rec_cel pres_antes cta_tanda genero masqueprepa estresado_seguido  /// *Dummy variables
+	prenda insample suc_x_dia
+
+*order 
+order fc_admin fee_arms $C0 ///
+	prestamo edad faltas c_trans t_llegar /// *Continuous covariates
+	fam_pide ahorros t_consis1 t_consis2 confidence_100  hace_presupuesto tentado rec_cel pres_antes cta_tanda genero masqueprepa estresado_seguido  /// *Dummy variables
+	prenda insample suc_x_dia
+	
+
+*Drop individuals without any observables 
+drop if missing(fam_pide) & missing(ahorros) & missing(t_consis1) & missing(t_consis2) & missing(confidence_100) & missing(hace_presupuesto) & missing(tentado) & missing(rec_cel) & missing(pres_antes) & missing(cta_tanda) & missing(genero) & missing(masqueprepa) & missing(estresado_seguido) 
+
+*Drop individuals without observables 
+foreach var of varlist edad faltas c_trans t_llegar fam_pide ahorros t_consis1 t_consis2 confidence_100  hace_presupuesto tentado rec_cel pres_antes cta_tanda genero masqueprepa estresado_seguido { 
+	drop if missing(`var') 
+	}
+
+export delimited "$directorio/_aux/fc_admin_te_heterogeneity.csv", replace nolabel
+
+
+
+********************************************************************************
+
+
+use "$directorio/DB/Master.dta", clear
+keep if inlist(t_prod,1,2,4)
+
+gen fee_arms = inlist(prod, 2 , 4 , 5) & !missing(prod)
+gen insample = !missing(pro_2)
+
+
+*Covariates 
+keep def_c fee_arms $C0 ///
+	prestamo edad faltas c_trans t_llegar /// *Continuous covariates
+	fam_pide ahorros t_consis1 t_consis2 confidence_100  hace_presupuesto tentado rec_cel pres_antes cta_tanda genero masqueprepa estresado_seguido  /// *Dummy variables
+	prenda insample suc_x_dia
+
+*order 
+order def_c fee_arms $C0 ///
+	prestamo edad faltas c_trans t_llegar /// *Continuous covariates
+	fam_pide ahorros t_consis1 t_consis2 confidence_100  hace_presupuesto tentado rec_cel pres_antes cta_tanda genero masqueprepa estresado_seguido  /// *Dummy variables
+	prenda insample suc_x_dia
+	
+
+*Drop individuals without any observables 
+drop if missing(fam_pide) & missing(ahorros) & missing(t_consis1) & missing(t_consis2) & missing(confidence_100) & missing(hace_presupuesto) & missing(tentado) & missing(rec_cel) & missing(pres_antes) & missing(cta_tanda) & missing(genero) & missing(masqueprepa) & missing(estresado_seguido) 
+
+*Drop individuals without observables 
+foreach var of varlist edad faltas c_trans t_llegar fam_pide ahorros t_consis1 t_consis2 confidence_100  hace_presupuesto tentado rec_cel pres_antes cta_tanda genero masqueprepa estresado_seguido { 
+	drop if missing(`var') 
+	}
+
+export delimited "$directorio/_aux/def_c_te_heterogeneity.csv", replace nolabel
+
+
+
+********************************************************************************
+
+use "$directorio/DB/Master.dta", clear
+keep if inlist(t_prod,1,2,4)
+
+gen fee_arms = inlist(prod, 2 , 4 , 5) & !missing(prod)
+gen insample = !missing(pro_2)
+
+
+*Covariates 
+keep des_c fee_arms $C0 ///
+	prestamo edad faltas c_trans t_llegar /// *Continuous covariates
+	fam_pide ahorros t_consis1 t_consis2 confidence_100  hace_presupuesto tentado rec_cel pres_antes cta_tanda genero masqueprepa estresado_seguido  /// *Dummy variables
+	prenda insample suc_x_dia
+
+*order 
+order des_c fee_arms $C0 ///
+	prestamo edad faltas c_trans t_llegar /// *Continuous covariates
+	fam_pide ahorros t_consis1 t_consis2 confidence_100  hace_presupuesto tentado rec_cel pres_antes cta_tanda genero masqueprepa estresado_seguido  /// *Dummy variables
+	prenda insample suc_x_dia
+	
+
+*Drop individuals without any observables 
+drop if missing(fam_pide) & missing(ahorros) & missing(t_consis1) & missing(t_consis2) & missing(confidence_100) & missing(hace_presupuesto) & missing(tentado) & missing(rec_cel) & missing(pres_antes) & missing(cta_tanda) & missing(genero) & missing(masqueprepa) & missing(estresado_seguido) 
+
+*Drop individuals without observables 
+foreach var of varlist edad faltas c_trans t_llegar fam_pide ahorros t_consis1 t_consis2 confidence_100  hace_presupuesto tentado rec_cel pres_antes cta_tanda genero masqueprepa estresado_seguido { 
+	drop if missing(`var') 
+	}
+
+export delimited "$directorio/_aux/des_c_te_heterogeneity.csv", replace nolabel
 
 
 

@@ -41,6 +41,7 @@ te_grf <- function(data_in, outcome_var, name) {
     "dummy_suc4",
     "dummy_suc5",
     "dummy_suc6",
+    "prestamo",
     "edad",
     "faltas",
     "c_trans",
@@ -70,6 +71,7 @@ te_grf <- function(data_in, outcome_var, name) {
     "branch.4",
     "branch.5",
     "branch.6",
+    "loan.size",
     "age",
     "trouble.paying.bills",
     "transport.cost",
@@ -105,63 +107,6 @@ te_grf <- function(data_in, outcome_var, name) {
   X <- select(data_train,-c(outcome_var, fee_arms, prenda, insample))
   Y <- select(data_train,outcome_var)
   W <- as.numeric(data_train$fee_arms == 1)
-
-  ###################################################################  
-  ###################################################################  
-  
-  # Estimation of E[Y | X , W = 1] and E[Y | X , W = 0]
-  X1 = X[W==1,]
-  X0 = X[W==0,]
-  Y1 = as.numeric(unlist(Y[W==1,]))
-  Y0 = as.numeric(unlist(Y[W==0,]))
-  
-  mu.1 = regression_forest(X1,Y1,
-    num.trees = 3000,
-    sample.weights = NULL,
-    clusters = NULL,
-    equalize.cluster.weights = FALSE,
-    sample.fraction = 0.5,
-    mtry = min(ceiling(sqrt(ncol(X)) + 20), ncol(X)),
-    min.node.size = 5,
-    honesty = TRUE,
-    honesty.fraction = 0.5,
-    honesty.prune.leaves = TRUE,
-    alpha = 0.05,
-    imbalance.penalty = 0,
-    ci.group.size = 2,
-    tune.parameters = c("alpha", "imbalance.penalty"),
-    tune.num.trees = 500,
-    tune.num.reps = 200,
-    tune.num.draws = 2000,
-    compute.oob.predictions = TRUE,
-    num.threads = NULL,
-    seed = 1)
-  
-  pr_mu1 = predict(mu.1, data_test, estimate.variance = TRUE)
-  
-  mu.0 = regression_forest(X0,Y0,
-    num.trees = 3000,
-    sample.weights = NULL,
-    clusters = NULL,
-    equalize.cluster.weights = FALSE,
-    sample.fraction = 0.5,
-    mtry = min(ceiling(sqrt(ncol(X)) + 20), ncol(X)),
-    min.node.size = 5,
-    honesty = TRUE,
-    honesty.fraction = 0.5,
-    honesty.prune.leaves = TRUE,
-    alpha = 0.05,
-    imbalance.penalty = 0,
-    ci.group.size = 2,
-    tune.parameters = c("alpha", "imbalance.penalty"),
-    tune.num.trees = 500,
-    tune.num.reps = 200,
-    tune.num.draws = 2000,
-    compute.oob.predictions = TRUE,
-    num.threads = NULL,
-    seed = 1)
-  
-  pr_mu0 = predict(mu.0, data_test, estimate.variance = TRUE)
   
   # OVERLAP ASSUMPTION
   propensity.forest = regression_forest(X, W)
@@ -181,6 +126,7 @@ te_grf <- function(data_in, outcome_var, name) {
   # (as the constraint is a monotone increasing function in alpha)
   
   alfa = optimize(fun_threshold_alpha, g, interval=c(0.001, 0.499))$minimum
+  print(alfa)
   
   X <- X[propensity_score>=alfa & propensity_score<=(1-alfa),]
   Y <- Y[propensity_score>=alfa & propensity_score<=(1-alfa),]
@@ -255,32 +201,6 @@ te_grf <- function(data_in, outcome_var, name) {
   dev.off()
   cat(ct)
   
-  # Fit-the-Fit
-  X_narrow <- select(data_test,c(age,female,makes.budget,more.high.school))
-  Y_fit <- tau_hat_oob$predictions
-  fit_fit = regression_forest(X_narrow,Y_fit,
-                              num.trees = 3000,
-                              sample.weights = NULL,
-                              clusters = NULL,
-                              equalize.cluster.weights = FALSE,
-                              sample.fraction = 0.5,
-                              mtry = min(ceiling(sqrt(ncol(X)) + 20), ncol(X)),
-                              min.node.size = 5,
-                              honesty = TRUE,
-                              honesty.fraction = 0.5,
-                              honesty.prune.leaves = TRUE,
-                              alpha = 0.05,
-                              imbalance.penalty = 0,
-                              ci.group.size = 2,
-                              tune.parameters = c("alpha", "imbalance.penalty"),
-                              tune.num.trees = 500,
-                              tune.num.reps = 200,
-                              tune.num.draws = 2000,
-                              compute.oob.predictions = TRUE,
-                              num.threads = NULL,
-                              seed = 1)
-  pr_narrow = predict(fit_fit, estimate.variance = TRUE)
-  
   # Variable importance
   var_imp <- variable_importance(tau.forest)
   var_imp <- data.frame(var_imp[2:length(var_imp)])
@@ -326,10 +246,7 @@ te_grf <- function(data_in, outcome_var, name) {
   write_csv(tc,filename_tc)
   
   # Save results
-  data.out <- add_column(data_copy, tau_hat_oob$predictions, tau_hat_oob$variance.estimates,
-                         pr_mu1$predictions, pr_mu1$variance.estimates,
-                         pr_mu0$predictions, pr_mu0$variance.estimates,
-                         pr_narrow$predictions, pr_narrow$variance.estimates)
+  data.out <- add_column(data_copy, tau_hat_oob$predictions, tau_hat_oob$variance.estimates)
   filename_out <- paste("_aux/", name, "_te_grf.csv", sep="")
   write_csv(data.out, filename_out)
 }  
@@ -339,7 +256,13 @@ te_grf <- function(data_in, outcome_var, name) {
 
 # READ DATASET
 apr <- read_csv('./_aux/apr_te_heterogeneity.csv') 
+fc_admin <- read_csv('./_aux/fc_admin_te_heterogeneity.csv') 
+def_c <- read_csv('./_aux/def_c_te_heterogeneity.csv') 
+des_c <- read_csv('./_aux/des_c_te_heterogeneity.csv') 
 
 #####################################################
 te_grf(apr,"apr","apr") 
+te_grf(fc_admin,"fc_admin","fc_admin") 
+te_grf(def_c,"def_c","def_c") 
+te_grf(des_c,"des_c","des_c") 
 

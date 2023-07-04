@@ -31,12 +31,14 @@ te_narrow_grf <- function(data_in, outcome_var, name) {
     mutate_all(~ifelse(is.na(.), median(., na.rm = TRUE), .))  
   data_copy <- data_in
   data_in <- rename.vars(data_in, c(
+    "prestamo",
     "edad",
     "genero",
     "pres_antes",
     "masqueprepa"
   ),
   c(
+    "loan.size",
     "age",
     "female",
     "pawn.before",
@@ -82,6 +84,7 @@ te_narrow_grf <- function(data_in, outcome_var, name) {
   # (as the constraint is a monotone increasing function in alpha)
   
   alfa = optimize(fun_threshold_alpha, g, interval=c(0.001, 0.499))$minimum
+  print(alfa)
   
   X <- X[propensity_score>=alfa & propensity_score<=(1-alfa),]
   Y <- Y[propensity_score>=alfa & propensity_score<=(1-alfa),]
