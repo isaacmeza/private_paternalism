@@ -146,6 +146,8 @@
 
 
 
+\begin{comment}
+    
 
 \begin{table}[H]
 \caption{Number of pawns balance before and after the experiment}
@@ -156,6 +158,9 @@
  \scriptsize 
 %\textit{Do file: } \texttt{num\_pawns\_bal.do}
 \end{table}
+\end{comment}
+%\todo[inline]{removed}
+
 
 
 
@@ -163,22 +168,25 @@
 
 \afterpage{
 \begin{table}[H]
-\caption{Baseline survey}
+\caption{Baseline survey questions (translated to English)}
 \label{baseline_survey}
 \begin{center}
 \scriptsize{\input{./Tables/transcribed.tex}}
 \end{center}
+\scriptsize
+Translation of the baseline questionnaire.
 \end{table}
 }
 
 
 \begin{table}[H]
-\caption{Balance table conditional on survey \& response rates}
+\caption{Balance: Admin data conditional on answering survey \& Survey data conditional a loan}
 \label{SS_cond_survet}
 \begin{center}
 \scriptsize{\input{./Tables/SS_cond_survey.tex}}
 \end{center}
-
+\scriptsize
+\textcolor{blue}{This table is analogous to Table \ref{SS}, but it uses different sub-samples. Panel A reports regression results using administrative loan data, but conditioning on those borrowers who also responded the baseline survey. Panel B reports regression results using survey data, but conditioning on those borrowers who pawned \hl{the same day of the survey response}}.
 %\textit{Do file: } \texttt{ss\_att.do}
 \end{table}
 
@@ -236,6 +244,7 @@
 %\textit{Do file: } \texttt{multiple\_loans.do}
 \end{table}
 
+\todo[inline]{For Isaac to write the note.}
 \end{landscape}
 
 
@@ -251,7 +260,7 @@ Finally, Panel E of this table conducts a logit prediction model that uses all o
 
 \vspace{.3in}
 \begin{table}[H]
-\caption{Bounding censoring}
+\caption{Bounding censoring} 
 \label{bounding_censoring}
 \begin{center}
 \resizebox{0.9\textwidth}{!}{
@@ -259,6 +268,7 @@ Finally, Panel E of this table conducts a logit prediction model that uses all o
 }
 \end{center}
  \scriptsize 
+ \todo[inline]{For Isaac to write the note}
 %\textit{Do file: } \texttt{censoring_imp.do, censoring_imp_pr.do}
 \end{table}
 
@@ -341,7 +351,7 @@ Finally, Panel E of this table conducts a logit prediction model that uses all o
 \begin{center}
 \scriptsize{\input{./Tables/learning_exp.tex}}
 \end{center}
- \scriptsize  This table uses a Linear Probability Model to examine whether randomized treatment assignment on a prior loan taken during the experimental period drives the likelihood of selecting into the commitment product for individuals who go to a branch featuring Choice after the experiment.
+ \scriptsize  \textcolor{blue}{This table explores learning by focusing on a subsample of borrowers in the experiment and observing their subsequent behavior. Column 1 conditions the sample on borrowers who (a) pawned during the experiment a subsequent time after being assigned to control, forced commitment or choice (the regressors), and (b) when pawning again they went to a branch day when (randomly) choice was available, thus enabling us to observe if they chose the commitment contract or the status quo.  in this sample it estimates a linear probability model where the dependent variable is equal to one if the borrower chose the commitment contract in that subsequent `choice' occasion and zero otherwise. The regressors are indicators for the treatment arms in their first pawn in the experiment. Column 1 conditions the sample on the (endogenous) event of pawning again. Column 2 does not condition the sample, but instead defined the dependent variable as equal to one \hl{if the borrower pawned subsequently and choice was available that day and chose commitment, and zero otherwise.}}
 \end{table}
 
 
@@ -359,8 +369,7 @@ Finally, Panel E of this table conducts a logit prediction model that uses all o
         \centering
         \includegraphics[width=0.55\textwidth]{Figuras/discount_effect_tut.pdf}
     \end{center}
-     \scriptsize This Figure estimates the treatment effect on financial cost for the untreated with different discount rates.  
-     %\textit{Do file: }  \texttt{discounted\_noeffect.do}
+     \scriptsize This Figure estimates regression equation \ref{basic_reg} as in column 1 of Table \ref{main_impact_table} but it introduces a daily discount factor (time preference) in the definition of financial cost to discount payments. Payments done in the present are more costly for the borrower. It estimates the effect of the treatment arms  for different discount factors, where a discount factor of 1 corresponds exactly to the estimate of column 1 of Table \ref{main_impact_table}. Because the commitment contract induces earlier payments, this adjusted financial cost will be higher, and thus financial savings will be lower. This figure shows the range of estimated effects and their confidence intervals, where the discount rate used is ploted in the x-axis annualized.    %\textit{Do file: }  \texttt{discounted\_noeffect.do}
 \end{figure}
 
 
@@ -376,21 +385,22 @@ Finally, Panel E of this table conducts a logit prediction model that uses all o
     \end{center}
      \scriptsize  This figure performs a partition of the Treatment on the Untreated (FC), estimating the share of the effect that arises within each of two binary categories.  The top bars examine present bias (individuals are more impatient over one-month time horizon than they are between three and four months).  The bottom bars examine sure confidence (individual reports 100\% probability of repaying at time of taking loan).  Blue bar is the component arising from those without the trait, orange bar from those with the trait. 
       %\footnotesize{ \textit{Do file: }  \texttt{partition_tot_tut.do}
+
+      \todo[inline]{This figure will change}
 \end{figure}
 
 
 \vspace{.3in}
-\subsection{Risk aversion and first order stochastic dominance} \label{App_FOSD}
+\subsection{First order stochastic dominance} \label{App_FOSD}
 \normalsize
 \vspace{.2in}
-We do not have measures of risk aversion in our short survey, which makes it hard to assess the hypothesis that risk aversion limits take-up of the fee frequent payment contract. One way to proceed is to take the empirical distribution of financing cost ---$F_{fee}(FC)$--- as one the client would have faced had she chosen the status quo contract. We could then ask what would risk aversion have to be in order to justify the client choosing the fee-commitment contract distribution of costs over the distribution associated with the status quo contract, $F_{sq}(FC)$. Framed as a choice among cost distributions, we can calculate what risk aversion is needed to rationalize the overwhelming choice of the status quo contract over the fee-commitment contract. This exercise of course assumes --as is common in economics-- that clients know the distribution of financial cost, that the distribution is common across consumers (although this can be relaxed), and that this cost distribution is the only difference among contracts. 
-
-Fortunately for us, it turns out that one distribution first-order-stochastically dominates the other, obviating the need to calibrate a specific utility function or use a parametric distribution function in order to rank them in terms of expected utility. We use the fact that if the utility $u(FC)$ is decreasing in $FC$ (i.e. clients dislike paying higher financing cost) and $F_{fee}(FC) \geq F_{sq}(FC)$ for all $FC$, which we actually verify in our data, then $E_{fee}[u(FC)] \geq E_{sq}[u(FC)]$, that is any expected utility maximizing client risk averse consumer should choose the Forced Commitment contract as a result of the distribution of cost payoffs.\footnote{Figure \ref{ecdf_fc} shows that indeed $F_{fee}(FC) \geq F_{sq}(FC)$. Table \ref{stochastic_dominance} shows that this holds also for sub-populations of different characteristics.}. Thus, risk aversion cannot explain the low demand for commitment under the assumptions of this exercise.   
+\todo[inline]{Presumably we want to cut some of this text? In the body of the text we don't get into this in such detail.}
+%We plot the empirical distribution of financing cost $F_{commitment}(FC)$ and of the status quo contract, $F_{sq}(FC)$. Framed as a choice among cost distributions. 
 
 
 \vspace{.2in}
 \begin{figure}[H]
-        \caption{Empirical CDF of Financial Cost: Forced commitment vs Control }
+        \caption{Empirical CDF of Financial Cost: Forced commitment vs Control}
     \label{ecdf_fc}
     
     \begin{center}
@@ -405,11 +415,13 @@ Fortunately for us, it turns out that one distribution first-order-stochasticall
         \includegraphics[width=\textwidth]{Figuras/cdf_fc_admin.pdf}
     \end{subfigure} 
     \end{center}
-    \scriptsize This figure plots the empirical cumulative distribution of financial cost. It does this separately for the fee-forcing contract and for the status-quo contract. The dotted line at the bottom is the difference of the control CDF minus the forced CDF arm. It shows that the CDF of the status quo contract is always below that of the fee-forcing (and this difference is significant for the points indicated by the blue line), and therefore that the former first-order stochastically dominates the later for weakly decreasing utility functions; see Proposition \ref{eq_fosd}.
+    \scriptsize This figure plots the empirical cumulative distribution of financial cost. It does this separately for the fee-forcing contract and for the status-quo contract. The dotted line at the bottom is the difference of the control CDF minus the forced CDF arm. It shows that the CDF of the status quo contract is always below that of the fee-forcing (and this difference is significant for the points indicated by the blue line).
     % \texttt{fosd_ecdf.do}}
 \end{figure}
 
 
+\begin{comment}
+    
 
 \vspace{.2in}
 \begin{table}[H]
@@ -472,6 +484,8 @@ with $y(FC) = F_{sq}^{-1}F_{fee}(FC)$.
 
 Note the proof was done in the case of absolutely continuous and strictly increasing distribution functions $F_{sq}$ and $F_{fee}$.
 
+\end{comment}
+
 
 
 \newpage
@@ -512,7 +526,7 @@ Note the proof was done in the case of absolutely continuous and strictly increa
 
 \section{Testing for heterogeneity}
 \label{append:chernozhukov}
-Our approach relies on the following simple observation: if $\Delta_i$ is constant across $i$ then we must have 
+Our approach relies on the following simple observation: if $\Delta_i$ is constant across $i$, then 
 \[
 \text{ATE}(X_i) \equiv \mathbbm{E}[\Delta_i |X_i] = \mathbbm{E}[\Delta_i] \equiv \text{ATE}
 \]
@@ -651,12 +665,13 @@ These results are used below to provide a recipe for cluster-robust inference fo
 The first result provides a regression-based approach to estimate the ATE and TOT.
 
 \begin{prop} 
+\label{prop:TOTreg}
 Under Assumption \ref{assump:randchoice},
 \[
 Y = \mathbbm{E}(Y_0) + \text{ATE}\times Z_1 + \text{TOT} \times Z_2 D + U
 \]
 where $\mathbb{E}(U|Z) = 0$.
-Therefore, under standard regularity conditions, an IV regression of $Y$ on an intercept, $Z_1$ and $Z_2 D$ with instruments $(1, Z_1, Z_2)$ provides a consistent estimator of the ATE and TOT effects.
+Therefore, under standard regularity conditions, an IV regression of $Y$ on an intercept, $Z_1$ and $Z_2 D$ with instruments $(1, Z_0, Z_1)$ provides a consistent estimator of the ATE and TOT effects.
 \end{prop}
 
 \begin{proof}
@@ -692,12 +707,13 @@ since $Z$ is conditionally independent of $(Y_0, Y_1)$ given $C$, an implication
 
 The next proposition provides regression-based estimates of the ATE and TUT.
 \begin{prop}
+\label{prop:TUTreg}
 Under Assumption \ref{assump:randchoice}
 \[
 Y = \mathbbm{E}(Y_1) + \text{ATE}\times -Z_0 + \text{TUT} \times -Z_2 (1 - D) + V
 \] 
 where $\mathbb{E}(V|Z) = 0$.
-Therefore, under standard regularity conditions, an IV regression of $Y$ on an intercept, $-Z_0$ and $-Z_2(1-D)$ with instruments $(1, Z_0, Z_2)$ provides consistent estimates of the ATE and TUT effects.
+Therefore, under standard regularity conditions, an IV regression of $Y$ on an intercept, $-Z_0$ and $-Z_2(1-D)$ with instruments $(1, Z_0, Z_1)$ provides consistent estimates of the ATE and TUT effects.
 \end{prop}
 
 \begin{proof}
@@ -736,6 +752,7 @@ Since $\text{ASG} = \text{TOT} - \text{TUT}$, the preceding two propositions pro
 The $\text{ASB}$ effect, $\mathbbm{E}(Y_0|C=1) - \mathbb{E}(Y_0|C=0)$, can likewise be estimated by taking the difference of coefficients across two linear IV regressions, as shown in the following proposition.
 
 \begin{prop}
+\label{prop:ASBreg}
 Under Assumption \ref{assump:randchoice}
 \begin{align}
 \label{eq:ASB0}
@@ -788,6 +805,7 @@ Since $Z_2 D = Z_2 C$, a nearly identical argument gives
 The next results shows that the $\text{ASL}$ effect, $\mathbbm{E}(Y_1|C=1) - \mathbb{E}(Y_1|C=0)$, can be estimated as the difference of coefficients across two linear IV regressions, as shown in the following proposition.
 
 \begin{prop}
+\label{prop:ASLreg}
 Under Assumption \ref{assump:randchoice},
 \begin{align}
 \label{eq:ASL0}
@@ -838,50 +856,149 @@ Since $Z_2 D = Z_2 C$, a nearly identical argument gives
 
 
 
-\todo[inline]{Update below here}
 
 \subsection{Inference for ASG, ASB, and ASL}
 We now explain how to carry out cluster-robust inference for the ASG, ASB, and ASL effects, as implemented in our companion STATA package.
+Each of these effects can be expressed as a difference of coefficients from two just-identified linear IV regressions.
+The ASG effect is the difference of the \text{TOT} effect from Proposition \ref{prop:TOTreg} and the \text{TUT} effect from Proposition \ref{prop:TUTreg}.
+Similarly, the ASB effect is the difference of $\mathbb{E}(Y_0|C=1)$ and $\mathbbm{E}(Y_0|C=0)$ from Proposition \ref{prop:ASBreg} while the ASL effect is the difference of $\mathbbm{E}(Y_1|C=1)$ and $\mathbbm{E}(Y_1|C=0)$ from Proposition \ref{prop:ASLreg}.
+Within each pair of IV regressions the outcome variable and instrument set is identical; only the regressors differ. 
+Since our estimators of all three effects share the same structure, our discussion of inference abstracts from the specific regressors and instruments used in each case to avoid duplication. 
+To implement these results in practice without relying on our STATA package, simply substitute supply the regressors and instruments specified in the relevant propositions. 
 
-For purposes of inference, both the ASB and ASL can be re-written as the difference of coefficients from a pair of just-identified linear IV regressions, namely
+Let $g = 1, ..., G$ index clusters and $i = 1, ..., N_g$ index individuals within a particular cluster $g$. 
+In our experiment, a cluster is a branch-day combination and the experimentally-assigned treatment (control, forced, or choice arm) is assigned at the cluster level.
+We assume that observations are iid across clusters but potentially correlated within cluster.
+Now consider a pair of just-identified linear IV regressions given by
+\begin{align*}
+Y_{ig} &= \boldsymbol{X}_{1,ig}' \boldsymbol{\theta}_0 + U_{ig} \\
+Y_{ig} &= \boldsymbol{X}_{0,ig}' \boldsymbol{\theta}_1 + V_{ig}
+\end{align*}
+with common instrument vector $\boldsymbol{W}_{ig}$. 
+Stacking observations in the usual manner, e.g.\
+\[
+\mathbf{W}_g \equiv \begin{bmatrix}
+\boldsymbol{W}_{1g}' \\
+\vdots \\
+\boldsymbol{W}_{N_gg}' \\
+\end{bmatrix}, \quad
+\mathbf{W} = \begin{bmatrix}
+\mathbf{W}_1\\ \vdots \\ \mathbf{W}_G
+\end{bmatrix},
+\]
+we can write the preceding equations in matrix form as
+\begin{align*}
+\mathbf{Y} &= \mathbf{X}_1\boldsymbol{\theta_1} + \mathbf{U}\\
+\mathbf{Y} &= \mathbf{X}_0\boldsymbol{\theta_0} + \mathbf{V}
+\end{align*}
+with instrument matrix $\mathbf{W}$.
+Now, the IV estimators for $\boldsymbol{\theta}_1$ and $\boldsymbol{\theta}_0$ can be expressed as 
+\begin{align*}
+\widehat{\boldsymbol{\theta}}_1 
+&= \left(\mathbf{W}'\mathbf{X}_1\right)^{-1}\mathbf{W}'\mathbf{Y}  = \boldsymbol{\theta}_1 + \left(\mathbf{W}'\mathbf{X}_1\right)^{-1}\mathbf{W}'\mathbf{U}\\ 
+\widehat{\boldsymbol{\theta}}_0 
+&= \left(\mathbf{W}'\mathbf{X}_0\right)^{-1}\mathbf{W}'\mathbf{Y} = \boldsymbol{\theta}_0 + \left(\mathbf{W}'\mathbf{X}_0\right)^{-1}\mathbf{W}'\mathbf{V}.
+\end{align*}
+Our parameter of interest is an element of the difference $(\theta_1 - \theta_0)$, so  it suffices to calculate the asymptotic distribution of $(\widehat{\boldsymbol{\theta}}_1 - \widehat{\boldsymbol{\theta}}_0)$.
 
-As in the case of the ASG, inference for the ASB and ASL can be carried out by saving the residuals from \eqref{eq:ASB0}--\eqref{eq:ASL1}. 
+Re-arranging the preceding two equations, we have
+\begin{align*}
+\sqrt{G} \left(\widehat{\boldsymbol{\theta}}_1  - \boldsymbol{\theta}_1\right) &= 
+ \left(\frac{\mathbf{W}'\mathbf{X}_1}{G}\right)^{-1}\left(\frac{\mathbf{W}'\mathbf{U}}{\sqrt{G}}\right) = \left( \frac{1}{G} \sum_{g=1}^G \mathbf{W}_g' \mathbf{X}_{1,g}\right)^{-1}\left(\frac{1}{\sqrt{G}} \sum_{g=1}^G\mathbf{W}_g' \mathbf{U}_g\right) \\ 
+\sqrt{G} \left(\widehat{\boldsymbol{\theta}}_0  - \boldsymbol{\theta}_0\right) &= 
+ \left(\frac{\mathbf{W}'\mathbf{X}_0}{G}\right)^{-1}\left(\frac{\mathbf{W}'\mathbf{V}}{\sqrt{G}}\right) = \left( \frac{1}{G} \sum_{g=1}^G \mathbf{W}_g' \mathbf{X}_{0,g}\right)^{-1}\left(\frac{1}{\sqrt{G}} \sum_{g=1}^G\mathbf{W}_g' \mathbf{V}_g\right).
+\end{align*}
+Now, define $\mathbf{Q}_0 \equiv \mathbb{E}[\mathbf{W}_g'\mathbf{X}_{0g}]$ and $\mathbf{Q}_1 \equiv \mathbb{E}[\mathbf{W}_g'\mathbf{X}_{1g}]$ and suppose that these expectations exist and that the matrices $\mathbf{Q}_0$ and $\mathbf{Q}_1$ are invertible. Then, as $G \rightarrow \infty$
+\[
+ \left( \frac{1}{G} \sum_{g=1}^G \mathbf{W}_g' \mathbf{X}_{0,g}\right)^{-1} \rightarrow_p \mathbf{Q}_0^{-1}, \quad
+ \left( \frac{1}{G} \sum_{g=1}^G \mathbf{W}_g' \mathbf{X}_{1,g}\right)^{-1} \rightarrow_p \mathbf{Q}_1^{-1} \quad
+\]
+by the continuous mapping theorem.
+Now, by our experimental design and exclusion restriction, $\mathbf{W}_{ig}$ is independent of $U_{ig}$ both unconditionally and conditional on cluster size. 
+Therefore,
+\begin{align*}
+\mathbb{E}[\mathbf{W}_g' \mathbf{U}_g] &=  \mathbb{E}\left[ \sum_{i=1}^{N_g} \mathbf{W}_{ig} U_{ig} \right] = \mathbb{E}_{N_g}\left[ \mathbb{E}\left\{\left. \sum_{i=1}^{N_g} \mathbf{W}_{ig} U_{ig} \right| N_g \right\}\right]\\
+&= \mathbb{E}_{N_g}\left[ \sum_{i=1}^{N_g} \mathbb{E}(\mathbf{W}_{ig} U_{ig}|N_g)\right] = \mathbb{E}_{N_g}\left[ \sum_{i=1}^{N_g} \mathbb{E}(\mathbf{W}_{ig}U_{ig})\right] = 0
+\end{align*}
+by iterated expectations, and similarly smilarly, $\mathbb{E}[\mathbf{W}_g'\mathbf{V}_g] = \mathbf{0}$. 
+Thus, under mild regularity conditions (e.g.\ finite fourth moments), as $G \rightarrow \infty$  we have
+\[
+\frac{1}{\sqrt{G}} \sum_{g=1}^G \mathbf{W}_g' \otimes \begin{bmatrix} \mathbf{U}_g \\ \mathbf{V}_g \end{bmatrix} \rightarrow_d \text{N}(\mathbf{0}, \boldsymbol{\Omega})
+\]
+where the heteroskedasticity-- and cluster--robust variance-covariance matrix $\boldsymbol{\Omega}$ is defined as
+\[
+\boldsymbol{\Omega} \equiv 
+ \mathbb{E} \left[\left(\mathbf{W}_g \mathbf{W}_g' \right)\otimes \begin{pmatrix}
+\mathbf{U}_g \mathbf{U}_g' & \mathbf{U}_g \mathbf{V}_g' \\
+\mathbf{V}_g \mathbf{U}_g' & \mathbf{V}_g \mathbf{V}_g'  
+\end{pmatrix} \right] \equiv \begin{bmatrix}
+\Omega_{UU} & \Omega_{UV} \\
+\Omega_{VU} & \Omega_{VV}
+\end{bmatrix}.
+\]
+Therefore, the joint limiting distribution of $\widehat{\boldsymbol{\theta}}_1$ and $\widehat{\boldsymbol{\theta}}_0$ is given by
+\[
+\begin{bmatrix}
+\sqrt{G}(\widehat{\boldsymbol{\theta}}_1 - \boldsymbol{\theta}_1)\\
+\sqrt{G}(\widehat{\boldsymbol{\theta}}_0 - \boldsymbol{\theta}_0)
+\end{bmatrix} \rightarrow_d
+\begin{bmatrix}
+\mathbf{Q}_1^{-1} & \mathbf{0} \\
+\mathbf{0} & \mathbf{Q}_0^{-1} 
+\end{bmatrix}
+\begin{bmatrix}
+\boldsymbol{\xi}_U \\ \boldsymbol{\xi}_V 
+\end{bmatrix}, \quad
+\begin{bmatrix}
+\boldsymbol{\xi}_U \\ \boldsymbol{\xi}_V 
+\end{bmatrix} \sim \text{N}\left(\begin{bmatrix} \mathbf{0} \\ \mathbf{0}\end{bmatrix},
+\begin{bmatrix}
+\Omega_{UU} & \Omega_{UV} \\
+\Omega_{VU} & \Omega_{VV}
+\end{bmatrix}\right)
+\]
+from which it follows by the continuous mapping theorem that
+\[
+\sqrt{G}\left[ (\widehat{\boldsymbol{\theta}}_1 - \widehat{\boldsymbol{\theta}}_0 ) - (\boldsymbol{\theta}_1 - \boldsymbol{\theta}_0)\right] 
+\rightarrow_d
+\begin{bmatrix}
+\mathbf{Q}_1^{-1} & -\mathbf{Q}_0^{-1}
+\end{bmatrix}
+\begin{bmatrix}
+\boldsymbol{\xi}_U \\ \boldsymbol{\xi}_V 
+\end{bmatrix}.
+\]
+To use this result in practice, we estimate the standard errors of  $(\widehat{\boldsymbol{\theta}}_1 - \widehat{\boldsymbol{\theta}}_0)$ as the square root of the diagonal elements of the matrix
+\[
+\widehat{\text{Avar}}(\widehat{\boldsymbol{\theta}}_1 - \widehat{\boldsymbol{\theta}}_0) 
+= \begin{bmatrix}
+\left(\mathbf{W}'\mathbf{X}_1\right)^{-1} &
+-\left(\mathbf{W}'\mathbf{X}_0\right)^{-1} 
+\end{bmatrix}
+\begin{bmatrix}
+\mathbf{S}_{UU}& \mathbf{S}_{UV}\\
+\mathbf{S}_{VU}& \mathbf{S}_{VV}
+\end{bmatrix} 
+\begin{bmatrix}
+\left(\mathbf{X}_1'\mathbf{W}\right)^{-1} \\
+-\left(\mathbf{X}_0'\mathbf{W}\right)^{-1} 
+\end{bmatrix}
+\]
+where
+\begin{align*}
+\mathbf{S}_{UU} &\equiv \sum_{g=1}^G \mathbf{W}_g' \widehat{\mathbf{U}}_g \widehat{\mathbf{U}}_g' \mathbf{W}_g\\
+\mathbf{S}_{UV} &\equiv \sum_{g=1}^G \mathbf{W}_g' \widehat{\mathbf{U}}_g \widehat{\mathbf{V}}_g' \mathbf{W}_g\\
+\mathbf{S}_{VU} &\equiv \mathbf{S}_{UV}'\\
+\mathbf{S}_{VV} &\equiv \sum_{g=1}^G \mathbf{W}_g' \widehat{\mathbf{V}}_g \widehat{\mathbf{V}}_g' \mathbf{W}_g
+\end{align*}
+and we define the IV residuals
+\begin{align*}
+\widehat{\mathbf{U}}_g &\equiv \mathbf{Y}_g - \mathbf{X}_{1,g}\widehat{\boldsymbol{\theta}}_1\\
+\widehat{\mathbf{V}}_g &\equiv \mathbf{Y}_g - \mathbf{X}_{0,g}\widehat{\boldsymbol{\theta}}_0.
+\end{align*}
+In our application the number of clusters, $G$, is large.
+If desired, an \emph{ad hoc} degrees of freedom correction can be applied by multiplying the standard errors by $\sqrt{G/(G-1)}$.
 
-\todo[inline]{Add something about the TUT decomposition and covariates? Probably just a few sentences at most.}
-
-%\begin{proof}
-%For part (iii), note that 
-%\[
-%\mathbbm{E}(Y|Z=0) = \mathbbm{E}(Y_0) = \mathbbm{E}(Y_0|C=0) \mathbbm{P}(C=0) + \mathbbm{E}(Y_0|C=1) \mathbbm{P}(C=1)
-%\]
-%by Lemma \ref{lem_randchoice}(ii) and iterated expectations.
-%Re-arranging, 
-%\[
-%\mathbbm{E}(Y_0|C=1) = \frac{\mathbbm{E}(Y|Z=0) - \mathbbm{E}(Y_0|C=0) \mathbbm{P}(C=0)}{\mathbbm{P}(C=1)}.
-%\]
-%Therefore, by Lemma \ref{lem_randchoice} (i) and (iv)
-%\begin{align*}
-%\mathbbm{E}(Y_0|C=1) - \mathbbm{E}(Y_0|C=0) &= \frac{\mathbbm{E}(Y|Z=0) - \mathbbm{E}(Y|Z=2,D=0) \mathbbm{E}(1 - D|Z=2)}{\mathbbm{E}(D|Z=2)} - \mathbbm{E}(Y|Z=2, D=0)\\
-%&= \frac{\mathbbm{E}(Y|Z=0) - \mathbbm{E}(Y|Z=2,D=0)}{\mathbbm{E}(D|Z=2)}.
-%\end{align*}
-%
-%Similarly, for part (iv) note that
-%\[
-%\mathbbm{E}(Y|Z=1) = \mathbbm{E}(Y_1) = \mathbbm{E}(Y_1|C=0)\mathbbm{P}(C=0) + \mathbbm{E}(Y_1|C=1) \mathbbm{P}(C=1)
-%\]
-%by Lemma \ref{lem_randchoice}(iii) and iterated expectations.
-%Rearranging,
-%\[
-%\mathbbm{E}(Y_1|C=0) = \frac{\mathbbm{E}(Y|Z=1) - \mathbbm{E}(Y_1|C=1)\mathbbm{P}(C=1)}{\mathbb{P}(C=0)}.
-%\]
-%Therefore, by Lemma \ref{lem_randchoice} (i) and (v),
-%\begin{align*}
-%\mathbbm{E}(Y_1|C=1) - \mathbbm{E}(Y_1|C=0) &= \mathbbm{E}(Y|Z=2, D=1) - \frac{\mathbbm{E}(Y|Z=1) - \mathbbm{E}(Y|Z=2, D=1)\mathbbm{E}(D|Z=2)}{\mathbb{P}(C=0)} \\
-%&= \frac{\mathbbm{E}(Y|Z=2,D=1) - \mathbbm{E}(Y|Z=1)}{1 - \mathbbm{E}(D|Z=2)}.
-%\end{align*}
-%\end{proof}
-
-\newpage
 
 \section{Testable Implications of the Exclusion Restriction}
 \label{append:exclusion}
@@ -1106,6 +1223,8 @@ Because the Note that since both TUT and ToT estimates from the LATE approach li
 %\end{figure}
 
 
+\begin{comment}
+    
 \begin{figure}[H]
      \caption{TOT-TUT CDF}
      \label{tot_tut_ecdf}
@@ -1120,6 +1239,8 @@ Because the Note that since both TUT and ToT estimates from the LATE approach li
        
           %\footnotesize{ \textit{Do file: }  \texttt{tot\_tut\_insforest.do}}
 \end{figure}
+\end{comment}
+
 
 \begin{figure}[H]
      \caption{Exclusion restriction}
@@ -1141,7 +1262,7 @@ Because the Note that since both TUT and ToT estimates from the LATE approach li
 \newpage
 \section{Causal Random Forest, HTE, and `mistakes'}
 
-\vspace{.3in}
+
 
 \begin{comment}
 
@@ -1189,6 +1310,11 @@ Because the Note that since both TUT and ToT estimates from the LATE approach li
   %\footnotesize{ } \textit{Do file: }  \texttt{cate_dist.do}
 \end{figure}
 
+
+\todo[inline]{Some subfigures are not loading}
+
+
+
 \begin{figure}[H]
         \caption{Honest causal tree for the Forced-commitment contract heterogeneous treatment effects}
     \label{causal_tree1}
@@ -1231,6 +1357,8 @@ We use \cite{atheygrf} \texttt{causal\_forest} of the \texttt{grf} library in $R
   num.threads = NULL)}}
 
 
+\begin{comment}
+
 \begin{figure}[H]
         \caption{Single causal tree for the Forced-commitment contract heterogeneous treatment effects}
     \label{causal_tree2}
@@ -1242,7 +1370,7 @@ We use \cite{atheygrf} \texttt{causal\_forest} of the \texttt{grf} library in $R
    
      %\footnotesize{ \textit{RScript: }  \texttt{grf.R}
 \end{figure}
-
+\end{comment}
 
 
 
@@ -1304,6 +1432,9 @@ We use \cite{atheygrf} \texttt{causal\_forest} of the \texttt{grf} library in $R
 
 
 \vspace{.4in}
+
+\begin{comment}
+    
 \subsection{Take up}
 
 
@@ -1386,6 +1517,8 @@ We use \cite{atheygrf} \texttt{causal\_forest} of the \texttt{grf} library in $R
 \scriptsize 
 \noindent This figure reports bivariate (and multivariate) regressions of the form $TakeUp = \alpha + \beta \: X_i + \epsilon_i$. The figure reports the $\beta$ coefficients for different $X_i$'s along with 95\% confidence intervals. Panel (a) uses a linear model. Panel (b) specifies a logit model.
 
+\end{comment}
+
 
 
 
@@ -1395,21 +1528,23 @@ We use \cite{atheygrf} \texttt{causal\_forest} of the \texttt{grf} library in $R
     \caption{Determinants of treatment effects and probability of choosing commitment}
     \label{determinants_ps_hte}
     \begin{center}
-    \begin{subfigure}{0.475\textwidth}
+    \begin{subfigure}{0.65\textwidth}
         \caption{Determinants of HTE}
         \centering
         \includegraphics[width=\textwidth]{Figuras/HE/he_int_vertical_apr_pro_2.pdf}
     \end{subfigure}
-    \begin{subfigure}{0.475\textwidth}
-        \caption{Determinants of propensity score}
-        \centering
-        \includegraphics[width=\textwidth]{Figuras/HE/ps_int_vertical_pr_gbc_1.pdf}
-    \end{subfigure}
+    %\begin{subfigure}{0.475\textwidth}
+    %    \caption{Determinants of propensity score}
+    %    \centering
+    %    \includegraphics[width=\textwidth]{Figuras/HE/ps_int_vertical_pr_gbc_1.pdf}
+    %\end{subfigure}
   
     \end{center}
-     \scriptsize   This figure estimates bivariate regressions of the estimated client-level (a) heterogeneous treatment effects, (b) propensity score, against the respective covariate from the baseline survey  $\widehat{HTE_i}, \widehat{P_i} = \alpha + \beta \: X_i + \epsilon_i$. The regressors $X_i$ include (e.g if the family asks for money, if they have savings, if they are overconfident using the definition the text, etc. See this Appendix for a transcription of the survey). \\
+     \scriptsize   This figure estimates bivariate regressions of the estimated client-level (a) heterogeneous treatment effects, %(b) propensity score, against the respective covariate from the baseline survey  $\widehat{HTE_i}, \widehat{P_i} = \alpha + \beta \: X_i + \epsilon_i$. The regressors $X_i$ include (e.g if the family asks for money, if they have savings, if they are overconfident using the definition the text, etc. See this Appendix for a transcription of the survey). \\
       %\footnotesize{ \textit{Do file: }  \texttt{analyze\_grf\_single\_arm.do}} \texttt{benefit\_choice.do}}
 \end{figure}
+\todo[inline]{@Isaac: reestimate this with the determinants we are using for the choice determinants. Based on that we decide if we cut}
+
 
 \normalsize
 

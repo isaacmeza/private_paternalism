@@ -48,9 +48,11 @@ order apr fee_arms $C0 ///
 *Drop individuals without any observables 
 drop if missing(fam_pide) & missing(ahorros) & missing(t_consis1) & missing(t_consis2) & missing(confidence_100) & missing(hace_presupuesto) & missing(tentado) & missing(rec_cel) & missing(pres_antes) & missing(cta_tanda) & missing(genero) & missing(masqueprepa) & missing(estresado_seguido) 
 
-*Drop individuals without observables 
+*Identify individuals with NA
 foreach var of varlist edad faltas c_trans t_llegar fam_pide ahorros t_consis1 t_consis2 confidence_100  hace_presupuesto tentado rec_cel pres_antes cta_tanda genero masqueprepa estresado_seguido { 
-	drop if missing(`var') 
+	gen na_`var' = missing(`var')
+	su `var', d
+	replace `var' = `r(p50)' if missing(`var')
 	}
 
 export delimited "$directorio/_aux/apr_te_heterogeneity.csv", replace nolabel
@@ -124,9 +126,11 @@ order fc_admin fee_arms $C0 ///
 *Drop individuals without any observables 
 drop if missing(fam_pide) & missing(ahorros) & missing(t_consis1) & missing(t_consis2) & missing(confidence_100) & missing(hace_presupuesto) & missing(tentado) & missing(rec_cel) & missing(pres_antes) & missing(cta_tanda) & missing(genero) & missing(masqueprepa) & missing(estresado_seguido) 
 
-*Drop individuals without observables 
+*Identify individuals with NA
 foreach var of varlist edad faltas c_trans t_llegar fam_pide ahorros t_consis1 t_consis2 confidence_100  hace_presupuesto tentado rec_cel pres_antes cta_tanda genero masqueprepa estresado_seguido { 
-	drop if missing(`var') 
+	gen na_`var' = missing(`var')
+	su `var', d
+	replace `var' = `r(p50)' if missing(`var')
 	}
 
 export delimited "$directorio/_aux/fc_admin_te_heterogeneity.csv", replace nolabel
@@ -159,9 +163,11 @@ order def_c fee_arms $C0 ///
 *Drop individuals without any observables 
 drop if missing(fam_pide) & missing(ahorros) & missing(t_consis1) & missing(t_consis2) & missing(confidence_100) & missing(hace_presupuesto) & missing(tentado) & missing(rec_cel) & missing(pres_antes) & missing(cta_tanda) & missing(genero) & missing(masqueprepa) & missing(estresado_seguido) 
 
-*Drop individuals without observables 
+*Identify individuals with NA
 foreach var of varlist edad faltas c_trans t_llegar fam_pide ahorros t_consis1 t_consis2 confidence_100  hace_presupuesto tentado rec_cel pres_antes cta_tanda genero masqueprepa estresado_seguido { 
-	drop if missing(`var') 
+	gen na_`var' = missing(`var')
+	su `var', d
+	replace `var' = `r(p50)' if missing(`var')
 	}
 
 export delimited "$directorio/_aux/def_c_te_heterogeneity.csv", replace nolabel
@@ -193,9 +199,11 @@ order des_c fee_arms $C0 ///
 *Drop individuals without any observables 
 drop if missing(fam_pide) & missing(ahorros) & missing(t_consis1) & missing(t_consis2) & missing(confidence_100) & missing(hace_presupuesto) & missing(tentado) & missing(rec_cel) & missing(pres_antes) & missing(cta_tanda) & missing(genero) & missing(masqueprepa) & missing(estresado_seguido) 
 
-*Drop individuals without observables 
+*Identify individuals with NA
 foreach var of varlist edad faltas c_trans t_llegar fam_pide ahorros t_consis1 t_consis2 confidence_100  hace_presupuesto tentado rec_cel pres_antes cta_tanda genero masqueprepa estresado_seguido { 
-	drop if missing(`var') 
+	gen na_`var' = missing(`var')
+	su `var', d
+	replace `var' = `r(p50)' if missing(`var')
 	}
 
 export delimited "$directorio/_aux/des_c_te_heterogeneity.csv", replace nolabel

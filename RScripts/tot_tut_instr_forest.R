@@ -43,7 +43,24 @@ rename_var = function(df) {
     "cta_tanda",
     "genero",
     "masqueprepa",
-    "estresado_seguido"
+    "estresado_seguido",
+    "na_edad",
+    "na_faltas",
+    "na_c_trans",
+    "na_t_llegar",
+    "na_fam_pide",
+    "na_ahorros",
+    "na_t_consis1",
+    "na_t_consis2", 
+    "na_confidence_100",
+    "na_hace_presupuesto",
+    "na_tentado",
+    "na_rec_cel",
+    "na_pres_antes",
+    "na_cta_tanda",
+    "na_genero",
+    "na_masqueprepa",
+    "na_estresado_seguido"    
   ),
   c(
     "tuesday",
@@ -73,7 +90,24 @@ rename_var = function(df) {
     "rosca",
     "female",
     "more.high.school",
-    "stressed"
+    "stressed",
+    "na.age",
+    "na.trouble.paying.bills",
+    "na.transport.cost",
+    "na.transport.time",
+    "na.fam.asks",
+    "na.savings",
+    "na.patience",
+    "na.future.patience", 
+    "na.sure.confidence",
+    "na.makes.budget",
+    "na.tempted",
+    "na.sms.reminder",
+    "na.pawn.before",
+    "na.rosca",
+    "na.female",
+    "na.more.high.school",
+    "na.stressed"    
   ))
 }
 
@@ -150,7 +184,7 @@ fit_instr_forest = function(xvar, wvar, yvar, zvar, dta, nme) {
     theme_few()
   ggsave(filename_vi)
   
-  # Save results
+    # Save results
   data.out <- add_column(dta, inst_hat_oob$predictions, inst_hat_oob$variance.estimates)
   filename_out <- paste("_aux/", nme, "_instr_forest.csv", sep="")
   write_csv(data.out, filename_out)

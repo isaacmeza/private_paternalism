@@ -94,12 +94,14 @@ forvalues d = 0(100)10000 {
 	replace fc_admin_disc = sum_pdisc_c + prestamo_i/(0.7*(1 + `dd')^90) if def_c==1
 		*Not ended at the end of observation period - only fees and interest
 	replace fc_admin_disc = sum_int_c + sum_pay_fee_c if def_c==0 & des_c==0
-
+		*Financial cost gain (negative scale)
+	replace fc_admin_disc = -fc_admin_disc
+	
 	keep if visit_number==1
 	gsort prenda fecha_inicial -fecha_movimiento clave_movimiento t_prod
 	by prenda fecha_inicial : keep if _n==1
 
-	tot_tut fc_admin Z choose_commitment,  vce(cluster suc_x_dia)
+	tot_tut fc_admin_disc Z choose_commitment,  vce(cluster suc_x_dia)
 	local df = e(df_r)	
 	matrix results[`i',1] = `d'
 	matrix results[`i',2] = _b[ATE]
@@ -132,7 +134,7 @@ twoway 	(rarea rcap_hi_5 rcap_lo_5 d, color(navy%15))  ///
 		(rarea rcap_hi_10 rcap_lo_10 d, color(navy%30))  ///
 		(line beta d, color(navy) lwidth(thick)) ///
 	, graphregion(color(white)) ///
-	xtitle("Annual discount rate %") ytitle("FC Effect") legend(off) yline(0, lcolor(black)) 
+	xtitle("Annual discount rate %") ytitle("FC Benefit") legend(off) yline(0, lcolor(black)) 
 graph export "$directorio\Figuras\discount_effect.pdf", replace
 	
 	
@@ -153,5 +155,5 @@ twoway 	(rarea rcap_hi_5 rcap_lo_5 d, color(navy%15))  ///
 		(rarea rcap_hi_10 rcap_lo_10 d, color(navy%30))  ///
 		(line beta d, color(navy) lwidth(thick)) ///
 	, graphregion(color(white)) ///
-	xtitle("Annual discount rate %") ytitle("FC Effect (TuT)") legend(off) yline(0, lcolor(black)) 
+	xtitle("Annual discount rate %") ytitle("FC Benefit (TuT)") legend(off) yline(0, lcolor(black)) 
 graph export "$directorio\Figuras\discount_effect_tut.pdf", replace	
