@@ -180,15 +180,39 @@ Translation of the baseline questionnaire.
 
 
 \begin{table}[H]
-\caption{Balance: Admin data conditional on answering survey \& Survey data conditional a loan}
+\caption{Balance conditional on survey response and question-by-question response rates by treatment arm}
 \label{SS_cond_survet}
 \begin{center}
 \scriptsize{\input{./Tables/SS_cond_survey.tex}}
 \end{center}
 \scriptsize
-\textcolor{blue}{This table is analogous to Table \ref{SS}, but it uses different sub-samples. Panel A reports regression results using administrative loan data, but conditioning on those borrowers who also responded the baseline survey. Panel B reports regression results using survey data, but conditioning on those borrowers who pawned \hl{the same day of the survey response}}.
+
+Panel A of this table presents the same information as Panel A of Table \ref{SS}, but restricts attention to the subsample of borrowers who answered \hl{at least one question???} in our baseline survey. Conditional on survey response, loan amount and weekday are balanced across treatment arms. Panel B presents response rates to each individual survey question across treatment arms, along with p-values for the F-test of no difference in response rates across survey arms. This panel uses data for borrowers who pawned on the \hl{same day as their survey response}. 
+
+
 %\textit{Do file: } \texttt{ss\_att.do}
 \end{table}
+
+\begin{landscape}
+\begin{table}[H]
+\caption{Survey Non-response: TUT estimates for respondents to each survey question.}
+\label{TUT_cond_survet}
+\begin{center}
+\scriptsize{\input{./Tables/tut_cond_survey.tex}}
+\end{center}
+\scriptsize
+
+Some borrowers did not respond to our survey; others only completed part of the survey.
+This table computes the TUT effect for a number of sub-groups by survey response, and compares them against the overall TUT effect.
+The top panel uses financial cost as the outcome variable, while the bottom panel uses APR.
+Each group is defined by the borrowers who responded to a particular \emph{subset} of the survey questions. 
+For example, column (4) computes TUT effects for the subgroup of borrowers who responded to the two questions needed to compute our measure of present bias, while column (8) computes the TUT for the subgroup of borrowers who provided their age.
+The bottom row of the table counts the number of borrowers in each category.
+TUT estimates are quite stable across sub-groups and generally similar to the full-sample estimates.
+Because standard errors increase as sample size falls, some of the sub-group estimates are not statistically significant.
+%\textit{Do file: } \texttt{tut_cond_survey.do}
+\end{table}
+\end{landscape}
 
 
 \newpage
@@ -196,7 +220,7 @@ Translation of the baseline questionnaire.
 
 \vspace{.2in}
 \begin{figure}[H]
-    \caption{Behavior of those who lost pawn}
+    \caption{Behavior of borrowers who lost their pawn}
     \label{proxy_naive}
     \begin{center}
     \begin{subfigure}{0.40\textwidth}
@@ -221,7 +245,7 @@ Translation of the baseline questionnaire.
     \end{subfigure}
     \end{center}
         \scriptsize 
-        This figure describes behavior for the subsample of clients whose pawn was not recovered (in the control group).  Panel (a) shows days elapsed from the pawn to the first payment, while panel (b) displays the days elapsed to last payment. Some people pay after the day 105 when the grace period ends because the can ``restart'' the loan if they pay all interest owed. It amounts to starting a new loan with the same conditions and same pawn. Panel (c) shows the fraction of the loan that they paid (even when they ended up losing the pawn). Panel (d) displays the number of times they went to the branch to pay.      
+        This figure provides more details on the behavior of clients who were assigned to the control group and did not recover their pawn. Panel (a) shows a histogram of days elapsed from the pawn to the first payment, while panel (b) displays a histogram of days elapsed until the last payment. Some borrowers make payments after day 105, the end of the grace period: if they pay all interest owed, they can ``restart'' the loan. This amounts to starting a new loan with the same conditions and same pawn. Panel (c) shows a histogram of the fraction of the loan paid, while panel (d) presents a barplot of the number of times that borrowers went to the branch to make payments.
       %\textit{Do file: }  \texttt{hist\_den\_default.do}
 \end{figure}
 
@@ -254,7 +278,26 @@ Translation of the baseline questionnaire.
 
 \vspace{.2in}
 \normalsize
-The approach taken in the paper for censored loans is a conservative one in that it inherently assumes that all of the loans outstanding at the end of the observation window will be repaid, making it so that the acceleration of payment observed in the Forced arm does not translate mechanically into a treatment effect on default.  This appendix delves into it more detail.  One way of considering the effect that this issue could have on our results is to make extreme assumptions about the outcome of these loans in the treatment and control so as to bound the possible influence of censoring.  In Table \ref{mns} we compare the Forced and Control arms, making the bracketing assumptions about repayment on censored loans.  Panel A assumes all censored loans are repaid, and Panel D that all default.  Panel B provides the lower bound for the treatment effect by assuming censored control loans are always repaid and treatment loans never are, and Panel C the upper bound by making the reverse assumption.  Comfortingly, even with these extreme assumptions the significance on the main treatment effects never flips and treatment effects on financial cost and interests payments remain negative and significant in all scenarios.  So there appears to be no scope for the censoring issue to overturn our main results. 
+
+Some loans in our sample are ``censored'' in that they continue beyond our observation period.
+For these loans, we do not know whether the borrower ultimately defaulted our recovered her pawn.
+In this appendix, we show that our main results are robust to different ways of addressing censoring.
+
+Our main results, presented above, assumed that all loans that were still outstanding at the end of the sample period were \emph{eventually repaid}.
+Because forced commitment causes borrowers to make payments earlier than they otherwise would have, this is a conservative assumption.
+To see why, suppose for the sake of argument that commitment affects payment timing, but does not not default.
+In other words, suppose that treatment makes censoring \emph{less likely} but has no effect on uncensored outcomes. 
+If we were to treat all outstanding loans as defaults--the opposite of our convention--this would artificially inflate the rate of default among control loans relative to treatment loans. 
+This is why we adopt the reverse convention above.
+We now consider some alternative approaches.
+
+
+\todo[inline]{@Frank: keep updating below after getting responses from @Issac.}
+
+
+%The approach taken in the paper for censored loans is a conservative one in that it inherently assumes that all of the loans outstanding at the end of the observation window will be repaid, making it so that the acceleration of payment observed in the Forced arm does not translate mechanically into a treatment effect on default.  This appendix delves into it more detail.  
+
+One way of considering the effect that this issue could have on our results is to make extreme assumptions about the outcome of these loans in the treatment and control so as to bound the possible influence of censoring.  In Table \ref{bounding_censoring} we compare the Forced and Control arms, making the bracketing assumptions about repayment on censored loans.  Panel A assumes all censored loans are repaid, and Panel D that all default.  Panel B provides the lower bound for the treatment effect by assuming censored control loans are always repaid and treatment loans never are, and Panel C the upper bound by making the reverse assumption.  Comfortingly, even with these extreme assumptions the significance on the main treatment effects never flips and treatment effects on financial cost and interests payments remain negative and significant in all scenarios.  So there appears to be no scope for the censoring issue to overturn our main results. 
 
 Finally, Panel E of this table conducts a logit prediction model that uses all of the available information on loans that were completed to predict the outcome of loans that were not.  This is a best guess of the outcome on censored loans.  Using this prediction, we replicate the main experimental results and find that the treatment effect on financial cost increases from -378 (main results) to -525 (censored loans predicted), and the APR from -34\% to -62\%.  Hence, while the censoring issue does have a substantial influence on the magnitude of our estimated treatment effects, these  checks confirm that a) the core results are robust to censoring, and b) the headline approach that we take to the issue is conservative and is likely understating the true magnitude of impacts.
 
@@ -351,7 +394,17 @@ Finally, Panel E of this table conducts a logit prediction model that uses all o
 \begin{center}
 \scriptsize{\input{./Tables/learning_exp.tex}}
 \end{center}
- \scriptsize  \textcolor{blue}{This table explores learning by focusing on a subsample of borrowers in the experiment and observing their subsequent behavior. Column 1 conditions the sample on borrowers who (a) pawned during the experiment a subsequent time after being assigned to control, forced commitment or choice (the regressors), and (b) when pawning again they went to a branch day when (randomly) choice was available, thus enabling us to observe if they chose the commitment contract or the status quo.  in this sample it estimates a linear probability model where the dependent variable is equal to one if the borrower chose the commitment contract in that subsequent `choice' occasion and zero otherwise. The regressors are indicators for the treatment arms in their first pawn in the experiment. Column 1 conditions the sample on the (endogenous) event of pawning again. Column 2 does not condition the sample, but instead defined the dependent variable as equal to one \hl{if the borrower pawned subsequently and choice was available that day and chose commitment, and zero otherwise.}}
+ \scriptsize  
+
+This table presents information about borrowers' \emph{future} pawning behavior.
+Column (1) reports results for the 228 borrowers who returned to pawn again at a day/branch that was randomly assigned to the choice arm, enabling us to observe whether they chose commitment or the status quo contract.
+Each row presents a difference in mean commitment take-up rates and associated standard errors.
+The first row (ATE) compares borrowers who were initially assigned to forced commitment against those were assigned to the control condition.
+The second row (ITT) compares borrowers who were initially assigned to the choice commitment condition to those who were not.
+Whereas column (1) conditions on the (endogenously) selected sample of borrowers who return to pawn again, column (2) considers the full sample by re-defining the ``outcome'' to be an indicator for whether a borrower pawned again on a day when choice was offered \emph{and} chose commitment.
+
+%This table explores learning by focusing on a subsample of borrowers in the experiment and observing their subsequent behavior. Column 1 conditions the sample on borrowers who (a) pawned during the experiment a subsequent time after being assigned to control, forced commitment or choice (the regressors), and (b) when pawning again they went to a branch day when (randomly) choice was available, thus enabling us to observe if they chose the commitment contract or the status quo.  in this sample it estimates a linear probability model where the dependent variable is equal to one if the borrower chose the commitment contract in that subsequent `choice' occasion and zero otherwise. The regressors are indicators for the treatment arms in their first pawn in the experiment. Column 1 conditions the sample on the (endogenous) event of pawning again. Column 2 does not condition the sample, but instead defined the dependent variable as equal to one \hl{if the borrower pawned subsequently and choice was available that day and chose commitment, and zero otherwise.}
+
 \end{table}
 
 
@@ -363,13 +416,14 @@ Finally, Panel E of this table conducts a logit prediction model that uses all o
 
 
 \begin{figure}[H]
-        \caption{Financial cost TUT effect for different discount rates}
+        \caption{Financial benefit TUT effect for different discount rates}
     \label{fc_discount_rates}
     \begin{center}
         \centering
         \includegraphics[width=0.55\textwidth]{Figuras/discount_effect_tut.pdf}
     \end{center}
-     \scriptsize This Figure estimates regression equation \ref{basic_reg} as in column 1 of Table \ref{main_impact_table} but it introduces a daily discount factor (time preference) in the definition of financial cost to discount payments. Payments done in the present are more costly for the borrower. It estimates the effect of the treatment arms  for different discount factors, where a discount factor of 1 corresponds exactly to the estimate of column 1 of Table \ref{main_impact_table}. Because the commitment contract induces earlier payments, this adjusted financial cost will be higher, and thus financial savings will be lower. This figure shows the range of estimated effects and their confidence intervals, where the discount rate used is ploted in the x-axis annualized.    %\textit{Do file: }  \texttt{discounted\_noeffect.do}
+     \scriptsize This Figure re-estimates the treatment on the untreated (TUT) effect from Table \ref{tot_tut}, introducing a daily discount factor in the definition of financial benefit. The discount factor reflects time preference, i.e.\ the fact that payments made in the present are more costly for the borrower. At a given annual discount rate in percentage points (x-axis) the solid line gives the adjusted TUT and the shaded regions \hl{??? confidence intervals}. A discount factor of one corresponds to the estimate from Table \ref{tot_tut}. For higher discount rates, the adjusted financial cost will be higher, so the financial cost \emph{savings} will be lower. As seen from the figure, borrowers would need to face unrealistically large discount rates to reverse our headline result of a large, positive, and statistically significant TUT effect.
+     %It estimates the effect of the treatment arms  for different discount factors, where a discount factor of 1 corresponds exactly to the estimate of column 1 of Table \ref{main_impact_table}. Because the commitment contract induces earlier payments, this adjusted financial cost will be higher, and thus financial savings will be lower. This figure shows the range of estimated effects and their confidence intervals, where the discount rate used is ploted in the x-axis annualized.    %\textit{Do file: }  \texttt{discounted\_noeffect.do}
 \end{figure}
 
 
@@ -383,10 +437,11 @@ Finally, Panel E of this table conducts a logit prediction model that uses all o
         \centering
         \includegraphics[width=0.55\textwidth]{Figuras/tut_beh_partition.pdf} 
     \end{center}
-     \scriptsize  This figure performs a partition of the Treatment on the Untreated (FC), estimating the share of the effect that arises within each of two binary categories.  The top bars examine present bias (individuals are more impatient over one-month time horizon than they are between three and four months).  The bottom bars examine sure confidence (individual reports 100\% probability of repaying at time of taking loan).  Blue bar is the component arising from those without the trait, orange bar from those with the trait. 
-      %\footnotesize{ \textit{Do file: }  \texttt{partition_tot_tut.do}
+     \scriptsize  Each panel in this figure shows how the estimated treatment on the untreated (TUT) effect varies with a binary survey variable $X_i$. In the left panel (Sure-confidence) $X_i = 1$ if  borrower $i$ reported that she was certain to recover her pawn, zero otherwise. In the right panel (P.B.), $X_i = 1$ if borrower $i$ is ``present-biased'' based on her responses to the time preference questions from our survey. Each panel depicts three estimates and associated \hl{standard errors??? 95 CI?}: the overall TUT (blue), the TUT for borrowers with $X = 1$ (green), and the TUT for borrowers with $X = 0$ (red). By the law of iterated expectations, the overall TUT in each panel must lie between the group-specific TUTs. The overall TUT is slightly different in each panel, because some borrowers only completed part of the survey. In each panel, we present results for the full set of borrowers who answered the survey question or questions needed to determine $X_i$. From the right panel, we see that TUT does not appear to vary with present bias. In contrast, the left panel suggests that the positive and significant overall TUT is driven by individuals who are ``sure-confident,'' i.e.\ borrowers who report that they are certain to recover their pawn.
+     %to be largely concentrated relevant survey question  according to her survey responses two binary performs a partition of the Treatment on the Untreated (FC), estimating the share of the effect that arises within each of two binary categories.  The top bars examine present bias (individuals are more impatient over one-month time horizon than they are between three and four months).  The bottom bars examine sure confidence (individual reports 100\% probability of repaying at time of taking loan).  Blue bar is the component arising from those without the trait, orange bar from those with the trait. 
+      %\footnotesize{ \textit{Do file: }  \texttt{partition_tut.do}
 
-      \todo[inline]{This figure will change}
+      \todo[inline]{This figure has changed. Will have minor style modifications. @Issac: what's the purple stuff in the middle?}
 \end{figure}
 
 
@@ -394,7 +449,8 @@ Finally, Panel E of this table conducts a logit prediction model that uses all o
 \subsection{First order stochastic dominance} \label{App_FOSD}
 \normalsize
 \vspace{.2in}
-\todo[inline]{Presumably we want to cut some of this text? In the body of the text we don't get into this in such detail.}
+
+%\todo[inline]{Presumably we want to cut some of this text? In the body of the text we don't get into this in such detail.}
 %We plot the empirical distribution of financing cost $F_{commitment}(FC)$ and of the status quo contract, $F_{sq}(FC)$. Framed as a choice among cost distributions. 
 
 
@@ -415,7 +471,8 @@ Finally, Panel E of this table conducts a logit prediction model that uses all o
         \includegraphics[width=\textwidth]{Figuras/cdf_fc_admin.pdf}
     \end{subfigure} 
     \end{center}
-    \scriptsize This figure plots the empirical cumulative distribution of financial cost. It does this separately for the fee-forcing contract and for the status-quo contract. The dotted line at the bottom is the difference of the control CDF minus the forced CDF arm. It shows that the CDF of the status quo contract is always below that of the fee-forcing (and this difference is significant for the points indicated by the blue line).
+    \scriptsize This figure plots plots the empirical CDF of experimental outcomes separately for the control / status quo (dashed) and forced commitment contracts (solid). In panel (a), the outcome is APR; in panel (b) the outcome is Financial Cost. In each case, the empirical CDF under forced commitment first-order stochastically dominates the empirical CDF under the status quo. This can be seen by examining the dotted line at the bottom of panels (a) and (b), which shows the difference $(\text{Control} - \text{Commitment})$. 
+    %The dotted line at the bottom of panels (a) and (b)   the empirical cumulative distribution function APR and financial cost of financial cost. It does this separately for the fee-forcing contract and for the status-quo contract. The dotted line at the bottom is the difference of the control CDF minus the forced CDF arm. It shows that the CDF of the status quo contract is always below that of the fee-forcing (and this difference is significant for the points indicated by the blue line).
     % \texttt{fosd_ecdf.do}}
 \end{figure}
 
@@ -526,18 +583,20 @@ Note the proof was done in the case of absolutely continuous and strictly increa
 
 \section{Testing for heterogeneity}
 \label{append:chernozhukov}
-Our approach relies on the following simple observation: if $\Delta_i$ is constant across $i$, then 
+If the treatment effects $Y_{i1} - Y_{i0}$ are constant across $i$, then we must have
 \[
-\text{ATE}(X_i) \equiv \mathbbm{E}[\Delta_i |X_i] = \mathbbm{E}[\Delta_i] \equiv \text{ATE}
+\text{ATE}(X_i) \equiv \mathbbm{E}[Y_{i1} - Y_{i0} |X_i] = \mathbbm{E}[Y_{i1} - Y_{i0}] \equiv \text{ATE}
 \]
 for any covariates $X_i$ that vary across $i$. If, on the other hand, $\text{ATE}(X_i)$ can be predicted using some scalar function $\tau(\cdot)$ of $X_i$, then the average treatment effect function is not constant so there must be treatment effect heterogeneity. 
 
-We operationalize this idea using a two-step approach proposed by \cite{chernozhukov2018generic}.  We begin by randomly dividing the participants in the forced arms of the experiment ($Z_i \neq 2$) into two groups: a ``training set'' and a \todo{80/20 split?}{``test set.''} In the first step, we apply random forests to the training set to estimate two proxy predictors: $\psi(\cdot|\text{Training})$ approximates the untreated potential outcome function, $\mathbbm{E}[Y_{i0}|X_i] = \mathbbm{E}[Y_i|Z_i=0,X_i]$, while  $\tau(\cdot|\text{Training})$, approximates the average treatment effect function
+We operationalize this idea using a two-step approach proposed by \cite{chernozhukov2018generic}.  We begin by randomly dividing the participants in the forced arms of the experiment ($Z_i \neq 2$) into two groups: a training set and a test set.
+These sets are constructed to ensure that all observations from a given branch-day cluster are allocated to the same set.
+This avoids inferential problems that could arise from correlated unobservables within clusters.
+In the first step, we apply the generalized random forest approach of \cite{athey2019generalized} to the training set to estimate two proxy predictors: $\psi(\cdot|\text{Training})$ approximates the untreated potential outcome function, $\mathbbm{E}[Y_{i0}|X_i] = \mathbbm{E}[Y_i|Z_i=0,X_i]$, while  $\tau(\cdot|\text{Training})$, approximates the ATE function
 \[
 \text{ATE}(X_i) = \mathbbm{E}[Y_i|Z_i=1,X_i] - \mathbbm{E}[Y_i|Z_i=0, X_i].
 \]
 The proxy predictors need not be unbiased or even consistent estimators of the functions they aim to approximate: the goal of this exercise is merely to find a scalar function of $X_i$ that \emph{accurately predicts} $\text{ATE}(X_i)$.
-
 In the second step we fit a linear regression model to data from the training set using regressors constructed from the proxy functions $\psi(\cdot|\text{Training})$ and $\tau(\cdot|\text{Training})$ constructed in the first step. In particular, we estimate 
 \begin{equation}
 Y_i = \alpha_0 + \alpha_1 \psi_i + \beta_1 (Z_i - \mathbbm{E}[Z_i]) + \beta_2 (Z_i - \mathbbm{E}[Z_i])(\tau_i - \mathbbm{E}[\tau_i]) + \epsilon_i
@@ -548,21 +607,22 @@ where $\psi_i \equiv \psi(X_i|\text{Training})$ and $\tau_i \equiv \tau(X_i|\tex
 \beta_1 = \mathbbm{E}[\text{ATE}(X_i)] = \text{ATE}, \quad
 \beta_2 = \frac{\text{Cov}[\text{ATE}(X_i), \tau_i]}{\text{Var}(\tau_i)}.
 \]
-If treatment effects are homogeneous we must have $\beta_2 = 0$. Rejecting this hypothesis establishes that $\tau_i$ predicts $\text{ATE}(X_i)$ and hence that $\Delta_i$ varies. Since $\tau_i$ and $\psi_i$ do not depend on the test set, inference for the regression in \eqref{eq:chernreg} is straightforward conditional on the Training/Test split.  
+If treatment effects are homogeneous we must have $\beta_2 = 0$. Rejecting this hypothesis establishes that $\tau_i$ predicts $\text{ATE}(X_i)$ and hence that $\Delta_i$ varies. 
+Since $\tau_i$ and $\psi_i$ do not depend on the test set, inference for the regression in \eqref{eq:chernreg} is straightforward conditional on the Training/Test split.  
+Our estimate for $\beta_2$ is \hl{XXXX} with a cluster-robust standard error of \hl{XXXX}.
+Thus we easily reject the null hypothesis of homogenous treatment effects.
 
-\todo[inline]{Discuss the results here.}
+%\todo[inline]{Discuss the results here.}
 
-\todo[inline]{Issac: re-run this exercise with removing the propensity score weights $p(Z)$. Presumably it shouldn't change anything, but it's simpler to explain what we do and probably less noisy}
+%\todo[inline]{Issac: re-run this exercise with removing the propensity score weights $p(Z)$. Presumably it shouldn't change anything, but it's simpler to explain what we do and probably less noisy}
 
-\begin{table}[H]
-\begin{center}
-\scriptsize{\input{./Tables/test_calibration_2.tex}}
-\end{center}
-\end{table}
+%\begin{table}[H]
+%\begin{center}
+%\scriptsize{\input{./Tables/test_calibration_2.tex}}
+%\end{center}
+%\end{table}
 
-
-
-\todo[inline]{Some Questions for Issac: (1) How are we carrying out the sample splitting? If we cluster standard errors at the branch-day level, we should take this into account when we split. (2) How are you carrying out inference for $\beta_2$? Chernozhukov et al discuss two approaches: ``conditional'' and ``variational.'' The former is simpler as it conditions on the training/test split. The latter is a bit more involved, since one accounts for uncertainty arising from different splits. (3) What are the details of the random forest procedure employed here? (Tuning parameters choice, etc.) We should put them into the appendix.}
+%\todo[inline]{Some Questions for Issac: (1) How are we carrying out the sample splitting? If we cluster standard errors at the branch-day level, we should take this into account when we split. (2) How are you carrying out inference for $\beta_2$? Chernozhukov et al discuss two approaches: ``conditional'' and ``variational.'' The former is simpler as it conditions on the training/test split. The latter is a bit more involved, since one accounts for uncertainty arising from different splits. (3) What are the details of the random forest procedure employed here? (Tuning parameters choice, etc.) We should put them into the appendix.}
 
 
 \newpage
@@ -1297,23 +1357,18 @@ Because the Note that since both TUT and ToT estimates from the LATE approach li
      \begin{subfigure}{0.45\textwidth}
     \caption{Default}
        \centering
-      \includegraphics[width=\textwidth]{Figuras/he_dist_def_c.pdf}
+      \includegraphics[width=\textwidth]{Figuras/he_dist_def.pdf}
     \end{subfigure}  
      \begin{subfigure}{0.45\textwidth}
     \caption{Recovery}
        \centering
-      \includegraphics[width=\textwidth]{Figuras/he_dist_des_c.pdf}
+      \includegraphics[width=\textwidth]{Figuras/he_dist_des.pdf}
     \end{subfigure}      
     \end{center}
          \scriptsize
      This Figure plots the densities of the CATE emerging from the Athey et al. (2019) random forest, along with the upper and lower confidence bounds.  
   %\footnotesize{ } \textit{Do file: }  \texttt{cate_dist.do}
 \end{figure}
-
-
-\todo[inline]{Some subfigures are not loading}
-
-
 
 \begin{figure}[H]
         \caption{Honest causal tree for the Forced-commitment contract heterogeneous treatment effects}

@@ -35,11 +35,13 @@ import delimited "$directorio/_aux/apr_te_grf.csv", clear
 tempfile temp_eff
 rename tau_hat_oobpredictions tau_hat_eff
 rename tau_hat_oobvarianceestimates var_hat_eff
+keep tau_hat_eff var_hat_eff prenda
 save `temp_eff'
 
 import delimited "$directorio/_aux/apr_narrow_te_grf.csv", clear
 rename tau_hat_oobpredictions tau_hat_eff_narrow
 rename tau_hat_oobvarianceestimates var_hat_eff_narrow
+keep tau_hat_eff_narrow var_hat_eff_narrow prenda 
 
 merge 1:1 prenda using `temp_eff', nogen
 merge 1:1 prenda using "$directorio/DB/Master.dta", nogen keep(3)
@@ -106,7 +108,6 @@ forvalues i = -10(1)10 {
 	local rep_num = 100
 	forvalues rep = 1/`rep_num' {
 		qui {
-			
 			*Draw random effect from normal distribution with standard error according to Athey
 		replace tau_sim = rnormal(tau_hat_eff, sqrt(var_hat_eff))	
 		replace tau_sim_narrow = rnormal(tau_hat_eff_narrow, sqrt(var_hat_eff_narrow))		
@@ -134,10 +135,11 @@ forvalues i = -10(1)10 {
 		*Identification of positive TE with narrow variables
 		preserve
 		keep if !missing(bfa)
+		drop if missing(genero) | missing(pres_antes) | missing(masqueprepa) | missing(edad)
 		su bfa
 		if `r(sd)'!=0 {
 			*Random Forest
-			rforest bfa genero pres_antes masqueprepa edad , type(class) iter(1500) numvars(4) seed(1) 
+			rforest bfa genero pres_antes masqueprepa edad, type(class) iter(1000) seed(1) 
 			predict fit_fit_rf0 fit_fit_rf1, pr
 			
 			xtile perc_fit_rf = fit_fit_rf1, nq(100)
@@ -146,6 +148,10 @@ forvalues i = -10(1)10 {
 			if `r(N)'==0 {
 				su bfa, d
 				su fit_fit_rf1 if inrange(perc_fit_rf, 100-ceil(`r(mean)'*100)-1, 100-ceil(`r(mean)'*100)+1) 
+				if `r(N)'==0 {
+					su bfa, d
+					su fit_fit_rf1 if inrange(perc_fit_rf, 100-ceil(`r(mean)'*100)-1, 100-ceil(`r(mean)'*100)+2) 
+				}
 			}
 
 			replace fit_fit_rf1 = (fit_fit_rf1>=`r(mean)') 
@@ -162,7 +168,7 @@ forvalues i = -10(1)10 {
 			local type_ii = `r(N)'/`num_t'	* 100
 			
 			*Logit
-			logit bfa genero pres_antes masqueprepa edad
+			logit bfa genero pres_antes masqueprepa edad 
 			predict fit_fit_lg
 			
 			xtile perc_fit_lg = fit_fit_lg, nq(100)
@@ -171,6 +177,10 @@ forvalues i = -10(1)10 {
 			if `r(N)'==0 {
 				su bfa, d
 				su fit_fit_lg if inrange(perc_fit_lg, 100-ceil(`r(mean)'*100)-1, 100-ceil(`r(mean)'*100)+1)  
+				if `r(N)'==0 {
+					su bfa, d
+					su fit_fit_lg if inrange(perc_fit_lg, 100-ceil(`r(mean)'*100)-1, 100-ceil(`r(mean)'*100)+2) 
+				}
 			}
 
 			replace fit_fit_lg = (fit_fit_lg>=`r(mean)') 
