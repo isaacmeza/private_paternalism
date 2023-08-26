@@ -24,7 +24,24 @@ use "$directorio/_aux/preMaster.dta", clear
 
 eststo clear
 
-  
+*Drop multiple visits (Baseline)
+preserve
+keep if visit_number==1
+eststo: reg fc_i_admin i.t_prod dummy_* if inlist(t_prod,1,2,4), vce(cluster suc_x_dia)
+su fc_i_admin if e(sample) & t_prod==1
+estadd scalar ContrMean = `r(mean)'
+eststo: reg apr_i i.t_prod dummy_* if inlist(t_prod,1,2,4), vce(cluster suc_x_dia)
+su apr_i if e(sample) & t_prod==1
+estadd scalar ContrMean = `r(mean)'
+eststo: reg des_i_c i.t_prod dummy_* if inlist(t_prod,1,2,4), vce(cluster suc_x_dia)
+su des_i_c if e(sample) & t_prod==1
+estadd scalar ContrMean = `r(mean)'
+eststo: reg def_i_c i.t_prod dummy_* if inlist(t_prod,1,2,4), vce(cluster suc_x_dia)
+su def_i_c if e(sample) & t_prod==1
+estadd scalar ContrMean = `r(mean)'
+restore
+
+
 *Put dummies for these cases as we are currently doing (to allow for flexibility in the regression and let them have less influence on the estimation of TE --ie the slope)
 eststo: reg fc_i_admin i.t_prod dummy_* num_arms_d* visit_number_d* if inlist(t_prod,1,2,4), vce(cluster suc_x_dia)
 su fc_i_admin if e(sample) & t_prod==1
@@ -39,22 +56,6 @@ eststo: reg def_i_c i.t_prod dummy_* num_arms_d* visit_number_d* if inlist(t_pro
 su def_i_c if e(sample) & t_prod==1
 estadd scalar ContrMean = `r(mean)'
 	
-*Drop multiple visits
-preserve
-keep if visit_number==1
-eststo: reg fc_i_admin i.t_prod dummy_* num_arms_d* if inlist(t_prod,1,2,4), vce(cluster suc_x_dia)
-su fc_i_admin if e(sample) & t_prod==1
-estadd scalar ContrMean = `r(mean)'
-eststo: reg apr_i i.t_prod dummy_* num_arms_d* if inlist(t_prod,1,2,4), vce(cluster suc_x_dia)
-su apr_i if e(sample) & t_prod==1
-estadd scalar ContrMean = `r(mean)'
-eststo: reg des_i_c i.t_prod dummy_* num_arms_d* if inlist(t_prod,1,2,4), vce(cluster suc_x_dia)
-su des_i_c if e(sample) & t_prod==1
-estadd scalar ContrMean = `r(mean)'
-eststo: reg def_i_c i.t_prod dummy_* num_arms_d* if inlist(t_prod,1,2,4), vce(cluster suc_x_dia)
-su def_i_c if e(sample) & t_prod==1
-estadd scalar ContrMean = `r(mean)'
-restore
 
 *A more standard thing to do here would be to estimate a regression that always given clients the FIRST treatment status they were assigned. ITT method where we use the FIRST treatment
 preserve

@@ -196,26 +196,13 @@ foreach var in def_imp apr {
 	gen mkr1 = 46.58 in 1
 
 
-	*Effect size showing convergence from best case to worst case imputation
-	twoway (rarea te_`var'_t12 te_`var'_t13 n, color(navy%10)) ///
-		(rarea te_`var'_t14 te_`var'_t15 n, color(navy%30)) ///
-		(line te_`var'_t11 n, color(navy) lwidth(medthick) yline(0,lcolor(black) lwidth(medthick) lpattern(dash))), ///
-		xtitle("% imputation C=0 | Pr(T=1)=1") legend(off) name(impc0, replace)
-		
-	twoway (rarea te_`var'_c02 te_`var'_c03 n, color(maroon%10)) ///
-		(rarea te_`var'_c04 te_`var'_c05 n, color(maroon%30)) ///
-		(line te_`var'_c01 n, color(maroon) lwidth(medthick) yline(0,lcolor(black) lwidth(medthick) lpattern(dash))), ///
-		xtitle("% imputation T=1 | Pr(C=0)=1") legend(off) name(impt1, replace)
-		
-	graph combine impc0 impt1, ycommon cols(2)	
-	graph export "$directorio/Figuras/convergence_imp_`var'.pdf", replace
-
 	*Frontier significance graph
 	twoway (scatter frontera_sig_10 n, connect(line) sort msymbol(none)) ///
 		(scatter frontera_sig_5 n, connect(line) sort msymbol(none)) ///
 		(scatter frontera_sig_1 n, connect(line) sort msymbol(none)) ///
 		(scatter mkr1 mkr2, msymbol(X) msize(medlarge) mlw(medium)), ///
-		legend(order(1 "10%" 2 "5%" 3 "1%") pos(6) rows(1)) ytitle("% imputation default T=1") xtitle("% imputation C=0") name(frontera, replace)
+		text(0 0 "C", place(ne)) text(0 100 "A", place(nw)) text(100 100 "B", place(sw)) text(100 0 "D", place(se)) ///
+		legend(order(1 "10%" 2 "5%" 3 "1%") pos(6) rows(1)) ytitle("% imputation default T=1") xtitle("% imputation C=0") name(frontera, replace) 
 	graph export "$directorio/Figuras/frontera_sig_`var'.pdf", replace
 	
 	restore

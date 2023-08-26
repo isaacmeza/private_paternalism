@@ -112,8 +112,9 @@ use "$directorio/_aux/choose_wrong.dta", clear
 twoway 	(rarea bfa_normal_l bfa_normal_h threshold, fcolor(navy) fintensity(40)) ///
 	(line better_forceall threshold, lpattern(solid) lwidth(medthick) lcolor(navy)) ///
 	(scatter better_forceall threshold,  msymbol(x) color(navy) ) ///
-	, legend(off)  ///
+	,  ///
 	graphregion(color(white)) xtitle("APR threshold") ///
 	ytitle("% benefitted", axis(1)) ///
-	ylabel(0(10)100, axis(1)) xline(0, lcolor(black) lwidth(medthick) lpattern(dash))
+	ylabel(0(10)100, axis(1)) xline(0, lcolor(black) lwidth(medthick) lpattern(dash)) ///
+	legend(order (4 "") pos(6) rows(1))
 graph export "$directorio/Figuras/line_better_forceall_apr_te_cf.pdf", replace

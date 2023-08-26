@@ -58,7 +58,7 @@ cap drop perc_apr
 * Identify the distribution F_1 of Y_1 from the treatment arm.
 xtile perc_apr = apr if t_prod==2, nq(1000)
 
-su apr if perc_apr == round(`p_rate'*1000) & t_prod==2
+su apr if perc_apr == 90 & t_prod==2
 local bottom_1 = `r(mean)'
 su apr if apr>`bottom_1' & t_prod==2
 local ub_1_0= `r(mean)'
@@ -97,14 +97,3 @@ di `lb_tot'
 
 di `tot'
 di `tut'
-
-
-twoway (kdensity apr if t_prod==1 & apr>`bottom_0', bw(25) xline(`bottom_0' `top_0', lpattern(dot) lcolor(gs4)) lwidth(medthick) lcolor(navy%90)) ///
-	(kdensity apr if t_prod==1 & apr<`top_0', xline(`lb_tot' `ub_tot', lcolor(navy%90)) bw(25) lwidth(medthick) lcolor(maroon%90))  
-	
-	
-	
-
-
-
-

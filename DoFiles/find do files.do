@@ -6,4 +6,4 @@ clear
 set more off
  
  
-rcd "$directorio/DoFiles"  : find *.do , match(des_c) show
+rcd "$directorio/DoFiles"  : find *.do , match(Huber) show

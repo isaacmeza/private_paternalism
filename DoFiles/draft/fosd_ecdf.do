@@ -20,6 +20,8 @@ version 17.0
 */
 
 use "$directorio/DB/Master.dta", clear
+replace apr = -apr
+replace fc_admin = -fc_admin
 
 foreach var of varlist fc_admin apr {
 	preserve 
@@ -29,10 +31,10 @@ foreach var of varlist fc_admin apr {
 		*cumulative distribution of "realized financial cost" 
 		*for the sq contract and the fee-forcing contract
 		*ECDF
-		cumul `var' if perc_a_d<=99 & pro_2==1, gen(fc_cdf_1)
-		cumul `var' if perc_a_d<=99 & pro_2==0, gen(fc_cdf_0)
+		cumul `var' if perc_a_d>=5 & pro_2==1, gen(fc_cdf_1)
+		cumul `var' if perc_a_d>=5 & pro_2==0, gen(fc_cdf_0)
 		*Function to obtain significance difference region
-		distcomp `var' if perc_a_d<=99 , by(pro_2) alpha(0.1) p noplot
+		distcomp `var' if perc_a_d>5 , by(pro_2) alpha(0.1) p noplot
 		mat ranges = r(rej_ranges)
 
 		*To plot both ECDF

@@ -92,10 +92,10 @@ foreach var of varlist tut1  {
 gen ind0 = behavioral_te5 - 0.1
 gen ind1 = behavioral_te5 + 0.1
 
+
 	*Plot
 twoway (rcap tut1_lo tut1_hi behavioral_te5, msize(large) color(navy)) (scatter tut1 behavioral_te5, msize(large) color(navy)) ///
 	(rcap behavioral_te1_lo0 behavioral_te1_hi0 ind0, msize(large) color(maroon)) (scatter behavioral_te10 ind0, msize(large) color(maroon)) ///
-	(rcap behavioral_te1_lo1 behavioral_te1_hi1 ind1, msize(large) color(dkgreen)) (scatter behavioral_te11 ind1, msize(large) color(dkgreen)), yline(0) xline(1.5, lpattern(solid)) legend(order(4 "TuT | X=0" 2 "TuT" 6 "TuT | X=1") pos(6) rows(1)) xlabel(1 2,valuelabel) ///
-	text( 300 -1.5  "`=ustrunescape("\u23AB")'" "`=ustrunescape("\u23AC")'"  "`=ustrunescape("\u23AD")'" , size(vhuge) color(purple)) 
+	(rcap behavioral_te1_lo1 behavioral_te1_hi1 ind1, msize(large) color(dkgreen)) (scatter behavioral_te11 ind1, msize(large) color(dkgreen)), yline(0) xline(1.5, lpattern(solid)) legend(order(4 "TuT | X=0" 2 "TuT" 6 "TuT | X=1") pos(6) rows(1)) xlabel(0.5 " " 1 2 2.5 " ", valuelabel)  
 graph export "$directorio/Figuras/tut_beh_partition.pdf", replace	
 	

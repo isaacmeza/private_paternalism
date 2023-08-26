@@ -22,6 +22,7 @@ version 17.0
 
 
 use "$directorio/DB/Master.dta", clear
+keep if inlist(t_prod,1,2,4)
 
 eststo clear
 foreach var of varlist fc_admin fc_survey fc_tc fc_int fc_fa apr apr_survey apr_tc apr_int apr_fa {

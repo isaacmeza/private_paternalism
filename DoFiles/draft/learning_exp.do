@@ -21,6 +21,7 @@ version 17.0
 */
 
 use "$directorio/_aux/preMaster.dta", clear
+keep if inlist(t_prod,1,2,4)
 duplicates drop NombrePignorante fecha_inicial suc prod t_prod, force
 
 *br NombrePignorante fecha_inicial suc prod t_prod visit_number

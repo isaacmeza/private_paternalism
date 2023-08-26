@@ -170,7 +170,7 @@ twoway 	(rarea cwf_normal_l cwf_normal_h threshold, lcolor(navy%5) fcolor(navy) 
 			, legend(order(3 "Choice commitment"  ///
 				6 "Non-choosers" 9 "Choosers") pos(6) rows(1))  ///
 			graphregion(color(white)) xtitle("APR threshold") ///
-			ytitle("% of relevant group with positive TE") ///
+			ytitle("% of mistakes") ///
 			ylabel(0(10)100) xline(0, lcolor(black) lwidth(medthick) lpattern(dash))
 graph export "$directorio/Figuras/line_cw_apr_tot_tut.pdf", replace
 	

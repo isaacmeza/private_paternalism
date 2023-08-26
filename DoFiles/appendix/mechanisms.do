@@ -48,7 +48,7 @@ foreach var of varlist first_pay_porc sum_porcp_c sum_porcp_c_d {
 }
 
 local speed_vars dias_primer_pago first_pay_porc rec_fd dias_ultimo_mov dias_al_desempenyo
-local def_vars pay_default sum_porcp_c_d zero_pay_default_d
+local def_vars pay_default sum_porcp_c_d zero_pay_default_d zero_pay_default
 local visit_vars num_v num_v_d
 
 ********************************************************************************

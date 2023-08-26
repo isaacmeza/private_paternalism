@@ -28,8 +28,8 @@ keep apr des_c def_c ref_c fc_admin  choose_commitment t_prod prod suc_x_dia
 replace fc_admin = -fc_admin
 replace apr = -apr*100
 replace des_c = des_c*100
-replace def_c = -def_c*100
-replace ref_c = -ref_c*100
+replace def_c = 100-def_c*100
+replace ref_c = 100-ref_c*100
  
 ********************************************************************************
 
