@@ -18,24 +18,24 @@ program tot_tut_noexclusion, rclass
 
 	* Identify the distribution F_0 of Y_0 from the control arm.
 	cap drop `_cum'
-	cumul `var' if `Z'==0, gen(`_cum')
+	cumul `var' if `Z'==0 & `touse', gen(`_cum')
 	
 	cap drop `_closest'
-	gen `_closest' = abs(`quantile'-`_cum')
+	gen `_closest' = abs(`quantile'-`_cum') if `touse'
 	sort `_closest'
 	local bottom_0 = `var'[1]
-	su `var' if `var'>`bottom_0' & `Z'==0
+	su `var' if `var'>`bottom_0' & `Z'==0 & `touse'
 	local ub_0_0= `r(mean)'
-	su `var' if `var'<`bottom_0' & `Z'==0
+	su `var' if `var'<`bottom_0' & `Z'==0 & `touse'
 	local lb_0_1= `r(mean)'
 
 	cap drop `_closest'
-	gen `_closest' = abs(1-`quantile'-`_cum')
+	gen `_closest' = abs(1-`quantile'-`_cum') if `touse'
 	sort `_closest'
 	local top_0 = `var'[1]
-	su `var' if `var'<`top_0'  & `Z'==0
+	su `var' if `var'<`top_0'  & `Z'==0 & `touse'
 	local lb_0_0 = `r(mean)'
-	su `var' if `var'>`top_0'  & `Z'==0
+	su `var' if `var'>`top_0'  & `Z'==0 & `touse'
 	local ub_0_1 = `r(mean)'
 
 
@@ -44,25 +44,25 @@ program tot_tut_noexclusion, rclass
 
 	* Identify the distribution F_1 of Y_1 from the treatment arm.
 	cap drop `_cum'
-	cumul `var' if `Z'==1, gen(`_cum')
+	cumul `var' if `Z'==1 & `touse', gen(`_cum')
 	
 	cap drop `_closest'
-	gen `_closest' = abs(`quantile'-`_cum')
+	gen `_closest' = abs(`quantile'-`_cum') if `touse'
 	sort `_closest'
 	local bottom_0 = `var'[1]
-	su `var' if `var'>`bottom_0' & `Z'==1
-	local ub_0_0= `r(mean)'
-	su `var' if `var'<`bottom_0' & `Z'==1
-	local lb_0_1= `r(mean)'
+	su `var' if `var'>`bottom_0' & `Z'==1 & `touse'
+	local ub_1_0= `r(mean)'
+	su `var' if `var'<`bottom_0' & `Z'==1 & `touse'
+	local lb_1_1= `r(mean)'
 
 	cap drop `_closest'
-	gen `_closest' = abs(1-`quantile'-`_cum')
+	gen `_closest' = abs(1-`quantile'-`_cum') if `touse'
 	sort `_closest'
 	local top_0 = `var'[1]
-	su `var' if `var'<`top_0'  & `Z'==1
-	local lb_0_0 = `r(mean)'
-	su `var' if `var'>`top_0'  & `Z'==1
-	local ub_0_1 = `r(mean)'
+	su `var' if `var'<`top_0'  & `Z'==1 & `touse'
+	local lb_1_0 = `r(mean)'
+	su `var' if `var'>`top_0'  & `Z'==1 & `touse'
+	local ub_1_1 = `r(mean)'
 
 
 	*Bounds for the TUT
@@ -76,12 +76,7 @@ program tot_tut_noexclusion, rclass
 	
 	*test inequalities
 	return scalar ub_tut_validity = `tut'-`ub_tut' 
-	return scalar lb_tut_validity = `lb_tut'-`tut' 
+	return scalar lb_tut_validity = `lb_tut'-`tut'
 	return scalar ub_tot_validity = `tot'-`ub_tot' 
 	return scalar lb_tot_validity = `lb_tot'-`tot' 
 end
-
-
-
- 
-

@@ -21,7 +21,7 @@ use "$directorio/DB/Master.dta", clear
 keep if inlist(t_prod,1,2,4)
 
 * Rescale to positive scale (benefits)
-replace apr = -apr
+replace apr = -apr*100
 
 keep apr des_c fc_admin def_c choose_commitment t_prod suc_x_dia $C0
 
@@ -97,3 +97,5 @@ di `lb_tot'
 
 di `tot'
 di `tut'
+
+

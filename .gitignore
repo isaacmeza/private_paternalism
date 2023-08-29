@@ -5,6 +5,9 @@
 # Session Data files
 .RData
 
+# Backup Dofile files
+.stswp
+
 # Auxiliary files in local tex compilation
 **/*.aux
 **/*.log
