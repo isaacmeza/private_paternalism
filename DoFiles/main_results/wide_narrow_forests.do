@@ -266,10 +266,10 @@ twoway (function y = 100, range(-10 10) lcolor(black) lwidth(medthick) lpattern(
 	(line better_forceall threshold, lpattern(solid) lwidth(thick) lcolor(navy)) ///
 	(scatter better_forceall threshold,  msymbol(X) color(navy) ) ///
 	(rarea acc_fit_l acc_fit_h threshold, fcolor(dkgreen%50) lcolor(dkgreen%5) fintensity(40)) ///
-	(line acc_fit threshold, lpattern(solid) lwidth(medthick) lcolor(dkgreen)) ///
+	(line acc_fit threshold, lpattern(dash) lwidth(medthick) lcolor(dkgreen)) ///
 	(scatter acc_fit threshold,  msymbol(x) color(dkgreen) ) ///
 	(rarea acc_fit_lg_l acc_fit_lg_h threshold, fcolor(maroon%50) lcolor(maroon%5) fintensity(40)) ///
-	(line acc_fit_lg threshold, lpattern(solid) lwidth(medthick) lcolor(maroon)) ///
+	(line acc_fit_lg threshold, lpattern(dot) lwidth(medthick) lcolor(maroon)) ///
 	(scatter acc_fit_lg threshold,  msymbol(x) color(maroon) ) ///
 	, legend(order( 1 "Optimal rule (WF)" 3 "Universal paternalism" 6 "Narrow rule (RF)" 9 "Narrow rule (Logit)") pos(6) rows(1))  ///
 	graphregion(color(white)) xtitle("APR threshold") ///

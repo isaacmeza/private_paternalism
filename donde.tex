@@ -37,7 +37,7 @@
 
 %Many firms provide commitment devices that restrict individuals' choice, but shroud this. Shrouding suggests low demand for commitment. We show that private paternalism is beneficial in the pawnbroker context we study. 
 
-In the context of pawnbroker lending, we show that forcing people into commitment contracts with a regular repayment structure decreases their (fee-including) financial cost by 20\%, increases the likelihood of recovering their pawn by 15\%, and increases the likelihood of repeat business by 20\%.  Using a multi-armed RCT that includes both a voluntary and a forced arm, we illustrate how to point-identify both the Treatment on the Untreated and the Treatment on the Treated.  We find modest selection on gains but nonetheless significant positive benefits of commitment even for those who would not have chosen it.  The justification for paternalistic commitment in this context appears to be over-optimism; 74\% of clients say they will certainly recover their pawn while in fact only 57\% do so. 
+In the context of pawnbroker lending, we show that forcing people into commitment contracts with a regular repayment structure decreases their (fee-including) financial cost by 20\%, increases the likelihood of recovering their pawn by 15\%, and increases the likelihood of repeat business by 20\%.  Using a multi-armed RCT that includes both a voluntary and a forced arm, we illustrate how to point-identify both the Treatment on the Untreated and the Treatment on the Treated.  We find modest selection on gains but nonetheless significant positive benefits of commitment even for those who would not have chosen it.  %The justification for paternalistic commitment in this context appears to be over-optimism; 74\% of clients say they will certainly recover their pawn while in fact only 57\% do so. 
 
 
 
@@ -49,7 +49,7 @@ In the context of pawnbroker lending, we show that forcing people into commitmen
 
 \vspace{.3in}
 
-\textbf{Keywords: } Private paternalism, choice, present bias, naivete, overconfidence, commitment, heterogeneous treatment effects.
+\textbf{Keywords: } Private paternalism, choice, heterogeneous treatment effects, commitment, overconfidence.
 
 \textbf{JEL codes:} G41, C93, O16, G21
 
@@ -722,11 +722,11 @@ We now explore whether over-optimistic expectations of recovery probability can 
 To do this, we carry out an analysis that is analogous to our present bias exercise from the preceding paragraph, comparing the overall TUT estimate to estimates computed for two sub-groups.
 Here, however, the groups are defined by a binary variable that we call ``sure-confidence.''
 This measure equals one for any individuals who say at the time of borrowing that they have a 100\% probability of recovering their pawn, zero otherwise.
-The left panel of Figure \ref{tut_beh_partition} presents the results for this exercise.
+The right panel of Figure \ref{tut_beh_partition} presents the results for this exercise.
 The overall TUT estimate for all borrowers who answered our sure-confidence survey questions is given in blue, along with a 95\% confidence interval.
 The corresponding TUT estimate and confidence interval for sure-confident borrowers is given in green; results for all other borrowers are shown in red.
 As above, the blue overall estimate must lie between the green and red sub-group estimates by the law of iterated expectations.
-In contrast to our results for present bias, shown in the right panel of Figure \ref{tut_beh_partition}, we estimate a higher TUT effect for sure-confident borrowers compared to all other borrowers and a negative, although insignificant, effect for borrowers who are not sure-confident.
+In contrast to our results for present bias, shown in the left panel of Figure \ref{tut_beh_partition}, we estimate a higher TUT effect for sure-confident borrowers compared to all other borrowers and a negative, although insignificant, effect for borrowers who are not sure-confident.
 
 As discussed above, our measure of hyperbolicity is based on un-incentivized responses in a short survey and so is likely to be noisy; nonetheless we see no evidence here that it drives the forcing effect.  Rather, the analysis from Figure \ref{tut_beh_partition} suggests that the effectiveness of paternalism in our experiment may be driven by a group of \emph{overconfident} borrowers who, heedless of the risk of default, fail to choose commitment despite benefiting substantially when they are forced to commit. 
 
@@ -1305,7 +1305,7 @@ The bottom panel present sample sizes, and p-values for a number of null hypothe
     \caption{Fan \& Park bounds for benefit in APR\%}
     \label{fan_park_bounds}
     \begin{center}
-    \begin{subfigure}{0.6\textwidth}
+    \begin{subfigure}{0.75\textwidth}
         \caption{APR}
         \centering
         \includegraphics[width=\textwidth]{Figuras/fan_park_bounds_apr.pdf}
@@ -1363,7 +1363,7 @@ The bottom panel present sample sizes, and p-values for a number of null hypothe
         \centering
         \includegraphics[width=0.75\textwidth]{Figuras/tut_beh_partition.pdf} 
     \end{center}
-     \scriptsize  Each panel in this figure shows how the estimated treatment on the untreated (TUT) effect varies with a binary survey variable $X_i$. In the left panel (Sure-confidence) $X_i = 1$ if  borrower $i$ reported that she was certain to recover her pawn, zero otherwise. In the right panel (P.B.), $X_i = 1$ if borrower $i$ is ``present-biased'' based on her responses to the time preference questions from our survey. Each panel depicts three estimates and associated 95\% confidence bands: the overall TUT (blue), the TUT for borrowers with $X = 1$ (green), and the TUT for borrowers with $X = 0$ (red). By the law of iterated expectations, the overall TUT in each panel must lie between the group-specific TUTs. The overall TUT is slightly different in each panel, because some borrowers only completed part of the survey. In each panel, we present results for the full set of borrowers who answered the survey question or questions needed to determine $X_i$. From the right panel, we see that TUT does not appear to vary with present bias. In contrast, the left panel suggests that the positive and significant overall TUT is driven by individuals who are ``sure-confident,'' i.e.\ borrowers who report that they are certain to recover their pawn.
+     \scriptsize  Each panel in this figure shows how the estimated treatment on the untreated (TUT) effect varies with a binary survey variable $X_i$. In the left panel (P.B.), $X_i = 1$ if borrower $i$ is ``present-biased'' based on her responses to the time preference questions from our survey. In the right panel (Sure-confidence) $X_i = 1$ if  borrower $i$ reported that she was certain to recover her pawn, zero otherwise. Each panel depicts three estimates and associated 95\% confidence bands: the overall TUT (blue), the TUT for borrowers with $X = 1$ (green), and the TUT for borrowers with $X = 0$ (red). By the law of iterated expectations, the overall TUT in each panel must lie between the group-specific TUTs. The overall TUT is slightly different in each panel, because some borrowers only completed part of the survey. In each panel, we present results for the full set of borrowers who answered the survey question or questions needed to determine $X_i$. From the left panel, we see that TUT does not appear to vary with present bias. In contrast, the right panel suggests that the positive and significant overall TUT is driven by individuals who are ``sure-confident,'' i.e.\ borrowers who report that they are certain to recover their pawn.
      %to be largely concentrated relevant survey question  according to her survey responses two binary performs a partition of the Treatment on the Untreated (FC), estimating the share of the effect that arises within each of two binary categories.  The top bars examine present bias (individuals are more impatient over one-month time horizon than they are between three and four months).  The bottom bars examine sure confidence (individual reports 100\% probability of repaying at time of taking loan).  Blue bar is the component arising from those without the trait, orange bar from those with the trait. 
       %\footnotesize{ \textit{Do file: }  \texttt{partition_tut.do}
 

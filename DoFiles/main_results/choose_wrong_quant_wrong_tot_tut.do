@@ -162,10 +162,10 @@ twoway 	(rarea cwf_normal_l cwf_normal_h threshold, lcolor(navy%5) fcolor(navy) 
 			(line cwf threshold, lpattern(solid) lwidth(medthick) lcolor(navy)) ///
 			(scatter cwf threshold, connect(l)  msymbol(x) color(navy) ) ///
 			(rarea cwf_nonchoose_l cwf_nonchoose_h threshold, lcolor(dkgreen%5) fcolor(dkgreen%60) fintensity(40)) ///
-			(line cwf_nonchoose threshold, lpattern(solid) lwidth(medthick) lcolor(dkgreen%80)) ///
+			(line cwf_nonchoose threshold, lpattern(dash) lwidth(medthick) lcolor(dkgreen%80)) ///
 			(scatter cwf_nonchoose threshold, connect(l) msymbol(x) color(dkgreen%80) ) ///	
 			(rarea cwf_choose_l cwf_choose_h threshold, lcolor(maroon%5) fcolor(maroon%70) fintensity(40)) ///
-			(line cwf_choose threshold, lpattern(solid) lwidth(medthick) lcolor(maroon%70)) ///
+			(line cwf_choose threshold, lpattern(dot) lwidth(medthick) lcolor(maroon%70)) ///
 			(scatter cwf_choose threshold, connect(l) msymbol(x) color(maroon%70) ) ///				
 			, legend(order(3 "Choice commitment"  ///
 				6 "Non-choosers" 9 "Choosers") pos(6) rows(1))  ///
