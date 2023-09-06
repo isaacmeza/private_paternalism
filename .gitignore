@@ -7,6 +7,7 @@
 
 # Backup Dofile files
 .stswp
+**/*.stswp
 
 # Auxiliary files in local tex compilation
 **/*.aux
