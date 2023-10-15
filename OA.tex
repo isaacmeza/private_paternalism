@@ -314,7 +314,7 @@ Because standard errors increase as sample size falls, some of the sub-group est
       \scriptsize
 
       The above figure shows the determinants in a bivariate and multivariate OLS regression of choosing commitment. Choice commitment is a binary variable equal to one, whenever subjects choose the forced commitment contract in the choice arm. 
-%\textit{Do file: } \texttt{determinants_choice_sure_confidence.do}       
+%\textit{Do file: } \texttt{determinants_choice.do}       
 \end{figure}
 
 
@@ -571,7 +571,7 @@ Whereas column (1) conditions on the (endogenously) selected sample of borrowers
     \[F_\Delta(\delta) = \int_0^1 \mathbbm{1}\{ F_1^{-1}(u) - F_0^{-1}(u)\leq \delta\}\,\mathrm{d}u\]
 where $F_1^{-1}$ and $F_0^{-1}$ are the quantile functions of $Y_1$ and $Y_0$.
     %The dotted line at the bottom of panels (a) and (b)   the empirical cumulative distribution function APR and financial cost of financial cost. It does this separately for the fee-forcing contract and for the status-quo contract. The dotted line at the bottom is the difference of the control CDF minus the forced CDF arm. It shows that the CDF of the status quo contract is always below that of the fee-forcing (and this difference is significant for the points indicated by the blue line).
-    % \texttt{fosd_ecdf.do}}
+    % \texttt{te_rankinvariance.do}}
 \end{figure}
 
 
@@ -679,7 +679,7 @@ Note the proof was done in the case of absolutely continuous and strictly increa
       \scriptsize
 
       The above figure shows the determinants in a bivariate and multivariate OLS regression of sure confidence among the non-choosers. Sure confidence is a binary variable defined to be one when people report a 100\% probability of recovery.
-%\textit{Do file: } \texttt{determinants_choice_sure_confidence.do}       
+%\textit{Do file: } \texttt{determinants_sure_confidence.do}       
 \end{figure}
 
 
@@ -721,7 +721,7 @@ where $\psi_i \equiv \psi(X_i|\text{Training})$ and $\tau_i \equiv \tau(X_i|\tex
 \]
 If treatment effects are homogeneous we must have $\beta_2 = 0$. Rejecting this hypothesis establishes that $\tau_i$ predicts $\text{ATE}(X_i)$ and hence that $\Delta_i$ varies. 
 Since $\tau_i$ and $\psi_i$ do not depend on the test set, inference for the regression in \eqref{eq:chernreg} is straightforward conditional on the Training/Test split.  
-Our estimate for $\beta_2$ is 1.68 with a one-sided heteroskedasticity-robust (HC3) of 0.50.
+Our estimate for $\beta_2$ is 2.5 with a one-sided heteroskedasticity-robust (HC3) of 0.43.
 Thus we easily reject the null hypothesis of homogeneous treatment effects.
 
 %\todo[inline]{Discuss the results here.}
@@ -1256,7 +1256,7 @@ If Equation \ref{eq:exclusion_append1} holds, however, we know that $\mathbb{E}(
 If either inequality is violated, then the exclusion restriction from Equation \ref{eq:exclusion_append1} fails.
 
 
-The \cite{huber_mellace} bounds for the TOT \& TUT APR are respectively:  $[-366, 490]$, and $[-19, 109]$.
+The \cite{huber_mellace} bounds for the TOT \& TUT APR are respectively:  $[-119, 122]$, and $[-4.2, 24.6]$.
 Since both TUT (24) and ToT (122) estimates from the LATE approach lies inside these bounds, we cannot falsify the exclusion restriction. Moreover, the p-values associated with testing violation of inequalities \ref{eq:testable0}, and \ref{eq:testable1} is equal to one in both cases\footnote{We include the implementation of the validity test for the exclusion restriction for choosers and non-choosers in our STATA package.}.
 
 
@@ -1453,7 +1453,7 @@ Since both TUT (24) and ToT (122) estimates from the LATE approach lies inside t
     \label{causal_tree1}
     \begin{center}
         \centering
-        \includegraphics[width=\textwidth]{Figuras/crf_pro_2_apr.pdf}
+        \includegraphics[width=\textwidth]{Figuras/crf_apr.pdf}
     \end{center}
     \footnotesize 
     This figure shows an example of one of the regression trees used to compute the causal forest estimates described in Section \ref{sec:RF}. Each tree is constructed from a sequence of recursive binary partitions of the covariate space, with a splitting rule that is targeted to the causal quantity of interest, following the methodology of \cite{atheygrf}.

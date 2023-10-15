@@ -8,8 +8,9 @@ version 17.0
 * Author:	Isaac M
 * Machine:	Isaac M 											
 * Date of creation:	-
-* Last date of modification: Feb. 28, 2023
-* Modifications: Redefinition of main outcomes.
+* Last date of modification: September. 21, 2023
+* Modifications: - Change value of lost pawn to (0.3/0.7) x loan
+	- Redefinition of main outcomes.
 	- Prediction of confidence & OC
 * Files used:     
 		- 
@@ -99,8 +100,8 @@ gen val_pren_std = (val_pren_pr-r(mean))/r(sd)
 gen double fc_i_survey = .
 	*Only fees and interest for recovered pawns
 replace fc_i_survey = sum_int_c + sum_pay_fee_c if des_i_c==1
-	*All payments + appraised value when default
-replace fc_i_survey = sum_p_c + val_pren if def_i_c==1
+	*All payments + appraised value net of loan amount when default
+replace fc_i_survey = sum_p_c + val_pren - prestamo_i if def_i_c==1
 	*Not ended at the end of observation period - only fees and interest
 replace fc_i_survey = sum_int_c + sum_pay_fee_c if def_i_c==0 & des_i_c==0	
 
@@ -123,8 +124,8 @@ gen trans_cost = (c_trans + 62.33)*num_v
 gen double fc_i_tc = .
 	*Only fees and interest for recovered pawns
 replace fc_i_tc = sum_int_c + sum_pay_fee_c + trans_cost if des_i_c==1
-	*All payments + appraised value when default
-replace fc_i_tc = sum_p_c + prestamo_i/(0.7) + trans_cost if def_i_c==1
+	*All payments + appraised value net of loan when default
+replace fc_i_tc = sum_p_c + prestamo_i*(0.3/0.7) + trans_cost if def_i_c==1
 	*Not ended at the end of observation period - only fees and interest
 replace fc_i_tc = sum_int_c + sum_pay_fee_c + trans_cost if def_i_c==0 & des_i_c==0	
 
@@ -139,8 +140,8 @@ replace apr_i_tc = (1 + (fc_i_tc/prestamo_i)/dias_ultimo_mov)^dias_ultimo_mov - 
 gen double fc_i_int = .
 	*Only fees and interest for recovered pawns
 replace fc_i_int = sum_pay_fee_c if des_i_c==1
-	*All payments + appraised value when default
-replace fc_i_int = sum_p_c + prestamo_i/(0.7) if def_i_c==1
+	*All payments + appraised value net of loan when default
+replace fc_i_int = sum_p_c + prestamo_i*(0.3/0.7) if def_i_c==1
 	*Not ended at the end of observation period - only fees and interest
 replace fc_i_int = sum_pay_fee_c if def_i_c==0 & des_i_c==0	
 
@@ -155,8 +156,8 @@ replace apr_i_int = (1 + (fc_i_int/prestamo_i)/dias_ultimo_mov)^dias_ultimo_mov 
 gen double fc_i_fa = .
 	*Only fees for recovered pawns
 replace fc_i_fa = sum_pay_fee_c + trans_cost if des_i_c==1
-	*All payments + appraised value when default
-replace fc_i_fa = sum_p_c + val_pren + trans_cost - sum_int_c if def_i_c==1
+	*All payments + appraised value net of loan when default
+replace fc_i_fa = sum_p_c + val_pren - prestamo_i + trans_cost - sum_int_c if def_i_c==1
 	*Not ended at the end of observation period - only fees
 replace fc_i_fa = sum_pay_fee_c + trans_cost if def_i_c==0 & des_i_c==0	
 

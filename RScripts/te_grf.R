@@ -290,13 +290,8 @@ te_grf <- function(data_in, outcome_var, name) {
 
 # READ DATASET
 apr <- read_csv('./_aux/apr_te_heterogeneity.csv') 
-fc_admin <- read_csv('./_aux/fc_admin_te_heterogeneity.csv') 
-def_c <- read_csv('./_aux/def_c_te_heterogeneity.csv') 
-des_c <- read_csv('./_aux/des_c_te_heterogeneity.csv') 
 
 #####################################################
 te_grf(apr,"apr","apr") 
-te_grf(fc_admin,"fc_admin","fc_admin") 
-te_grf(def_c,"def_c","def_c") 
-te_grf(des_c,"des_c","des_c") 
+
 

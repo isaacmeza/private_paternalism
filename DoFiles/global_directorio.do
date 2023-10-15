@@ -1,6 +1,6 @@
 
 ********************
-version 18.0
+version 17.0
 ********************
 /* 
 /*******************************************************************************
@@ -22,6 +22,7 @@ version 18.0
 *Directory
 set more off
 global directorio "C:\Users\isaac\Dropbox\Apps\Overleaf\Donde2022"
+cd $directorio
 
 *Set significance
 global star "star(* 0.1 ** 0.05 *** 0.01)"

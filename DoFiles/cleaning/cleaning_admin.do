@@ -8,8 +8,9 @@ version 17.0
 * Author:	Isaac M
 * Machine:	Isaac M 											
 * Date of creation:	-
-* Last date of modification: January. 25, 2023
-* Modifications: - Clean reincidence variables
+* Last date of modification: September. 21, 2023
+* Modifications: - Change value of lost pawn to (0.3/0.7) x loan
+	- Clean reincidence variables
 	- Redifinition of main outcome variables. General revision of cleaning file
 	- Inclusion of variables for imputation of censoring variables.
 * Files used:     
@@ -22,6 +23,7 @@ of a given pawn.
 
 *******************************************************************************/
 */
+set seed 10
 
 import excel "$directorio/Raw/Claves valuadores.xlsx", sheet("Claves valuadores") firstrow clear
 keep NombreValuador ClaveValuador ID
@@ -654,8 +656,8 @@ label var fee "Charged late fee - dummy"
 gen double fc_i_admin = .
 	*Only fees and interest for recovered pawns
 replace fc_i_admin = sum_int_c + sum_pay_fee_c if des_i_c==1
-	*All payments + appraised value when default
-replace fc_i_admin = sum_p_c + prestamo_i/(0.7) if def_i_c==1
+	*All payments + appraised value net of loan amount when default
+replace fc_i_admin = sum_p_c + prestamo_i*(0.3/0.7) if def_i_c==1
 	*Not ended at the end of observation period - only fees and interest
 replace fc_i_admin = sum_int_c + sum_pay_fee_c if def_i_c==0 & des_i_c==0
 
@@ -664,7 +666,7 @@ label var fc_i_admin "Financial cost (appraised value)"
 
 	*cost of losing pawn
 gen double cost_losing_pawn = 0
-replace cost_losing_pawn = sum_p_c - sum_int_c - sum_pay_fee_c + prestamo_i/(0.7) if def_i_c==1
+replace cost_losing_pawn = sum_p_c - sum_int_c - sum_pay_fee_c + prestamo_i*(0.3/0.7) if def_i_c==1
 
 gen double downpayment_capital = 0
 replace downpayment_capital = sum_p_c - sum_int_c - sum_pay_fee_c if def_i_c==1
