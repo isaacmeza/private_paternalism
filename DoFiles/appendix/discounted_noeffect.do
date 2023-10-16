@@ -63,7 +63,7 @@ matrix results_tut = J(1001, 4, .)
 
 
 local i = 1
-forvalues d = 0(100)10000 {	
+forvalues d = 0(100)5000 {	
 	di `d'
 	qui {
 	preserve
@@ -91,7 +91,7 @@ forvalues d = 0(100)10000 {
 		*Only fees and interest for recovered pawns
 	replace fc_admin_disc = sum_int_c + sum_pay_fee_c if des_c==1
 		*All payments + appraised value when default
-	replace fc_admin_disc = sum_pdisc_c + prestamo_i/(0.7*(1 + `dd')^90) if def_c==1
+	replace fc_admin_disc = sum_pdisc_c + 0.3*prestamo_i/(0.7*(1 + `dd')^90) if def_c==1
 		*Not ended at the end of observation period - only fees and interest
 	replace fc_admin_disc = sum_int_c + sum_pay_fee_c if def_c==0 & des_c==0
 		*Financial cost gain (negative scale)

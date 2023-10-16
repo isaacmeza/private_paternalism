@@ -25,7 +25,7 @@ do "./DoFiles/analysis/ss.do"
 do "./DoFiles/analysis/decomposition_main_te.do"
 
 * Table 4: Effects on intermediate outcomes
-do "./DoFiles/analysis/mechanism.do"
+do "./DoFiles/analysis/mechanisms.do"
 
 * Table 5: Effects on more comprehensive cost measures
 do "./DoFiles/analysis/fc_robustness.do"
@@ -42,6 +42,7 @@ rscript using "./RScripts/te_narrow_grf.R", rversion(4.2.2)
 rscript using "./RScripts/te_grf.R", rversion(4.2.2)
 rscript using "./RScripts/tot_tut_instr_forest.R", rversion(4.2.2)
 
+do "./DoFiles/analysis/choose_wrong_quant_wrong_tot_tut.do"
 do "./DoFiles/analysis/wide_narrow_forests.do"
 
 
@@ -71,7 +72,7 @@ do "./DoFiles/analysis/partition_tut.do"
 do "./DoFiles/analysis/cate_dist.do"
 
 * Figure 9: "Mistakes" in the choice arm
-do "./DoFiles/analysis/choose_wrong_quant_wrong_tot_tut.do"
+*do "./DoFiles/analysis/choose_wrong_quant_wrong_tot_tut.do"
 
 * Figure 10: Cumulative Distribution Function of Conditional ATE Estimates
 do "./DoFiles/analysis/cdf_cate.do"

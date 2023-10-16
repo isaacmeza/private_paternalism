@@ -107,13 +107,13 @@ save "$directorio/_aux/choose_wrong.dta", replace
 **************************************PLOTS*************************************
 
 use "$directorio/_aux/choose_wrong.dta", clear 
-
+keep if inrange(threshold, -50, 50)
 	
 twoway 	(rarea bfa_normal_l bfa_normal_h threshold, fcolor(navy) fintensity(40)) ///
 	(line better_forceall threshold, lpattern(solid) lwidth(medthick) lcolor(navy)) ///
 	(scatter better_forceall threshold,  msymbol(x) color(navy) ) ///
 	,  ///
-	graphregion(color(white)) xtitle("APR threshold") ///
+	graphregion(color(white)) xtitle("APR % threshold") xlabel(-50(20)50) ///
 	ytitle("% benefitted", axis(1)) ///
 	ylabel(0(10)100, axis(1)) xline(0, lcolor(black) lwidth(medthick) lpattern(dash)) ///
 	legend(order (4 "") pos(6) rows(1))

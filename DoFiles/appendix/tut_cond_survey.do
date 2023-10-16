@@ -38,7 +38,7 @@ replace Z = 2 if t_prod==4
 eststo clear
 
 foreach vardep of varlist apr fc_admin {
-	eststo : tot_tut `vardep' Z choose_commitment if !missing(`var'),  vce(cluster suc_x_dia)
+	eststo : tot_tut `vardep' Z choose_commitment ,  vce(cluster suc_x_dia)
 	foreach var of varlist val_pren_orig faltas pb hace_presupuesto pr_recup pres_antes edad genero masqueprepa {
 		eststo : tot_tut `vardep' Z choose_commitment if !missing(`var'),  vce(cluster suc_x_dia)
 	}

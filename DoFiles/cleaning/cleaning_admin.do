@@ -453,11 +453,11 @@ by NombrePignorante: gen first_dias_close = dias_al_close[1] if !missing(concluy
 sort NombrePignorante fecha_inicial prod
 by NombrePignorante: gen days_second_pawns = fecha_inicial[2] - first_visit if _n==1
 
-*Dummy indicating if customer returned to pawn ANOTHER piece
-by NombrePignorante: gen another_piece_second = !inrange(prestamo_i[2],first_loan_value*0.95,first_loan_value*1.05) if _n==1
-
 *Ever repeat pawns
-bysort NombrePignorante : gen reincidence = !missing(days_second_pawns)
+bysort NombrePignorante : gen reincidence = (_N>1)
+
+*Dummy indicating if customer returned to pawn ANOTHER piece
+by NombrePignorante: gen reincidence_other = reincidence==1 & !inrange(prestamo_i[2],first_loan_value*0.975,first_loan_value*1.025) if _n==1
 
 	*Example of other variables
 *Dummy indicating if customer returned after first visit BEFORE x days
@@ -470,7 +470,7 @@ bysort NombrePignorante : gen reincidence = !missing(days_second_pawns)
 	*bysort NombrePignorante : gen reincidence = inrange(days_second_pawns, first_visit, first_visit + first_dias_des)
 
 keep if first_pawn==1
-keep NombrePignorante fecha_inicial prenda first* days_second_pawns another_piece_second reincidence
+keep NombrePignorante fecha_inicial prenda first* days_second_pawns reincidence_other reincidence
 tempfile temp_rec
 save  `temp_rec'
 restore

@@ -157,6 +157,7 @@ save "$directorio/_aux/choose_wrong_tot_tut.dta", replace
 **************************************PLOTS*************************************
 
 use "$directorio/_aux/choose_wrong_tot_tut.dta", clear
+keep if inrange(threshold, -50, 50)
 	
 twoway 	(rarea cwf_normal_l cwf_normal_h threshold, lcolor(navy%5) fcolor(navy) fintensity(50)) ///
 			(line cwf threshold, lpattern(solid) lwidth(medthick) lcolor(navy)) ///
@@ -169,7 +170,7 @@ twoway 	(rarea cwf_normal_l cwf_normal_h threshold, lcolor(navy%5) fcolor(navy) 
 			(scatter cwf_choose threshold, connect(l) msymbol(x) color(maroon%70) ) ///				
 			, legend(order(3 "Choice commitment"  ///
 				6 "Non-choosers" 9 "Choosers") pos(6) rows(1))  ///
-			graphregion(color(white)) xtitle("APR threshold") ///
+			graphregion(color(white)) xtitle("APR % threshold") xlabel(-50(20)50) ///
 			ytitle("% of mistakes") ///
 			ylabel(0(10)100) xline(0, lcolor(black) lwidth(medthick) lpattern(dash))
 graph export "$directorio/Figuras/line_cw_apr_tot_tut.pdf", replace
@@ -197,6 +198,6 @@ egen i_cwf0 = rowtotal(i_pcwf0 i_ncwf0)
 twoway (line i_cwf1 threshold, lwidth(medthick)) ///
 		(line i_cwf0 threshold, lwidth(medthick)) ///
 		, legend(order(1 "Choosers" 2 "Non-choosers") pos(6) rows(1)) ///
-		xtitle("APR threshold") xline(0, lcolor(black) lwidth(medthick) lpattern(dash))
+		xtitle("APR % threshold") xlabel(-50(20)50) xline(0, lcolor(black) lwidth(medthick) lpattern(dash))
 graph export "$directorio/Figuras/integral_cw_apr_tot_tut.pdf", replace		
 	

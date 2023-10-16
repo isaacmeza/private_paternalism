@@ -29,6 +29,7 @@ foreach var of varlist edad pr_recup {
 	replace `var' = (`var' - `r(mean)')/`r(sd)'
 }
  
+gen impatience = 1-t_consis1 
 
 *Lists of variables according to its clasification
 local familia fam_pide fam_comun 

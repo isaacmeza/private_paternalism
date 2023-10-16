@@ -422,7 +422,7 @@ Here we use them to bound the fraction of borrowers who benefit from forced comm
 Given the way that we have defined our outcome variables, this is the share of borrowers whose treatment effect is positive, i.e.\ $\mathbb{P}(\Delta_i > 0) = 1 - F_\Delta(0)$. 
 To construct the sharp bounds for this quantity, we simply substitute $\delta = 0$ into the preceding equations and estimate $F_0$ and $F_1$ using their empirical analogues constructed from the forced commitment and forced no-commitment arms of the experiment.
 
-Figure \ref{fan_park_bounds} plots the sharp bounds for $F_{\delta}$ based on the APR outcome defined above in Section \ref{costs}. Our point estimates of $\underline{F}(0)$ and $\overline{F}_0$ are .03 and .77 respectively, with associated 95\% confidence intervals of [0.024, 0.050] and [0.75, 0.80], which says that at least 23\% of individual borrowers benefit from commitment (and at most 97\%).\footnote{Confidence intervals are constructed using the asymptotic distribution for the bounds. See \cite{fan2010sharp} for details.}
+Figure \ref{fan_park_bounds} plots the sharp bounds for $F_{\delta}$ based on the APR outcome defined above in Section \ref{costs}. Our point estimates of $\underline{F}(0)$ and $\overline{F}_0$ are .03 and .77 respectively, with associated 95\% confidence intervals of [0.025, 0.050] and [0.75, 0.80], which says that at least 23\% of individual borrowers benefit from commitment (and at most 97\%).\footnote{Confidence intervals are constructed using the asymptotic distribution for the bounds. See \cite{fan2010sharp} for details.}
 
 The bounds we have just described are constructed by considering all possible joint distributions of $Y_0$ and $Y_1$ that are compatible with the observed marginal distributions $F_1$ and $F_0$. 
 With stronger assumptions, it is possible to say more.
@@ -1322,7 +1322,7 @@ The bottom panel present sample sizes, and p-values for a number of null hypothe
     The dark blue curve and light blue shaded region give the estimated lower bound function $\underline{F}$ for $F_\Delta$ and associated (pointwise) 95\% confidence interval.
     Confidence intervals are computed using the asymptotic distribution for the bounds. See \cite{fan2010sharp} for details.
     The bounds are pointwise sharp: at any specified value of $\delta$ the bounds $\underline{F}(\delta) \leq F_\Delta(\delta) \leq \overline{F}(\delta)$ cannot be improved without imposing additional assumptions.
-    Evaluating the bounds at $\delta = 0$, we see that between 24\% and 97\% of borrowers have a positive individual treatment effect.
+    Evaluating the bounds at $\delta = 0$, we see that between 23\% and 97\% of borrowers have a positive individual treatment effect.
     This is greater than the share of borrowers who chose commitment: 11\%.
 %\textit{Do file: } \texttt{fan\_park\_bnds.do}       
 \end{figure}
