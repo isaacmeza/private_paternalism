@@ -20,38 +20,55 @@ version 17.0
 */
 
 use "$directorio/_aux/num_pawns_suc_dia.dta", clear
+drop if suc==3 & fecha_inicial==date("02/19/2013","MDY")
+collapse (sum) num* (min) t_prod, by(suc fecha_inicial)
 
 
-gen before = inrange(fecha_inicial,date("08/05/2012","MDY"),date("09/05/2012","MDY"))
-replace before = . if fecha_inicial<date("08/05/2012","MDY")
+sort suc fecha_inicial, stable
 
-gen after = .
+by suc : gen aft_ = missing(t_producto) & !missing(t_producto[_n-1]) 
+by suc : gen after = sum(aft_)
+by suc : gen before = (after==0 & missing(t_producto))
+gen exp = !missing(t_prod)
 
-replace after = inrange(fecha_inicial,date("09/30/2012","MDY"),date("10/30/2012","MDY")) ///
-	if suc==3 & fecha_inicial<=date("10/30/2012","MDY")
+by suc : egen mx = max(num_pawns)
+by suc : egen mn = min(num_pawns)
 
-replace after = inrange(fecha_inicial,date("10/2/2012","MDY"),date("11/2/2012","MDY")) ///
-	if suc==5 & fecha_inicial<=date("11/2/2012","MDY")
-	
-replace after = inrange(fecha_inicial,date("12/23/2012","MDY"),date("1/23/2013","MDY")) ///
-	if suc==42 & fecha_inicial<=date("1/23/2013","MDY")
-	
-replace after = inrange(fecha_inicial,date("12/25/2012","MDY"),date("1/25/2013","MDY")) ///
-	if suc==78 & fecha_inicial<=date("1/25/2013","MDY")
-	
-replace after = inrange(fecha_inicial,date("12/25/2012","MDY"),date("1/25/2013","MDY")) ///
-	if suc==80 & fecha_inicial<=date("1/25/2013","MDY")
-	
-replace after = inrange(fecha_inicial,date("12/25/2012","MDY"),date("1/25/2013","MDY")) ///
-	if suc==104 & fecha_inicial<=date("1/25/2013","MDY")
+by suc : gen experiment_area = mx if after==0 & before==0
+by suc : replace experiment_area = mn if missing(experiment)
 
-*
+by suc : egen fd = min(fecha_inicial) if !missing(t_prod)
+by suc : egen first_date = min(fd)
+
+by suc : egen ld = max(fecha_inicial) if !missing(t_prod)
+by suc : egen last_date = min(fd)
+
+gen running_before = fecha_inicial - first_date
+gen running_after = fecha_inicial - last_date
+********************************************************************************
+
+
+twoway (area experiment_area fecha_inicial if exp==1, fcolor(gs10%50) lcolor(gs12%90)) (line num_pawns fecha_inicial) (line num_borrowers fecha_inicial), by(suc, cols(3) note("")) xlabel(,angle(vertical)) xtitle("") legend(order(2 "# pawns" 3 "# borrowers") rows(1))
+graph export "$directorio/Figuras/after_before_bal.pdf", replace
+
+rd_plot num_pawns running_before, cutoff(0) p(1) q(2) kernel(triangular) bwselect(mserd) vce(nncluster suc 5) level(99) xtitle("Days after experiment start") ytitle("# pawns")
+graph export "$directorio/Figuras/rd_before_pawns.pdf", replace
+
+rd_plot num_pawns running_after, cutoff(0) p(1) q(2) kernel(triangular) bwselect(mserd) vce(nncluster suc 5) level(99) xtitle("Days after experiment ends") 
+graph export "$directorio/Figuras/rd_after_pawns.pdf", replace
+
+rd_plot num_borrowers running_before, cutoff(0) p(1) q(2) kernel(triangular) bwselect(mserd) vce(nncluster suc 5) level(99) xtitle("Days after experiment start") ytitle("# pawns") 
+graph export "$directorio/Figuras/rd_before_borr.pdf", replace
+
+rd_plot num_borrowers running_after, cutoff(0) p(1) q(2) kernel(triangular) bwselect(mserd) vce(nncluster suc 5) level(99) xtitle("Days after experiment ends") 
+graph export "$directorio/Figuras/rd_after_borr.pdf", replace
+
 
 eststo clear
-	
-eststo : reg num_empenio_sucdia before after  i.suc, cluster(suc)
-eststo : reg num_empenio_sucdia before after c.fecha_inicial  i.suc, cluster(suc)
-eststo : reg num_empenio_sucdia before after c.fecha_inicial##c.fecha_inicial i.suc , cluster(suc)
-eststo : reg num_empenio_sucdia before after c.fecha_inicial##c.fecha_inicial##c.fecha_inicial i.suc , cluster(suc)
+foreach var of varlist num_pawns num_borrowers {
+	eststo : reg `var' before after c.fecha_inicial  i.suc, cluster(suc)
+	eststo : reg `var' before after c.fecha_inicial##c.fecha_inicial i.suc , cluster(suc)
+	eststo : reg `var' before after c.fecha_inicial##c.fecha_inicial##c.fecha_inicial i.suc , cluster(suc)
+}
 
 esttab using "$directorio/Tables/reg_results/num_pawns_bal.csv", se r2 ${star} b(a2)  replace 

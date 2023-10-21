@@ -14,6 +14,8 @@ version 17.0
 
 ********************************** Appendix ************************************
 
+* No discontinuity in number of pawns
+do "./DoFiles/appendix/num_pawns_bal.do"
 
 * Table OA-2: Balance conditional on survey response and question-by-question response rates by treatment arm
 *do "./DoFiles/analysis/ss.do"

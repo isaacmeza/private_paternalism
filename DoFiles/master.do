@@ -16,10 +16,10 @@ version 17.0
 
 
 * Table 1: Limited and balanced attrition 
-do "./DoFiles/analysis/ss.do"
+do "./DoFiles/analysis/ss_att.do"
 
 * Table 2: Summary statistics and Balance
-*do "./DoFiles/analysis/ss.do"
+do "./DoFiles/analysis/ss_balance.do"
 
 * Table 3: Effects on Financial Cost
 do "./DoFiles/analysis/decomposition_main_te.do"
@@ -54,7 +54,7 @@ do "./DoFiles/analysis/wide_narrow_forests.do"
 do "./DoFiles/analysis/hist_fc.do"
 
 * Figure 2: Experiment description
-*do "./DoFiles/analysis/ss.do"
+do "./DoFiles/analysis/consort.do"
 
 * Figure 3: Contract Terms Summary
 

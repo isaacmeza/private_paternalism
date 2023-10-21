@@ -54,6 +54,8 @@ save "$directorio/DB/clave_valuadores.dta", replace
 *save "$directorio/Raw/20131014Consilidacion_Agosto_2013.dta",	replace
 use "$directorio/Raw/20131014Consilidacion_Agosto_2013.dta",	clear
 set seed 10
+sort *, stable
+gen indice_sort = _n
 
 *Recoding of variables
 rename Sucursal suc
@@ -105,74 +107,6 @@ label var clave_movimiento "Movement type"
 label values suc lab_suc
 label values clave_movimiento lab_mov
 
-
-*We compute the elapsed days from loan origination
-gen dias_inicio = fecha_movimiento - fecha_inicial
-drop if dias_inicio < 0 | missing(dias_inicio)
-label var dias_inicio  "Days passed between movement date and initial date"
-
-
-*Days of payments
-bysort prenda fecha_movimiento : gen days_payment = dias_inicio if inlist(clave_movimiento, 1,3,5) & _n==1
-*Days of first payment
-gen dpp = dias_inicio if inlist(clave_movimiento, 1,3,5)
-
-*Drop negative pledges (this are duplicates - so we are not losing any information)
-drop if importe<0
-drop if prestamo_i<0
-
-*Loan amount
-gen log_prestamo_i = log(prestamo_i)
-
-*Drop pawns with 'duplicated' recovery
-sort prenda fecha_movimiento HoraMovimiento
-by prenda : gen uno = clave_movimiento==3
-by prenda : egen dup = sum(uno)
-by prenda : gen pd = sum(uno)
-drop if pd==uno & pd==1 & dup==2
-drop uno dup pd
-
-*Auxiliar dataset for number of pawns by branch-day
-preserve
-*Number of pledges by suc and day
-bysort fecha_inicial suc : gen aux_uno=1 if clave_movimiento == 4 
-bysort fecha_inicial suc : gen num_empenio_sucdia=sum(aux_uno) if clave_movimiento == 4 
-bysort fecha_inicial suc : egen aux_num_emp=sum(aux_uno) if clave_movimiento == 4 
-bysort fecha_inicial suc : replace num_empenio_sucdia=. if num_empenio_sucdia!=aux_num_emp &  clave_movimiento == 4 
-
-keep if !missing(num_empenio_sucdia)
-keep fecha_inicial  suc num_empenio prenda
-save "$directorio/_aux/num_pawns_suc_dia.dta", replace 
-restore
-
-*Auxiliar dataset for timeline
-preserve 
-collapse (min) min_fecha_suc = fecha_inicial /// 
-(max) max_fecha_suc = fecha_movimiento max_fecha2 = fecha_inicial, by(suc)
-save "$directorio/_aux/time_line_aux.dta", replace
-restore
-
-
-*pre-randomization date
-preserve
-keep if fecha_inicial<date("06/09/2012","DMY")  
-bysort suc fecha_inicial: keep if _n==1
-
-merge 1:1 suc fecha_inicial using "$directorio/_aux/num_pawns_suc_dia.dta", nogen keep(1 3)
-rename num_empenio_sucdia num_empenio
-
-*Day of week 
-gen dow=dow(fecha_inicial)
-gen weekday=inlist(dow,1,2,3,4,5)
-
-keep fecha_inicial suc prestamo_i weekday num_empenio
-save "$directorio/_aux/pre_experiment_admin.dta", replace
-
-restore
-
-*Start of randomization
-keep if fecha_inicial>=date("06/09/2012","DMY")  
-
 						
 *Identify type of product
 merge m:1 prenda using "$directorio/Raw/db_product.dta", ///
@@ -198,6 +132,70 @@ label var pro_7 "C-Fee-NSQ"
 label var pro_8 "C-Promise-SQ"	
 label var pro_9 "C-Promise-NSQ"		
 
+*Auxiliar dataset for number of pawns by branch-day
+preserve
+keep if clave_movimiento==4
+sort suc fecha_movimiento HoraM NombreP prenda, stable
+duplicates drop NombrePig prenda suc fecha_inicial, force
+duplicates drop NombrePig suc fecha_inicial, force
+
+*Number of borrowers by suc and day
+collapse (count) num_borrowers =  NombreP, by(suc fecha_inicial t_producto)
+tempfile temp_borrowers_suc_x_dia
+save `temp_borrowers_suc_x_dia'
+restore
+
+preserve
+keep if clave_movimiento==4
+sort suc fecha_movimiento HoraM NombreP prenda, stable
+duplicates drop NombrePig prenda suc fecha_inicial, force
+
+*Number of pledges by suc and day
+collapse (count) num_pawns = prenda, by(suc fecha_inicial t_producto) 
+merge 1:1 suc fecha_inicial t_producto using `temp_borrowers_suc_x_dia', nogen
+save "$directorio/_aux/num_pawns_suc_dia.dta", replace 
+restore
+
+
+*We compute the elapsed days from loan origination
+gen dias_inicio = fecha_movimiento - fecha_inicial
+drop if dias_inicio < 0 | missing(dias_inicio)
+label var dias_inicio  "Days passed between movement date and initial date"
+
+*Days of payments
+sort prenda fecha_movimiento HoraMovimiento dias_inicio indice_sort, stable
+by prenda fecha_movimiento : gen days_payment = dias_inicio if inlist(clave_movimiento, 1,3,5) & _n==1
+*Days of first payment
+gen dpp = dias_inicio if inlist(clave_movimiento, 1,3,5)
+
+
+*Drop negative pledges (this are duplicates - so we are not losing any information)
+drop if importe<0
+drop if prestamo_i<0
+
+*Loan amount
+gen log_prestamo_i = log(prestamo_i)
+
+*Drop pawns with 'duplicated' recovery - I keep last record
+sort prenda fecha_movimiento HoraMovimiento clave_movimiento, stable
+by prenda : gen uno = clave_movimiento==3
+by prenda : egen dup = sum(uno)
+by prenda : gen pd = sum(uno)
+drop if pd==uno & pd==1 & dup==2
+drop uno dup pd
+
+
+*Auxiliar dataset for timeline
+preserve 
+collapse (min) min_fecha_suc = fecha_inicial /// 
+(max) max_fecha_suc = fecha_movimiento max_fecha2 = fecha_inicial, by(suc)
+save "$directorio/_aux/time_line_aux.dta", replace
+restore
+
+
+*Start of randomization
+keep if fecha_inicial>=date("06/09/2012","DMY")  
+
 *Choose commitment variable
 gen choose_commitment =  (producto==5 | producto==7) if inlist(producto, 4, 5, 6, 7)
 
@@ -220,9 +218,11 @@ replace intereses = spagos-sint-prestamo_i if clave_movimiento==3
 drop spagos sint
 label var intereses "Interests"
 
+
 *Credit has CERTAINLY ended, meaning either 'desempeno' or 'pase al moneda'
-sort prenda dias_inicio, stable 
+gsort prenda dias_inicio fecha_movimiento HoraMovimiento -clave_movimiento indice_sort
 by prenda : gen ultimo_mov = _n==_N
+
 
 *Tag as ended if either recovery, default, or vbi
 gen concluyo = inlist(clave_movimiento,2,3,6)
@@ -230,21 +230,25 @@ gen concluyo = inlist(clave_movimiento,2,3,6)
 replace concluyo = 1 if ultimo_mov==1 & clave_movimiento==4
 *Add those that didnt rollover pawn (these default)
 replace concluyo = 1 if ultimo_mov==1 & clave_movimiento==1 
+
+
 *Add those that did rollover but then didnt pay in observation window - and didnt rollover for a further period (these default)
 su fecha_movimiento
 gen dias_quedan = `r(max)' - fecha_movimiento
 replace concluyo = 1 if ultimo_mov==1 & clave_movimiento==5 & dias_quedan>=90
 *Identify ended loans
-bysort prenda : egen concluyo_c = max(concluyo)
+sort prenda, stable
+by prenda : egen concluyo_c = max(concluyo)
 
 *Drop when pawn was sell, since this is not of interest, and moves the last day in the admin data.
 drop if clave_movimiento==2
+
 
 *Incurred interests/fee
 preserve
 drop if clave_movimiento==2
 collapse (mean) prestamo_i (sum) importe (mean) dias_inicio (mean) concluyo_c (mean) producto (mean) fecha_inicial, by(prenda fecha_movimiento)
-sort prenda fecha_movimiento, stable
+sort prenda fecha_movimiento dias_inicio, stable
 
 gen double incurred_int = .
 gen double fee_strong = .
@@ -269,11 +273,11 @@ restore
 
 merge m:1 prenda fecha_movimiento using `temp_int', nogen
 *Drop duplicates by prenda-date
-sort prenda fecha_movimiento HoraMovimiento, stable
+sort prenda fecha_movimiento HoraMovimiento indice_sort, stable
 foreach var of varlist incurred_int fee_strong {
 	by prenda fecha_movimiento : replace `var' = . if _n!=1
 	}
-	
+
 *Payed fees
 gen payed_fees = fee_strong if pagos>0 & inlist(producto,2,5)
 	
@@ -312,11 +316,8 @@ label var sum_pay_fee "Cumulative sum of payed fees"
 *Var correction (desempeno)
 bysort prenda: replace clave_movimiento=5 if clave_movimiento==3 & sum_p < prestamo_i - 1
 
-
 *'porc_pagos' is the percentage of payments wrt the loan
 gen porc_pagos=pagos/prestamo_i
-su  porc_pagos
-su  porc_pagos if clave_movimiento!=3 , d 
 label var porc_pagos "Payment percentage wrt to loan"
 
 *'porc_int' is the percentage of interest wrt the loan
@@ -405,7 +406,7 @@ restore
 
 *Recidivism
 preserve
-sort prenda fecha_movimiento HoraMovimiento, stable
+sort prenda fecha_movimiento HoraMovimiento dias_inicio indice_sort, stable
 	*Desempeno 
 by prenda: egen des_i_c=max(desempeno)
 by prenda: gen dias_ultimo_mov = dias_inicio[_N]
@@ -417,7 +418,7 @@ gen dias_inicio_close=dias_inicio if concluyo_c==1
 by prenda: gen dias_al_close=dias_inicio_close[_N]
 replace dias_al_close = 1 if dias_al_close==0
 
-
+sort NombrePignorante fecha_inicial suc indice_sort, stable
 *Identify borrowers with multiple branches in their first loan
 bysort NombrePignorante fecha_inicial suc: gen mb_fl = _n ==1
 bysort NombrePignorante fecha_inicial : replace mb_fl = sum(mb_fl)
@@ -433,13 +434,13 @@ bysort NombrePignorante : egen b_mt = max(mt_fl)
 drop if b_mt>1
 
 *Complete NA's
-sort NombrePignorante fecha_inicial prod, stable
+sort NombrePignorante fecha_inicial prod t_prod, stable
 by NombrePignorante fecha_inicial : replace prod = prod[_n-1] if missing(prod) & prod[_n-1]!=.
 by NombrePignorante fecha_inicial : replace t_prod = t_prod[_n-1] if missing(t_prod) & t_prod[_n-1]!=.
 duplicates drop NombrePignorante fecha_inicial, force
 
 *Dummy indicating if customer returned after first visit (WHEN FIRST TREATED)
-sort NombrePignorante fecha_inicial, stable
+sort NombrePignorante fecha_inicial indice_sort, stable
 by NombrePignorante: gen first_pawn = _n==1
 
 by NombrePignorante: gen first_visit = fecha_inicial[1]
@@ -450,7 +451,7 @@ by NombrePignorante: gen first_dias_des = dias_al_desempenyo[1] if !missing(des_
 by NombrePignorante: gen first_dias_close = dias_al_close[1] if !missing(concluyo_c)
 
 *days from first to *second pawn*
-sort NombrePignorante fecha_inicial prod
+sort NombrePignorante fecha_inicial, stable
 by NombrePignorante: gen days_second_pawns = fecha_inicial[2] - first_visit if _n==1
 
 *Ever repeat pawns
@@ -475,12 +476,17 @@ tempfile temp_rec
 save  `temp_rec'
 restore
 
-
 merge m:1 NombrePignorante fecha_inicial using `temp_varsC0', nogen
-merge m:1 NombrePignorante fecha_inicial prenda using `temp_rec', nogen
+merge m:1 NombrePignorante fecha_inicial using `temp_rec', nogen
+su reincidence_other
 
 *For DISCOUNTED calculations
 save "$directorio/_aux/pre_admin.dta", replace /*save for discounted_noeffect.do*/	
+
+
+********************************************************************************
+*							Measures of recovery/default					   *
+********************************************************************************
 
 *The next variables indicate if the movement exists in the voucher.
 *e.g.
@@ -488,9 +494,11 @@ save "$directorio/_aux/pre_admin.dta", replace /*save for discounted_noeffect.do
 *'sum_porcp_c'is the maximum/last percentage of payment
 *'num_p' is the number of payments 
 preserve 
-sort prenda fecha_movimiento HoraMovimiento
+sort prenda fecha_movimiento HoraMovimiento, stable
 keep if (pagos>0)
-by prenda :  gen first_pay = pagos[1]
+by prenda fecha_movimiento : egen sum_pay_day = sum(pagos)
+by prenda : gen first_pay = sum_pay_day[1]
+
 duplicates drop prenda first_pay, force
 keep prenda first_pay
 tempfile temp_fp
@@ -499,10 +507,9 @@ restore
 merge m:1 prenda using `temp_fp', nogen
 replace first_pay = 0 if missing(first_pay)
 
-sort prenda fecha_movimiento HoraMovimiento
-********************************************************************************
-*							Measures of recovery/default					   *
-********************************************************************************
+
+sort prenda fecha_movimiento HoraMovimiento, stable
+
 	*Desempeno - defined as ever recovered in observation window 
 by prenda: egen des_i_c=max(desempeno)
 	*Default - defined as losing the piece - note that it is not symmetrical with recovered
@@ -561,8 +568,9 @@ by prenda: egen sum_porc105_pay_fee_c=max(sum_porc105_pay_fee_c_aux)
 
 cap drop sum_porc105_pay_fee_c_aux
 
-by prenda: gen num_p=sum_np[_N]
+by prenda: egen num_p=max(sum_np)
 by prenda: gen num_v=sum_visit[_N]
+
 by prenda: egen dias_primer_pago = min(dpp)
 by prenda: gen dias_ultimo_mov = dias_inicio[_N]
 gen dias_inicio_d=dias_inicio if des_i_c==1
@@ -587,7 +595,7 @@ gen pos_pay_120_default = def_i_c*(pagos>0 & dias_inicio>120)
 bysort prenda: egen pos_pay_120_def_c = max(pos_pay_120_default)
 
 * Naiveness (person-level)
-sort NombrePignorante fecha_movimiento HoraMovimiento
+sort NombrePignorante fecha_movimiento HoraMovimiento prenda, stable
 by NombrePignorante : gen primer_prenda = (prenda==prenda[1])
 by NombrePignorante : gen primer_producto = producto[1]
 by NombrePignorante : egen primera_fecha_aux = min(fecha_movimiento) if primer_prenda==1
@@ -688,29 +696,16 @@ egen suc_x_dia=group(suc fecha_inicial)
 *Day of week
 gen dow=dow(fecha_inicial)
 gen weekday=inlist(dow,1,2,3,4,5)
-preserve
-*Pledges only
-keep if clave_movimiento == 4 
-duplicates drop prenda, force
-bysort suc_x_dia t_prod: gen num=_n
-bysort suc_x_dia t_prod: egen num_empenio=max(num)
-*# pawns at the item level
-gen num_empenio_prenda = num_empenio
-bysort suc_x_dia t_prod: replace num_empenio=. if num!=num_empenio
-
-keep num_empenio num_empenio_prenda prenda 
-tempfile temp_emp
-save `temp_emp'
-restore
-
-merge m:1 prenda using `temp_emp', nogen
 
 
+********************************************************************************
+********************************************************************************
+********************************************************************************
 
-*******************************************************************
 *Panel data
 save "$directorio/DB/Base_Boleta_230dias_Seguimiento_Ago2013_Grandota_2", replace
 use "$directorio/DB/Base_Boleta_230dias_Seguimiento_Ago2013_Grandota_2", clear
+
 
 *Only first visit
 preserve
@@ -718,11 +713,12 @@ keep if visit_number==1
 save "$directorio/DB/Base_Boleta_230dias_Seguimiento_Ago2013_Grandota_2fv", replace
 restore
 
-gsort prenda fecha_inicial -fecha_movimiento clave_movimiento t_prod
+gsort prenda fecha_inicial -fecha_movimiento clave_movimiento t_prod indice_sort
 by prenda fecha_inicial : keep if _n==1
 
 *Drop outliers
 drop if prestamo_i>57000
+
 
 *Final Cross-section
 save "$directorio/DB/Base_Boleta_230dias_Seguimiento_Ago2013_ByPrenda_2.dta", replace
@@ -738,4 +734,3 @@ twoway (scatter dias_ultimo_mov fecha_inicial if inlist(t_prod,1,2,4) & des_i_c=
 	legend(order(1 "Recovery" 2 "Default" 3 "Not ended (Rollover)")) xtitle("Treatment date") ytitle("Elapsed days")
 	
 save "$directorio/DB/Base_Boleta_230dias_Seguimiento_Ago2013_ByPrenda_2fv.dta", replace
-	
