@@ -85,6 +85,66 @@
 
 
 \vspace{.1in}
+\subsection{Internal Validity}
+
+\begin{figure}[H]
+     \caption{Box-plot across arms}
+    \label{boxplot_attrition}
+    \begin{center}
+    \begin{subfigure}{0.45\textwidth}
+    \caption{Number of pawns}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/box_plot_num_pawns.pdf}
+    \end{subfigure}
+        \begin{subfigure}{0.45\textwidth}
+    \caption{Number of borrowers}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/box_plot_num_pawns.pdf}
+    \end{subfigure}
+    \end{center}
+    \scriptsize
+        This figure presents box-plot for the number of pawns and borrowers per branch-day across different arms. The solid black line represent the median, while the gray line represent the mean. The dots on top of the box-plot represent an implicit CDF. 
+\end{figure}
+
+
+% \begin{figure}[H]
+%      \caption{Number of pawns and borrowers before and after the experiment}
+%     \label{line_pawns_before_after}
+%         \centering
+%         \includegraphics[width=\textwidth]{Figuras/after_before_bal.pdf}
+%     \scriptsize
+%         This figure shows the number of pawns and borrowers before, during, and after the experiment for the different branches.
+% \end{figure}
+
+
+% \begin{figure}[H]
+%      \caption{No discontinuity in the number of pawns before and after experiment}
+%     \label{rd_pawns}
+%        \begin{center}
+%     \begin{subfigure}{0.45\textwidth}
+%     \caption{Number of pawns - before}
+%         \centering
+%         \includegraphics[width=\textwidth]{Figuras/rd_before_pawns.pdf}
+%     \end{subfigure}
+%         \begin{subfigure}{0.45\textwidth}
+%     \caption{Number of pawns - after}
+%         \centering
+%         \includegraphics[width=\textwidth]{Figuras/rd_after_pawns.pdf}
+%     \end{subfigure}
+%      \begin{subfigure}{0.42\textwidth}
+%     \caption{Number of borrowers - before}
+%         \centering
+%         \includegraphics[width=\textwidth]{Figuras/rd_before_borr.pdf}
+%     \end{subfigure}
+%         \begin{subfigure}{0.45\textwidth}
+%     \caption{Number of borrowers - after}
+%         \centering
+%         \includegraphics[width=\textwidth]{Figuras/rd_after_borr.pdf}
+%     \end{subfigure}
+%     \end{center}
+%     \scriptsize
+%         This figure shows the number of pawns and borrowers before, during, and after the experiment for the different branches.
+% \end{figure}
 
 \subsection{Pictures}
 
@@ -92,7 +152,7 @@
      \caption{Some Pawnshops}
     \label{PawnshopPicture}
     \begin{center}
-    \begin{subfigure}{0.42\textwidth}
+    \begin{subfigure}{0.405\textwidth}
     \caption{Appraiser/tellers inside a pawnshop}
         \centering
         \includegraphics[width=\textwidth]{Figuras/empenio9_.png}
@@ -110,7 +170,7 @@
         \centering
         \includegraphics[width=\textwidth]{Figuras/empenio2_.png}
     \end{subfigure}
-    \begin{subfigure}{0.42\textwidth}
+    \begin{subfigure}{0.415\textwidth}
     \caption{Lost pawns which are for sale}
         \centering
         \includegraphics[width=\textwidth]{Figuras/empenio3_.png}
@@ -373,7 +433,7 @@ Panel B provides the lower bound for the treatment effect by assuming censored c
 
 
 
-Finally, Panel E of this table conducts a lasso logit prediction model that uses all of the available information on loans that were completed to predict the outcome of loans that were not.  This is a best guess of the outcome on censored loans.  Using this prediction, we replicate the main experimental results and find that the treatment effect on financial cost increases from -378 (main results) to -530 (censored loans predicted), and the APR from -34\% to -62\%.  Hence, while the censoring issue does have a substantial influence on the magnitude of our estimated treatment effects, these  checks confirm that a) the core results are robust to censoring, and b) the headline approach that we take to the issue is conservative and is likely understating the true magnitude of impacts.
+Finally, Panel E of this table conducts a lasso logit prediction model that uses all of the available information on loans that were completed to predict the outcome of loans that were not.  This is a best guess of the outcome on censored loans.  Using this prediction, we replicate the main experimental results and find that the treatment effect on financial cost increases from -204 (main results) to -264 (censored loans predicted), and the APR from -11\% to -17\%.  Hence, while the censoring issue does have a substantial influence on the magnitude of our estimated treatment effects, these  checks confirm that a) the core results are robust to censoring, and b) the headline approach that we take to the issue is conservative and is likely understating the true magnitude of impacts.
 
 \vspace{.3in}
 \begin{table}[H]
@@ -721,7 +781,7 @@ where $\psi_i \equiv \psi(X_i|\text{Training})$ and $\tau_i \equiv \tau(X_i|\tex
 \]
 If treatment effects are homogeneous we must have $\beta_2 = 0$. Rejecting this hypothesis establishes that $\tau_i$ predicts $\text{ATE}(X_i)$ and hence that $\Delta_i$ varies. 
 Since $\tau_i$ and $\psi_i$ do not depend on the test set, inference for the regression in \eqref{eq:chernreg} is straightforward conditional on the Training/Test split.  
-Our estimate for $\beta_2$ is 2.38 with a one-sided heteroskedasticity-robust (HC3) of 0.42.
+Our estimate for $\beta_2$ is 2.56 with a one-sided heteroskedasticity-robust (HC3) of 0.43.
 Thus we easily reject the null hypothesis of homogeneous treatment effects.
 
 %\todo[inline]{Discuss the results here.}
@@ -1256,7 +1316,7 @@ If Equation \ref{eq:exclusion_append1} holds, however, we know that $\mathbb{E}(
 If either inequality is violated, then the exclusion restriction from Equation \ref{eq:exclusion_append1} fails.
 
 
-The \cite{huber_mellace} bounds for the TOT \& TUT APR are respectively:  $[-119, 122]$, and $[-4.2, 24.6]$.
+The \cite{huber_mellace} bounds for the TOT \& TUT APR are respectively:  $[-119, 123]$, and $[-4.2, 24.8]$.
 Since both TUT (24) and ToT (122) estimates from the LATE approach lies inside these bounds, we cannot falsify the exclusion restriction. Moreover, the p-values associated with testing violation of inequalities \ref{eq:testable0}, and \ref{eq:testable1} is equal to one in both cases\footnote{We include the implementation of the validity test for the exclusion restriction for choosers and non-choosers in our STATA package.}.
 
 

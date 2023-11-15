@@ -35,10 +35,10 @@ qui putexcel set  "$directorio\Tables\SS_att.xlsx", sheet("SS_att") modify
 
 foreach var of varlist num_pawns num_borrowers {
 	
-	orth_out `var' if inlist(t_prod,1,2,4), by(t_prod) overall count se  vce(cluster suc_x_dia) bdec(2) 	
+	orth_out `var' if inlist(t_prod,1,2,4), by(t_prod) overall count se  vce(cluster suc) bdec(2) 	
 	qui putexcel B`i'=matrix(r(matrix)) 
 	
-	qui reg `var' ibn.t_prod if inlist(t_prod,1,2,4), nocons r cluster(suc_x_dia)
+	qui reg `var' ibn.t_prod if inlist(t_prod,1,2,4), nocons r cluster(suc)
 	test 1.t_prod==2.t_prod==4.t_prod
 	local p_val = `r(p)'
 	qui putexcel L`i'=matrix(`p_val')  
@@ -139,3 +139,15 @@ foreach var of varlist takeup response {
 	} 
 	
 	
+*Correct # of observations
+use "$directorio/DB/Master.dta", clear
+
+count if t_prod==1
+qui putexcel B14=matrix(`r(N)') 
+
+count if t_prod==2
+qui putexcel C14=matrix(`r(N)') 
+
+count if t_prod==4
+qui putexcel D14=matrix(`r(N)') 
+

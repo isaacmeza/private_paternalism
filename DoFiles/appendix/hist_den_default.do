@@ -5,10 +5,11 @@ Histogram of payment behaviour conditional on default
 set more off
 *ADMIN DATA
 use "$directorio/DB/Master.dta", clear
+keep if inlist(t_prod,1,2,4)
 
 *Conditional on default
-keep if pro_2==0 | missing(pro_2)
-keep if des_c==0
+keep if t_prod==1
+keep if def_c==1
 
 
 hist dias_ultimo_mov, percent w(10)  graphregion(color(white)) ///
