@@ -35,7 +35,7 @@
 \begin{center}
 	\LARGE The limits of self-commitment and private paternalism \\[0.5em]
 	\Large{Appendix $-$ For Online Publication} \\[1em]
-	\large \author{Craig McIntosh \and Isaac Meza \and Joyce Sadka \and Enrique Seira}
+	\large \author{Craig McIntosh \and Isaac Meza \and Joyce Sadka \and Enrique Seira \and Francis J.\ DiTraglia}
 \end{center}
 
 \appendix
@@ -78,73 +78,52 @@
 
 
 
-\section{ }
+\section{Treatment Explanation Materials and Pictures}
 \vspace{.2in}
 
-
-
-
-\vspace{.1in}
-\subsection{Internal Validity}
+\subsection{Materials}
 
 \begin{figure}[H]
-     \caption{Box-plot across arms}
-    \label{boxplot_attrition}
+     \caption{Contract Terms Summary}
+    \label{PaperSlip}
     \begin{center}
-    \begin{subfigure}{0.45\textwidth}
-    \caption{Number of pawns}
-        \centering
-        \includegraphics[width=\textwidth]{Figuras/box_plot_num_pawns.pdf}
-    \end{subfigure}
-        \begin{subfigure}{0.45\textwidth}
-    \caption{Number of borrowers}
-        \centering
-        \includegraphics[width=\textwidth]{Figuras/box_plot_num_pawns.pdf}
-    \end{subfigure}
+    %\begin{subfigure}{0.65\textwidth}
+    %\caption{Receipt for client}
+     %   \centering
+        \includegraphics[width=0.65\textwidth]{Figuras/TicketLenderP.png}
+    %\end{subfigure}
+    
+    %\vspace{3ex}
+    %\begin{subfigure}{0.65\textwidth}
+    %\caption{Personal promise signed by client}
+     %   \centering
+    %    \includegraphics[width=\textwidth]{Figuras/Personal Promise2.png}
+    %\end{subfigure}
     \end{center}
     \scriptsize
-        This figure presents box-plot for the number of pawns and borrowers per branch-day across different arms. The solid black line represent the median, while the gray line represent the mean. The dots on top of the box-plot represent an implicit CDF. 
+        We show a sample receipt that was given to clients that got assigned to the fee-forcing contract (the font and format were changed to protect Lender's P identity). We want to highlight the salience of some items. First the title clearly indicated which contract the client has (arrow 1). Second, in the case of the fee contract it clearly indicates that there is a fee for paying late equivalent to 2\% of the value of the monthly payment (arrow 2). Third, there is a calendar for payments clearly specifying the dates and amounts to pay each month. %The bottom panel of the figure shows a ``promise slip'', the paper that those who were assigned (or chose) to the monthly payment with promise had to sign to make the promise salient. It emphasizes that the client is giving his word, and that the promise is not a legal document.
 \end{figure}
 
 
-% \begin{figure}[H]
-%      \caption{Number of pawns and borrowers before and after the experiment}
-%     \label{line_pawns_before_after}
-%         \centering
-%         \includegraphics[width=\textwidth]{Figuras/after_before_bal.pdf}
-%     \scriptsize
-%         This figure shows the number of pawns and borrowers before, during, and after the experiment for the different branches.
-% \end{figure}
+
+\begin{figure}[H]
+     \caption{Explanatory Material}
+    \label{ExplanatoryMaterial}
+    \begin{center}
+    \begin{subfigure}{\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/micas.pdf}
+    \end{subfigure}
+    \end{center}
+    \scriptsize
+        This is a (translated) sample information slide shown to clients. The real ones were twice the size of this figure and were laminated. Different ones were shown for each treatment arm.
+\end{figure}
 
 
-% \begin{figure}[H]
-%      \caption{No discontinuity in the number of pawns before and after experiment}
-%     \label{rd_pawns}
-%        \begin{center}
-%     \begin{subfigure}{0.45\textwidth}
-%     \caption{Number of pawns - before}
-%         \centering
-%         \includegraphics[width=\textwidth]{Figuras/rd_before_pawns.pdf}
-%     \end{subfigure}
-%         \begin{subfigure}{0.45\textwidth}
-%     \caption{Number of pawns - after}
-%         \centering
-%         \includegraphics[width=\textwidth]{Figuras/rd_after_pawns.pdf}
-%     \end{subfigure}
-%      \begin{subfigure}{0.42\textwidth}
-%     \caption{Number of borrowers - before}
-%         \centering
-%         \includegraphics[width=\textwidth]{Figuras/rd_before_borr.pdf}
-%     \end{subfigure}
-%         \begin{subfigure}{0.45\textwidth}
-%     \caption{Number of borrowers - after}
-%         \centering
-%         \includegraphics[width=\textwidth]{Figuras/rd_after_borr.pdf}
-%     \end{subfigure}
-%     \end{center}
-%     \scriptsize
-%         This figure shows the number of pawns and borrowers before, during, and after the experiment for the different branches.
-% \end{figure}
+
+\cleardoublepage
+
+
 
 \subsection{Pictures}
 
@@ -207,8 +186,7 @@
 
 
 \begin{comment}
-    
-
+\\
 \begin{table}[H]
 \caption{Number of pawns balance before and after the experiment}
 \label{num_pawns_bal}
@@ -220,6 +198,7 @@
 \end{table}
 \end{comment}
 %\todo[inline]{removed}
+
 
 
 
@@ -265,44 +244,8 @@ Translation of the baseline questionnaire.
 
 \cleardoublepage
 
-\begin{table}[H]
-\caption{Balance conditional on survey response and question-by-question response rates by treatment arm}
-\label{SS_cond_survet}
-\begin{center}
-\scriptsize{\input{./Tables/SS_cond_survey.tex}}
-\end{center}
-\scriptsize
-
-Panel A of this table presents the same information as Panel A of Table \ref{SS}, but restricts attention to the subsample of borrowers who answered at least one question in our baseline survey. Conditional on survey response, loan amount and weekday are balanced across treatment arms. Panel B presents response rates to each individual survey question across treatment arms, along with p-values for the F-test of no difference in response rates across survey arms. This panel uses data for borrowers who pawned on the same day as their survey response. 
-
-
-%\textit{Do file: } \texttt{ss\_att.do}
-\end{table}
-
-\begin{landscape}
-\begin{table}[H]
-\caption{Survey Non-response: TUT estimates for respondents to each survey question.}
-\label{TUT_cond_survet}
-\begin{center}
-\scriptsize{\input{./Tables/tut_cond_survey.tex}}
-\end{center}
-\scriptsize
-
-Some borrowers did not respond to our survey; others only completed part of the survey.
-This table computes the TUT effect for a number of sub-groups by survey response, and compares them against the overall TUT effect.
-The top panel uses financial cost as the outcome variable, while the bottom panel uses APR.
-Each group is defined by the borrowers who responded to a particular \emph{subset} of the survey questions. 
-For example, column (4) computes TUT effects for the subgroup of borrowers who responded to the two questions needed to compute our measure of present bias, while column (8) computes the TUT for the subgroup of borrowers who provided their age.
-The bottom row of the table counts the number of borrowers in each category.
-TUT estimates are quite stable across sub-groups and generally similar to the full-sample estimates.
-Because standard errors increase as sample size falls, some of the sub-group estimates are not statistically significant.
-%\textit{Do file: } \texttt{tut_cond_survey.do}
-\end{table}
-\end{landscape}
-
-
 \newpage
-\subsection{Some more evidence of overconfidence}
+\subsection{Descriptives consistent with overconfidence}
 
 \vspace{.2in}
 \begin{figure}[H]
@@ -334,6 +277,109 @@ Because standard errors increase as sample size falls, some of the sub-group est
         This figure provides more details on the behavior of clients who were assigned to the control group and did not recover their pawn. Panel (a) shows a histogram of days elapsed from the pawn to the first payment, while panel (b) displays a histogram of days elapsed until the last payment. Some borrowers make payments after day 105, the end of the grace period: if they pay all interest owed, they can ``restart'' the loan. This amounts to starting a new loan with the same conditions and same pawn. Panel (c) shows a histogram of the fraction of the loan paid, while panel (d) presents a barplot of the number of times that borrowers went to the branch to make payments.
       %\textit{Do file: }  \texttt{hist\_den\_default.do}
 \end{figure}
+
+
+
+
+\vspace{.1in}
+\section{Internal Validity}
+
+\begin{figure}[H]
+     \caption{Box-plot across arms}
+    \label{boxplot_attrition}
+    \begin{center}
+    \begin{subfigure}{0.45\textwidth}
+    \caption{Number of pawns}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/box_plot_num_pawns.pdf}
+    \end{subfigure}
+        \begin{subfigure}{0.45\textwidth}
+    \caption{Number of borrowers}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/box_plot_num_pawns.pdf}
+    \end{subfigure}
+    \end{center}
+    \scriptsize
+        This figure presents box-plot for the number of pawns and borrowers per branch-day across different arms. The solid black line represent the median, while the gray line represent the mean. The dots on top of the box-plot represent an implicit CDF. 
+\end{figure}
+
+
+% \begin{figure}[H]
+%      \caption{Number of pawns and borrowers before and after the experiment}
+%     \label{line_pawns_before_after}
+%         \centering
+%         \includegraphics[width=\textwidth]{Figuras/after_before_bal.pdf}
+%     \scriptsize
+%         This figure shows the number of pawns and borrowers before, during, and after the experiment for the different branches.
+% \end{figure}
+
+
+% \begin{figure}[H]
+%      \caption{No discontinuity in the number of pawns before and after experiment}
+%     \label{rd_pawns}
+%        \begin{center}
+%     \begin{subfigure}{0.45\textwidth}
+%     \caption{Number of pawns - before}
+%         \centering
+%         \includegraphics[width=\textwidth]{Figuras/rd_before_pawns.pdf}
+%     \end{subfigure}
+%         \begin{subfigure}{0.45\textwidth}
+%     \caption{Number of pawns - after}
+%         \centering
+%         \includegraphics[width=\textwidth]{Figuras/rd_after_pawns.pdf}
+%     \end{subfigure}
+%      \begin{subfigure}{0.42\textwidth}
+%     \caption{Number of borrowers - before}
+%         \centering
+%         \includegraphics[width=\textwidth]{Figuras/rd_before_borr.pdf}
+%     \end{subfigure}
+%         \begin{subfigure}{0.45\textwidth}
+%     \caption{Number of borrowers - after}
+%         \centering
+%         \includegraphics[width=\textwidth]{Figuras/rd_after_borr.pdf}
+%     \end{subfigure}
+%     \end{center}
+%     \scriptsize
+%         This figure shows the number of pawns and borrowers before, during, and after the experiment for the different branches.
+% \end{figure}
+
+
+\begin{table}[H]
+\caption{Balance conditional on survey response and question-by-question response rates by treatment arm}
+\label{SS_cond_survet}
+\begin{center}
+\scriptsize{\input{./Tables/SS_cond_survey.tex}}
+\end{center}
+\scriptsize
+
+Panel A of this table presents the same information as Panel A of Table \ref{SS}, but restricts attention to the subsample of borrowers who answered at least one question in our baseline survey. Conditional on survey response, loan amount and weekday are balanced across treatment arms. Panel B presents response rates to each individual survey question across treatment arms, along with p-values for the F-test of no difference in response rates across survey arms. This panel uses data for borrowers who pawned on the same day as their survey response. 
+
+
+%\textit{Do file: } \texttt{ss\_att.do}
+\end{table}
+
+
+
+\begin{landscape}
+\begin{table}[H]
+\caption{Survey Non-response: TUT estimates for respondents to each survey question.}
+\label{TUT_cond_survet}
+\begin{center}
+\scriptsize{\input{./Tables/tut_cond_survey.tex}}
+\end{center}
+\scriptsize
+
+Some borrowers did not respond to our survey; others only completed part of the survey.
+This table computes the TUT effect for a number of sub-groups by survey response, and compares them against the overall TUT effect.
+The top panel uses financial cost as the outcome variable, while the bottom panel uses APR.
+Each group is defined by the borrowers who responded to a particular \emph{subset} of the survey questions. 
+For example, column (4) computes TUT effects for the subgroup of borrowers who responded to the two questions needed to compute our measure of present bias, while column (8) computes the TUT for the subgroup of borrowers who provided their age.
+The bottom row of the table counts the number of borrowers in each category.
+TUT estimates are quite stable across sub-groups and generally similar to the full-sample estimates.
+Because standard errors increase as sample size falls, some of the sub-group estimates are not statistically significant.
+%\textit{Do file: } \texttt{tut_cond_survey.do}
+\end{table}
+\end{landscape}
 
 
 
@@ -491,7 +537,7 @@ Finally, Panel E of this table conducts a lasso logit prediction model that uses
         \includegraphics[width=\textwidth]{Figuras/survival_graph_unpledge.pdf}
     \end{subfigure}     
     \end{center}
-     \scriptsize  This Figure shows the accumulated percentage of recovery in time by treatment arm. 
+     \scriptsize  This Figure shows the CDF of loan completion either default or recovery in Panel (a), or loan recovery in Panel (b), by the number of days since first pawn.
      %\textit{Do file: }  \texttt{survival\_graph.do}
 \end{figure}
 
@@ -535,6 +581,8 @@ Finally, Panel E of this table conducts a lasso logit prediction model that uses
 
 \vspace{.2in}
 \subsection{Learning}
+\normalsize
+Table \ref{learning_table} presents information about borrowers' \emph{future} pawning behavior as a function of treatment assignment. Column (1) considers the 228 clients who returned only a second time to pawn again at a day/branch that was randomly assigned to the choice arm. Each of the two rows in this column presents a difference of mean commitment take-up rates, and associated standard error. The first row compares those who were \emph{initially} assigned to forced commitment against those where were assigned to control; the second row compares those who were initially assigned to the choice commitment arm to those who were assigned to the other two arms. In each case, there is no statistically discernible difference in the rates of commitment take-up. Granted, this is a selected sample because the decision to pawn again is potentially endogenous to the initial treatment allocation. For this reason, Column (2) considers the full sample of 4441 borrowers by re-defining the outcome variable to be an indicator for returning to pawn again at a branch/day when commitment was offered \emph{and} choosing commitment. This composite outcome variable is not subject to the sample selection problem (although it is directly driven by the decision to repeat borrow). The comparison in the two rows remains the same: forced commitment versus control in row one and choice commitment versus forced arms in row two. Again, there is no statistically discernible difference in commitment take-up rates in either row. While these exercises cannot completely exclude the possibility that learning plays a role, they provide no indication that the lack of voluntary compliance is simply a matter of inexperience with commitment.
 
 \vspace{.1in}
 \begin{table}[H]
@@ -545,7 +593,7 @@ Finally, Panel E of this table conducts a lasso logit prediction model that uses
 \end{center}
  \scriptsize  
 
-This table presents information about borrowers' \emph{future} pawning behavior.
+
 Column (1) reports results for the 228 borrowers who returned to pawn again at a day/branch that was randomly assigned to the choice arm, enabling us to observe whether they chose commitment or the status quo contract.
 Each row presents a difference in mean commitment take-up rates and associated standard errors.
 The first row (ATE) compares borrowers who were initially assigned to forced commitment against those were assigned to the control condition.
@@ -576,63 +624,7 @@ Whereas column (1) conditions on the (endogenously) selected sample of borrowers
 \end{figure}
 
 
-\vspace{.3in}
-\subsection{First order stochastic dominance} \label{App_FOSD}
-\normalsize
-\vspace{.2in}
 
-%\todo[inline]{Presumably we want to cut some of this text? In the body of the text we don't get into this in such detail.}
-%We plot the empirical distribution of financing cost $F_{commitment}(FC)$ and of the status quo contract, $F_{sq}(FC)$. Framed as a choice among cost distributions. 
-
-
-\vspace{.2in}
-\begin{figure}[H]
-        \caption{Empirical CDF of Financial Cost: Forced commitment vs Control}
-    \label{ecdf_fc}
-    
-    \begin{center}
-       \begin{subfigure}{0.49\textwidth}
-        \caption{APR benefit}
-        \centering
-        \includegraphics[width=\textwidth]{Figuras/cdf_apr.pdf}
-    \end{subfigure} 
-   \begin{subfigure}{0.49\textwidth}
-        \caption{Financial benefit}
-        \centering
-        \includegraphics[width=\textwidth]{Figuras/cdf_fc_admin.pdf}
-    \end{subfigure} 
-    \end{center}
-    \scriptsize This figure plots plots the empirical CDF of experimental outcomes separately for the control / status quo (dashed) and forced commitment contracts (solid). In panel (a), the outcome is APR benefit; in panel (b) the outcome is Financial benefit. In each case, the empirical CDF under forced commitment first-order stochastically dominates the empirical CDF under the status quo. This can be seen by examining the dotted line at the bottom of panels (a) and (b), which shows the difference $(\text{Control} - \text{Commitment})$. 
-    %The dotted line at the bottom of panels (a) and (b)   the empirical cumulative distribution function APR and financial cost of financial cost. It does this separately for the fee-forcing contract and for the status-quo contract. The dotted line at the bottom is the difference of the control CDF minus the forced CDF arm. It shows that the CDF of the status quo contract is always below that of the fee-forcing (and this difference is significant for the points indicated by the blue line).
-    % \texttt{fosd_ecdf.do}}
-\end{figure}
-
-
-
-\cleardoublepage
-
-\begin{figure}[H]
-        \caption{Distribution of treatment effects under rank invariance.}
-    \label{te_rankinvariance}
-    
-    \begin{center}
-       \begin{subfigure}{0.49\textwidth}
-        \caption{APR benefit}
-        \centering
-        \includegraphics[width=\textwidth]{Figuras/te_rankinvariance_apr.pdf}
-    \end{subfigure} 
-   \begin{subfigure}{0.49\textwidth}
-        \caption{Financial benefit}
-        \centering
-        \includegraphics[width=\textwidth]{Figuras/te_rankinvariance_fc_admin.pdf}
-    \end{subfigure} 
-    \end{center}
-    \scriptsize This figure show the distribution of treatment effects under rank invariance
-    \[F_\Delta(\delta) = \int_0^1 \mathbbm{1}\{ F_1^{-1}(u) - F_0^{-1}(u)\leq \delta\}\,\mathrm{d}u\]
-where $F_1^{-1}$ and $F_0^{-1}$ are the quantile functions of $Y_1$ and $Y_0$.
-    %The dotted line at the bottom of panels (a) and (b)   the empirical cumulative distribution function APR and financial cost of financial cost. It does this separately for the fee-forcing contract and for the status-quo contract. The dotted line at the bottom is the difference of the control CDF minus the forced CDF arm. It shows that the CDF of the status quo contract is always below that of the fee-forcing (and this difference is significant for the points indicated by the blue line).
-    % \texttt{te_rankinvariance.do}}
-\end{figure}
 
 
 \begin{comment}
@@ -751,9 +743,9 @@ Note the proof was done in the case of absolutely continuous and strictly increa
 
 
 
+\section{Heterogeneity and Bounds}
 
-
-\section{Testing for heterogeneity}
+\subsection{Testing for heterogeneity}
 \label{append:chernozhukov}
 If the treatment effects $Y_{i1} - Y_{i0}$ are constant across $i$, then we must have
 \[
@@ -781,7 +773,7 @@ where $\psi_i \equiv \psi(X_i|\text{Training})$ and $\tau_i \equiv \tau(X_i|\tex
 \]
 If treatment effects are homogeneous we must have $\beta_2 = 0$. Rejecting this hypothesis establishes that $\tau_i$ predicts $\text{ATE}(X_i)$ and hence that $\Delta_i$ varies. 
 Since $\tau_i$ and $\psi_i$ do not depend on the test set, inference for the regression in \eqref{eq:chernreg} is straightforward conditional on the Training/Test split.  
-Our estimate for $\beta_2$ is 2.56 with a one-sided heteroskedasticity-robust (HC3) of 0.43.
+Our estimate for $\beta_2$ is 2.56 with a one-sided heteroskedasticity-robust (HC3) standard error of 0.43.
 Thus we easily reject the null hypothesis of homogeneous treatment effects.
 
 %\todo[inline]{Discuss the results here.}
@@ -795,6 +787,85 @@ Thus we easily reject the null hypothesis of homogeneous treatment effects.
 %\end{table}
 
 %\todo[inline]{Some Questions for Issac: (1) How are we carrying out the sample splitting? If we cluster standard errors at the branch-day level, we should take this into account when we split. (2) How are you carrying out inference for $\beta_2$? Chernozhukov et al discuss two approaches: ``conditional'' and ``variational.'' The former is simpler as it conditions on the training/test split. The latter is a bit more involved, since one accounts for uncertainty arising from different splits. (3) What are the details of the random forest procedure employed here? (Tuning parameters choice, etc.) We should put them into the appendix.}
+
+
+\subsection{Bounds, FOSD and Rank Invariance} \label{bounds_FOSD}
+
+
+\vspace{.3in}
+\begin{figure}[H]
+    \caption{Fan \& Park bounds for benefit in APR\%}
+    \label{fan_park_bounds}
+    \begin{center}
+    \begin{subfigure}{0.75\textwidth}
+        \caption{APR}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/fan_park_bounds_apr.pdf}
+    \end{subfigure}
+    \end{center}
+        \scriptsize
+    This figure depicts the \cite{fan2010sharp} bounds on the distribution $F_\Delta$ of individual treatment effects $\Delta \equiv (Y_1 - Y_0)$, described in Section \ref{sec:bounds}, for the APR outcome.
+    The dark red curve and light red shaded region give the estimated upper bound function $\overline{F}$ for $F_\Delta$ and associated (pointwise) 95\% confidence interval. 
+    The dark blue curve and light blue shaded region give the estimated lower bound function $\underline{F}$ for $F_\Delta$ and associated (pointwise) 95\% confidence interval.
+    Confidence intervals are computed using the asymptotic distribution for the bounds. See \cite{fan2010sharp} for details.
+    The bounds are pointwise sharp: at any specified value of $\delta$ the bounds $\underline{F}(\delta) \leq F_\Delta(\delta) \leq \overline{F}(\delta)$ cannot be improved without imposing additional assumptions.
+    Evaluating the bounds at $\delta = 0$, we see that between 23\% and 97\% of borrowers have a positive individual treatment effect.
+    This is greater than the share of borrowers who chose commitment: 11\%.
+%\textit{Do file: } \texttt{fan\_park\_bnds.do}       
+\end{figure}
+
+
+
+ 
+\vspace{.2in}
+\begin{figure}[H]
+        \caption{Empirical CDF: Forced commitment vs Control FOSF}
+    \label{ecdf_fc}
+    
+    \begin{center}
+        \begin{subfigure}{0.49\textwidth}
+         \caption{APR benefit}
+         \centering
+         \includegraphics[width=\textwidth]{Figuras/cdf_apr.pdf}
+     \end{subfigure} 
+   \begin{subfigure}{0.49\textwidth}
+        \caption{Financial benefit}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/cdf_fc_admin.pdf}
+    \end{subfigure} 
+    \end{center}
+    \scriptsize This figure plots the empirical CDF of experimental outcomes separately for the control (status quo) in dashes, and forced commitment contracts (solid). In panel (a), the outcome is APR benefit; in panel (b) the outcome is Financial benefit. 
+    The empirical CDF under forced commitment first-order stochastically dominates the empirical CDF under the status quo. This can be seen by examining the dotted line, which shows the difference $(\text{Control} - \text{Commitment})$. 
+    %The dotted line at the bottom of panels (a) and (b)   the empirical cumulative distribution function APR and financial cost of financial cost. It does this separately for the fee-forcing contract and for the status-quo contract. The dotted line at the bottom is the difference of the control CDF minus the forced CDF arm. It shows that the CDF of the status quo contract is always below that of the fee-forcing (and this difference is significant for the points indicated by the blue line).
+    % \texttt{fosd_ecdf.do}}
+\end{figure}
+   
+
+
+\vspace{.2in}
+\begin{figure}[H]
+        \caption{Distribution of treatment effects under rank invariance.}
+    \label{te_rankinvariance}
+    
+    \begin{center}
+       \begin{subfigure}{0.49\textwidth}
+        \caption{APR benefit}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/te_rankinvariance_apr.pdf}
+    \end{subfigure} 
+   \begin{subfigure}{0.49\textwidth}
+        \caption{Financial benefit}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/te_rankinvariance_fc_admin.pdf}
+    \end{subfigure} 
+    \end{center}
+    \scriptsize This figure shows the CDF of individual treatment effects under the assumption of rank invariance, computed from 
+    \[F_\Delta(\delta) = \int_0^1 \mathbbm{1}\{ F_1^{-1}(u) - F_0^{-1}(u)\leq \delta\}\,\mathrm{d}u\]
+where $F_1^{-1}$ and $F_0^{-1}$ are the quantile functions of $Y_1$ and $Y_0$.
+    %The dotted line at the bottom of panels (a) and (b)   the empirical cumulative distribution function APR and financial cost of financial cost. It does this separately for the fee-forcing contract and for the status-quo contract. The dotted line at the bottom is the difference of the control CDF minus the forced CDF arm. It shows that the CDF of the status quo contract is always below that of the fee-forcing (and this difference is significant for the points indicated by the blue line).
+    % \texttt{te_rankinvariance.do}}
+\end{figure}
+
 
 
 \newpage
@@ -1270,7 +1341,7 @@ Equation \ref{eq:exclusion_append1} is a restriction on the average potential ou
 It says that someone who \emph{would} choose the commitment contract when given a choice, experiences the same potential outcome, on average, when \emph{assigned} to this condition.
 Because they refer to different groups of people, either of \eqref{eq:exclusion_append0}  and \eqref{eq:exclusion_append1} could hold when the other is violated.
 For this reason we consider each in turn.
-Our approach is closely related arguments from \cite{huber_mellace} and \cite{BinaryRegressor}, among others.
+Our approach is closely related to arguments from \cite{huber_mellace} and \cite{BinaryRegressor}, among others.
 As such, the following is a heuristic explanation rather than a fully-rigorous proof.
 See the aforementioned papers for more details of how to make this argument fully rigorous.
 
@@ -1282,22 +1353,34 @@ It follows that, regardless of whether the exclusion restriction holds, the obse
 This allows us to construct a pair of bounds for $\mathbb{E}(Y_0|C=0)$ as follows.
 The non-choosers must lie \emph{somewhere} in the distribution of $Y|Z=0$.
 Consider the two most extreme possibilities: they could occupy the bottom $(1-p)\times 100\%$ of the distribution or the top $(1-p)\times 100\%$ of the distribution.
-For this reason, computing the average of the the \emph{truncated} distribution of $Y|Z=0$, cutting out the top $p\times 100\%$, provides a lower bound for the average of $Y_0$ among non-choosers.
+For this reason, computing the average of the \emph{truncated} distribution of $Y|Z=0$, cutting out the top $p\times 100\%$, provides a lower bound for the average of $Y_0$ among non-choosers.
 Similarly, cutting out the bottom $p \times 100\%$ provides an upper bound.
 Let $y^0_{1-p}$ denote the $(1-p)$ quantile of $Y|Z=0$ and $y^0_{p}$ denote the $p$ quantile of the same distribution.
 Using this notation, the bounds are given by
 \[
-\mathbb{E}\left(Y|Z=0, Y\leq y^0_{1-p}\right)\leq \mathbb{E}(Y_0|C=0) \leq \mathbb{E}\left(Y|Z=0, Y \leq y^0_p\right) 
+\mathbb{E}\left(Y|Z=0, Y\leq y^0_{1-p}\right)\leq \mathbb{E}(Y_0|C=0) \leq \mathbb{E}\left(Y|Z=0, Y \geq y^0_p\right) 
 \]
 These bounds do not rely on the exclusion restriction.
 Under Equation \ref{eq:exclusion_append0}, however, we know that $\mathbb{E}(Y_0|C=0)=\mathbb{E}(Y|D=0,Z=2)$.
 Therefore, if the exclusion restriction for non-choosers holds, we must have
 \begin{equation}
-\mathbb{E}\left(Y|Z=0, Y\leq y^0_{1-p}\right)\leq \mathbb{E}(Y|D=0,Z=2) \leq \mathbb{E}\left(Y|Z=0, Y \leq y^0_p\right).
+\mathbb{E}\left(Y|Z=0, Y\leq y^0_{1-p}\right)\leq \mathbb{E}(Y|D=0,Z=2) \leq \mathbb{E}\left(Y|Z=0, Y \geq y^0_p\right).
 \label{eq:testable0}
 \end{equation}
 Equation \ref{eq:testable0} provides a pair of testable implications of \eqref{eq:exclusion_append0}.
 If either inequality is violated, then the exclusion restriction for non-choosers fails.
+In our experiment, $\widehat{p} = \widehat{\mathbbm{P}}(D=1|Z=2) = 0.11$. For the APR outcome we estimate
+\[
+\widehat{\mathbbm{E}}(Y_\text{APR}|Z=0,Y_\text{APR}\leq y^0_{0.89}) = 0.48, \quad
+\widehat{\mathbbm{E}}(Y_\text{APR}|Z=0, Y_\text{APR}\geq y^0_{0.11}) = 0.62.
+\]
+Since $\widehat{\mathbbm{E}}(Y_\text{APR}|D=0,Z=2) = 0.58$ falls between these bounds, we find no evidence against the exclusion restriction for non-choosers. 
+Repeating this exercise for the financial cost outcome, we see that $\widehat{\mathbbm{E}}(Y_\text{FC}|D=0,Z=2) = 973$ likewise falls between 
+\[
+\widehat{\mathbbm{E}}(Y_\text{FC}|Z=0,Y_\text{FC}\leq y^0_{0.89}) = 626, \quad
+\widehat{\mathbbm{E}}(Y_\text{FC}|Z=0, Y_\text{FC}\geq y^0_{0.11}) = 1046 
+\]
+so we again find no evidence against the exclusion restriction for non-choosers.
 
 We can use an analogous approach to construct testable implications for \ref{eq:exclusion_append1}. 
 Because $Z$ was randomly assigned, a fraction $p$ of participants with $Z = 1$ are choosers so the distribution of $Y|Z=1$ is a mixture of $Y_1|C=1$ and $Y_1|C=0$ with mixing weights $p$ and $1 -p$.
@@ -1314,182 +1397,25 @@ If Equation \ref{eq:exclusion_append1} holds, however, we know that $\mathbb{E}(
 \label{eq:testable1}
 \end{equation}
 If either inequality is violated, then the exclusion restriction from Equation \ref{eq:exclusion_append1} fails.
+Again, in our experiment $\widehat{p}=0.11$. For the APR outcome we estimate
+\[
+\widehat{\mathbbm{E}}(Y|Z=1,Y\leq y^1_{0.11}) = 0.06, \quad
+\widehat{\mathbbm{E}}(Y|Z=1,Y\geq y^1_{0.89}) = 1.28
+\]
+Since $\widehat{\mathbbm{E}}(Y_\text{APR}|D=1,Z=2) = 0.43$ falls between these bounds, we find no evidence against the exclusion restriction for the choosers. 
+Repeating this exercise for the financial cost outcome, we see  that $\widehat{\mathbbm{E}}(Y_\text{FC}|D=1,Z=2)= 570$ likewise falls between
+\[
+\widehat{\mathbbm{E}}(Y|Z=1,Y\leq y^1_{0.11}) = 53, \quad
+\widehat{\mathbbm{E}}(Y|Z=1,Y\geq y^1_{0.89}) = 2934
+\]
+so we again find no evidence against the exclusion restriction for the choosers.
 
-
-The \cite{huber_mellace} bounds for the TOT \& TUT APR are respectively:  $[-119, 123]$, and $[-4.2, 24.8]$.
-Since both TUT (24) and ToT (122) estimates from the LATE approach lies inside these bounds, we cannot falsify the exclusion restriction. Moreover, the p-values associated with testing violation of inequalities \ref{eq:testable0}, and \ref{eq:testable1} is equal to one in both cases\footnote{We include the implementation of the validity test for the exclusion restriction for choosers and non-choosers in our STATA package.}.
+The aforementioned bounds for $\mathbbm{E}(Y_0|C=0)$ and $\mathbbm{E}(Y_1|C=1)$ can alternatively be used construct partial identification bounds for the TOT and TUT effects that do not rely on our exclusion restrictions. If the TOT or TUT expression from \ref{append:randchoice} fall \emph{outside} the partial identification bounds, this is equivalent to finding a violation of \ref{eq:testable0} or \ref{eq:testable1}. We implement these bounds for the TOT and TUT in our companion STATA package.
 
 
 \newpage
 
 
-
-
-
-%\section{LATE: TOT \& TUT}
-%\vspace{.2in}
-%\normalsize
-%\linespread{1.25}
-%%Really force it to normal size and linespread
-%\normalsize
-%\linespread{1.25}
-%
-% Recall that $Z_i$ is the observed, randomly assigned experimental allocation, where $Z_i=0$ denotes the control arm, $Z_i=1$ denotes the forced-fee arm, and $Z_i=2$ is the choice arm.  Let $C_i$ be the unobserved choice type. $C_i=0$ when individual $i$ does not choose commitment  given the choice and $C_i=1$ when chooses commitment given the choice. Finally, $D_i = Z_i\times \mathds{1}(Z_i\neq 2) + C_i\times \mathds{1}(Z_i=2)$ is the observed treatment indicator, and $Y(d,z)$ is the potential outcome function for $d=0,1$, and $z=0,1,2$. 
-%
-% To identify assortative selection we first need to estimate the following quantities: $\mathbb{E}(Y_1-Y_0\;|\;C=1)$ the Treatment on the Treated (TOT), and $\mathbb{E}(Y_1-Y_0\;|\;C=0)$ the Treatment on the Untreated (TUT). 
-%
-% To point identify the above quantities, we make the following assumptions.
-%
-% \begin{assumption}[Exclusion Restriction]
-%$Z$ only affects $Y$ through its effect on $D$ : $C(d,z) = C(d)$
-% \end{assumption}
-%
-%  \begin{assumption}[Independence Assumption]
-%$Z \perp (Y_0, Y_1, C)$
-% \end{assumption}
-%
-%The following intermediate Lemmas will help us derive that both TOT and TUT are point identified.
-%
-%\begin{lem}
-%$\Pr(C=1) = \E[D\;|\;Z=2]$
-%\end{lem}
-%\begin{proof}
-%Since $C\perp Z$, 
-%$$\E[D\;|\;Z=2] = \E[Z\times \mathds{1}(Z\neq 2)+ C\times\mathds{1}(Z=2)\;|Z=2] = \E[C\;|\;Z=2] = \E[C] = \Pr(C=1)$$
-%\end{proof}
-%
-%
-%\begin{lem}
-%$\E[Y_0] = \E[Y\;|\;Z=0]$
-%\end{lem}
-%\begin{proof}
-%Since $Z\perp Y_0$, 
-%\begin{align*}
-%\E[Y\;|\;Z=0] =& \E[\mathds{1}(Z=0)Y_0+\mathds{1}(Z=1)Y_1+\mathds{1}(Z=2)\{(1-C)Y_0+CY_1\})\;|\;Z=0]\\   
-%=&\E[Y_0\;|\;Z=0] = \E[Y_0]
-%\end{align*}
-%\end{proof}
-%
-%
-%\begin{lem}
-%$\E[Y_1] = \E[Y\;|\;Z=1]$
-%\end{lem}
-%\begin{proof}
-%Since $Z\perp Y_1$, 
-%\begin{align*}
-%\E[Y\;|\;Z=1] =\E[Y_1\;|\;Z=1] = \E[Y_1]
-%\end{align*}
-%\end{proof}
-%
-%
-%\begin{lem}
-%$\E[Y_0\;|\;C=0] = \E[Y\;|\; D=0,Z=2]$
-%\end{lem}
-%\begin{proof}
-%If $Z=2$, then $D=0$ if and only if $C=0$. Hence,
-%\[\E[Y\;|\;D=0, Z=2] = \E[Y_0\;|\;D=0, Z=2] = E[Y_0\;|\;C=0, Z=2]=\E[Y_0\;|\;C=0]\]
-%since $Y_0\perp C\;|\;Z$
-%\end{proof}
-%
-%\begin{lem}
-%$\E[Y_1\;|\;C=1] = \E[Y\;|\; D=1,Z=2]$
-%\end{lem}
-%\begin{proof}
-%If $Z=2$, then $D=1$ if and only if $C=1$. Hence,
-%\[\E[Y\;|\;D=1, Z=2] = \E[Y_1\;|\;D=1, Z=2] = E[Y_1\;|\;C=1, Z=2]=\E[Y_1\;|\;C=1]\]
-%since $Y_1\perp C\;|\;Z$
-%\end{proof}
-%
-%\begin{theorem} $\E[Y_1-Y_0\;|\; C=1]$ is point identified
-%\end{theorem}
-%
-%\begin{proof}
-%Since $\E[Y_1\;|\; C=1] = \E[Y\;|\; D=1, Z=2]$ by Lemma 5, it suffices to show that $\E[Y_1\;|\;C=0]$ is point identified. By iterated expectations:
-%\[E[Y_0] = \E_C\E[Y_0\;|\;C] = (1-p)\E[Y_0\;|\;C=0]+p\E[Y_0\;|\;C=1]\]
-%where $p:=\E[C]=\Pr(C=1)$, and re-arranging,
-%\[\E[Y_0\;|\;C=1] = \frac{1}{p}\left(E[Y_0] -(1-p)\E[Y_0\;|\;C=0]\right)\]
-%Finally, substituting the result of Lemmas 1, 2, and 4, we obtain
-%\[\E[Y_0\;|\;C=1] =\frac{1}{\E[D\;|\;Z=2]}\left\{\E[Y\;|\;Z=0]-(1-\E[D\;|\;Z=2])\E[Y\;|\;D=0, Z=2]\right\}\]
-%and the RHS is a function of observed data only.
-%\end{proof}
-%
-%\begin{theorem} $\E[Y_1-Y_0\;|\; C=0]$ is point identified
-%\end{theorem}
-%
-%\begin{proof}
-%Since $\E[Y_0\;|\; C=0] = \E[Y\;|\; D=0, Z=2]$ by Lemma 4, it suffices to show that $\E[Y_0\;|\;C=1]$ is point identified. By iterated expectations:
-%\[E[Y_1] = \E_C\E[Y_1\;|\;C] = (1-p)\E[Y_1\;|\;C=0]+p\E[Y_1\;|\;C=1]\]
-%where $p:=\E[C]=\Pr(C=1)$, and re-arranging,
-%\[\E[Y_1\;|\;C=0] = \frac{1}{1-p}\left(E[Y_1] -p\E[Y_1\;|\;C=1]\right)\]
-%Finally, substituting the result of Lemmas 1, 3, and 5, we obtain
-%\[\E[Y_1\;|\;C=0] =\frac{1}{1-\E[D\;|\;Z=2]}\left\{\E[Y\;|\;Z=1]-\E[D\;|\;Z=2]\E[Y\;|\;D=1, Z=2]\right\}\]
-%and the RHS is a function of observed data only.
-%\end{proof}
-%
-%
-%\begin{figure}[H]
-%    \caption{Bootstrap inference for the difference between TOT-TUT}
-%    \label{bootstrap_tot_tut}
-%    \begin{center}
-%    \begin{subfigure}{0.31\textwidth}
-%        \caption{Simple}
-%        \centering
-%        \includegraphics[width=\textwidth]{Figuras/tot_tut_btsp1.pdf}
-%    \end{subfigure}
-%    \begin{subfigure}{0.31\textwidth}
-%        \caption{Admin controls}
-%        \centering
-%        \includegraphics[width=\textwidth]{Figuras/tot_tut_btsp2.pdf}
-%    \end{subfigure}
-%    \begin{subfigure}{0.31\textwidth}
-%        \caption{Admin + Survey controls}
-%        \centering
-%        \includegraphics[width=\textwidth]{Figuras/tot_tut_btsp3.pdf}
-%    \end{subfigure}
-%  
-%    \end{center}
-%     \scriptsize  Given that all of the arms are effectively randomly sampled form the same pool, we can also estimate the TOT and TUT with the pooled regression: $Y_i = \beta_0\mathds{1}(Z_i=0)+\beta_1\mathds{1}(Z_i=1)+\beta_2\mathds{1}(Z_i=2)+ \epsilon_i$, and then this test statistic just becomes the F-test on $\frac{\widehat{\beta_2}-\widehat{\beta_0}}{p}$ for the TOT, $\frac{\widehat{\beta_1}-\widehat{\beta_2}}{1-p}$ for the TUT, and an F-test on the difference between these two quantities to test whether the gains are different between compliers and non-compliers. Recognizing the stochastic nature of the compliance rate, we also bootstrap this quantity before running the previous regression. The red line shows the point estimate for the difference between TOT-TUT, and the gray bar in the x-axis shows a 95\% confidence interval for this difference. Panel (a) shows the difference between the TOT and TUT without any controls, while panel (b) and (c) adds admin controls and admin + survey controls respectively.
-%          %\footnotesize{ \textit{Do file: }  \texttt{tot\_tut.do}}
-%\end{figure}
-
-
-\begin{comment}
-    
-\begin{figure}[H]
-     \caption{TOT-TUT CDF}
-     \label{tot_tut_ecdf}
-    \begin{center}
-    \begin{subfigure}{0.6\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{Figuras/cdf_tot_tut.pdf}
-    \end{subfigure}
-    \end{center}
-    \scriptsize
-       Equipped with estimates for the TOT and TUT for each individual $i$ from an Instrumental Random Forest we compute the ECDF for this quantities. The solid line is the ECDF for the TOT, the dashed line is the ECDF for the TUT, and the dotted line plots the difference between the TOT and the TUT - the blue dashed line in the x-axis shows the points where this difference is significant. The bold black interval at the bottom of the graph is the mean for the TOT distribution (0.07), while the gray interval shows the mean for the TUT distribution (0.10).
-       
-          %\footnotesize{ \textit{Do file: }  \texttt{tot\_tut\_insforest.do}}
-\end{figure}
-\end{comment}
-
-
-% \begin{figure}[H]
-%      \caption{Exclusion restriction}
-%      \label{exclusion_restriction}
-%     \begin{center}
-%     \begin{subfigure}{0.6\textwidth}
-%         \centering
-%         \includegraphics[width=\textwidth]{Figuras/exclusion_restriction.pdf}
-%     \end{subfigure}
-%     \end{center}
-%     \scriptsize This figure serves as a test for the exclusion restriction in the point identification for the TOT and the TUT. It shows the effect on the effective cost/loan ratio for the forced-fee arm and the choice arm, together with the decomposition of the choosers and non-choosers. Note that a) being forced into the treatment (Forced fee) has the same effect as choosing it (Choosers), and b) not choosing the treatment (Non chooser) has no effect with respect to the control.
-    
-%           %\footnotesize{ \textit{Do file: }  \texttt{exclusion\_restriction.do}}
-% \end{figure}
-
-%---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-\newpage 
-\newpage
 \section{Causal Random Forest, HTE, and `mistakes'}
 
 
@@ -1508,6 +1434,9 @@ Since both TUT (24) and ToT (122) estimates from the LATE approach lies inside t
 
 
 
+\subsection{Example of a Causal Tree}
+
+\vspace{.3in}
 \begin{figure}[H]
         \caption{Example Causal Tree}
     \label{causal_tree1}
@@ -1520,6 +1449,75 @@ Since both TUT (24) and ToT (122) estimates from the LATE approach lies inside t
     %This is one(it is chosen such that it minimizes the pruned cost, that is it is the tree with the smallest root-node impurity) of the honest causal trees in the random forest we use for the estimation of the heterogeneous treatment effect of the fee-forcing contract. It is meant only as an example of how these trees look like. The forest was such that there are as many estimated treatment effects as there are clients.
      %\footnotesize{ \textit{RScript: }  \texttt{grf.R}
 \end{figure}
+
+\newpage
+\subsection{Conditional ATE estimates}
+
+\vspace{.3in}
+\begin{figure}[H]
+    \begin{center}
+  \caption{Cumulative Distribution Function of Conditional ATE Estimates}
+  \includegraphics[width=0.75\textwidth]{Figuras/cdf_CATE.pdf} 
+    \label{fig:CATEsurvival}
+    \end{center}
+    
+    \scriptsize This figure shows the share of borrowers who benefit from forced commitment, where ``benefit'' is defined as having an estimated conditional average treatment effect (ATE) above a specified threshold value. Results are based on the causal forest model from Section \ref{sec:RF}. The solid line equals $1 - F_\text{ATE}(\delta)$ where $F_\text{ATE}(\delta)$ denotes the CDF corresponding to the density of conditional ATE estimates from Figure \ref{heterogeneous_effects}. The blue shaded regions are associated 95\% confidence intervals. We estimate that at least 90\% of borrowers have a positive conditional ATE. 
+%\textit{Do file: }  \texttt{cdf_CATE.do}
+\end{figure}
+ 
+
+
+  
+\cleardoublepage
+
+\begin{figure}[H]
+    \caption{Conditional ATEs from ``wide'' and ``narrow'' covariate sets}
+    \label{wide_narrow_forests}
+    \begin{center}
+    \begin{subfigure}{0.75\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/scatter_hist_wide_narrow.pdf}
+    \end{subfigure}
+    \end{center}
+      \scriptsize  This figure plots the relationship between the causal forest conditional ATE estimates from Section \ref{sec:RF} that use the ``wide'' set of covariates (all intake survey responses) and those based on a restricted ``narrow'' set of covariates (age, gender, HS education, and previous borrowing). The scatterplot graphs one estimate versus the other, with the ``wide'' covariate set on the horizontal axis and the ``narrow'' set on the vertical axis. The density plots on each axis show the estimated marginal distribution of conditional ATEs under each covariate set. The density for the ``wide'' covariate set is considerably more dispersed, as the causal forest based on this set of covariates captures considerably more treatment effect heterogeneity.
+
+%\textit{Do file: } \texttt{wide_narrow_forests.do}       
+\end{figure}
+
+
+
+
+
+
+\newpage
+\subsection{Targeting rule comparisons}
+
+\vspace{.3in}
+
+\begin{figure}[H]
+    \caption{Targeting rules}
+    \label{targeting_rules}
+    \begin{center}
+    \begin{subfigure}{0.75\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/wide_narrow_rule.pdf}
+    \end{subfigure}
+    \end{center}
+      \scriptsize   This figure plots the percentage of borrowers who would benefit from a program in which commitment is targeted using the ``narrow'' covariate set (age, gender, HS education, and previous borrowing). In this exercise ``benefit'' is defined to mean having a conditional ATE above a particular threshold, taking the estimated conditional effects from the ``wide'' causal forest as ground truth. The plot compares the estimated percentage of borrowers who benefit, along with associated 95\% confidence bands, for three targeting rules: universal forced commitment in blue, targeting based on a random forest classification model in green, and targeting based on the logit model in red. For each of the classification models, the outcome variable is an indicator for whether the CATE estimate from the ``wide'' random forest model is positive. Each of the classification models produces an estimated probability of a positive CATE. For each, the assignment rule ranks borrowers by this estimated probability, and assigns the highest 90\% to forced commitment, to match the overall percentage of borrowers with positive estimated CATEs from the ``wide'' random forest model. Because this is an in-sample exercise, it overstates the actual performance of logit and RF-based targeting. 
+      %, the top \hl{XXX\%} of Both targeted Both of the targeted assignment rules are assigned by a the ``narrow'' causal forest in green, and targeting based on the logit model in red. The causal forest rule assigns a borrower to commitment if her estimated conditional ATE from the ``narrow'' covariate set is positive; the logistic regression rule assigns her to commitment if the estimated probability that her conditional effect is positive is greater than 0.5. 
+      %\todo[inline]{@Issac: Have I described this correctly? Also, is this an out-of-sample exercise. In other words, are we using a holdout sample to make these comparisons?}
+
+      %This figure plots the (reversed) cumulative densities of the estimated benefits from the casual forest for three different rules.  The blue line plots the HTEs from the `wide' random forest for the Forcing arm, which we take as the ground truth for actual impacts.  The green line plots HTEs if we first target individuals using the variables in the `narrow' forest, and only assign individuals to commitment if they are on a leaf whose predicted forcing benefit is positive.  The red line uses a logit regression to predict which individuals benefit from treatment, and assigns all individuals to the arm predicted to be best for them.
+
+\end{figure}
+\vspace{.1in}
+
+Figure \ref{targeting_rules} compares the in-sample performance of these targeting rules against a policy of universal forced commitment. The plot presents the estimated proportion of borrowers who benefit from a particular treatment assignment rule, along with associated 95\% confidence bands, where ``benefit'' is defined as having a conditional average treatment effect above a particular threshold. As above, we take the conditional average effects from the ``wide'' causal forest as ground truth for the purposes of this exercise. Because this is an in-sample exercise, the logistic and random forest classification rules have an unfair advantage: there is no adjustment for overfitting. In spite of this, their performance is quite unimpressive relative to a policy of universal forced commitment. The fraction of the whole sample incorrectly targeted when moving from universal forced commitment to targeting based on the narrow RF falls only from 9.78\% to 9.59\%. The logit targeting rule actually makes things marginally worse. 
+
+
+
+
+
 
 %We use \cite{atheygrf} \texttt{causal\_forest} of the \texttt{grf} library in $R$. The parameters used were:
 %\scriptsize{\textit{causal\_forest(

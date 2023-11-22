@@ -8,13 +8,13 @@ version 17.0
 * Author:	Isaac M
 * Machine:	Isaac M 											
 * Date of creation:	Feb. 28, 2023
-* Last date of modification: July. 25, 2023
+* Last date of modification: Nov. 21, 2023
 * Modifications: 
 * Files used:     
 		- 
 * Files created:  
 
-* Purpose: Partition of TuT by binary variable
+* Purpose: Decomposition of TuT by binary variable
 
 *******************************************************************************/
 */
@@ -92,8 +92,8 @@ gen ind1 = behavioral_te5 + 0.1
 
 
 	*Plot
-twoway (rcap tut1_lo tut1_hi behavioral_te5, msize(large) color(navy)) (scatter tut1 behavioral_te5, msize(large) color(navy)) ///
-	(rcap behavioral_te1_lo0 behavioral_te1_hi0 ind0, msize(large) color(maroon)) (scatter behavioral_te10 ind0, msize(large) color(maroon)) ///
+twoway (rcap tut1_lo tut1_hi behavioral_te5, msize(large) color(navy)) (scatter tut1 behavioral_te5, msymbol(square) msize(medium) color(navy)) ///
+	(rcap behavioral_te1_lo0 behavioral_te1_hi0 ind0, msize(large) color(maroon)) (scatter behavioral_te10 ind0, msymbol(diamond)  msize(medium) color(maroon)) ///
 	(rcap behavioral_te1_lo1 behavioral_te1_hi1 ind1, msize(large) color(dkgreen)) (scatter behavioral_te11 ind1, msize(large) color(dkgreen)), yline(0) xline(1.5, lpattern(solid)) legend(order(4 "TuT | X=0" 2 "TuT" 6 "TuT | X=1") pos(6) rows(1)) xlabel(0.5 " " 1 2 2.5 " ", valuelabel)  
 graph export "$directorio/Figuras/tut_beh_partition.pdf", replace	
 	

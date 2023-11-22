@@ -1,5 +1,23 @@
 /*
-Histogram of payment behaviour conditional on default
+********************
+version 17.0
+********************
+ 
+/*******************************************************************************
+* Name of file:	
+* Author:	Isaac M
+* Machine:	Isaac M 											
+* Date of creation:	-
+* Last date of modification: 
+* Modifications: 
+* Files used:     
+		- Master.dta
+* Files created:  
+
+* Purpose: Histogram of payment behaviour conditional on default
+
+
+*******************************************************************************/
 */
 
 set more off
