@@ -65,3 +65,13 @@ oldrepo.zip
 # ipynb
 /.ipynb_checkpoints/
 /.ipynb_checkpoints/**
+
+#Submissions
+/AER submission/
+/AER submission/**
+
+/JPE submission/
+/JPE submission/**
+
+/QJE submission/
+/QJE submission/**
