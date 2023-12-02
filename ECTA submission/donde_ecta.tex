@@ -1,80 +1,107 @@
- \documentclass[oneside,11pt]{article}
+% use option [draft] for initial submission
+%            [final] for the prepublication
+\documentclass[ecta,nameyear,final]{econsocart}
+%
+%\usepackage{}
+\RequirePackage[colorlinks,citecolor=blue,linkcolor=blue,urlcolor=blue,pagebackref]{hyperref}
 
-\input{preamble.tex}
-%%% HELPER CODE FOR DEALING WITH EXTERNAL REFERENCES
-\usepackage{xr}
-\makeatletter
-\newcommand*{\addFileDependency}[1]{
-  \typeout{(#1)}
-  \@addtofilelist{#1}
-  \IfFileExists{#1}{}{\typeout{No file #1.}}
-}
-\makeatother
+\startlocaldefs
 
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{float}         
+\usepackage{amsmath}
+\usepackage{amscd}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{bbm}
+\usepackage{dsfont}
+\usepackage{colortbl}
+\usepackage{comment}
+\usepackage{lscape}
+\usepackage{subcaption}
+\newtheorem{theorem}{Theorem}
+\newtheorem{claim}[theorem]{Claim}
+\newtheorem{prop}[theorem]{Proposition} 
+\newtheorem{cor}[theorem]{Corollary} 
+\newtheorem{assumption}{Assumption} 
+\newtheorem{lem}{Lemma} 
 
-\newcommand*{\myexternaldocument}[1]{
-    \externaldocument{#1}
-    \addFileDependency{#1.tex}
-    \addFileDependency{#1.aux}
-}
+\newcommand{\wh}{\widehat}
 
-%\myexternaldocument{OA}
+\newcommand{\E}{\mathbb{E}}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% DOCUMENT
+\endlocaldefs
+
+\usepackage[section]{placeins}
+
 \begin{document}
 
 
-\title{The controlled choice design and private paternalism in pawnshop borrowing\thanks{We want to thank Mauricio Romero and Anett John for advice and encouragement. Ricardo Olivares, Gerardo Melendez, and Alonso de Gortari provided excellent research assistance and Erick Molina helped with formatting. Jose Maria Barrero, Andrei Gomberg, Emilio Gutierrez, David Laibson, Aprajit Mahajan, Matt Rabin, Charlie Sprenger, and seminar participants at ITAM, USC, MSU, and UCSD provided valuable feedback. Research assistance was financed through faculty grants at ITAM. Our research partner had no say in the results.}}
-\author{Craig McIntosh \and Isaac Meza \and Joyce Sadka \and Enrique Seira \and Francis J.\ DiTraglia   \thanks{Seira:  MSU, \url{enrique.seira@gmail.com} (corresponding author); McIntosh:  University of California San Diego, \url{ctmcintosh@ucsd.edu}; Meza: Harvard University, \url{isaacmezalopez@g.harvard.edu}; Sadka: ITAM, \url{jsadka@itam.mx}; DiTraglia: Oxford, \url{francis.ditraglia@economics.ox.ac.uk}} }
-\date{This draft:  \today \\[2 cm]}
+\begin{frontmatter}
 
-%\vspace{.5in}
+\title{The controlled choice design and private paternalism in pawnshop borrowing}
+\runtitle{The controlled choice design and private paternalism}
 
+\begin{aug}
+% use \particle for den|der|de|van|von (only lc!)
+% [id=?,addressref=?,corref]{\fnms{}~\snm{}\ead[label=e?]{}\thanksref{}}
+%
+%% e-mail is mandatory for each author
+%
+%%% initials in fnms (if any) with spaces
+%
+\author[id=au1,addressref={add1}]{\fnms{Craig}~\snm{McIntosh}\ead[label=e1]{ctmcintosh@ucsd.edu}}
+\author[id=au2,addressref={add2}]{\fnms{Isaac}~\snm{Meza}\ead[label=e2]{isaacmezalopez@g.harvard.edu}}
+\author[id=au3,addressref={add3}]{\fnms{Joyce}~\snm{Sadka}\ead[label=e3]{jsadka@itam.mx}}
+\author[id=au4,addressref={add4}]{\fnms{Enrique}~\snm{Seira}\ead[label=e4]{enrique.seira@gmail.com}}
+\author[id=au5,addressref={add5}]{\fnms{Francis J.}~\snm{DiTraglia}\ead[label=e5]{francis.ditraglia@economics.ox.ac.uk}}
 
-\maketitle
-\thispagestyle{empty}
+% Addresses
+\address[id=add1]{%
+\orgdiv{Department of Economics}
+\orgname{University of California San Diego}}
+
+\address[id=add2]{%
+\orgdiv{Department of Economics}
+\orgname{Harvard University}}
+
+\address[id=add3]{%
+\orgdiv{Department of Economics}
+\orgname{Instituto Tecnologico Autonomo de Mexico}}
+
+\address[id=add4]{%
+\orgdiv{Department of Economics}
+\orgname{Michigan State University}}
+
+\address[id=add5]{%
+\orgdiv{Department of Economics}
+\orgname{University of Oxford}}
+\end{aug}
+
+%% Put support info here. Reminder: do not thank the handling coeditor anonymously or by name
+\support{We want to thank Mauricio Romero and Anett John for advice and encouragement. Ricardo Olivares, Gerardo Melendez, and Alonso de Gortari provided excellent research assistance and Erick Molina helped with formatting. Jose Maria Barrero, Andrei Gomberg, Emilio Gutierrez, David Laibson, Aprajit Mahajan, Matt Rabin, Charlie Sprenger, and seminar participants at ITAM, USC, MSU, and UCSD provided valuable feedback. Research assistance was financed through faculty grants at ITAM. Our research partner had no say in the results.}
+%
+\coeditor{\fnm{[Name} \snm{Surname}; will be inserted later]}
+
 \begin{abstract}
-
-%Many firms provide commitment devices that restrict individuals' choice, but shroud this. Shrouding suggests low demand for commitment. We show that private paternalism is beneficial in the pawnbroker context we study. 
-
-
-We use a novel three-armed RCT, including both forced and voluntary treatment arms, to provide a unique window into choice, heterogeneous treatment effects and paternalism in the context of pawnbroker lending. Forcing borrowers into commitment contracts with a regular repayment structure decreases the financial cost of pawn loans by 22\% inclusive of fees, increases the likelihood of recovering their pawn by 15\%, and increases the likelihood of repeat business by 19\%. Leveraging the special features of our experimental design, we go on to point-identify the effects of commitment on both the treated and the untreated simultaneously, along with the average selection on gains. We find large and significant effects of commitment even for borrowers who would not voluntarily choose it, and no evidence of selection on gains: borrowers who would freely choose commitment do not appear to benefit more than borrowers who would not. A detailed analysis of treatment effect heterogeneity suggests that the potential gains from targeting commitment based on observable characteristics are extremely small and that most borrowers stand to gain from a policy of universal forced commitment. %The justification for paternalistic commitment in this context appears to be over-optimism; 74\% of clients say they will certainly recover their pawn while in fact only 57\% do so. 
-
-
-
-%In the context of pawnbroker lending, we show that forcing people into commitment contracts with financial penalties for not paying on time \textit{decreases} their (fee-including) financial cost by 9.4\%, increases the likelihood of recovering their pawn by 26\%, and increases the likelihood of repeat business by almost 100\%. Using machine learning methods for estimating heterogeneous treatment effects, we find that more than {70}\% clients would reduce their financing cost with the commitment contract, however only 10\% choose it. Those that \textit{don't} choose it are predicted to be the ones who would benefit more. Relying on personal promises instead of fees as commitment triples take-up but has no effects on outcomes.
-
-%and one of the most understudied. In our context more than on half of borrowers default and lose their pawn and whatever they have paid towards recovering it. Compared to the status quo pay-at-anytime 3-month contracts, forcing borrowers to pay monthly and charge a penalty if they didn't --i.e. a commitment contract-- increased recovery of pawn by about 30\% and financial costs by 10\%. However when offered a choice between the two contracts only 10\% took the monthly payment one. A pecuniary commitment seems necessary. In an alternative arm, we made them promise to pay but removed the pecuniary penalty. This increased take up to 31\%, but had zero effect on financing cost or default. The forcing contract may be better than choice for naive present biased consumers.
-
+We use a novel three-armed RCT, including both forced and voluntary treatment arms, to provide a unique window into choice, heterogeneous treatment effects and paternalism in the context of pawnbroker lending. Forcing borrowers into commitment contracts with a regular repayment structure decreases the financial cost of pawn loans by 22\% inclusive of fees, increases the likelihood of recovering their pawn by 15\%, and increases the likelihood of repeat business by 19\%. Leveraging the special features of our experimental design, we go on to point-identify the effects of commitment on both the treated and the untreated simultaneously, along with the average selection on gains. We find large and significant effects of commitment even for borrowers who would not voluntarily choose it, and no evidence of selection on gains: borrowers who would freely choose commitment do not appear to benefit more than borrowers who would not. A detailed analysis of treatment effect heterogeneity suggests that the potential gains from targeting commitment based on observable characteristics are extremely small and that most borrowers stand to gain from a policy of universal forced commitment.
 \end{abstract}
 
-\vspace{.3in}
 
-\textbf{Keywords: } Private paternalism, choice, treatment on the untreated, heterogeneous treatment effects, commitment, overconfidence.
+\begin{keyword}
+\kwd{Private paternalism}
+\kwd{choice}
+\kwd{treatment on the untreated}
+\kwd{heterogeneous treatment effects}
+\kwd{commitment}
+\kwd{overconfidence}
+\end{keyword}
 
-\textbf{JEL codes:} G41, C93, O16, G21
-
-\newpage
-
-\pagenumbering{arabic}
-\etocdepthtag.toc{mtchapter}
-\etocsettagdepth{mtchapter}{subsection}
-\etocsettagdepth{mtappendix}{none}
-
-
-%NO MORAL HAZARD IN THE CONTRACT SINCE FULLY COLLATERALIZED
-%DOUBLE FAILURE: DEMAND LOW, AND DOES NOT WORK BY PEOPLE WHO TAKE IT.
-%PENALIZES THEM EVEN MORE ON SOMETHING THEY WERE ALREADY PENALIZED 
-%PROPENSITY TO CHOSE.
-%PULLING PUNISHMENT FORWARD --CHARGING RIGHT WHEN I MESS UP.
-%MAYBE ONLY IMPATIENT AND NAIVE END IN PAWNSHOPS
-%1) SELECT A RANDOM SAMPLE OF NEIGHBORHOODS, EXTERNAL VALIDITY, THE ONES THEY GO ARE NAIF AND
-%HYPERBOLIC
-%2) ASK TO CHOSE AMONG ALL CONTRACTS
-%3) CLASSIFY SOPHISTICATION AT BASELINE
-%4) HOW TO GET AT SHOCKS.  --BUT DOES NOT SQUARE WITH WHY CHARGING THEM FEES WORKE.
-%do shocks vary across strata, predict shocks.
-%DEEP BEHAVIORAL PAPER -- CAN WE REALLY PREDICT?
+\end{frontmatter}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%% Main text entry area:
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
 
@@ -161,14 +188,14 @@ As with payday lending, pawnshop lending is controversial. Regulators have conce
 
 To study this market, we partnered with one of the largest pawn shops in Mexico, an institution with more than one hundred branches spanning multiple states in Mexico. This lender (whom we refer to as `Lender P') has a simple and typical business model. 
 
-\paragraph{Appraising and lending.} Lender P takes gold jewelry as collateral in exchange for a fraction of the value of the piece, in cash. No other collateral and no credit history checks are needed. The transaction takes less than 10 minutes and is conducted at the branch in person between the client and the appraiser (i.e. a teller, see Figure \ref{PawnshopPicture}). The appraiser weighs the gold piece and runs tests on its purity. Based on these she assigns a gold value to the piece, stores it as collateral, and gives 70\% of the gold value of the piece in cash to the client. The borrower signs a 2-page contract with the conditions of the loan and leaves with the cash.
+\noindent \textbf{Appraising and lending.} Lender P takes gold jewelry as collateral in exchange for a fraction of the value of the piece, in cash. No other collateral and no credit history checks are needed. The transaction takes less than 10 minutes and is conducted at the branch in person between the client and the appraiser (i.e. a teller, see Figure \ref{PawnshopPicture}). The appraiser weighs the gold piece and runs tests on its purity. Based on these she assigns a gold value to the piece, stores it as collateral, and gives 70\% of the gold value of the piece in cash to the client. The borrower signs a 2-page contract with the conditions of the loan and leaves with the cash.
 
-\paragraph{Contract.} Lender P had only one type of contract, henceforth the \textit{status quo} contract. It stipulated that the interest rate was 7\% \textit{per month} compounded daily on the outstanding amount of the loan. The loan had a 90 days term with 15 days' grace period. The client could make payments at the branch at any time with no penalty for pre-payment. Under this status quo contract, there are no payment reminders or any other kind of interim contact between the lender and the borrower. If the client returns to pay the principal plus the accumulated interest within 105 days, she recovers her pawn, otherwise the pawnbroker keeps the piece \textit{and} any payments already made. Before the contract expires, the client had the right to renew for another 3 months by going to the pawnshop, paying the accumulated interest, and signing a new contract with exactly the same terms and the same piece as the original contract (38\% of borrowers renew at least once with a given pawn). This contract is standard in the industry.  Pawnshops make money in three ways: by reselling the jewelry left as collateral on defaulted loans, by charging interest on non-defaulted loans, and by keeping the payments made on defaulted loans. 
+\noindent \textbf{Contract.} Lender P had only one type of contract, henceforth the \textit{status quo} contract. It stipulated that the interest rate was 7\% \textit{per month} compounded daily on the outstanding amount of the loan. The loan had a 90 days term with 15 days' grace period. The client could make payments at the branch at any time with no penalty for pre-payment. Under this status quo contract, there are no payment reminders or any other kind of interim contact between the lender and the borrower. If the client returns to pay the principal plus the accumulated interest within 105 days, she recovers her pawn, otherwise the pawnbroker keeps the piece \textit{and} any payments already made. Before the contract expires, the client had the right to renew for another 3 months by going to the pawnshop, paying the accumulated interest, and signing a new contract with exactly the same terms and the same piece as the original contract (38\% of borrowers renew at least once with a given pawn). This contract is standard in the industry.  Pawnshops make money in three ways: by reselling the jewelry left as collateral on defaulted loans, by charging interest on non-defaulted loans, and by keeping the payments made on defaulted loans. 
 
-\paragraph{Borrowers.} The clients that pawned understood these terms well (as we verified in interviews).\footnote{87\% of clients report in our survey that they have pawned before.} These clients have little or no access to other types of loans and they value the convenience of pawn borrowing.  This population of pawn borrowers is economically vulnerable:  30\% of them could not pay either water, electricity \& gas or rent in the past 6 months; 89\% said they are pawning because of an emergency, and only 12\% stated it was to use in a ``non-urgent expense''.  When asked why they are pawning this piece, 5\% responded ``lost a family member'', ``a medical emergency'' (11\%), or ``an urgent expense'' (72\%).
+\noindent \textbf{Borrowers.} The clients that pawned understood these terms well (as we verified in interviews).\footnote{87\% of clients report in our survey that they have pawned before.} These clients have little or no access to other types of loans and they value the convenience of pawn borrowing.  This population of pawn borrowers is economically vulnerable:  30\% of them could not pay either water, electricity \& gas or rent in the past 6 months; 89\% said they are pawning because of an emergency, and only 12\% stated it was to use in a ``non-urgent expense''.  When asked why they are pawning this piece, 5\% responded ``lost a family member'', ``a medical emergency'' (11\%), or ``an urgent expense'' (72\%).
 
 
-\paragraph{Many borrowers lose their pawn.} Our context is also one with high borrower default: 43\% of clients lose their pawn in a time span of 230 days from the date of pawning. One potential explanation for high default is that clients are really just knowingly selling their gold piece through a pawn contract on which they intend to default. This appears unlikely for several reasons: (a) clients can easily sell the gold and obtain a higher amount of instant cash at gold-buying stores located close to almost all our pawnshop branches (see Figure \ref{GoldBuyers}), (b) the reported subjective value of the pawn is larger than the appraised value for 83\% of clients, (c) among those that lose their pawn, 29\% paid a positive amount towards its recovery and on average paid 42\% of the value of their loan (see Figure \ref{proxy_naive} in Appendix) --- this can only be rationalized if they expected to recover their pawn, and (d) 72\% of borrowers report a 100\% probability of repaying their loan (and 98\% at least a 50\% chance of repaying) in our baseline survey at the time they take the loan.  %Note that high default could be detrimental from the lender's point of view, since it may reduce the likelihood that the client becomes a return customer. 
+\noindent \textbf{Many borrowers lose their pawn.} Our context is also one with high borrower default: 43\% of clients lose their pawn in a time span of 230 days from the date of pawning. One potential explanation for high default is that clients are really just knowingly selling their gold piece through a pawn contract on which they intend to default. This appears unlikely for several reasons: (a) clients can easily sell the gold and obtain a higher amount of instant cash at gold-buying stores located close to almost all our pawnshop branches (see Figure \ref{GoldBuyers}), (b) the reported subjective value of the pawn is larger than the appraised value for 83\% of clients, (c) among those that lose their pawn, 29\% paid a positive amount towards its recovery and on average paid 42\% of the value of their loan (see Figure \ref{proxy_naive} in Appendix) --- this can only be rationalized if they expected to recover their pawn, and (d) 72\% of borrowers report a 100\% probability of repaying their loan (and 98\% at least a 50\% chance of repaying) in our baseline survey at the time they take the loan.  %Note that high default could be detrimental from the lender's point of view, since it may reduce the likelihood that the client becomes a return customer. 
 %Lender P was in fact explicitly interested in partnering with us to investigate how to reduce loan default, customer satisfaction, and repeat borrowing.
 
     
@@ -178,7 +205,6 @@ To study this market, we partnered with one of the largest pawn shops in Mexico,
 Borrowers' financial costs are composed of two main categories: the cost of losing their collateral, and the interest and fees incurred during the life of the loan. For each given loan we observe if the client lost her pawn ($\mathds{1}(\text{Default}_i)$). If a loan has been rolled over and is still outstanding, we consider it to be non-defaulted.  This approach is conservative in our context (biases treatment effects towards zero), as we show in detail in Section \ref{Experiment}. In our data 13\% of experimental loans are ongoing (i.e. censored) when the data period ends. Regarding interest, our administrative data classifies payments made in three types according to their payment allocation rules: payments to principal $P^C$, payments on generated interests $P^I$, and payments on penalty fees $P^F$. We observe each and every payment made under each category, its amount and date. 
 
 We define a borrower's financial cost as the total monetary outflow --in cash or pawn value-- from the borrower to the lender. This includes all payments the borrower made toward interest and fees, but also the net difference between the appraised value of the pawn and the loan amount (Value-Loan) in the event of default. When there is no default the borrower gets her pawn back and there is no loss of value for the borrower. Payments towards capital are considered a cost only when the borrower defaults, as she does not get reimbursed for these. Note however that when she does not default payments to capital are not an actual outflow, as they sum up to the value of the loan the lender disbursed in the first place. The formula for financial cost for person $i$ is thus as follows: %\footnote{We alternatively defined financial cost as $\text{Financial Cost}_i = \sum_t P^I_{it} + \sum_t P^F_{it} + \sum_t P^C_{it} + \mathds{1}(\text{Default}_i) \times (\text{Value}_i)-\text{Loan}_i$, and obtained similar results.}:
-
 \begin{align*}
     \text{Financial Cost}_i =&  \sum_t P^I_{it} +\sum_t P^F_{it}  
      + \mathds{1}(\text{Default}_i) \times (\text{Value}_i-\text{Loan}_i + \sum_t P^c_{it})
@@ -189,13 +215,27 @@ We define a borrower's financial cost as the total monetary outflow --in cash or
 We consider the above to be an accurate measure of financial cost in pesos. However, we also report results incorporating two non-financial costs: (i) using the subjective value of the pawn reported by the borrower in place of its appraised gold value, and (ii) adding a measure of travel expenses and the opportunity cost of time, as clients have to go to the branch in order to make payments.
 
 As a second measure of cost we calculate the Annual Percentage Rate (APR) in order to express the cost as a percentage of the loan, per year, inclusive of default costs.\footnote{Loan term takes into account the entire loan period, including extensions of the loan through refinancing.} The standard definition is given in the following formula:
-
-
 \begin{align*}
     (\text{APR})_i =&\left( 1 + \frac{\frac{\text{Financial Cost}_i}{\text{Loan}_i}}{\text{loan term}_i}\right)^{\text{loan term}_i}-1 
 \end{align*}
 
-\vspace{.1in}
+\begin{figure}
+    \begin{center}
+    \begin{subfigure}{.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/hist_fc.pdf}
+        \caption{}
+    \end{subfigure}
+     \begin{subfigure}{0.45\textwidth}
+       \centering
+      \includegraphics[width=\textwidth]{Figuras/hist_apr.pdf}
+      \caption{}
+    \end{subfigure}
+    \end{center}
+ \caption{Financial cost. Panel (a) presents a histogram of financial cost for the control group. The figure plots separately the financial cost separately for borrowers who lose the pawn (blue) and those that recover it (transparent).  Panel (b) is analogous but displays the APR.}
+     \label{fc_hist}
+      %\footnotesize{ } \textit{Do file: }  \texttt{hist\_fc.do}
+\end{figure}
 
 Figure \ref{fc_hist}(a) plots a histogram of this financial cost in pesos for all loans in the experiment, stratified by whether we observed that they ended in default or recovery of the pawn. Figure \ref{fc_hist}(b) shows the analogous histogram for the APR.
 %defaulted (44\%), recovered their pawn (43\%), or whether they are censored in our data (13\%). 
@@ -222,7 +262,6 @@ To elicit demand for the monthly payment contract, we include an arm that allows
 
 %In order to explore lower-cost forms of structure, we also include arms that feature `soft' commitment, asking or requiring individuals to follow the more regular payment structure of the commitment contract but then providing no reminders or repercussions for failing to do so.  A substantial literature documents that people are averse to to breaking their promises, and are willing to incur in monetary losses in trying to keep them. This provides a potentially very attractive way to drive better repayment behavior at low pecuniary cost to clients.  Numerous lab experiments and at least one field experiment on financial services show that such soft commitment can work \citep{Craig}.\footnote{Grameen Bank for instance makes clients recite a promise at each center weekly meeting.The exact promise repeated by clients live is this: ``\textit{We pledge to attend regularly the weekly Center meetings, to utilize our loans for the purpose approved, to save and pay our installments weekly, to use our increased incomes for the benefit of our families, to ensure that other members of our group and Center do likewise and to take collective responsibility if they do not.''}}  The soft treatments mimic the commitment arms as closely as possible without imposing external remainders or pecuniary consequences for failing to meet terms.
 
-\vspace{.2in}
 \noindent \textbf{Treatment Arms.} Treatments were randomized at the branch-day level. Each day a computer randomly assigned which types of contracts were on offer that day in the branch, and the IT system would only offer these.  We have 3 different experimental arms\footnote{The experiment included other independent arms that involved no fee penalties and did not emphasize the structure of payments. These are being analyzed in a separate paper.} 
 
 
@@ -236,7 +275,17 @@ To elicit demand for the monthly payment contract, we include an arm that allows
 
 We did not allocate an equal number of days across arms, since we were interested in having more power in some of them. The number of branch days allocated to each were 84 to control, 80 to forced commitment, and 93 to choice. See Figure \ref{exp_description} for a CONSORT-style diagram of the study design and recruitment.
 
-%The existence of a choice arm allows us not only to measure if there is demand for such a contract, but who demands it, not only in demographic terms, but in terms of potential treatment effects. One may worry for instance that low sophistication from pawn-loans users could lead to the `wrong' people choosing the structured commitment contract. To examine this issue, we included an arm that assigns all individuals to the commitment contract so that we are able in essence to form three counterfactual outcomes; no commitment, commitment, and the chosen commitment. This design allows us to investigate the repercussions of choice not only for those who \textit{do} choose (as is the case in a standard LATE design), but also the implications of choice for those who \textit{do not} choose. This design is innovative and critical for our purposes, as it enables us to explore whether or not forcing people into a structured payment contract could be more beneficial than allowing choice for a significant fraction of them.
+
+\begin{figure}     
+\begin{center}
+\begin{subfigure}{\textwidth}
+        \includegraphics[width=\textwidth]{Figuras/consort.pdf}
+    \end{subfigure}
+  \end{center}
+ \caption{Experiment description}
+     \label{exp_description}
+%\textit{Do file: }  \texttt{ss\_att.do}
+\end{figure}
 
 
 \vspace{.2in}
@@ -249,9 +298,9 @@ Branch personnel did not know which treatment would be assigned to each day and 
 Some clients pawned more than one time during the duration of the experiment, with 14\% pawning 2 times and 8\% more than 2 times. To have a clean comparison we are considering only the first pawn conducted during the experimental window. It is also the case that 30\% of those first pawns involve more than 1 loan, as 2 or more pieces of gold were submitted. We treat each of them as separate loans. In the appendix we show that our results are robust to this analysis choice. 
 
 
-\paragraph{Timeline.} Figure \ref{exp_description} shows the experimental timeline along with the length of time for which we observe payments. For loans made in the first week of the experiment, we observe up to 338 subsequent days of loan information; for loans made in the last week we observe up to 235 days. Figure \ref{exp_description} also illustrates the number branch-days per arm, the number of loans, and the number of surveys. %Not every contract has a survey for several reasons, we have survey information for \hl{XXX\%} of them. There were two reasons: \hl{XXX}.
+\noindent \textbf{Timeline.} Figure \ref{exp_description} shows the experimental timeline along with the length of time for which we observe payments. For loans made in the first week of the experiment, we observe up to 338 subsequent days of loan information; for loans made in the last week we observe up to 235 days. Figure \ref{exp_description} also illustrates the number branch-days per arm, the number of loans, and the number of surveys. %Not every contract has a survey for several reasons, we have survey information for \hl{XXX\%} of them. There were two reasons: \hl{XXX}.
 
-\paragraph{Explanation.} Since we are interested in measuring the effect of different contract terms on client behavior, it is important that clients understand these terms. To ensure this, we built two ``check-points'' as follows.  Two enumerators were present in each branch for the whole day during the duration of our experiment. At the first checking, these enumerators explained the contract terms to clients, emphasizing that the frequent payment contract involved the commitment to pay a third of the outstanding amount \underline{each month}, along with the nature of the fees associated with the Commitment arm. Figure \ref{ExplanatoryMaterial} presents an excerpt of the materials we used to explain the contracts, translated into English. The explanation took about 3-5 minutes and continued until the client said she understood the contract terms. Enumerators then asked clients to explain the contract back to them before correcting any misunderstandings. At the second check-point the appraiser made clients read the ``Contract Terms Summary'' sheet shown in Figure \ref{PaperSlip} before they signed the contract. This summary was a piece of paper given to clients after their piece had been appraised and the size of the loan determined, but before they signed their contract. The appraiser read it aloud and then asked the client to sign it as proof of understating. %The sheet clearly indicates that this contract is a monthly payment one (numeral 1), that there is a penalty of 2\% for paying late (numeral 2), and the 3 payment dates (numeral 3). 
+\noindent \textbf{Explanation.} Since we are interested in measuring the effect of different contract terms on client behavior, it is important that clients understand these terms. To ensure this, we built two ``check-points'' as follows.  Two enumerators were present in each branch for the whole day during the duration of our experiment. At the first checking, these enumerators explained the contract terms to clients, emphasizing that the frequent payment contract involved the commitment to pay a third of the outstanding amount \underline{each month}, along with the nature of the fees associated with the Commitment arm. Figure \ref{ExplanatoryMaterial} presents an excerpt of the materials we used to explain the contracts, translated into English. The explanation took about 3-5 minutes and continued until the client said she understood the contract terms. Enumerators then asked clients to explain the contract back to them before correcting any misunderstandings. At the second check-point the appraiser made clients read the ``Contract Terms Summary'' sheet shown in Figure \ref{PaperSlip} before they signed the contract. This summary was a piece of paper given to clients after their piece had been appraised and the size of the loan determined, but before they signed their contract. The appraiser read it aloud and then asked the client to sign it as proof of understating. %The sheet clearly indicates that this contract is a monthly payment one (numeral 1), that there is a penalty of 2\% for paying late (numeral 2), and the 3 payment dates (numeral 3). 
 %Finally, the bottom of the Figure \ref{PaperSlip} shows the paper slip we used for the promise arms. The clients had to put their name on a slip of paper where they stated they promised to pay monthly.
 We are confident the overwhelming majority of clients understood the contracts and that those in the choice arm made informed choices.
 %\footnote{That we can systematically predict demand based on consumer characteristics and measured beliefs suggest that take up is not random.}
@@ -259,18 +308,29 @@ We are confident the overwhelming majority of clients understood the contracts a
 
 \subsection{Data}
 
-\paragraph{Administrative data.} The study exploits two types of data: administrative data from the lender, and a short survey that we implemented. The administrative data contains a unique identifier for each client, an identifier for the piece she is pawning, and the transactions relating to that piece. These transactions include the value of the item as assessed by the appraiser, the amount of money loaned (70\% of the item's value), the date of the pawn transaction, and the type of contract for that pawn: commitment or status quo. Within the period of the loan, we followed each transaction related to that piece in the administrative data: when payments were made and for what amounts, whether there was default (i.e.\ the client lost her pawn), and whether any late-payment fees were imposed. After the experimental loan, we are able to track subsequent behavior and to see whether that borrower took a subsequent loan.  We have this information for all the pawns that occurred in the experiment's 6 branches between August 2, 2012 and August 13, 2013. This includes all the pawns that took place during our experiment along with those that one month before and eight months after our experiment. Figure \ref{exp_description} shows the design and timing of the experiment, along with the sample sizes in each arm. The experiment comprises 8,519 pawns while our administrative data covers a total of 26,180 pawns.
+\noindent \textbf{Administrative data.} The study exploits two types of data: administrative data from the lender, and a short survey that we implemented. The administrative data contains a unique identifier for each client, an identifier for the piece she is pawning, and the transactions relating to that piece. These transactions include the value of the item as assessed by the appraiser, the amount of money loaned (70\% of the item's value), the date of the pawn transaction, and the type of contract for that pawn: commitment or status quo. Within the period of the loan, we followed each transaction related to that piece in the administrative data: when payments were made and for what amounts, whether there was default (i.e.\ the client lost her pawn), and whether any late-payment fees were imposed. After the experimental loan, we are able to track subsequent behavior and to see whether that borrower took a subsequent loan.  We have this information for all the pawns that occurred in the experiment's 6 branches between August 2, 2012 and August 13, 2013. This includes all the pawns that took place during our experiment along with those that one month before and eight months after our experiment. Figure \ref{exp_description} shows the design and timing of the experiment, along with the sample sizes in each arm. The experiment comprises 8,519 pawns while our administrative data covers a total of 26,180 pawns.
 
-\paragraph{Survey data.} An additional team of enumerators stationed in each branch asked clients to complete a 5-minute survey \textit{before} going to the teller window to appraise their piece and before they learned which contracts would be available on that day. The survey was intentionally short to avoid discouraging the potential clients from pawning. It measured demographics, proxies for income/wealth, education, present-biased preferences, experience pawning, if family or friends commonly asked for money, how time-consuming and costly it was to come to the branch, the subjective probability of recovering the piece that they intended to pawn, the subjective value of their piece in money terms (how much money they would sell it for), among others. We surveyed 7,210 clients, and our survey response rate was 78\% among clients who took loans.\footnote{Appendix \ref{baseline_survey} transcribes the questionnaire in English.} %\footnote{We also surveyed clients before and after the experiment, so our survey covers a larger sample that we are not using in this paper.}. 
+\noindent \textbf{Survey data.} An additional team of enumerators stationed in each branch asked clients to complete a 5-minute survey \textit{before} going to the teller window to appraise their piece and before they learned which contracts would be available on that day. The survey was intentionally short to avoid discouraging the potential clients from pawning. It measured demographics, proxies for income/wealth, education, present-biased preferences, experience pawning, if family or friends commonly asked for money, how time-consuming and costly it was to come to the branch, the subjective probability of recovering the piece that they intended to pawn, the subjective value of their piece in money terms (how much money they would sell it for), among others. We surveyed 7,210 clients, and our survey response rate was 78\% among clients who took loans.\footnote{Appendix \ref{baseline_survey} transcribes the questionnaire in English.} %\footnote{We also surveyed clients before and after the experiment, so our survey covers a larger sample that we are not using in this paper.}. 
 We only use the survey in Section \ref{Paternalism} of the paper.
 
 
 \subsection{Experimental Integrity}
 \label{sec:integrity}
 
-\paragraph{Attrition.} There are two main channels through which attrition could complicate the interpretation of our results. The first, and more serious, is the possibility that clients might change their pawning decisions in response to the treatment they encounter in a given branch on the day they enter the branch.  If this occurred it would introduce a self-selection dimension which would still reflect the overall impact of a treatment for the lender's portfolio but would no longer deliver \textit{ceteris paribus} effects of treatments on individual borrowers.  Narrative reports and the way the treatment was implemented make us believe that selection into treatment is unlikely.\footnote{Potential clients did not know that different days could have different contracts. If they asked, appraisers said that whatever was offered on that day was the only available contract for an undetermined length of time. Anecdotally, appraisers told us that they did not think refusals differed across arms, and our enumerators informed us that potential clients rarely left the branch without pawning. Lender P also never complained to us that our different treatments were hurting sales.} 
+\noindent \textbf{Attrition.} There are two main channels through which attrition could complicate the interpretation of our results. The first, and more serious, is the possibility that clients might change their pawning decisions in response to the treatment they encounter in a given branch on the day they enter the branch.  If this occurred it would introduce a self-selection dimension which would still reflect the overall impact of a treatment for the lender's portfolio but would no longer deliver \textit{ceteris paribus} effects of treatments on individual borrowers.  Narrative reports and the way the treatment was implemented make us believe that selection into treatment is unlikely.\footnote{Potential clients did not know that different days could have different contracts. If they asked, appraisers said that whatever was offered on that day was the only available contract for an undetermined length of time. Anecdotally, appraisers told us that they did not think refusals differed across arms, and our enumerators informed us that potential clients rarely left the branch without pawning. Lender P also never complained to us that our different treatments were hurting sales.} 
 
 If the treatments had induced demand-side selection, we would expect to see that the number of pawns successfully conducted differ in a systematic way across arms. That is, if potential borrowers disliked being forced into a commitment contract, we would expect a lower number of pawns on branch days where only the commitment contract is available compared to control days. Table \ref{attrition_table} shows that this is not the case. There is no difference at all between the Control and Forced Commitment arm in terms of the number of pawns per branch-day. Although we cannot reject equality across the three arms (p-value=0.21), the Choice arm appears to have a somewhat larger number of borrowers than the Control and Forced arms.\footnote{p-value=0.23 and 0.12 respectively.} This seems to be due to sampling variability. The differences across arms are smaller when we look at medians, or when we look at the number of borrowers pawning (some borrowers pawn more than one piece). Figure \ref{boxplot_attrition} shows that full distribution of loans per day is very similar across treatment arms. The only noticeable difference is that the choice arm has a few more positive outliers.\footnote{If we winzorize at the 90th percentile, the mean number of branch-day pawns becomes identical across arms.}
+
+\begin{table}
+\caption{Limited and balanced attrition}
+\label{attrition_table}
+\begin{center}
+\scriptsize{\input{./Tables/Attrition.tex}}
+\end{center}
+\legend{Each row in this table 
+ corresponds to a regression. The dependent variables are: the number of pawns-loans originated per day per branch, the number of borrowers per day-branch, a variable indicating whether a person who answered the baseline survey (before knowing contract terms) ended up pawning, and an indicator of whether the person that obtained the loan answered the baseline survey. Each dependent variable is regressed in a multivariate OLS regression against the experimental arms indicators (control, forced commitment, choice). The table reports the coefficients on each of these indicators, as well as the p-value of an F-test of the null hypothesis of equality of the three coefficients. Figure \ref{boxplot_attrition}, in the appendix shows a box-plot of the first two variables, showing the distribution across arms is balanced.}
+%\textit{Do file: } \texttt{ss\_att.do}
+\end{table}
 
 The bottom panel of Table \ref{attrition_table} shows balance in a more focused way, given that the surveys were conducted prior to the revelation of treatment status. We find that in no arm did more than three percent of individuals who responded to the survey go on to refuse loans. That is, the overwhelming marjority of potential borrowers did not leave the branch after learning which contract was on offer. Moreover, the extremely small fraction that did leave is balanced across arms.  Therefore it appears that the treatments have not induced any endogenous shifts in the composition of borrowers. This is consistent with the findings of Table \ref{SS}.
 % To test for this, we examine the number of loans given per branch-day, with specific attention to whether the Forced Commitment arm led to a lower number of borrowers per day. The first row of Table \ref{attrition_table} shows there is no difference between the Control and Forced Commitment arm in terms of the number of pawns per branch-day.\footnote{The Choice arm appears to have a somewhat larger number of borrowers than the Control arm (p-value=0.06), but we cannot reject equality with the Forced Commitment arm (p-value=0.41), or across all arms (p-value=0.16).}  The second row makes the same point in a more focused way, given that the surveys were conducted prior to the revelation of treatment status.  In no arm did more than three percent of individuals who responded to the survey go on to refuse loans, and neither these rates nor the rate of survey response are different across arms.  Therefore it appears that the treatments have not induced any endogenous shifts in the composition of borrowers.
@@ -287,17 +347,18 @@ A more subtle form of sample selection could arise if the treatments induce borr
 %\subsection{More on implementation} %\label{implementation}
 
     
-\paragraph{Balance.} Table \ref{SS} presents summary statistics for the sample of actual borrowers across arms, showing that our randomization succeeded in achieving balance across the experimental arms. Panel A uses administrative data for the universe of borrowers in each arm, and shows that loan balances and the days on the week on which individuals pawned are comparable across arms. The average loan size is \$2267 MXN (\$130 USD). Panel B of Table \ref{SS} reports summary statistics across arms from our survey data. Among the 78\% of borrowers who completed our survey, 73\% of clients are women, the average age is 43 years, 66\% have completed at least a high school education, and 87\% have pawned before, suggesting that our sample largely consists of experienced borrowers. Finally, borrowers' subjective probability of recovering their pawn is close to 92\% on average, in stark contrast to the \emph{actual} recovery rate of 43\%; borrowers are highly overconfident on average. The average subjective value they report for the items they pawn is 4084 MXN, much larger than the average appraised gold value of 3238 MXN. While this could arise either from overconfidence in valuation or from undervaluation by the lender, in any case it is \textit{prima facie} evidence that loss of the pawn should be undesirable relative to the quantity of liquidity leveraged by the asset. 
+\noindent \textbf{Balance.} Table \ref{SS} presents summary statistics for the sample of actual borrowers across arms, showing that our randomization succeeded in achieving balance across the experimental arms. Panel A uses administrative data for the universe of borrowers in each arm, and shows that loan balances and the days on the week on which individuals pawned are comparable across arms. The average loan size is \$2267 MXN (\$130 USD). Panel B of Table \ref{SS} reports summary statistics across arms from our survey data. Among the 78\% of borrowers who completed our survey, 73\% of clients are women, the average age is 43 years, 66\% have completed at least a high school education, and 87\% have pawned before, suggesting that our sample largely consists of experienced borrowers. Finally, borrowers' subjective probability of recovering their pawn is close to 92\% on average, in stark contrast to the \emph{actual} recovery rate of 43\%; borrowers are highly overconfident on average. The average subjective value they report for the items they pawn is 4084 MXN, much larger than the average appraised gold value of 3238 MXN. While this could arise either from overconfidence in valuation or from undervaluation by the lender, in any case it is \textit{prima facie} evidence that loss of the pawn should be undesirable relative to the quantity of liquidity leveraged by the asset. 
 
-%Panel C repeats the exercise in Panel B, but now only for those borrowers answered the survey and then went on to take a loan.  Since we have aready shown that the attrition rate of borrowers after completing the survey was very low (3\% on average) it is unsurprising that these two panels are similar.  Overall, we find both the loan attributes and the survey attributes of borrowers to be similar across arms.  The experiment appears to have been successful in generating a balanced sample for analysis.
-
-
-
-
-
-%Panel A describes variables from the administrative data.  The average number of pawns per day per branch is 34. Only 42\% of clients recover their pawn. Even those that recover their pawn tend to pay it back at the last moment, with only 40\% paying before the 90th day.
-
-
+\begin{table}[htbp]
+\caption{Summary statistics and Balance}
+\label{SS}
+\begin{center}
+\scriptsize{\input{./Tables/SS.tex}}
+\end{center}
+\legend {This table has two panels. Panel A uses administrative data at the loan level, while Panel B uses survey data. Each row in this table corresponds to a regression, where the level of observation is the individual loan originated. The dependent variables of these regressions are displayed in the first column. Each dependent variable is regressed in a multivariate OLS regression against the experimental arms indicators (control, forced commitment, choice). The table reports the coefficients on each of these indicators, as well as the p-value an F-test of the null hypothesis of equality of the three coefficients. The admin data was a very limited set of pre-determined variables. The dependent variables in Panel A are the loan amount in pesos, and an indicator for whether the day of the loan origination was a weekday (as opposed to weekend). The dependent variables in Panel B from the survey (see the questions in Table \ref{baseline_survey}. Subjective value of the pawn (how much would the client be willing to sell it for (Q3), an indicator for having trouble paying bills in the last 6-months (Q28), present bias (constructed from questions Q10 and Q29 in the standard way as in \cite{Ashraf}), an indicator for whether they make expenses budget for the month ahead of time. The subjective probability of recovery was elicited a la Manski (from 0 to 100 what is the probability that you will recoup your pawn), pawned before is a dummy=1 if the client declares to have pawned before (although not necessarily with Lender $P$) age is in year, +High-school is a dummy that indicates if the client has completed high school. 
+}
+%\textit{Do file: } \texttt{ss\_att.do}
+\end{table}
 
 \section{Average Treatment Effects} \label{Experiment}
 
@@ -305,7 +366,7 @@ We begin by estimating average treatment effects of assignment to the Forced com
 
 %\subsection{Average Treatment Effects}
 
-\paragraph{Specification.} Table \ref{main_impact_table} presents estimates and standard errors from a standard pooled experimental regression 
+\noindent \textbf{Specification.} Table \ref{main_impact_table} presents estimates and standard errors from a standard pooled experimental regression 
 \begin{equation} \label{basic_reg}
     y_{ij} = \alpha + \beta^F T_{i}^F + \beta^C T_{i}^C + \gamma X_{ij} + \epsilon_{ij}
 \end{equation}
@@ -316,53 +377,98 @@ Our two primary outcome variables are financial cost in pesos and Annual Percent
 Results for these outcomes appear in columns (1) and (7) of Table \ref{main_impact_table}.
 The remaining columns decompose the financial cost and APR outcomes into their components: interest payments (col 2), payment towards any fees incurred (col 3), payments toward the principal (col 4). Column 5 shows the value of lost pawn conditional on losing it.  In column 6 the dependent variable is a dummy indicating default.  Finally, column 7 rescales financial cost as a function of loan size to estimate causal effects on incurred APR.\footnote{As we explained above, loans can be extended for an additional 3 months by paying the interest owed and restarting the loan under the same treatment conditions. This means that some loans extend for more than 3 months. We consider the entire flow of cost for the duration of our sample.}  
 
+\begin{table}
+\caption{Effects on Financial Cost}
+\label{main_impact_table}
+\begin{center}
+\resizebox{0.9\textwidth}{!}{
+\scriptsize{\input{./Tables/decomposition_main_te.tex}}
+}
+\end{center}
+\legend{This table shows the treatment effects for our core pecuniary outcomes. Each column is a different regression for different outcomes on an indicator for the forced and choice arms, following specification in equation \ref{basic_reg}. Columns (1) \& (7) analyze our core financial cost measures, while the rest of the columns decompose these into finer components.
+A few borrowers take more than one loan on the first day they appear in an experimental branch.  These are treated as different observations. Table \ref{multiple_loans} shows our results are similar when dealing with the multiplicity of loans per borrower. Each regression includes branch and day-of-week FE. Standard errors are clustered at the branch-day level. }
+
+%\textit{Do file: } \texttt{decomposition\_main\_te.do}
+\end{table}
 
 
 
 
-\paragraph{Results.} The results are stark. The Forced Commitment arm yields large and significant decreases in the cost of loans to clients, as measured either by financial cost or APR. Despite causing an increase in fees, the Forced arm leads to a decrease of 204 pesos in the costs of borrowing (out of a group mean of 942 in the status quo), equivalent to 22\% reduction as a fraction of mean cost. These cost savings arise from a 6.6 percentage point (pp) decrease in the probability of default (out of a baseline mean of 44pp,  implying cost savings of 79 pesos), and also from lower interest payments since, as we will document below, the commitment contract speeds up payments so the interest rate applies to a smaller principal. This translates into a large reduction in APR. A credit product that has an effective average APR of 57\% in the status quo arm (inclusive of default) is reduced to a cost of 46\% through the imposition of a more regularized payment structure. This is in stark contrast to \cite{Pande} for instance.  
+\noindent \textbf{Results.} The results are stark. The Forced Commitment arm yields large and significant decreases in the cost of loans to clients, as measured either by financial cost or APR. Despite causing an increase in fees, the Forced arm leads to a decrease of 204 pesos in the costs of borrowing (out of a group mean of 942 in the status quo), equivalent to 22\% reduction as a fraction of mean cost. These cost savings arise from a 6.6 percentage point (pp) decrease in the probability of default (out of a baseline mean of 44pp,  implying cost savings of 79 pesos), and also from lower interest payments since, as we will document below, the commitment contract speeds up payments so the interest rate applies to a smaller principal. This translates into a large reduction in APR. A credit product that has an effective average APR of 57\% in the status quo arm (inclusive of default) is reduced to a cost of 46\% through the imposition of a more regularized payment structure. This is in stark contrast to \cite{Pande} for instance.  
 
 In contrast, to the impressive effectiveness of the Forced commitment arm, the Choice arm fails to deliver significant changes in any measure, with the exception of an increase in fees, for which we are highly powered, since this outcome is zero for every control observation. Giving borrowers the choice of contract did not decrease financial cost, whereas forcing them into a structured payment contract dramatically reduced it. As we explore later in the paper, the null effect of the Choice arm arises because few borrowers demanded commitment (consistent with \cite{Ashraf}, \cite{Gine}, \cite{Ted}, \cite{Royer}, \cite{Sprenger}), with 89\% choosing the less effective status-quo contract.
 
-\paragraph{Intermediate outcomes.} To shed light on the mechanisms behind the ATEs discussed above, Table \ref{mechanisms} shows how commitment affects a number of intermediate outcomes. One can group the types of intermediate outcomes into two categories: measures of the speed of pawn recovery, and measures of the decision of when to default. While the first payment for borrowers in the status-quo contract occurs on average only on day 82 (on a 90 days contract), borrowers in the forced commitment arm start paying 13.8 days earlier on average (col 1). Not only do they start paying earlier, the first payment is also 7.9\% larger (col 2), and a larger fraction of 9.7\% actually pay in full and recover their pawn in the first payment, compared to 30\% in the status quo contract (col 3). The resolution of the loan (either by payment or default) is shortened by 27.9 days (col 4), and conditional on recovery (an endogenous control) by 17.9 days (col 5).
+\noindent \textbf{Intermediate outcomes.} To shed light on the mechanisms behind the ATEs discussed above, Table \ref{mechanisms} shows how commitment affects a number of intermediate outcomes. One can group the types of intermediate outcomes into two categories: measures of the speed of pawn recovery, and measures of the decision of when to default. While the first payment for borrowers in the status-quo contract occurs on average only on day 82 (on a 90 days contract), borrowers in the forced commitment arm start paying 13.8 days earlier on average (col 1). Not only do they start paying earlier, the first payment is also 7.9\% larger (col 2), and a larger fraction of 9.7\% actually pay in full and recover their pawn in the first payment, compared to 30\% in the status quo contract (col 3). The resolution of the loan (either by payment or default) is shortened by 27.9 days (col 4), and conditional on recovery (an endogenous control) by 17.9 days (col 5).
 
-A very undesirable outcome from the borrower's perspective is to pay towards the loan without paying in full, i.e. defaulting on the loan while still making some payments. In this case, they lose both the collateral and any payments made toward recovery. One could be concerned that by encouraging them to pay monthly, more borrowers might end up in this dire scenario in the Forced commitment contract. Column 6 shows this is not the case. On the contrary, 7 percentage points fewer borrowers end up in this situation, compared to 12 percent in the status quo contract. Conditional on defaulting those assigned to the Forced commitment contract have paid 4.1\% less of their loan (col 7), and a 14 percent higher proportion of borrowers pay zero conditional on defaulting, an outcome analogous to ``selling their pawn'' (col 8). One interpretation of this bifurcation is that the Forced commitment contract forces borrowers to think earlier about whether they will indeed be able to eventually recover their pawn, and separates borrowers into those ``selling'' their pawn and those recovering it, reducing the share of undecided borrowers that end up paying interest and end up losing the pawn anyway. This mechanism may also help to explain why the Forced commitment contract does not increase the number of visits to the branch to pay (col 10): those recovering their pawn visit more, but those defaulting have 0.20 fewer visits (col 11).\footnote{Figure \ref{hist_payments} plots the histogram of the timing of payments in each arm, and shows that commitment does appear to bind in that it generates a highly regular pattern of payments at 30, 60, and 90 days after the loan is taken.} Finally, Column 9 shows that treatment effects are concentrated in the intensive margin as treatment does not affect the fraction of clients who pay a positive amount towards pawn recovery.
+A very undesirable outcome from the borrower's perspective is to pay towards the loan without paying in full, i.e. defaulting on the loan while still making some payments. In this case, they lose both the collateral and any payments made toward recovery. One could be concerned that by encouraging them to pay monthly, more borrowers might end up in this dire scenario in the Forced commitment contract. Column 6 shows this is not the case. On the contrary, 7 percentage points fewer borrowers end up in this situation, compared to 12 percent in the status quo contract. Conditional on defaulting those assigned to the Forced commitment contract have paid 4.1\% less of their loan (col 7), and a 14 percent higher proportion of borrowers pay zero conditional on defaulting, an outcome analogous to
+``selling their pawn'' (col 8). One interpretation of this bifurcation is that the Forced commitment contract forces borrowers to think earlier about whether they will indeed be able to eventually recover their pawn, and separates borrowers into those ``selling'' their pawn and those recovering it, reducing the share of undecided borrowers that end up paying interest and end up losing the pawn anyway. This mechanism may also help to explain why the Forced commitment contract does not increase the number of visits to the branch to pay (col 10): those recovering their pawn visit more, but those defaulting have 0.20 fewer
 
-\paragraph{Other costs.} We have shown that forcing borrowers to take the monthly payment contract significantly reduces their financial costs. Although the paper focuses on financial costs, we consider three additional costs here. First, we include the cost of visiting the branch to make a payment. This includes the self-reported transport cost (most use public transport), as well as the opportunity cost of time. To err on the conservative side, we subtract a whole day's minimum wage the day of the visit, instead of just the wage corresponding to a couple of hours. Second, we consider a rough proxy of the value of liquidity that borrowers lose by paying sooner. To do this we add the interest costs on to the payments in the forced commitment arm and recompute treatment effects with these payments compounding daily (as if they had to borrow in order to make the more rapid payments). Thirdly, so far we have valued the collateral at the gold value appraised by the lender, but the piece may be worth more to the borrower than its gold value.  For many of them the pawned jewelry has sentimental value. This is reflected in the subjective valuation they reported in the survey which is 87\% higher on average. Our third extra cost considers this higher value.
+
+\begin{landscape}
+\begin{table}
+\caption{Effects on intermediate outcomes}
+\label{mechanisms}
+\begin{center}
+\resizebox{1.30\textwidth}{!}{
+\scriptsize{\input{./Tables/mechanism.tex}}
+}
+\end{center}
+\legend{This table explores treatment effects in ``intermediate variables''. Each column represents regression output for different dependent variables following equation (\ref{basic_reg}). Panel A focuses on variables related to the speed of payment. While Panel B focuses on variables related to default, and Panel C related to visits. 
+% The outcome variables are as follows:  number of days elapsed between origination and first payment (col 1); percentage of the loan paid in the first payment (col 2); probability of recovery in the first visit (col 3); loan duration is the number of days the borrower took to payoff her loan for those that recover, the number of days until default for those that default, and the maximum number of days we observe them in the sample for those that have not recovered or defaulted (col 4); loan duration conditional on recovery; an indicator for paying a positive amount towards recovery but nonetheless losing the pawn (col 6); the percentage or the loan paid, conditional on defaulting --`wasted payments' (col 7). Column 8 uses the phrase `selling the pawn' for a dummy variable indicating the borrower did not pay any amount towards recovery and lost the pawn. Moreover, (col 9) shows that treatment effects are concentrated in the intensive margin as treatment does not affect the fraction of clients who pay a positive amount towards pawn recovery. The dependent variable in column 10 is the number of day-visits to the branch (measured by the existence of transactions that day associated with our particular pawn), while column 11 conditions on borrowers that lost the pawn.
+Each regression includes branch and day-of-week FE. Standard errors are clustered at the branch-day level.}
+%\textit{Do file: } \texttt{mechanisms.do}
+\end{table}
+
+\end{landscape}
+
+\noindent visits (col 11).\footnote{Figure \ref{hist_payments} plots the histogram of the timing of payments in each arm, and shows that commitment does appear to bind in that it generates a highly regular pattern of payments at 30, 60, and 90 days after the loan is taken.} Finally, Column 9 shows that treatment effects are concentrated in the intensive margin as treatment does not affect the fraction of clients who pay a positive amount towards pawn recovery.
+
+\noindent \textbf{Other costs.} We have shown that forcing borrowers to take the monthly payment contract significantly reduces their financial costs. Although the paper focuses on financial costs, we consider three additional costs here. First, we include the cost of visiting the branch to make a payment. This includes the self-reported transport cost (most use public transport), as well as the opportunity cost of time. To err on the conservative side, we subtract a whole day's minimum wage the day of the visit, instead of just the wage corresponding to a couple of hours. Second, we consider a rough proxy of the value of liquidity that borrowers lose by paying sooner. To do this we add the interest costs on to the payments in the forced commitment arm and recompute treatment effects with these payments compounding daily (as if they had to borrow in order to make the more rapid payments). Thirdly, so far we have valued the collateral at the gold value appraised by the lender, but the piece may be worth more to the borrower than its gold value.  For many of them the pawned jewelry has sentimental value. This is reflected in the subjective valuation they reported in the survey which is 87\% higher on average. Our third extra cost considers this higher value.
 
 Table \ref{table_robustness_fc} shows results. Panel A reports financial cost in pesos, while Panel B shows APR. Columns (1) and (6) replicate our previous results for comparability. Columns (2) and (7) of Table \ref{table_robustness_fc} use the subjective value of the pawn reported by the borrower rather than its appraised value. Columns (3) and (8) adjust for self-reported transport costs per visit plus an entire day's wage, both multiplied by the number of visits that each individual made.\footnote{For clients who did not complete the individual survey, we adjust using the mean self-reported transport cost among respondents of the respective branch.} Columns (4) and (9) adjust to consider the liquidity cost. Finally, columns (5) and (10) include all three changes together. The main takeaway from the table is that results are quite robust to including a much expanded measure of costs. 
 
 
-%Although adding a whole day's wage almost certainly exaggerates the travel costs associated with commitment contracts, we still find that forced commitment reduces both financial costs and APR. Columns (4) and (9) adjust for both travel costs and use the subjective rather than appraised value of the pawn. Finally, columns (5) and (10) remove saved interest payments from the calculation of the benefits. The rationale is that forcing borrowers to pay earlier reduces their liquidity, and they may need to borrow. We assume they borrow at the same interest rate. Thus considering other loans, they may not be paying less interest. The exercises in Table \ref{table_robustness_fc} show that results are quite robust to the inclusion and exclusion of components of benefits and costs.
+\begin{table}
+\caption{Effects on more comprehensive cost measures}
+\label{table_robustness_fc}
+\begin{center}
+\scriptsize{\input{./Tables/fc_robustness.tex}}
+\end{center}
+ \legend{ This table augments the measure of financial cost presented in Table \ref{main_impact_table} with measures of transaction costs, subjective costs, and adjustments for liquidity costs. 
+ % Column 1 replicates the result of column 1 of Table \ref{main_impact_table} to ease comparability. Column 2 uses the subjective value of the pawn instead of the assessed gold value. Column 3 uses the cost from column 1 but adds to it the self-reported transport cost (most use public transport, imputing missing values with the average) as well as a whole day's minimum wage as a proxy for lost time. Column 4 ignores the `liquidity' cost in the financial cost formula by subtracting the interest of 7\% per month for each peso paid. Column 5 applies all these extra costs at the same time. Columns 6 to 10 apply the analogous changes to the APR formula.
+ Each regression includes branch and day-of-week FE. Standard errors are clustered at the branch-day level.}
 
-%Figure \label{fc_discount_rates} shows the effects of each of these adjustments on the estimate of financial cost and APR, and illustrates that even when we make all of these adjustment simultaneously the Forced arm generates benefits of 0.11 standard deviations, significant at the 95\% level.  Forced commitment lowers financial costs even when we incorporate multiple subjective dimensions of the loan.    
+
+%\textit{Do file: } \texttt{fc\_robustness.do}
+\end{table}
 
 
 
-\paragraph{Repeat Pawns.}
+\noindent \textbf{Repeat Pawns.}
 %Another way to push the analysis towards a consideration of borrower welfare is the conjecture that if clients exposed to the installment contract like it, they will be more likely to come back vis-a-vis those that got status quo contract.\footnote{\cite{Laibson2018} hypothesizes that consumers use ``experienced utility'' as a guide to make future purchases in this way.} This is indeed what we find in the data.  We consider this outcome in Table \ref{repeat_loans}. We can first ask whether the individual ever takes a loan after the initial study loan, an analysis which is simply experimental.  
 Table \ref{repeat_loans} explores the effects of treatment on future pawning behavior.
 Column (1) shows that participants assigned to the forced arm are 6.3\% more likely to be repeat clients later. %Those in the choice arm are 4\% more likely to pawn again and is not statistically distinct from zero. 
 While this appears to be \emph{prima facie} evidence of greater satisfaction among borrowers in the forced arm, the interpretation is complicated by the fact that monthly payments may themselves trigger more borrowing to pay them. This is unlikely to be the case given that the effect on re-pawning comes after 90 days (during the period of contract demanded payments) and not before  (see columns 2 and 3). Column 4 only considers new loans which use different collateral from that of the initial one. We do this to foreclose the explanation that those in the Forced arm, being more liquidity-constraint, return to pawn a second pawn to be able to pay the monthly payments of their first loan. However, we cannot reject a zero effect on pawning a different collateral. Column 5 focuses on the (endogenous) subsample of those recovering their pawn in both arms of the experiment. This means that \textit{both} arms have recovered their pawn and could re-pawn if they so wish, and also that the liquidity demands from the monthly contract are \textit{no longer} there as the contract has been closed.  We find that the difference between the Forcing contract and the status quo is even larger in this subsample, with the former having 11pp higher likelihood of being a repeat client during our sample period.
 
-%Moreover, in the (endogenous) subsample of those that recover, in Column 6 we do find that they return with a different collateral, as they recover the collateral of the first loan more often.
+\begin{table}
+\caption{Effects on Repeat Pawning}
+\label{repeat_loans}
+\begin{center}
+\scriptsize{\input{./Tables/repeat_loans.tex}}
+\end{center}
+ \legend{This table estimates the specification of equation \ref{basic_reg} but at the level of the borrower (not the loan). Each column represents a regression with a different outcome variable.
+ % In column 1, the dependent variable indicates, for each borrower in the experiment, whether he/she pawned again after the first loan in the experiment (up to the end period of our data set 338 days after the experiment began). Column 2 is analogous, but only pawning after 90 days of the first loan is considered. Column 3 instead considers pawning before 90 days. Column 4 is analogous to column 1 but focuses on the pawning of a gold piece that is different from the one in the first experimental loan. Column 5 is analogous to column 1, but conditioning on the sample that recovered the first loan. 
+ Each regression includes branch and day-of-week FE. Standard errors are clustered at the branch-day level.}
+%\textit{Do file: } \texttt{repeat\_loans.do}
+\end{table}
 
-%clients assigned to the forced commitment arm were more likely to recover their pawn, allowing them to re-pawn the same item in the future.  We can explore this possibility in a number of ways.   First, we can (endogenously) split the sample according to whether the individual defaulted on the experimental loan; here we find that the increase in subsequent borrowing is restricted to those who repaid the first one.   Next, we can examine whether the probability that participants take another loan using \emph{different} collateral from the first. While the difference is not statistically significant, we find that the Forced arm elevates the probability of re-pawning with new collateral.   We can also separately examine the probability of taking a new loan after the contract period of the original experimental loan (column 5) or before it (column 6). Here we find that the increase in subsequent pawning comes \emph{later}, significantly increasing the time to the subsequent loan (column 7). All of this evidence suggests that the effect on subsequent demand is `real' and not an artifact of improved retention of the collateral, consistent with \cite{Alcohol}'s conjecture that demand for commitment increases with experience with it. However, it remains possible that the additional demand for subsequent pawning comes from the fact that forcing earlier payments effectively reduces the credit available during the contract, and thus that clients may pawn again to compensate for the smaller loan. We are skeptical about this interpretation for several reasons. %First, typically the emergencies that trigger a pawn are short lived (e.g. needing to go to the hospital), and it is unclear why clients in the frequent payment arm wait for several months to re-pawn -- there is no effect of the monthly payment contract on repeat pawning in the first 30 or 60 days of the contract, (see Figure \ref{reincidence_before} in Appendix). First,  there are many alternative lenders in this market, and if they did not like frequent payments why do they come back to Lender $P$ for another loan? Second, the fee itself is mostly symbolic (2\% of 1/3 of the value of the loan) and so it is likely that if there were real financial costs to making an intermediate payment it would simply be skipped and the fee incurred.  We also implemented an exit survey which clients filled when recovering their piece. Unfortunately it had low response rate (7\%), and we take its results with a grain of salt; however in this survey 63\% of clients said they liked the frequent payment contract more than the status-quo one, and that it allowed them to avoid unnecessary expenses. Finally and most importantly, the treatment effects on re-pawning are entirely confined to the period after the original loan term and so there is no obvious link between intermediate liquidity and demand for new credit.  
-%Third, we find larger effects of repeat buying for clients that experienced larger treatment effects, which the alternative explanation cannot explain. Fourth, the effect is present if we condition on clients that recovered their pawn (so it's not driven by pawn recovery). Finally, we were able to obtain observational data for all Lender $P$'s branches for the period January 2016 to May 2020, during which Lender $P$ expanded the new frequent payment contract. Using an instrumental variable strategy that exploits the expansion and availability of the frequent payment contract across branches, we show that being exposed to the frequent payment contract leads to an increase of 50 percentage points in the likelihood that in the subsequent pawn the frequent payment contract is chosen when both the status-quo one and the frequent payment contract are available (see \ref{appendix_b}). This choice cannot be explained by the need of another loan, since it is about \textit{which specific type} of loan the clients chooses conditional on getting one.
 
-%An additional empirical issue generated by repeat pawning is the question of how to handle the treatment status of those who take multiple loans within the experiment.  38\% of borrowers take more than one loan within the study period, and 19\% are assigned multiple treatment statuses on their different loans.  The issue of sequential endogenous treatments has been extensively studied in the context of school lotteries, where the convention is to use the treatment status from the first exposure \citep{cullen2006effect, abdulkadirouglu2011accountability}.\footnote{That context provides a particularly severe version of the endogenous re-entry problem because only the losers from initial lotteries re-enter subsequent ones.  Our selection problem is less draconian, but still potentially relevant since we do find treatment effects on pace of repayment and of pawning again.}  While our main impact tables simply use the assigned treatment status for every loan, in Table \ref{multiple_loans} we provide two straightforward robustness checks for the influence of this problem.  Columns 1-2 repeat the main analysis of financial cost and APR using the baseline approach from our main results, including dummies for the order of pawns for an individual, essentially making the identification within-order.  Columns 3-4 drop all loans other than the first, and Columns 5-6 pursue the ITT strategy of always assigning the first treatment status to all subsequent pawns. The core treatment effects are robust to any of these ways of handling repeat pawning, and the effect on the APR is actually larger when we consider first loans only.  Hence endogenous re-entry to the experiment does not appear to be driving our results.   
-
-
-
-
-\paragraph{Censoring of Loan Completion}
+\noindent \textbf{Censoring of Loan Completion.}
 The window of time during which we were able to observe borrower behavior was limited in each branch, meaning that there were loans that we do not see completed (particularly those pawns that were rolled over for one or two further 90-day spells).  Overall, 13\% of all experimental loans are censored, meaning that they neither default nor repay within the observation window.  In the prior analysis we handle this issue by using outcomes such as ``did not default'', which are well-defined even when we do not observe the completion of the loan, and by only considering costs that we observe directly.  We have also showed, however, that one effect of the forcing arm is to accelerate repayment, meaning that it is less likely for loans in this arm to be censored.  This issue is illustrated in Figure \ref{survival_graph}, which shows the CDF of loan completion (either default or recovery in Panel (a)) and loan recovery (Panel (b)) by the number of days since first pawn.  Two features of these graphs are salient for our analysis.  The first is the extent to which loan outcomes are observed more quickly in the forced commitment arm.  This is primarily due to the substantially higher rate of repayment of Forced Commitment loans at 120 days (15 pp higher than the other arms).  The second is the very low rate at which loans are recovered in any arm after 120 days.  In the 180-320 day window loans are largely dormant, suggesting that many of the censored loans will in fact end in default.
 
 The confluence of censoring and a treatment effect on censoring is potentially problematic from an experimental point of view.  The approach taken so far is a conservative one in that it inherently assumes that all of the loans outstanding at the end of the observation window will be repaid, making it so that the acceleration of payment observed in the Forced arm does not translate mechanically into the that treatment decreasing default.  Nonetheless, to be certain that this issue is not driving our results we conduct a bounding exercise to understand how large the effects of this problem can possibly be.  In Table \ref{bounding_censoring} we compare the Forced and Control arms, bounding the censoring issue by reversing assumptions about the outcome of censored loans in the treatment versus the control.   Panel B provides the lower bound for the treatment effect (closest to zero) by assuming censored control loans are always repaid and treatment loans never are; even in this lower-bound case the treatment effect is cost-reducing and significant at the 1\% significance level and indeed the magnitude of this lower bound estimate is only 6\% closer to zero than our headline result.   
 
 Finally, Panel E of this table conducts a logit prediction model that uses all of the available information on loans that were completed to predict the outcome of loans that were not.  This is a ``best guess'' of the outcome on censored loans.  Using this prediction, we replicate the main experimental results and find that the treatment effect on financial cost increases from -204 (main results) to -264 (censored loans predicted), and the APR from -11\% to -17\%.  Hence, while the censoring issue does have an effect on the magnitude of our estimated treatment effects, these  checks confirm that (a) the core results are fully robust to censoring, and (b) the headline approach that we take to the issue is conservative and likely understates the true magnitude of impacts.
-
-
 
 \section{Choice and Heterogeneous Treatment Effects}
 \label{Choice}
@@ -558,6 +664,27 @@ But there is no free lunch: this ``LATE-and-reweight'' approach relies upon assu
 In contrast to both approaches, the controlled choice design uses exogenous experimental variation to point identify the ATE, TOT, and TUT without ruling out unobserved selection-on-gains or relying on additional structural modeling assumptions.
 Figure \ref{tot_tut_graph} provides graphical intuition for our identification approach. % derivations appear in \ref{append:randchoice}
 
+\begin{figure}
+    \begin{center}
+        \centering
+        \includegraphics[width=1.0\textwidth]{Figuras/tot_tut_intuition.png}
+    \end{center}
+ \caption{The Controlled Choice Design.   This figure provides graphical intuition for the way in which the controlled choice design from Section point identifies both the treatment on the treated (TOT) and treatment on the untreated (TUT) effects, as discussed in Section \ref{sec:randchoice} and \ref{append:randchoice}. 
+    The gray shaded regions denote borrowers with a commitment contract; the white shaded regions denote borrowers with a status quo contract.
+    A comparison of means across control and forcing arms identifies the ATE of forcing  commitment.
+    The TOT and TUT effects of commitment are identified as follows.
+    In the choice arm, anyone with a commitment contract is a chooser; in the control and forcing arms, we do not know who is a chooser and who is not.
+    Because borrowers are randomly assigned to experimental treatment arms, however, the share of choosers will be the same, on average, across experimental arms.
+    This is depicted using dashed vertical lines in the control and forcing arms.
+    This overall share of choosers and non-choosers is point identified from the choice arm.
+    Now, the difference of mean outcomes across the choice and control arms gives the intent-to-treat effect of offering choice.
+    Under the exclusion restriction that moving non-choosers between the choice and forcing arms does not change their outcomes, this comparison ``nets out'' the non-choosers.
+    Hence, the ITT of offering choice equals the TOT multiplied by the share of choosers. 
+    Similarly, under the exclusion restriction that moving choosers between the choice and forcing arm does not affect their outcomes, the difference of means across the forcing and choice arms ``nets out'' the choosers and hence equals the TUT multiplied by the share of non-choosers.}
+    \label{tot_tut_graph}
+     %\textit{Do file: }  \texttt{tot\_tut\_graph.do}
+\end{figure}   
+
 The key insight can be read directly from \eqref{eq:potentialTreatments} and \eqref{eq:potentialOutcomes}. 
 Viewing $Z_i$ as an instrumental variable, the controlled choice design can be interpreted as a \emph{pair} of RCTs, each subject to one-sided non-compliance.
 The first of these compares $Z_i=0$ to $Z_i = 2$. For each individual with $Z_i = 0$ we have $D_i = 0$ and observe $Y_{i0}$. For those with $Z_i = 2$ we have $D_i = C_i$ and observe $(1 - C_i) Y_{i0} + C_i Y_{i1}$. This is identical to a ``randomized encouragement'' design in which treatment is only available to those who are encouraged: $Z_i = 2$. Under this interpretation, those with $C_i = 1$ are ``the compliers'' and it follows that 
@@ -621,7 +748,19 @@ For purposes of inference, both the ASB and ASL can be re-written as the differe
 
 %\[ToT = \frac{\beta^C}{p}; \qquad\quad TuT = \frac{(\beta^F - \beta^C)}{(1-p)}; \qquad\quad (ToT-TuT) = \frac{\beta^C}{p}- \frac{(\beta^F - \beta^C)}{(1-p)}. \]
 
-\paragraph{TOT and TUT results.} Table \ref{tot_tut} calculates the causal quantities described above--TOT, TUT, ASG, ASB, and ASL--for our experimental data, along with robust standard errors for each. 
+\begin{table}
+\caption{Treatment on the Treated (TOT), Treatment on the Untreated (TUT), Selection-on-gains (TOT - TUT), Average Selection Bias (ASB), and Average Selection Bias, calculated using the results from Section \ref{sec:randchoice}.}
+\label{tot_tut}
+\begin{center}
+\scriptsize{\input{./Tables/tot_tut.tex}}
+\end{center}
+\legend{This table presents results computed using the derivations from Section \ref{sec:randchoice} and \ref{append:randchoice}. The APR and financial cost outcomes have been multiplied by $-1$ so that a positive causal effect \emph{benefits} the borrower in each of the four columns.
+See Appendix \ref{subsec:inference} for more details on how we compute standard errors for the middle panel.
+The bottom panel present p-values for a number of null hypothesis tests of treatment effect heterogeneity. }
+%\textit{Do file: } \texttt{tot\_tut.do}
+\end{table}
+
+\noindent \textbf{TOT and TUT results.} Table \ref{tot_tut} calculates the causal quantities described above--TOT, TUT, ASG, ASB, and ASL--for our experimental data, along with robust standard errors for each. 
 For purposes of comparison, the table also presents the ATE results from Section \ref{Experiment} above (row 1),\footnote{Coefficients are not exactly the same since Table 4 includes branch and day-of-week FE.} along with the corresponding average potential outcomes $\mathbbm{E}[Y_0]$ and $\mathbbm{E}[Y_1]$ (rows 4--5).
 The columns of the table correspond to different outcome variables defined above.
 For all four outcome definitions, the TUT effect is positive, statistically and economically significant, and comparable in magnitude to the ATE.
@@ -633,7 +772,7 @@ This imprecision carries over into our estimates of the average selection on gai
 For the (1 - Default) outcome, we have sufficient precision to conclude that the average selection bias (ASB) is large and \emph{negative}.
 This means that borrowers who choose commitment would have faced a \emph{higher} probability of default under the status quo contract than borrowers who do not choose commitment.  We may not want to read too much into TOT vs TUT comparisons as they are imprecise. But taken at face value, the result that TOT$>$TUT for default, while the opposite is true for financial cost, suggests that, while voluntary commitment has a slightly stronger effect on allowing borrowers to avoid default, forcing \textit{reduces} payments in a strong enough manner as to overcome the default-benefits of choice.  
 
-\vspace{.1in}
+
 Overall, Table \ref{tot_tut} suggests that commitment works but that \emph{not enough} people choose to commit: the commitment contract is beneficial on average even to those who would \emph{not} choose it voluntarily. We believe this result is new in the household finance literature. It also illustrates how the ``Controlled-Choice'' design can be used to study more generally whether low take-up of an intervention is problematic, based on the impacts among non-choosers.\footnote{For instance, in the debate on financial commitment take-up, some papers argue it is low (\cite{Ashraf}, \cite{Gine}, \cite{Ted}, \cite{Royer} while others argue it is high (\cite{Kremer}, \cite{Casaburi}, \cite{Alcohol}, \cite{AprajitP&P}, \cite{Pascaline},), but none estimates the benefits for non-takers. In a different domain, doctors claim that medical treatment abandonment is too high in a broad range of diseases \citep{non_adherence}, without knowing the treatment benefits for those that abandon.}
 %Below we explore possible explanations for this result.
 %and the ``right people'' choose to commit: those who are most likely to benefit from it and those whose outcomes are most adverse under the status quo. 
@@ -658,7 +797,7 @@ For simplicity, we focus on causal effects for the APR outcome throughout this s
    
 
 
-\paragraph{Learning.} A first explanation involves learning. Our experiment introduced a new contract into an environment that had not previously featured commitment; perhaps clients required experience to understand its benefits. Are clients who experienced the commitment contract more likely to choose commitment subsequently than those assigned to the status-quo contract? To test this we look to the subset of 22\% clients from our experimental sample who returned to pawn again on another day before the end of the experiment. We have already shown above that those who experienced the Forcing contract were more likely to borrow again.  We now ask whether the subset who were assigned to the Choice arm when they returned were more likely to choose commitment.  We do this in Appendix Table \ref{learning_table}.\footnote{Table \ref{learning_table} presents information about participants' \emph{immediate subsequent} pawning behavior.  For borrowers who returned to pawn again more than once, this analysis considers only their first repeat pawn.}
+\noindent \textbf{Learning.} A first explanation involves learning. Our experiment introduced a new contract into an environment that had not previously featured commitment; perhaps clients required experience to understand its benefits. Are clients who experienced the commitment contract more likely to choose commitment subsequently than those assigned to the status-quo contract? To test this we look to the subset of 22\% clients from our experimental sample who returned to pawn again on another day before the end of the experiment. We have already shown above that those who experienced the Forcing contract were more likely to borrow again.  We now ask whether the subset who were assigned to the Choice arm when they returned were more likely to choose commitment.  We do this in Appendix Table \ref{learning_table}.\footnote{Table \ref{learning_table} presents information about participants' \emph{immediate subsequent} pawning behavior.  For borrowers who returned to pawn again more than once, this analysis considers only their first repeat pawn.}
 We find no statistically discernible difference in commitment take-up rates for those assigned to forced commitment versus those assigned to status quo control. The implication is that while those who have experienced commitment feel more positively towards the pawn contract, the experience does not lead them to conclude that they need commitment on the subsequent loan.  While these exercises cannot completely exclude the possibility that learning plays a role, they provide no indication that the lack of voluntary compliance is simply a matter of inexperience with commitment, but more research and larger samples are needed to test whether learning obviates the need for paternalism.
 
 
@@ -666,7 +805,7 @@ We find no statistically discernible difference in commitment take-up rates for 
 
 
 
-\paragraph{Time discounting.} Discounting is a second potential explanation for our results. Highly impatient individuals might rationally choose the \emph{status quo} contract, despite the benefits that commitment yields returns, since monthly payments are front-loaded while pawn recovery is back-loaded, even if by only a few days.  
+\noindent \textbf{Time discounting.} Discounting is a second potential explanation for our results. Highly impatient individuals might rationally choose the \emph{status quo} contract, despite the benefits that commitment yields returns, since monthly payments are front-loaded while pawn recovery is back-loaded, even if by only a few days.  
 %those returns are realized at contract ending hile the cost of monthly payments are incurred  Our estimated decrease in the financial cost of credit from above ignores discounting, but commitment involves incurring up-front costs (early payment) in return for delayed benefits (a higher probability of recovering one's pawn). 
 To investigate this explanation we calculate the net present value (NPV) of the financial cost $\text{TUT}$ effect under different hypothetical discount rates, given the actual timing of repayment and pawn recovery. Figure \ref{fc_discount_rates} presents the results of this exercise. 
 The solid line gives the TUT effect adjusted for a specified annual discount rate, while the shaded regions give the associated 95\% \& 90\% confidence interval.
@@ -674,7 +813,7 @@ We see that non-choosers continue to experience significant decreases in NPV fin
 
 
 
-\paragraph{Present bias.} If the benefits of commitment among non-choosers cannot be explained by standard models of rational choice, the canonical behavioral story would center on time inconsistency.  While commitment is useful to anyone with hyperbolic time preferences, only those who are sophisticated--i.e.\ aware that they are hyperbolic discounters--will demand it.  A large share of ``na\"ive'' hyperbolics in the population--borrowers who are unaware that they are hyperbolic discounters--could therefore drive a large and positive $\text{TUT}$.  Our baseline survey included standard questions about discount rates between today and a month in the future versus discount rates between three and four months in the future.
+\noindent \textbf{Present bias.} If the benefits of commitment among non-choosers cannot be explained by standard models of rational choice, the canonical behavioral story would center on time inconsistency.  While commitment is useful to anyone with hyperbolic time preferences, only those who are sophisticated--i.e.\ aware that they are hyperbolic discounters--will demand it.  A large share of ``na\"ive'' hyperbolics in the population--borrowers who are unaware that they are hyperbolic discounters--could therefore drive a large and positive $\text{TUT}$.  Our baseline survey included standard questions about discount rates between today and a month in the future versus discount rates between three and four months in the future.
 This allows us to classify borrowers who display more impatience over immediate delays as present biased. This measure of financial hyperbolicity is widely used in survey research, although it is not without problems.\footnote{Our measure is dichotomous, and it is not incentivized. Recent empirical work has shown the superiority of more elaborate measures such as ``convex time budgets'' \citep{andreoni2015measuring} while questioning the interpretation of measures of hyperbolicity that are not based on consumption \citep{andreoni2012estimating, cohen2020measuring}, suggesting that real effort tasks provide a better measure \citep{augenblick2015working}.  Given that we had only a few minutes to interview real pawnshop clients prior to a commercial transaction, our simple measure was a necessary compromise.}   
 
 If we could perfectly measure present bias and sophistication, we could divide the sample into three groups: sophisticated hyperbolics (who chose commitment), time-consistent non-choosers (for whom forcing will not be effective), and na\"{i}ve hyperbolic non-choosers (who will benefit from forced commitment). %If present bias fully explains the low take-up rate of voluntary commitment, we should find that the TUT for present-biased borrowers  is positive while the TUT for all other borrowers is not.
@@ -687,9 +826,21 @@ The overall TUT is a weighted average of the impact in these two sub-groups.  Th
 
 
 
-%\todo[inline]{There are two exercises, and we'll do each one in the same way: present bias and sure confidence. In each case, there's a binary indicator that creates two groups. We want to know if this grouping can ``explain'' the positive TUT. At minimum, should see that effect is concentrated on those with the indicator equal to one. Never totally convincing since there could be an unobserved characteristic that is correlated with our indicator variable. If we had a clean hyperbolicity story, we'd have four strata: rational, time inconsistent and naive, time inconsistent and sophisticated, and a fourth group that chooses commitment despite being time consistent. If time inconsistency is the whole story, the negative TUT should be entirely concentrated on the naive types. In other words, they should have a large positive TUT but everyone else should but everyone else should have something close to zero or negative. In terms of decomposing the TUT, we're already restricting attention to people who would not choose. So when we're looking at the TUT we really only have two of these strata: rational types who are not hyperbolic and don't choose commitment, and types who are hyperbolic and don't choose commitment (naives). So $C=0,X=1$ is naive and $C=0,X=0$ is rational. Should find positive effect for $C=0,X=1$ and zero or negative for $C=0,X=0$. To be clear: the point is that we assume by choosing or not choosing commitment, you reveal whether you are sophisticated or not, given that we know your $X$. First thing we could ask is, among non-choosers how many are ``rational'' versus how many are naive. These are the two probabilities in Eq 12. Second compare the treatment effects. Can do the same thing for sure confidence with a slight caveat that it's harder to use the language ``naive'' or ``rational'' here, but we can still think about it in a similar kind of way as long as we're careful with the language.}
+\begin{figure}
+    \begin{center}
+        \centering
+        \includegraphics[width=0.6\textwidth]{Figuras/tut_beh_partition.pdf} 
+    \end{center}
+     \scriptsize  
+\caption{Heterogeneity of the TUT by behavioral variables. Each panel in this figure shows how the estimated treatment on the untreated (TUT) effect varies with a binary survey variable $X_i$. In the left panel (P.B.), $X_i = 1$ if borrower $i$ is ``present-biased'' based on her responses to the time preference questions from our survey. In the right panel (Sure-confidence) $X_i = 1$ if  borrower $i$ reported that she was certain to recover her pawn, zero otherwise. 
+% Each panel depicts three estimates and associated 95\% confidence bands: the overall TUT (blue), the TUT for borrowers with $X = 1$ (green), and the TUT for borrowers with $X = 0$ (red). By the law of iterated expectations, the overall TUT in each panel must lie between the group-specific TUTs. The overall TUT is slightly different in each panel, because some borrowers only completed part of the survey. In each panel, we present results for the full set of borrowers who answered the survey question or questions needed to determine $X_i$. From the left panel, we see that TUT does not appear to be higher among present-biased borrowers. In contrast, the right panel suggests that the positive and significant overall TUT is driven by individuals who are ``sure-confident,'' i.e.\ borrowers who report that they are certain to recover their pawn.
+}
+    \label{tut_beh_partition}
+      %\footnotesize{ \textit{Do file: }  \texttt{partition_tut.do}
 
-\paragraph{Sure confidence.} While 72\% of survey respondents believe they have a 100\% chance of recovering their pawn, in reality only 43\% will go on to do so.  
+\end{figure}
+
+\noindent \textbf{Sure confidence.} While 72\% of survey respondents believe they have a 100\% chance of recovering their pawn, in reality only 43\% will go on to do so.  
 This suggests a borrower pool characterized by over-optimism.
 Incorrect expectations about recovery probabilities could explain low take-up if individuals who \emph{believe} that they are certain to repay choose, rationally given their incorrect beliefs, to forgo the costs associated with commitment that are designed to induce repayment. 
 We now explore whether over-optimistic expectations of recovery probability can explain our positive overall TUT estimate.
@@ -712,7 +863,7 @@ exaggerate their degree of economic security in their response to survey questio
 \subsection{Analyzing Choice versus Paternalism Using Causal Forests} \label{sec:RF}
 
 
-\paragraph{Causal forests.} 
+\noindent \textbf{Causal forests.} 
 On average, the commitment contract benefits both those who would choose it and those who would not.
 In Section \ref{sec:bounds}, we briefly went \emph{beyond} average effects by presenting bounds on the distribution of individual treatment effects.
 Because they made no assumptions beyond random assignment, these bounds were relatively wide.
@@ -733,22 +884,41 @@ While closely related to more familiar ``regression-tree'' random forests, the g
 \footnote{For more details, see \cite{atheygrf} and the \texttt{grf} documentation: \url{https://grf-labs.github.io/grf/}. When constructing our random forest estimates of heterogeneous treatment effects, we use observations for all borrowers who answered at least \emph{part} of the intake survey.
 We impute the median response for the missing values, while also including an indicator whether the variable originally had a missing value. Results are similar if we manually include interactions between the original/imputed variable and an indicator for missingness. This is as expected, given that tree-based methods by their nature ``automatically'' consider interactions of arbitrary orders.}
 
-\paragraph{Treatment effect distributions.} Figure \ref{heterogeneous_effects} plots densities of the estimated conditional ATE, TOT, and TUT effects from the generalized random forest models described above.
+\noindent \textbf{Treatment effect distributions.} Figure \ref{heterogeneous_effects} plots densities of the estimated conditional ATE, TOT, and TUT effects from the generalized random forest models described above.
 In each case, the outcome variable is APR benefit, i.e.\ the reduction in APR from a commitment contract.
 As we see from the figure, the conditional average effects are overwhelmingly positive. 
 The TUT density is particularly interesting for the question of paternalism since, as emphasized above, it presents conditional average effects for borrowers who would not voluntarily choose commitment.
 Only 7\% of our estimated conditional TUTs are negative, with a 95\% confidence interval of [4\%, 9\%].\footnote{The generalized random forest approach of \cite{atheygrf} produces conditional average effect estimators that are asymptotically normal, and includes methods for computing correct standard errors. %These methods are relatively straightforward because the trees are ``honest'' in that observations used to determine splits in the recursive partitioning algorithm are not used for causal effect estimation and vice-versa. 
 Our inferences in this section are carried out by ``bootstrapping the limit experiment,'' i.e.\ simulating from the normal limit distributions using the estimated standard errors.} 
 To be clear, this is a probability statement about conditional average effects over the distribution of \emph{covariates}.
-In particular, we estimate that   
-\[
-\int \mathbbm{1}\{\mathbb{E}[Y_1 - Y_0| X = \mathbf{x}, C = 0] < 0\} \, f(\mathbf{x}|C=0) \, \mathrm{d}\mathbf{x} 
-\]
-is approximately 0.07.\footnote{The share of non-choosers with negative conditional \emph{average} treatment effects need not equal the share with a negative \emph{individual} effects, i.e.\ $\mathbbm{P}(Y_1 < Y_0| C = 0)$.
+In particular, we estimate that  $\int \mathbbm{1}\{\mathbb{E}[Y_1 - Y_0| X = \mathbf{x}, C = 0] < 0\} \, f(\mathbf{x}|C=0) \, \mathrm{d}\mathbf{x}$ is approximately 0.07.\footnote{The share of non-choosers with negative conditional \emph{average} treatment effects need not equal the share with a negative \emph{individual} effects, i.e.\ $\mathbbm{P}(Y_1 < Y_0| C = 0)$.
 But the more treatment effect heterogeneity that $X_i$ explains, the closer these two values become.}
 Figure \ref{heterogeneous_effects} strengthens our argument, introduced in Section \ref{Choice}, that not enough borrowers choose commitment. 
 
-\paragraph{``Mistake'' tresholds.} Under the assumption that our instrumental forest estimates capture the main sources of treatment effect heterogeneity, we can use them to assess whether particular borrowers in the choice arm made ``mistakes'' in their decision to accept or refuse the commitment contract, in terms of predicted financial costs of the loan.
+\begin{figure}
+     
+    \begin{center}
+     \begin{subfigure}{0.32\textwidth}
+       \centering
+      \includegraphics[width=\textwidth]{Figuras/he_dist_tau_hat_tot.pdf}
+          \caption{ToT}
+    \end{subfigure}
+    \begin{subfigure}{0.32\textwidth}
+       \centering
+      \includegraphics[width=\textwidth]{Figuras/he_dist_tau_hat_tut.pdf}
+          \caption{TuT}
+    \end{subfigure} 
+       \begin{subfigure}{.32\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/he_dist_tau_hat_eff.pdf}
+        \caption{ATE}
+    \end{subfigure} 
+    \end{center}
+    \caption{Heterogeneous Treatment Effects.}
+    \label{heterogeneous_effects}    
+  %\footnotesize{ } \textit{Do file: }  \texttt{cate_dist.do}
+\end{figure}
+\noindent \textbf{``Mistake'' tresholds.} Under the assumption that our instrumental forest estimates capture the main sources of treatment effect heterogeneity, we can use them to assess whether particular borrowers in the choice arm made ``mistakes'' in their decision to accept or refuse the commitment contract, in terms of predicted financial costs of the loan.
 To do this we use the same information that is depicted in Figure \ref{heterogeneous_effects}, but present it in a different way.
 For each non-chooser in the choice arm, we use our instrumental forest from above to estimate the conditional TUT effect, given her observed covariates.
 Of course conditional average effects need not equal individual treatment effects, and our APR outcome may not capture all of the costs and benefits that are relevant for individual borrowers' decisions.
@@ -771,55 +941,24 @@ This ensures that bigger mistakes are always to the \emph{right} of smaller mist
 The blue curve in Figure \ref{choose_wrong} gives the \emph{overall} percentage of borrowers in the choice arm who made a ``mistake'' at a particular APR threshold.
 This total is computed by taking a weighted average of the green (non-choosers) and red (choosers) curves, with weights equal to their shares in the choice arm.\footnote{The blue curve is very similar to the green curve because 89\% of borrowers in the choice arm are non-choosers.}
 
+\begin{figure}[H]
+        \centering
+        \includegraphics[width=0.6\textwidth]{Figuras/line_cw_apr_tot_tut.pdf}
+ \caption{``Mistakes'' in the choice arm. This figure presents conditional average TUT and TOT effects for the APR outcome from Figure \ref{heterogeneous_effects} in an alternative manner, to consider the fraction of borrowers in the choice arm who made ``mistakes'' in their decision to accept or refuse the commitment contract. A ``mistake'' for a non-chooser is defined as a positive conditional TUT effect that significantly exceeds a specified threshold APR value.
+ The green curve equals $[1 - F_{\text{TUT}}(\delta)]\times 100\%$, where $F_{\text{TUT}}$ is the CDF corresponding to density of conditional TUT effects from Figure \ref{heterogeneous_effects}, computed using the instrumental forest approach from \cite{atheygrf}. Evaluated at any positive value on the horizontal axis, it gives the fraction of non-choosers in the choice arm who made a ``mistake'' by not choosing commitment. The green shaded region gives associated 95\% pointwise confidence bands. 
+Analogously, a ``mistake'' for a chooser is defined as a negative conditional TOT effect that exceeds a specified threshold APR value. The red curve equals $F_{\text{TOT}}(-\delta)$ where $F_{\text{TOT}}$ is the CDF corresponding to the density of conditional TOT effects from Figure \ref{heterogeneous_effects}. 
+The red shaded region gives associated 95\% pointwise confidence bands.
+For both the red and green curves, we define the APR threshold so that larger mistakes are to the \emph{right} of smaller mistakes.
+This allows us to construct the overall fraction of mistakes in the choice arm, the blue curve, as a weighted average of the green and red curves.
+The weights equal the share of choosers and non-choosers in the choice arm.}
+    \label{choose_wrong}
+\end{figure}
+
 The results in Figure \ref{choose_wrong} suggest that a large fraction of non-choosers made mistakes by not choosing commitment.
 Even at an APR threshold as large as 10\%, we estimate that more than half of them should have chosen commitment in order to lower financial costs.
 In contrast, relatively few choosers appear to have made mistakes by choosing commitment.
 This now allows us to make a stronger statement in favor of paternalism in our context; not only does forced commitment generate large benefits on average, but it also benefits the vast majority of borrowers \emph{who would be coerced} under a policy of forced commitment.
 
-
-%As we increase the threshold on the size of the mistake necessary to be classified as having made the wrong choice, by definition the share of mistakes in both groups falls.
-
-%Among choosers, only 18\% would have had superior outcomes had they not complied, whereas among non-choosers almost 80\% made a mistake according to this definition.  Because this arm is comprised of 89\% non-choosers, the overall rate of mistake in the arm was around 68\%.  
-
-%benefit is the case that forcing commitment generates large benefits on average, but it is also generating benefits for almost 90\% of the forced population.
-
-
-
-%\todo[inline]{ 
-%Can read this from red curve (and error bars) in Figure \ref{choose_wrong}, simply $F(-x)$ for the conditional TOT. Comment on results. Relatively few negative conditional TOT estimates: around 20\% with wide confidence bounds. Again say APR threshold of 25\%. Then say something like 8\% to 27\% \hl{???} mistakes. 
-%Blue curve: combine to understand mistakes overall across choosers and non-choosers. Weighted average of red (TOT/chooser) and green (TUT/non-chooser) with weights corresponding to shares of each type. Very similar to green curve since 89\% are non-choosers and we estimate that relatively few choosers had a negative conditional average treatment effect.}
-
-
-%These impacts allow us to think about whether individuals made ``mistakes'' in their choices.  
-%Specifically, for each client in the choice arm we want to know how much cost savings would she have gained had she chosen the opposite contract. 
-%We do this in two steps.  
-%First, we use  \cite{atheygrf}'s generalized random forests methodology to estimate the impact of the forced commitment arm relative to the control (forced status quo) at the individual level.  
-%The method generates a partition of the space of characteristics $X$, where each element of the partition is a leaf, and each leaf contains treatment and control clients with similar characteristics $x \in X$ which are used to calculate unbiased treatment effects for that leaf. 
-%The optimal partition is that which minimizes expected mean squared error of treatment effects predictions out-of-sample. 
-%The tree is ``honest'' in that uses one sub-sample to build the trees that make up the random forest and another one to estimate treatment effects within those trees.
-%\cite{atheygrf} show that their treatment effects are asymptotically normal, which allows us to construct confidence intervals for our treatment estimate in each leaf. 
-%This method gives us the average causal effect on financing cost of getting the forced commitment contract instead of the status quo contract for a client $i$ with characteristics $x_i$; call it $TE^{F}_{i}(x_i)$.\footnote{Figure \ref{causal_tree1} and ??? provide an illustration of the splits (leaves) that emerge from our implementation of the RF. \todo[inline]{I think we should list in a footnote which are the `wide' variables we are using.}}  
-
-%\paragraph{Personalized benefit results.} Using the test provided by \cite{chernozhukov2018generic}, we reject the null of homogeneity in treatment effects and so begin our analysis of heterogeneity confident that it exists. Figure \ref{heterogeneous_effects} illustrates the substantial impact of the forced commitment arm on APR, financial cost and other outcomes. More than 90\% of the individuals have APR saving effects, and even in the upper bound confidence interval more than half of individuals benefit.  
-
-%\paragraph{Estimates of financial cost `mistakes'.} In a second step we predict treatment effects for clients \textit{in the Choice arm} using the partition into leaves and the treatment effect from step 1, that is client $j$ is imputed the treatment effect of the leaf corresponding to her characteristics $x_j$. We call this counterfactual treatment effect $\widehat{TE}^{F}_{j}(x_j)$. This is precisely the counterfactual we wanted, because it lets us relate observed individual choices with estimated individual-level treatment effects.\footnote{This extrapolation of the treatment effects assumes that choice itself --conditional on a given contract-- does not affect behavior (note the evidence in the prior section suggesting this is the case).   Although the extrapolation is to another population, by randomization it is a statistically identical population with common support.} Armed with this, we say that a client made a ``mistake'' if either she chose the status quo contract and her $\widehat{TE}^{F}_{i}$ is negative (i.e. more cost saving from the Forced contract), or if she chose the Commitment contract and $\widehat{TE}^{F}_{i}$ is positive, (i.e.  financial costs are larger for the Commitment contract). When a client made a choice mistake, we say that its money-metric values is the absolute value of $|\widehat{TE}^{F}_{i}|$. 
-
-
-%Using the forcing arms and extrapolating to the choice arms.
-%Then, we predict these treatment effects for everybody in the choice arm using characteristics $x_i$. Let $\widehat{TE}^{fee}_{i}$ be the predicted financial cost savings for person $i$ of choosing the Forced Commitment contract rather than the status quo one, divided by the size of her loan (i.e. the negative value of the predicted treatment effect on financial cost for person $i$). $\widehat{TE}^{sq}_{i}$ is the analogous for the status quo contract. We define the choice of person $i$ to be a ``mistake'' if 
-
-%\begin{equation}
-% \{ i \; \text{chose} \; sq \; \text{and} \; \;  \widehat{TE}^{fee}_{i}>\widehat{TE}^{sq}_{i} + z \} \; \text{or} \; \{ i \; \text{chose} \; fee \; \text{and} \; \;  \widehat{TE}^{fee}_{i}<\widehat{TE}^{sq}_{i} - z \}
-%\end{equation}
-
-%Since the prediction of the treatment effect is an estimate and has noise, we do two things. First, we normalize $\widehat{TE}^{F}_{i}$ by the value of the loan of person $i$ and introduce a threshold parameter $z$ and say that a choice is a ``mistake'' if the alternative contract would generate greater than $z$ in savings. We vary this threshold from 0\% to 15\% of the value of the loan. Second, we take into account uncertainty in estimation of treatment effects and report results using the extremes of the 95\% confidence interval bounds for $\widehat{TE}^{F}_{i}$.
-
-%Figure \ref{choose_wrong}(a) plots on the Y axis the fraction of clients that made a choice ``mistake'' and on the X axis the threshold $z$. When $z=0$, we calculate that about 82\% of clients in the Choice arm chose contracts that induced \textit{higher} financial cost. Most mistakes are failures to choose the fee-commitment contract ({97}\%), while only {4}\% of those who chose the fee-commitment contract would have been better in the status-quo one. The average mistake in pesos is \$250. %(90\% confidence interval [140,390]). 
-
-
-%However, the fraction of non-choosers making a mistake remains almost 20\% even at the highest threshold used (\$80 pesos), and panel b shows the \textcolor{red}{Complete this when understand figure}.  Panel C conducts a related but distinct exercise, showing the fraction of the entire control sample who would do better if assigned to the Forced arm; using the smallest threshold this fraction is over 95\%, showing that in this context there is an almost across-the board welfare benefit arising from this arm.  Since the only potential financial cost of the forced arm arises from individuals who would be induced to partially repay but then default anyways, this result suggests that very few such borrowers exist.
-
-%Panel C of this figure replicates this exercise for the forced commitment arm, with the difference being that the relevant treatment effect to match is now the ATE of the forced commitment arm.  This allows us to identify the winners and losers from paternalism in a nuanced manner, since members of groups with CATEs$<$0 are hurt and everyone else is helped.  Because the ATE$>$TUT, this exercise results in an even larger fraction of individuals benefiting from commitment; here we find that fully 91\% of individuals are better off being forced into commitment than staying in the control. .
 
 
 
@@ -832,91 +971,29 @@ For this reason, the relevant causal effect for this exercise is the conditional
 As shown in Figure \ref{fig:CATEsurvival}, an estimated 90\% of borrowers, with a 95\% confidence interval of [87\%, 92\%] have a positive conditional ATE as estimated from the causal forest from Section \ref{sec:RF} above.
 In the remainder of this section we ask how accurately it is possible to identify these borrowers. 
 
-\paragraph{Narrow inputs targeting.} To consider targeting effectiveness we must begin from an individual-specific ground truth, which we take from our estimated conditional average treatment effects (CATEs) $\widehat{\text{ATE}}(X_i)$ from the causal forest described in Section \ref{sec:RF},  which used the ``wide'' set of covariates (wide RF).% and data for all borrowers who replied to at least part of the intake survey. 
+\noindent \textbf{Narrow inputs targeting.} To consider targeting effectiveness we must begin from an individual-specific ground truth, which we take from our estimated conditional average treatment effects (CATEs) $\widehat{\text{ATE}}(X_i)$ from the causal forest described in Section \ref{sec:RF},  which used the ``wide'' set of covariates (wide RF).% and data for all borrowers who replied to at least part of the intake survey. 
 We then analyze how well we can predict the losers from paternalism using the ``narrow'' set of non-manipulable covariates listed above (narrow RF) for the same subset of borrowers.
 Figure \ref{wide_narrow_forests} shows the relationship between the CATEs estimated from the RF using the ``wide'' and ``narrow'' covariate sets.  We can generate substantially less heterogeneity when using the narrow covariate set, although we still reject the null hypothesis of no treatment effect heterogeneity, following the approach of \cite{chernozhukov2018generic}.\footnote{See \ref{append:chernozhukov} for details of this method.}
 
-\paragraph{Targeting assessment.} 
+\noindent \textbf{Targeting assessment.} To more directly investigate our ability to target commitment, we use two different methods to predict who should be assigned to the commitment arm. In each, we estimate a classification model using the ``narrow'' set of covariates to predict whether the CATE estimated from the wide random forest model (using all available covariates) is positive. The first method uses a simple logistic regression, while the second uses a random forest classification model.\footnote{We use the STATA package \textit{rforest} and use the default parameters for the estimation. For further detail see \cite{rforest_stata}.} Each of these methods yields an estimated probability of a positive CATE, allowing us to rank borrowers from highest to lowest probability. Since 90\% of borrowers have a positive CATE as estimated from the wide random forest model from above, we consider a decision rule that assigns a borrower to forced commitment if her estimated probability is in the top 90\% of the sample.
 
-To more directly investigate our ability to target commitment, we use two different methods to predict who should be assigned to the commitment arm. In each, we estimate a classification model using the ``narrow'' set of covariates to predict whether the CATE estimated from the wide random forest model (using all available covariates) is positive. The first method uses a simple logistic regression, while the second uses a random forest classification model.\footnote{We use the STATA package \textit{rforest} and use the default parameters for the estimation. For further detail see \cite{rforest_stata}.} Each of these methods yields an estimated probability of a positive CATE, allowing us to rank borrowers from highest to lowest probability. Since 90\% of borrowers have a positive CATE as estimated from the wide random forest model from above, we consider a decision rule that assigns a borrower to forced commitment if her estimated probability is in the top 90\% of the sample.
 
-%Figure \ref{targeting_rules} compares the in-sample performance of these targeting rules against a policy of universal forced commitment. The plot presents the estimated proportion of borrowers who benefit from a particular treatment assignment rule, along with associated 95\% confidence bands, where ``benefit'' is defined as having a conditional average treatment effect above a particular threshold. As above, we take the conditional average effects from the ``wide'' causal forest as ground truth for the purposes of this exercise. Because this is an in-sample exercise, the logistic and random forest classification rules have an unfair advantage: there is no adjustment for overfitting. In spite of this, their performance is quite unimpressive relative to a policy of universal forced commitment. The fraction of the whole sample incorrectly targeted when moving from universal forced commitment to targeting based on the narrow RF falls only from 9.78\% to 9.59\%. The logit targeting rule actually makes things marginally worse. 
-
+\begin{table}
+\caption{Type I \& II errors using targeting narrow rules}
+\label{hit_miss_rule}
+\begin{center}
+\resizebox{0.95\textwidth}{!}{
+\small{\input{./Tables/hit_miss_rule.tex}}
+}
+\end{center}
+\legend{This table reports error rates for six different rules for allocating individuals to commitment. The first row allocates all borrowers to control. Taking the conditional ATE estimates from the ``wide'' causal forest, described in Section \ref{sec:RF} as ground truth, this results in 90\% of individuals losing by not receiving commitment. The second row assigns all borrowers to forced commitment, yielding error rates that are the exact mirror image of those from the first row.  The third row considers the infeasible optimum in which each borrower is allocated the ``correct'' treatment, treating the estimate from the ``wide'' causal forest as ground truth. The fourth and fifth rows assign borrowers to commitment based on a classification model that uses the narrow covariate set to predict an indicator for whether the ``wide'' random forest CATE estimate is positive. Row four uses a random forest classification model while row five uses a simple logistic regression model. In each of these rows, the assignment rule ranks borrowers from highest to lowest by their estimated probability of having a positive CATE. The 90\% of borrowers with the highest estimated probabilities are assigned to treatment, matching the overall rate of positive CATE estimates from the ``wide'' RF model. The sixth row gives the percentage of miss-classification that would follow from the observed choice. }
+\end{table} 
 
 We compare the in-sample performance of targeting rules against a policy of universal forced commitment. Table \ref{hit_miss_rule} shows error rates for six possible assignment rules: assigning all borrowers to control, all to treatment (Forcing), the optimal (infeasible) assignment, narrow RF targeting, Logit targeting, and we evaluate ex-post the voluntary choice, taking the wide RF as the ground truth. While the narrow RF correctly assigns roughly half of those who do not benefit from commitment to control, it also incorrectly allocates 4.38\% of the sample that would have gained from treatment to control. As such, it only improves the overall correct targeting rate by about half of a percentage point relative to universal Forcing. The Logit assignment rule is less successful at predicting benefits and harms, with a higher share of borrowers incorrectly assigned to both treatment and control, meaning that the overall correct targeting rate for the Logit is 5 pp lower than universal Forcing. 
 %In particular it makes many Type II errors, resulting in a net targeting performance that is actually worse than universal forcing. 
 The underlying cause of the weak performance of targeting is that the attribute that predicts gains from forcing (being sure confident and not choosing the commitment) is largely behavioral and not easily predicted with basic covariates, as seen in Figure \ref{tut_beh_partition}. 
 
 Self-targeting through choice proves to be little better than assigning everyone to the control condition, given the low take-up rate and the presence of both Type I and Type II errors in the choice arm. Fully 87\% of individuals in the Choice arm made a ``mistake'', weighting the error rates among choosers and non-choosers by their relative frequency in the Choice arm. The takeaway is that given low take-up, the large fraction of the sample benefiting from commitment, and the weak predictive power of the narrow covariates, in this case universal paternalism assigning all borrowers to the commitment contract appears to be an attractive targeting method.
-
-%Given the poor explanatory power of the narrow covariates, as shown in Figure \ref{wide_narrow_forests}, it is unsurprising to see that the information gain from using these variables is small; 
-
-%This latter results is driven by the confluence of the poor explanatory power of the narrow variables, as shown in Figure \ref{wide_narrow_forests}, with the fact that the logit matches the correct sample fraction of ones, therefore making numerous Type \hl{II} errors \hl{(Should it be Type I?)} in an environment where commitment is beneficial for most. 
-
-
-
-
-
-
-%OLD SECTION 6 TEXT:
-
-%Moving more deeply into heterogeneity in treatment effects, we can try to understand the gains or losses from forcing at the individual level.  To investigate this, we first use completely flexible non-parametric bounds, then add structure on to the individual heterogeneity via a random forest estimation, and finally we consider the optimal targeting of forced compliance.
-
-%As shown above in Section \ref{experiment}, the ATE of the commitment contract from the forced arm is positive and significant, both economically and statistically.  But this is only an average effect: a positive ATE is still consistent with negative individual treatment effects for some borrowers. 
-
-%Unless she is a strict utilitarian, any policymaker who is considering outlawing the \emph{status quo} contract in favor of the commitment contract needs to consider the extent and magnitude of harm that such a paternalistic policy will cause to \emph{individual} borrowers. Our TUT and ToT results from Section \ref{sec:randchoice} partially address this concern. In particular, our TuT estimates show that even those borrowers on whom a policy of paternalism would impose a binding constraint stand to benefit, on average, from commitment. Again, however, this is only an average effect: a positive TuT is perfectly consistent with negative treatment effects for \emph{some} of the untreated. This section takes a closer look at treatment effect heterogeneity, to better understand the gains and losses from a policy of forced commitment at the individual. First, we explore heterogeneity in the average effects reported in Sections \ref{experiment} and \ref{sec:randchoice} using random forests. Then we consider the problem of optimal targeting: how accurately can we determine which kinds of borrowers would benefit from commitment, based on their observed characteristics?
-
-%Now talk about paternalism. First, are people learning? Is it the case that people who have borrowed more in the past are less overconfident? Do people who were randomized into forced commitment later decide to choose commitment? Finally: how to target and who would be hurt if we instituted paternalism? The relevant counterfactual here it the TuT, since this is the causal effect of forcing the people who wouldn't choose voluntarily. Break down by covariates. Do we see any interesting patterns? 
-
-
-
-
-
-%\subsubsection{Random Forest Bounds on Treatment Effects}
-
-
-%\todo[inline]{Frank/Issac: need to discuss confidence interval construction for the mistakes exercise. I'm not 100\% sure about it. There's question of what we can actually infer from the random forest exercise. We can't learn the distribution of treatment effects within a ``bin'' but we can learn the ATE in the bin along with its standard error, and we can treat that as approximately normal. Another issue concerns whether we do or do not use the observed outcomes for the people in the choice arm. At present we're not using this. But you might say that we should. This would entail predicting their \emph{counterfactual} outcome. What I mean here is that $\text{ATE}(X)$ is what you would use to assign someone to a particular treatment, given that you have observed their $X$. But what we have is a little different. We observe both their $X$ and either $Y_1$ or $Y_0$. I think there's an interesting question here about whether we're interested in something \emph{ex ante} or \emph{ex post}. It relates to the issue of ``mistakes.'' We should discuss briefly as a group so Frank \& Issac can make the appropriate adjustments if needed.}
-
-%\todo[inline]{Issac: add in the picture for the ToT/TuT version of the ``mistakes'' exercise \& histograms of treatment effects by groups. We already have the histogram in figure 15 for the ATE. Is it possible to say something about the covariates of the choosers for whom we estimate a negative ToT?}
-
-%\todo[inline]{Frank draft: The first exercise looks at ``mistakes.'' These are defined by predicting treatment effects for the people in the \emph{choice} arm using their covariates. If the treatment effect is positive and they don't choose treatment, this is a mistake. If the treatment effect is negative and they choose treatment this is a mistake. There are two ways of carrying out this exercise. The first way assumes that, conditional on $X$, there is no selection on gains. This version uses a model of heterogeneous treatment effects estimated using only people from the forced arms to create predicted ATEs for people in the choice arm. The second version calculates ToT and TuT versions of the same thing, but this involves using data from the choice arm, so it's less efficient because sample-splitting is required so we have to discard some people from the choice arm when calculating ``mistakes.'' Issac implements this with 5 partitions of 20/80, repeating five times and averaging over the result. Comparing the results of the two versions we find something interesting. For the non-choosers, the results are similar in both versions. Lots of mistakes and pretty big. For the choosers, we find very little evidence of mistakes using the ATE version and much more using the ToT version. What does this mean? It suggests some form of perverse selection on gains. These must be people who think commitment will help them but it actually hurts them. Question: what are their covariates like? What kind of people are they? This gets to Craig's question about who is hurt in each treatment regime. There aren't very many choosers (only 11\%) and something between 15 and 35\%, depending on the threshold, of them are ``hurt'' according to our model. So quantitatively it's not many people. What about with the ATE: what fraction of people \emph{overall} do we predict are hurt by the treatment? (We bounded it above, but now we have a model.) Seems like this is around 1-2\%.} 
-
-%To more directly interrogate self-selection in this context, we would like to be able to relate \textit{individual} choices over commitment to the \textit{individual} counterfactual outcomes that borrowers would have realized in different states of nature.  To achieve this, we can use the honest causal forest method to impute borrower-specific treatment effects of the assignment to Commitment, and then map this estimate to the choices individuals make in the Choice arm.
-
-
-
-\begin{comment}
-\subsection{Marginal Treatment Effects}
-As described above, our experimental design point identifies the ATE, TUT, and TOT without the need to carry out a marginal treatment effects (MTE) analysis that would rely, to some extent, on structural assumptions or shape restrictions. Nonetheless, researchers who are interested in learning more about essential heterogeneity can combine our design with an MTE approach.
-\todo[inline]{Need to flesh out a bit more, but in short: (1) can extend the results of Mogstad et al (2017) to use our ATE, TUT, and TOT as additional inequality restrictions that constrain partial identification bounds for MTEs; (2) Could allow more flexibility in the approach of Carneiro et al (2011) by recovering $\mu_0(x)$ and $\mu_1(x)$ from the forced arm. This permits richer forms of observed heterogeneity than the linear specification that is typically used in applied MTE papers. One could also combine (1) and (2) or use (1) as a specification test for (2).}
-
-
-
-
-    
-\subsection{Relating Choice Probabilities to Benefits}
-
-   
-The previous exercise consisted of extrapolating treatment effects from the no-choice arms to the Choice arm. Here we do the reverse. First, we estimate a flexible model of take-up of the commitment-fee contract \textit{in the Choice arm} using gradient boosting classification\footnote{Results are robust to other classification methods like Random Forest, SVM, etc.} and obtain for a client with characteristics $x_i$ a calibrated probability $P(x_i)$ of choosing the commitment contract. We then use this model to predict the counterfactual probability of a client with characteristics $x_j$ choosing the Commitment contract in the Forced arm if she had been given the choice, what we call $\widehat{P(x_j)}$.\footnote{Our gradient boosting take-up model has a good out-of-sample fit with an out-of-sample AUC of \colorbox{yellow}{0.85}. (accuracy 97\% in-sample and 90\% out-of-sample)} Now, armed with this propensity score in the Forced arm, we can ask whether people with larger Random Forest-estimated individual treatment effects (i.e. more cost savings) would have been more likely to choose it, as we would expect from a Roy model of treatment selection. 
-
-
-
-We can represent the relationship between the HTEs from commitment and propensity scores in several ways.  Most straightforward is Figure \ref{HTE_vs_propensity}, which plots the individually-estimated treatment effect from Forced versus Control treatments on the Y-axis, and the predicted probability of choosing commitment on the x-axis.  The HTEs are very strongly downward-sloping over the part of the distribution that has heterogeneity in predicted propensities, the opposite of what we would expect from Roy-type selection.  The sample with the lowest propensity of choosing commitment has a smoothed benefit of roughly twice those with a .2 change of choosing, measured both in terms of benefit/cost and in terms of probability of repayment.  Hence the very large heterogeneous treatment effects are almost completely localized to the individuals who have the very lowest probability to select commitment.
-
-
-Second, we can turn the continuous propensity score into a binary predicted choice, such that the proportion of choosers matches the observed data, and then compute cumulative distribution functions of the heterogeneous conditional average treatment effects we estimated using the Causal Random Forest. Figure \ref{benefit_vs_choice_cdf} shows there is a first order stochastic dominance in treatment effects between the two predicted categories. This means those more likely to demand commitment are also those that had smaller benefits from commitment.
-
-Finally, a completely different approach to relating choice to HTEs arrives at a similar conclusion.  We attempt to characterize the class that benefits more from commitment using a finite mixture model with two latent types. After estimation of this FMM, we find that the class more benefited from being forced is negatively correlated with demand for commitment (see Figure \ref{fmm_hte} in the appendix). We identify this class with the naive individuals, since choice is the core divider, and this class is predicted to default more (see Table \ref{fmm_table} in the appendix). This exercise emphasizes how important choice is as a segregator.
-
-Hence, we pursue several quite different techniques and all arrive at the same result.  All of the treatment heterogeneity is found among individuals who did receive the Commitment contract, whether chosen or forced.  Whether we exploit the point-identification of LATEs for compliers and non-compliers enabled by the Forcing arm, use HTEs to examine the `mistakes' made by choosers versus non-choosers in the Choice arm, estimate propensities and relate these to HTEs in the Forced arm, or use a non-parametric finite mixture model, the overall story is the same:  the wrong people are choosing commitment.
-
-These findings suggest that forcing clients into commitment contacts may reduce financial cost for the overwhelming majority of clients. 
-%Figure \ref{choose_wrong}(c) calculates what fraction of clients would be made better off if we forced them into the fee-commitment contract. We find that 85\% would be better off (using $z=0$), and they would on average have savings of 250MXN. 
-This conclusion is in line with a recent paper by \cite{John}. In a savings context, she finds that when commitment is on the menu a majority of subjects wrongly choose too little commitment and fail to reach their savings goals. It is also in line with \cite{Sprenger} who show that the more naive about their present bias are the ones who demand less commitment.\footnote{This result is also similar to \cite{Walters}, who finds that students that select into more effective schools are the ones with smaller treatment effects from attending.  That paper uses distance to school as an instrumental variable for choice, while we use randomization to choice vs no-choice groups as our empirical strategy.}
-
-\end{comment}
-
-
 
     
 \section{Conclusion} \label{conclusion}
@@ -939,472 +1016,14 @@ Using machine learning methods, we find the benefits of commitment close to univ
 Where lenders have no incentive to engage in veiled paternalism and customers display inefficiently low demand for it, financial policy regulation may prove an attractive option.  Pawnshops, along with other over-collateralized credit products such as payday lending, exist in an environment where the lender may desire customers to lose their collateral on the loan, hurting especially low-income populations who are its main users. With a now well-established toolkit of regular small payments and incentives delivering small default rates in microfinance, regulators may fruitfully investigate the possibility of requiring pawnbrokers to embed features of commitment and regularity into their repayment structures in more consistent ways.\footnote{If employed at scale in a competitive lending sector this would redistribute welfare from those who would have repaid (whose interest rates must now rise to cover lower returns from collateral seizure) towards those who would only repay in the presence of commitment. In a setting of lender market power however, redistribution from lenders to borrowers could occur.}
 An important question for future research will be the extent to which borrowers are able to learn about the benefits of commitment over time, making it so that temporary, lighter-touch policies could achieve lasting benefits for borrowers.  Pawning with commitment may provide an important mechanism to preserve flexible credit access while allowing more poor borrowers to retain their assets.
 
-
-
-
-
-
-%In a pawnshop borrowing context, we study whether forcing borrowers into frequent payment commitment contracts reduces their borrowing costs, compared to a contract that does not provide commitment to pay monthly. Even though we are charging them fees,  borrowing costs under forced commitment are actually reduced by 9.4\%, and pawnrecovery is 26\% higher. Moreover they themselves seem to like this contract, as they are twice as likely to come back and pawn again when they are assigned to forced commitment. That is, commitment matters and it seems beneficial. 
-
-%We examine treatment heterogeneity using a range of methods, from bounds that make no assumptions, exploiting a mild exclusion restrictions and the innovative controlled choice design to gain point identification of TUT and TOT, and invoking seletion on observables to estimate treatment effects at the person level. We find that a large majority of clients benefit from the commitment contract, but that when given choice between the commitment and the status quo contract only 10\% choose the former one and thus forgo important financial benefits. We also find that overconfident clients experience larger treatment effect cost savings from the commitment contract but at the same time have smaller demand for it. (\hl{Is it true that they have smaller demand? Which Figure shows this? If so we should say this above and not only in the conclusion})
-%A simple model shows that present bias with naivete parsimoniously explains all findings. 
-%The analysis suggests that it is possible in our context to advance an individual's financial  by restricting her freedom of choice ---although we caution that our outcome measure focuses on financing cost and is not a comprehensive measure of welfare. %These results spurred --although we cannot show they caused-- Lender $P$ to offer frequent payment contacts, although Lender $P$ was uncomfortable forcing these contracts on clients. They hoped that clients would eventually learn which contract was better for them.
-
-%Methodologically, to our knowledge this is the first paper in economics that uses machine learning methods and a combination of choice and forcing arms to estimate personalized counterfactual treatment gains to ask whether treatment takeup is positively selected on benefits, a hypothesis we reject.
-
-%Pawnshop borrowing may attract particularly unsophisticated clients and freedom of choice may fare better in other contexts. Choice may also fare better with other contracts besides the fee-commitment one we used. We experimented with a ``softer'' commitment contract in the form of a personal promise, and found that although this soft commitment contract  elicited more interest, it did not cause changes in behavior. 
-
-%Our results suggest several avenues for future research. First, it would be useful to tease out the roles played by naivete about self control problems and biased expectations about income shocks in driving low demand for commitment. Second, one could ask whether other types of contracts %---for instance those that provide some insurance against shocks---  
-%induce larger demand and better performance than the ones we tried. Third, testing and quantifying of there is selection to pawnshop lenders based on unsophistication could be important for regulators. Fourth, collecting broader measures of welfare to use as outcomes --e.g. subjective well being and consumption-- would help to make broader claims about welfare than we can make in this paper. Finally, one would like to know which interventions could de-bias consumers, or whether learning alone would do the work.
-
-
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-
-
-\newpage
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %BIBLIOGRAPHY
 
 
-\clearpage
-\bibliographystyle{authordate1}
-%\bibliographystyle{amsalpha}
-%\bibliographystyle{AER}
-
-\bibliography{References}
-
-
-
-%\FloatBarrier
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\newpage
-\singlespacing
-
-\section{Tables}
-
-\begin{table}[H]
-\caption{Limited and balanced attrition}
-\label{attrition_table}
-\begin{center}
-\scriptsize{\input{./Tables/Attrition.tex}}
-\end{center}
- \scriptsize Each row in this table 
- corresponds to a regression. The dependent variables of these regressions are displayed in the first column. Each dependent variable is regressed in a multivariate OLS regression against the experimental arms indicators (control, forced commitment, choice). The table reports the coefficients on each of these indicators, as well as the p-value an F-test of the null hypothesis of equality of the three coefficients. The dependent variables are: the number of pawns-loans originated per day per branch, the number of borrowers per day-branch, a variable indicating whether a person who answered the baseline survey (before knowing contract terms) ended up pawning, and an indicator of whether the person that obtained the loan answered the baseline survey. By design we had the choice arm be larger. Figure \ref{boxplot_attrition}, in the appendix shows a box-plot of the first two variables, showing the distribution across arms is balanced.
-%\textit{Do file: } \texttt{ss\_att.do}
-\end{table}
-
-
-% \begin{table}[H]
-% \caption{Number of pawns balance before and after the experiment}
-% \label{num_pawns_bal}
-% \begin{center}
-% \scriptsize{\input{./Tables/num_pawns_bal.tex}}
-% \end{center}
-%  \scriptsize We test if the number of pawns per day for the 6 branches that participated in the experiment was different before the experiment started or after the experiment ended. To this end we estimated the following regression, and cluster the standard errors by branch:
-%  $$Pawns \: per \: day_{jt} = \alpha_j + \gamma f(t) + \beta_b \mathbbm{1}(t \in MB)_{t} +\beta_a \mathbbm{1}(t \in MA)_{t}$$
-%  , where $\alpha_j$ are branch fixed effects, $f(t)$ is a third degree polynomial in time, $\beta_b$ measures a level effect in the number of pawns per branch before the experiment started, and $\beta_a$ after. We estimate no difference in the number of pawns, showing that people are not leaving the branch without pawning at larger rates during the experiment. Moreover, in appendix Figure \ref{rd_pawns} we also test for differences before and after the experiment using a regression discontinuity type plot for the number of pawns, and find there are no differences.   
-% %\textit{Do file: } \texttt{num_pawns_bal.do}
-% \end{table}
-
-
-\newpage
-\begin{table}[H]
-\caption{Summary statistics and Balance}
-\label{SS}
-\begin{center}
-\scriptsize{\input{./Tables/SS.tex}}
-\end{center}
-
-%\textit{Do file: } \texttt{ss\_att.do}
-\end{table}
-\vspace{-.3in}
-\scriptsize {
-\noindent This table has two panels. Panel A uses administrative data at the loan level, while Panel B uses survey data. Each row in this table corresponds to a regression, where the level of observation is the individual loan originated. The dependent variables of these regressions are displayed in the first column. Each dependent variable is regressed in a multivariate OLS regression against the experimental arms indicators (control, forced commitment, choice). The table reports the coefficients on each of these indicators, as well as the p-value an F-test of the null hypothesis of equality of the three coefficients. The admin data was a very limited set of pre-determined variables. The dependent variables in Panel A are the loan amount in pesos, and an indicator for whether the day of the loan origination was a weekday (as opposed to weekend). The dependent variables in Panel B from the survey (see the questions in Table \ref{baseline_survey}. Subjective value of the pawn (how much would the client be willing to sell it for (Q3), an indicator for having trouble paying bills in the last 6-months (Q28), present bias (constructed from questions Q10 and Q29 in the standard way as in \cite{Ashraf}), an indicator for whether they make expenses budget for the month ahead of time. The subjective probability of recovery was elicited a la Manski (from 0 to 100 what is the probability that you will recoup your pawn), pawned before is a dummy=1 if the client declares to have pawned before (although not necessarily with Lender $P$) age is in year, +High-school is a dummy that indicates if the client has completed high school. 
-}
-
-
+\bibliographystyle{ecta-fullname} % Style BST file
+\bibliography{References}  % Bibliography file (usually '*.bib')
 
 \newpage
 
-\vspace{.2in}
-
-\begin{table}[H]
-\caption{Effects on Financial Cost}
-\label{main_impact_table}
-\begin{center}
-\scriptsize{\input{./Tables/decomposition_main_te.tex}}
-\end{center}
-\scriptsize This table shows the treatment effects for our core pecuniary outcomes. Each column is a different regression for different outcomes on an indicator for the forced and choice arms, following specification in equation \ref{basic_reg}. Columns (1) \& (7) analyze our core financial cost measures, while the rest of the columns decompose these into finer components.
-
-% \begin{align*}
-%     \underbrace{\text{Financial Cost}_i}_{(1)} =&  \underbrace{\sum_t P^i_{it}}_{\underset{(2)}{\text{Payments to interests}}}  +\underbrace{\sum_t P^f_{it}}_{\underset{(3)}{\text{Payments of fees}}} + \underbrace{\overbrace{\mathds{1}(\text{Default}_i)}^{(6)}\times (\text{Val-Loan Diff}_i}_{\underset{(5)}{\text{Cost of losing pawn}}} + \underbrace{\sum_t P^c_{it}}_{\underset{(4)}{\text{Payments to capital}}})
-% \end{align*}
-
-A few borrowers take more than one loan on the first day they appear in an experimental branch.  These are treated as different observations. Table \ref{multiple_loans} shows our results are similar when dealing with the multiplicity of loans per borrower. Each regression includes branch and day-of-week FE. Standard errors are clustered at the branch-day level. 
-
-%\textit{Do file: } \texttt{decomposition\_main\_te.do}
-\end{table}
-
-
-
-\newpage
-\begin{landscape}
-\begin{table}[H]
-\caption{Effects on intermediate outcomes}
-\label{mechanisms}
-\begin{center}
-\resizebox{1.30\textwidth}{!}{
-\scriptsize{\input{./Tables/mechanism.tex}}
-}
-\end{center}
-
-%\textit{Do file: } \texttt{mechanisms.do}
-\end{table}
-
-\scriptsize {
-\noindent This table explores treatment effects in ``intermediate variables''. Each column represents regression output for different dependent variables following equation (\ref{basic_reg}). Panel A focuses on variables related to the speed of payment. While Panel B focuses on variables related to default, and Panel C related to visits. The outcome variables are as follows:  number of days elapsed between origination and first payment (col 1); percentage of the loan paid in the first payment (col 2); probability of recovery in the first visit (col 3); loan duration is the number of days the borrower took to payoff her loan for those that recover, the number of days until default for those that default, and the maximum number of days we observe them in the sample for those that have not recovered or defaulted (col 4); loan duration conditional on recovery; an indicator for paying a positive amount towards recovery but nonetheless losing the pawn (col 6); the percentage or the loan paid, conditional on defaulting --`wasted payments' (col 7). Column 8 uses the phrase `selling the pawn' for a dummy variable indicating the borrower did not pay any amount towards recovery and lost the pawn. Moreover, (col 9) shows that treatment effects are concentrated in the intensive margin as treatment does not affect the fraction of clients who pay a positive amount towards pawn recovery. The dependent variable in column 10 is the number of day-visits to the branch (measured by the existence of transactions that day associated with our particular pawn), while column 11 conditions on borrowers that lost the pawn. Each regression includes branch and day-of-week FE. Standard errors are clustered at the branch-day level.}
-%In sum, we find that the Forced commitment contract clients pays 13.8 days earlier in average, during this first visit, clients pay 7.7\% more of the loan amount, with a 8\% increase probability of recovery. Moreover, the forced commitment contract reduces the probability of defaulting and making a positive payment by 7\%, thus another channel for savings is that treatment helps avoid making payments toward recovery but defaulting.}
-
-\vspace{3ex}
-
-\end{landscape}
-
-
-
-
-\begin{table}[H]
-\caption{Effects on more comprehensive cost measures}
-\label{table_robustness_fc}
-\begin{center}
-\scriptsize{\input{./Tables/fc_robustness.tex}}
-\end{center}
- \scriptsize 
- This table augments the measure of financial cost presented in Table \ref{main_impact_table} with measures of transaction costs, subjective costs, and adjustments for liquidity costs. Column 1 replicates the result of column 1 of Table \ref{main_impact_table} to ease comparability. Column 2 uses the subjective value of the pawn instead of the assessed gold value. Column 3 uses the cost from column 1 but adds to it the self-reported transport cost (most use public transport, imputing missing values with the average) as well as a whole day's minimum wage as a proxy for lost time. Column 4 ignores the `liquidity' cost in the financial cost formula by subtracting the interest of 7\% per month for each peso paid. Column 5 applies all these extra costs at the same time. Columns 6 to 10 apply the analogous changes to the APR formula. Each regression includes branch and day-of-week FE. Standard errors are clustered at the branch-day level.
-
-
-%\textit{Do file: } \texttt{fc\_robustness.do}
-\end{table}
-
-
-
-
-
-\cleardoublepage
-
-
-%\begin{landscape}
-
-\begin{table}[H]
-\caption{Effects on Repeat Pawning}
-\label{repeat_loans}
-\begin{center}
-\scriptsize{\input{./Tables/repeat_loans.tex}}
-\end{center}
- \scriptsize
-This table estimates the specification of equation \ref{basic_reg} but at the level of the borrower (not the loan). Each column represents a regression with a different outcome variable. In column 1, the dependent variable indicates, for each borrower in the experiment, whether he/she pawned again after the first loan in the experiment (up to the end period of our data set 338 days after the experiment began). Column 2 is analogous, but only pawning after 90 days of the first loan is considered. Column 3 instead considers pawning before 90 days. Column 4 is analogous to column 1 but focuses on the pawning of a gold piece that is different from the one in the first experimental loan. Column 5 is analogous to column 1, but conditioning on the sample that recovered the first loan. Each regression includes branch and day-of-week FE. Standard errors are clustered at the branch-day level.
-%\textit{Do file: } \texttt{repeat\_loans.do}
-\end{table}
-%\end{landscape}
-
-\cleardoublepage
-
-\begin{table}[H]
-\caption{Treatment on the Treated (TOT), Treatment on the Untreated (TUT), Selection-on-gains (TOT - TUT), Average Selection Bias (ASB), and Average Selection Bias, calculated using the results from Section \ref{sec:randchoice}.}
-\label{tot_tut}
-\begin{center}
-\scriptsize{\input{./Tables/tot_tut.tex}}
-\end{center}
-\scriptsize
-This table presents results computed using the derivations from Section \ref{sec:randchoice} and \ref{append:randchoice}. 
-Each column corresponds to an outcome variable: APR in column (1), financial cost in column (2), an indicator for \emph{not} defaulting in column (3), and an indicator for \emph{not} refinancing in column (4). 
-The APR and financial cost outcomes have been multiplied by $-1$ so that a positive causal effect \emph{benefits} the borrower in each of the four columns.
-The top panel presents treatment on the treated (TOT) and treatment on the untreated (TUT) effect estimates, with standard errors clustered at the branch-day level.
-The average treatment effect (ATE) results from Section \ref{Experiment} are presented for purposes of comparison, along with average treated and untreated potential outcomes.
-The middle panel presents estimates of the average selection on gains $(\text{TOT} - \text{TUT})$, along with the average selection bias (ASB) and the average selection on levels (ASL), again with standard errors clustered at the branch-day level.
-See Appendix \ref{subsec:inference} for more details on how we compute standard errors for the middle panel.
-The bottom panel present sample sizes, and p-values for a number of null hypothesis tests of treatment effect heterogeneity. 
-%\textit{Do file: } \texttt{tot\_tut.do}
-\end{table}
-
-\begin{table}[H]
-\caption{Type I \& II errors using targeting narrow rules}
-\label{hit_miss_rule}
-\begin{center}
-\resizebox{0.95\textwidth}{!}{
-\small{\input{./Tables/hit_miss_rule.tex}}
-}
-\end{center}
-\scriptsize This table reports error rates for six different rules for allocating individuals to commitment. The first row allocates all borrowers to control. Taking the conditional ATE estimates from the ``wide'' causal forest, described in Section \ref{sec:RF} as ground truth, this results in 90\% of individuals losing by not receiving commitment. The second row assigns all borrowers to forced commitment, yielding error rates that are the exact mirror image of those from the first row.  The third row considers the infeasible optimum in which each borrower is allocated the ``correct'' treatment, treating the estimate from the ``wide'' causal forest as ground truth. The fourth and fifth rows assign borrowers to commitment based on a classification model that uses the narrow covariate set to predict an indicator for whether the ``wide'' random forest CATE estimate is positive. Row four uses a random forest classification model while row five uses a simple logistic regression model. In each of these rows, the assignment rule ranks borrowers from highest to lowest by their estimated probability of having a positive CATE. The 90\% of borrowers with the highest estimated probabilities are assigned to treatment, matching the overall rate of positive CATE estimates from the ``wide'' RF model. The sixth row gives the percentage of miss-classification that would follow from the observed choice. 
-%assigns the commitment contract to all borrowers with a positive conditional ATE estimate from the ``narrow'' RF. The fifth row uses a logistic regression to estimate the probability that a given borrower has a positive conditional ATE, assigning commitment to those with an estimated \hl{probability greater than 0.5}.
-
-\end{table} 
-
-\vspace{.3in}
-
-%\begin{table}[H]
-%\caption{Overconfidence: Take-up and Treatment Effects}
-%\label{oc_reg}
-%\begin{center}
-%\scriptsize{\input{./Tables/oc_reg.tex}}
-%\end{center}
-% \footnotesize This table shows the parameter estimates of $y_i = \alpha + \beta \: OC_i + Z_i'\gamma + \epsilon_i$, where $OC_i:=\mathbbm{1}(P^s_i-\widehat{P_i(X_i)}>0)$ is an indicator for the subjective probability of recovery being larger than the predicted one. In columns 1-4 $y_i$ is a dummy for whether the client $i$ chose to have the commitment contract in the respective choice arm, and in columns 5 and 6 $y_i$ is the heterogeneous treatment effect for financial cost (in pesos) estimated by comparing the Forced Commitment vs status quo arms in Section \ref{TE_fee-forcing}. Columns 1 and 3 are estimated for the promise-choice arm, while columns 2 and 4 are estimated for the Commitment Choice arm. The low number of observations results from  our use of  covariates for $\widehat{P(x)}$ and in $Z$ in the regression, given that some of them are missing.
-%\textit{Do file: } \texttt{oc.do}
-%\end{table}
-
-
-%\begin{table}[H]
-%\caption{Overconfidence: Take-up and Treatment Effects}
-%\label{oc_reg}
-%\begin{center}
-%\scriptsize{\input{./Tables/oc_reg_dec.tex}}
-%\end{center}
-% \footnotesize This table shows the parameter estimates of $y_i = \alpha + \beta \: OC_i + Z_i'\gamma + \epsilon_i$, where $OC_i:=\mathbbm{1}(P^s_i-\widehat{P_i(X_i)}>0)$ is an indicator for the subjective probability of recovery being larger than the predicted one. In columns 1-4 $y_i$ is a dummy for whether the client $i$ chose to have the commitment contract in the respective choice arm, and in columns 5 and 6 $y_i$ is the heterogeneous treatment effect for financial cost (in pesos) estimated by comparing the Forced Commitment vs status quo arms in Section \ref{TE_fee-forcing}. Columns 1 and 3 are estimated for the promise-choice arm, while columns 2 and 4 are estimated for the Commitment Choice arm. The low number of observations results from  our use of  covariates for $\widehat{P(x)}$ and in $Z$ in the regression, given that some of them are missing.
-%\textit{Do file: } \texttt{oc.do}
-%\end{table}
-
-
-
-
-
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\newpage
-\section{Figures}
-
-
-
-
-\vspace{.2in}
-\begin{figure}[H]
-     \caption{Financial cost}
-    \label{fc_hist}
-    \begin{center}
-    \begin{subfigure}{.45\textwidth}
-      \caption{In pesos MXN}
-        \centering
-        \includegraphics[width=\textwidth]{Figuras/hist_fc.pdf}
-    \end{subfigure}
-     \begin{subfigure}{0.45\textwidth}
-    \caption{Effective APR}
-       \centering
-      \includegraphics[width=\textwidth]{Figuras/hist_apr.pdf}
-    \end{subfigure}
-    \end{center}
-         \scriptsize
-         Panel (a) presents a histogram of financial cost (defined as in Section \ref{costs}) for the control group. The figure plots separately the financial cost separately for borrowers who lose the pawn (blue) and those that recover it (transparent).  Panel (b) is analogous but displays the APR.  %Given that the loan lasts close to 90 days, bringing payments to present value makes little difference. 
-       
-      %\footnotesize{ } \textit{Do file: }  \texttt{hist\_fc.do}
-\end{figure}
-
-
-
-
-\begin{figure}[H]
-     \caption{Experiment description}
-    \label{exp_description}
-\begin{center}
-\begin{subfigure}{\textwidth}
-        \includegraphics[width=\textwidth]{Figuras/consort.pdf}
-    \end{subfigure}
-  \end{center}
-    \scriptsize 
-    
-%\textit{Do file: }  \texttt{ss\_att.do}
-\end{figure}
-
-
-
-
-
-
-
-\cleardoublepage
-
-
-\begin{comment}
-
-\begin{figure}[H]
-     \caption{TOT \& TUT as LATE}
-    \label{tot_tut_graph}
-    \begin{center}
-    \begin{subfigure}{0.9\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{Figuras/tot_tut_apr.eps}
-    \end{subfigure}
-    \end{center}
-    \scriptsize
-   \hl{REPLACE THIS ONE WITH THE ONE IN THE PRESENTATION}
-     %\textit{Do file: }  \texttt{tot\_tut\_graph.do}
-\end{figure}
-\end{comment}
-
-
-
-
-\begin{figure}[H]
-\caption{The Controlled Choice Design}
-    \label{tot_tut_graph}
-    \begin{center}
-        \centering
-        \includegraphics[width=1.0\textwidth]{Figuras/tot_tut_intuition.png}
-    \end{center}
-    \scriptsize
-    This figure provides graphical intuition for the way in which the controlled choice design from Section point identifies both the treatment on the treated (TOT) and treatment on the untreated (TUT) effects, as discussed in Section \ref{sec:randchoice} and \ref{append:randchoice}. 
-    The gray shaded regions denote borrowers with a commitment contract; the white shaded regions denote borrowers with a status quo contract.
-    A comparison of means across control and forcing arms identifies the ATE of forcing  commitment.
-    The TOT and TUT effects of commitment are identified as follows.
-    In the choice arm, anyone with a commitment contract is a chooser; in the control and forcing arms, we do not know who is a chooser and who is not.
-    Because borrowers are randomly assigned to experimental treatment arms, however, the share of choosers will be the same, on average, across experimental arms.
-    This is depicted using dashed vertical lines in the control and forcing arms.
-    This overall share of choosers and non-choosers is point identified from the choice arm.
-    Now, the difference of mean outcomes across the choice and control arms gives the intent-to-treat effect of offering choice.
-    Under the exclusion restriction that moving non-choosers between the choice and forcing arms does not change their outcomes, this comparison ``nets out'' the non-choosers.
-    Hence, the ITT of offering choice equals the TOT multiplied by the share of choosers. 
-    Similarly, under the exclusion restriction that moving choosers between the choice and forcing arm does not affect their outcomes, the difference of means across the forcing and choice arms ``nets out'' the choosers and hence equals the TUT multiplied by the share of non-choosers.
-    
-
-     %\textit{Do file: }  \texttt{tot\_tut\_graph.do}
-\end{figure}   
-
-
-
-
-
-
-
-\begin{figure}[H]
-    \caption{Heterogeneity of the TUT by behavioral variables}
-    \label{tut_beh_partition}
-    \begin{center}
-        \centering
-        \includegraphics[width=0.75\textwidth]{Figuras/tut_beh_partition.pdf} 
-    \end{center}
-     \scriptsize  Each panel in this figure shows how the estimated treatment on the untreated (TUT) effect varies with a binary survey variable $X_i$. In the left panel (P.B.), $X_i = 1$ if borrower $i$ is ``present-biased'' based on her responses to the time preference questions from our survey. In the right panel (Sure-confidence) $X_i = 1$ if  borrower $i$ reported that she was certain to recover her pawn, zero otherwise. Each panel depicts three estimates and associated 95\% confidence bands: the overall TUT (blue), the TUT for borrowers with $X = 1$ (green), and the TUT for borrowers with $X = 0$ (red). By the law of iterated expectations, the overall TUT in each panel must lie between the group-specific TUTs. The overall TUT is slightly different in each panel, because some borrowers only completed part of the survey. In each panel, we present results for the full set of borrowers who answered the survey question or questions needed to determine $X_i$. From the left panel, we see that TUT does not appear to be higher among present-biased borrowers. In contrast, the right panel suggests that the positive and significant overall TUT is driven by individuals who are ``sure-confident,'' i.e.\ borrowers who report that they are certain to recover their pawn.
-     %to be largely concentrated relevant survey question  according to her survey responses two binary performs a partition of the Treatment on the Untreated (FC), estimating the share of the effect that arises within each of two binary categories.  The top bars examine present bias (individuals are more impatient over one-month time horizon than they are between three and four months).  The bottom bars examine sure confidence (individual reports 100\% probability of repaying at time of taking loan).  Blue bar is the component arising from those without the trait, orange bar from those with the trait. 
-      %\footnotesize{ \textit{Do file: }  \texttt{partition_tut.do}
-
-\end{figure}
-
-
-
-
-
-
-
-\begin{figure}[H]
-     \caption{Heterogeneous Treatment Effects}
-    \label{heterogeneous_effects}
-    \begin{center}
-     \begin{subfigure}{0.55\textwidth}
-    \caption{ToT}
-       \centering
-      \includegraphics[width=\textwidth]{Figuras/he_dist_tau_hat_tot.pdf}
-    \end{subfigure}
-    \begin{subfigure}{0.55\textwidth}
-    \caption{TuT}
-       \centering
-      \includegraphics[width=\textwidth]{Figuras/he_dist_tau_hat_tut.pdf}
-    \end{subfigure} 
-       \begin{subfigure}{.55\textwidth}
-      \caption{ATE}
-        \centering
-        \includegraphics[width=\textwidth]{Figuras/he_dist_tau_hat_eff.pdf}
-    \end{subfigure} 
-      
-          
-    \end{center}
-         \scriptsize
-     This Figure plots the densities of treatment on the untreated effects (TUT), treatment on the treated (TOT) effects, and conditional average treatment effects (ATE) based on the instrumental and causal forest models from Section \ref{sec:RF}.
-  %\footnotesize{ } \textit{Do file: }  \texttt{cate_dist.do}
-\end{figure}
-
-
-\begin{figure}[H]
-    \caption{``Mistakes'' in the choice arm}
-    \label{choose_wrong}
-   % \begin{center}
-   %     \begin{subfigure}{0.45\textwidth}
-   %     \caption{``Mistakes'' in choice arm}
-        \centering
-        \includegraphics[width=0.75\textwidth]{Figuras/line_cw_apr_tot_tut.pdf}
-  %  \end{subfigure}
-  %      \begin{subfigure}{0.45\textwidth}
-  %      \caption{\% with positive CATE from forced commitment}
-  %      \centering
-  %      \includegraphics[width=\textwidth]{Figuras/line_better_forceall_apr_te_cf.pdf}
-        
-  %  \end{subfigure}
-    
-  %  \end{center}
-        %\scriptsize
-        %In Panel (a) we estimate what the treatment effect of the commitment contract \textit{would have been} for all subjects in the choice arm if they had been forced into the fee-commitment contract. To do this we proceed in two steps. First, we estimate treatment effects in the forcing arm by comparing the Forced Commitment arm against the status quo arm. We let these effects be heterogeneous as a function of our $x$'s using \cite{atheygrf}'s methodology of causal forests. Second, we extrapolate these treatment effects based on the choice arm using the same $x$'s. Once we have personalized counterfactual treatment effects in the choice arm we calculate what fraction of subjects in the choice arm incurred in financial costs that are  $> z$\% than if they had chosen the opposite contract of what they actually chose, were $z$\% is defined as a fraction of the loan. $z$\% is a level of tolerance we can vary and we plot it in the X-axis. The left Y-axis measures the fraction of subjects that would have been better by a margin of $z$\% if they changed their choice, and the right Y-axis measures the amount of money ``left on the table''. We use bootstrap to tighten the confidence intervals (CIs). \cite{atheygrf}'s heterogeneous treatment effect using GRF is asymptotically normal. We compute the HTE ($\mu$) together with standard errors ($\sigma$) . For every pledge, we draw a random effect from a normal distribution with parameters ($\mu$,$\sigma^2$), and compute via bootstrap the percentage that choose wrong, along normal-approximation CIs (results are robust if we use instead percentile CIs or bias-corrected CIs) . This allows us to estimate a distribution for the upper and lower bound CIs, which we then use to obtain a 95\% CI. Panel (b) is analogous to Panel (a) except that it does the exercise separately for clients we classified as overconfident ($OC_i:=\mathbbm{1}(P^s_i-\widehat{P_i(X_i)}>0))$ and those we classified as not overconfident. Panel (c) simulates what percentage would be better by at least $z$ if we forced everybody of those in the Commitment Choice arm into the fee-commitment contract.
-        % Panel (d) asks whether it is the case that people with larger causal benefits from the Forced Commitment contract would be more likely to select that contract. To do this we proceed in two steps as well. First we estimate a flexible model of take-up of the fee commitment contract \textit{in the choice arm} using random forests, and from this model obtain a probability $P(x_i)$ of choosing the Forced Commitment contract for a client with characteristics $x_i$. We extrapolate this model to clients in the Forced Commitment arm to estimate what would they have chosen if we had given them choice. 
-        % Figure (d) plots $\widehat{P(x_i)}$ in the X-axis using a binscatter that splits the X-axis in 100 percentile bins. The Y-axis plots the heterogeneous treatment effects of the fee forcing contract on the probability of losing the pawns (more negative means then more likely to recover it), averaged for the respective x-axis bin. Positive assortative selection would mean a negative relationship: those who benefit more by treatment and lose the pawn less are \emph{less} likely to choose it.  Using all bins we estimate a slope of zero in the relationship. Using the 80 right most points, we estimate a \textit{positive} relationship.
-        %\textit{Do file: }  \texttt{choose\_wrong\_quant\_wrong\_tot\_tut.do, choose\_wrong\_quant\_wrong\_decomposition.do}
-\end{figure}
-
-
-This figure presents conditional average TUT and TOT effects for the APR outcome from Figure \ref{heterogeneous_effects} in an alternative manner, to consider the fraction of borrowers in the choice arm who made ``mistakes'' in their decision to accept or refuse the commitment contract. A ``mistake'' for a non-chooser is defined as a positive conditional TUT effect that significantly exceeds a specified threshold APR value. The green curve equals $[1 - F_{\text{TUT}}(\delta)]\times 100\%$, where $F_{\text{TUT}}$ is the CDF corresponding to density of conditional TUT effects from Figure \ref{heterogeneous_effects}, computed using the instrumental forest approach from \cite{atheygrf}. Evaluated at any positive value on the horizontal axis, it gives the fraction of non-choosers in the choice arm who made a ``mistake'' by not choosing commitment. The green shaded region gives associated 95\% pointwise confidence bands. 
-Analogously, a ``mistake'' for a chooser is defined as a negative conditional TOT effect that exceeds a specified threshold APR value. The red curve equals $F_{\text{TOT}}(-\delta)$ where $F_{\text{TOT}}$ is the CDF corresponding to the density of conditional TOT effects from Figure \ref{heterogeneous_effects}. 
-The red shaded region gives associated 95\% pointwise confidence bands.
-For both the red and green curves, we define the APR threshold so that larger mistakes are to the \emph{right} of smaller mistakes.
-This allows us to construct the overall fraction of mistakes in the choice arm, the blue curve, as a weighted average of the green and red curves.
-The weights equal the share of choosers and non-choosers in the choice arm.
-
-%\todo[inline]{Panel (a). Green line: survival function computed using estimated TUT of non-choosers in the choice arm. Red line: $F(-x)$ where $F$ is the CDF of individual TOT estimates for the choosers in the choice arm. Blue curve is the weighted average of the green and red with weights equal to the share of choosers versus non-choosers in the choice arm. Panel (b) is the survival function for the ATE computed for who? We think it's for the choice arm. (Shouldn't make a difference because of randomization and fairly large sample sizes.) Confidence bands are computed how? Use asymptotic normality and variance for each ``cell''}
-
-
-\cleardoublepage
-
-
-
-
-
-    
-% \begin{figure}[H]
-%     \caption{Negative selection on treatment effects}
-%     \label{benefit_vs_choice_cdf}
-%     \begin{center}
-%     \begin{subfigure}{0.475\textwidth}
-%         \caption{APR benefit}
-%         \centering
-%         \includegraphics[width=\textwidth]{Figuras/cdf_predchoose_tau_apr.pdf}
-%     \end{subfigure}
-%     \begin{subfigure}{0.475\textwidth}
-%         \caption{Repayment}
-%         \centering
-%         \includegraphics[width=\textwidth]{Figuras/cdf_predchoose_tau_des.pdf}
-%     \end{subfigure}
-%     \begin{subfigure}{0.475\textwidth}
-%         \caption{Default}
-%         \centering
-%         \includegraphics[width=\textwidth]{Figuras/cdf_predchoose_tau_def.pdf}
-%     \end{subfigure}
-%     \end{center}
-%      \scriptsize    CDF of the heterogeneous treatment effect for choosers vs non-choosers. The dotted line below indicates the points where the difference in the distributions is significant.  Instead of a single global null hypothesis (that the two CDFs are identical), there is a continuum of individual null hypotheses of CDF equality at each point. This methodology was proposed by \cite{GOLDMAN2018143}.
-     
-     
-%      \hl{Isaac : If I recall correctly we agreed to not work with the propensities. Besides this is giving us different results(?) - this was due to not using actual choosers and the prop. score model not being very good. Thus this will be removed? }
-%           %\footnotesize{ \textit{Do file: }  \texttt{benefit\_choice.do}}
-% \end{figure}
-
-
-
-
-
-
-
-
-
-
-
-\newpage
-\input{OA.tex}
-
+\input{ECTA submission/OA_ecta}
 \end{document}
