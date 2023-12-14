@@ -65,7 +65,7 @@ clear
 svmat behavioral_te
 rename (behavioral_te2) (behavioral_te1_se)
 
-label define behavioral_var 1 "P.B."  2 "Sure-confidence" 
+label define behavioral_var 1 "Present Bias"  2 "Sure-confidence" 
 label values behavioral_te5 behavioral_var
 
 // Confidence intervals (95%)

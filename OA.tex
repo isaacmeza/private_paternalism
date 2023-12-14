@@ -77,8 +77,12 @@
 \newpage
 
 
+\linespread{1.05}
 
-\section{Treatment Explanation Materials and Pictures}
+\linespread{1.05}
+
+
+\section{ Treatment Explanation Materials and Pictures}
 \vspace{.2in}
 
 \subsection{Materials}
@@ -90,7 +94,7 @@
     %\begin{subfigure}{0.65\textwidth}
     %\caption{Receipt for client}
      %   \centering
-        \includegraphics[width=0.65\textwidth]{Figuras/TicketLenderP.png}
+        \includegraphics[width=0.5\textwidth]{Figuras/TicketLenderP.png}
     %\end{subfigure}
     
     %\vspace{3ex}
@@ -100,8 +104,9 @@
     %    \includegraphics[width=\textwidth]{Figuras/Personal Promise2.png}
     %\end{subfigure}
     \end{center}
-    \scriptsize
+    \scriptsize{
         We show a sample receipt that was given to clients that got assigned to the fee-forcing contract (the font and format were changed to protect Lender's P identity). We want to highlight the salience of some items. First the title clearly indicated which contract the client has (arrow 1). Second, in the case of the fee contract it clearly indicates that there is a fee for paying late equivalent to 2\% of the value of the monthly payment (arrow 2). Third, there is a calendar for payments clearly specifying the dates and amounts to pay each month. %The bottom panel of the figure shows a ``promise slip'', the paper that those who were assigned (or chose) to the monthly payment with promise had to sign to make the promise salient. It emphasizes that the client is giving his word, and that the promise is not a legal document.
+        }
 \end{figure}
 
 
@@ -110,18 +115,14 @@
      \caption{Explanatory Material}
     \label{ExplanatoryMaterial}
     \begin{center}
-    \begin{subfigure}{\textwidth}
         \centering
-        \includegraphics[width=\textwidth]{Figuras/micas.pdf}
-    \end{subfigure}
+        \includegraphics[width=0.6\textwidth]{Figuras/micas.pdf}
+
     \end{center}
-    \scriptsize
-        This is a (translated) sample information slide shown to clients. The real ones were twice the size of this figure and were laminated. Different ones were shown for each treatment arm.
+    \scriptsize{
+        This is a (translated) sample information slide shown to clients. The real ones were twice the size of this figure and were laminated. Different ones were shown for each treatment arm.}
 \end{figure}
 
-
-
-\cleardoublepage
 
 
 
@@ -155,8 +156,8 @@
         \includegraphics[width=\textwidth]{Figuras/empenio3_.png}
     \end{subfigure}
     \end{center}
-    \scriptsize
-        This figure  shows pictures of pawnshops in Mexico city. They do not necessarily coincide with Lender P for confidentiality. 
+    \scriptsize{
+        This figure  shows pictures of pawnshops in Mexico city. They do not necessarily coincide with Lender P for confidentiality.} 
 \end{figure}
 
 
@@ -179,8 +180,8 @@
        \vspace{3ex}
        
     \end{center}
-    \scriptsize
-        This figure shows pictures of gold buyers next to pawnshops in Mexico city. They do not necessarily coincide with Lender P for confidentiality. 
+    \scriptsize{
+        This figure shows pictures of gold buyers next to pawnshops in Mexico city. They do not necessarily coincide with Lender P for confidentiality. }
 \end{figure}
 
 
@@ -205,13 +206,13 @@
 \newpage
 \subsection{Survey}   \label{app:survey_data}
 
-\vspace{.2in}
+
 
 \normalsize
-\linespread{1.25}
+\linespread{1.05}
 %Really force it to normal size and linespread
 \normalsize
-\linespread{1.25}
+\linespread{1.05}
 
 We now present analysis of the extent to which the survey-responding sample is representative and balanced.
 Table \ref{SS_cond_survet} presents information about survey non-response.
@@ -230,7 +231,6 @@ For these reasons, we are comfortable relying on data for survey respondents in 
 In exercises that rely on a single survey question, we use data for every borrower who answered that question.
 In the random forest exercises described below, we use data for every borrower who answered at least one survey question.
 
-\cleardoublepage
 
 \begin{table}[H]
 \caption{Baseline survey questions (translated to English)}
@@ -238,36 +238,62 @@ In the random forest exercises described below, we use data for every borrower w
 \begin{center}
 \scriptsize{\input{./Tables/transcribed.tex}}
 \end{center}
-\scriptsize
-Translation of the baseline questionnaire.
+\scriptsize{
+Translation of the baseline questionnaire.}
 \end{table}
 
-\cleardoublepage
-
 \newpage
-\subsection{Descriptives consistent with overconfidence}
+\subsection{More descriptives}
 
-\vspace{.2in}
-\begin{figure}[H]
+
+%The second thing to note is that those that are not closed at the end of our sample period have already incurred substantial financial cost, even though they have not defaulted yet. 
+ 
+%Of those who renew, 83\% lose the pawn. Figure \ref{fc_hist}(a) suggest that financial cost is significant, even for those that do recover their pawn. Panel (b) normalizes the cost by loan size. It shows that as a percentage of their pawn, most of the cost comes from clients that do not recover their pawn. For them the cost is between 140\% and 250\% of the loan value. %{The difference between panel (a) and (b) arises since clients who lose their pawn tend to be those that pledge cheaper pieces.} 
+
+
+\begin{figure}[!h]
+\caption{Financial cost.}
+  \label{fc_hist}
+    \begin{center}
+    \begin{subfigure}{.42\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/hist_fc.pdf}
+        \caption{}
+    \end{subfigure}
+     \begin{subfigure}{0.42\textwidth}
+       \centering
+      \includegraphics[width=\textwidth]{Figuras/hist_apr.pdf}
+      \caption{}
+    \end{subfigure}
+    \end{center}
+ 
+ \scriptsize{Panel (a) plots a histogram of this financial cost in pesos for all loans in the experiment, stratified by whether we observed that they ended in default or recovery of the pawn. Panel (b) shows the analogous histogram for the APR.
+%defaulted (44\%), recovered their pawn (43\%), or whether they are censored in our data (13\%). 
+We see that borrowers who default incur higher costs; part of this is mechanical as losing their collateral is part of the cost. Most of the APR costs indeed come from clients who do not recover their pawn.}
+    
+      %\footnotesize{ } \textit{Do file: }  \texttt{hist\_fc.do}
+\end{figure}
+
+\begin{figure}[!h]
     \caption{Behavior of borrowers who lost their pawn}
     \label{proxy_naive}
     \begin{center}
-    \begin{subfigure}{0.40\textwidth}
+    \begin{subfigure}{0.35\textwidth}
         \caption{Elapsed days to first payment}
         \centering
         \includegraphics[width=\textwidth]{Figuras/hist_firstdays_default.pdf}
     \end{subfigure}
-    \begin{subfigure}{0.40\textwidth}
+    \begin{subfigure}{0.35\textwidth}
         \caption{Elapsed days to last payment}
         \centering
         \includegraphics[width=\textwidth]{Figuras/hist_days_default.pdf}
     \end{subfigure}
-        \begin{subfigure}{0.40\textwidth}
+        \begin{subfigure}{0.35\textwidth}
         \caption{Payments as \% of loan}
         \centering
         \includegraphics[width=\textwidth]{Figuras/hist_percpay_default.pdf}
     \end{subfigure}
-    \begin{subfigure}{0.40\textwidth}
+    \begin{subfigure}{0.35\textwidth}
         \caption{Number of payments}
         \centering
         \includegraphics[width=\textwidth]{Figuras/hist_numpay_default.pdf}
@@ -279,21 +305,40 @@ Translation of the baseline questionnaire.
 \end{figure}
 
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
+\section{ Internal Validity}
+
+If potential borrowers disliked being forced into a commitment contract, we would expect a lower number of pawns on branch days where only the commitment contract is available compared to control days. Table \ref{attrition_table} shows that this is not the case. There is no difference at all between the Control and Forced Commitment arm in terms of the number of pawns per branch-day. Although we cannot reject equality across the three arms (p-value=0.21), the Choice arm appears to have a somewhat larger number of borrowers than the Control and Forced arms.\footnote{p-value=0.23 and 0.12 respectively.} This seems to be due to sampling variability. The differences across arms are smaller when we look at medians, or when we look at the number of borrowers pawning (some borrowers pawn more than one piece). Figure \ref{boxplot_attrition} shows that full distribution of loans per day is very similar across treatment arms. The only noticeable difference is that the choice arm has a few more positive outliers.\footnote{If we winzorize at the 90th percentile, the mean number of branch-day pawns becomes identical across arms.}
+
+\begin{table}
+\caption{Limited and balanced attrition}
+\label{attrition_table}
+\begin{center}
+\scriptsize{\input{./Tables/Attrition.tex}}
+\end{center}
+\scriptsize{Each row in this table 
+ corresponds to a regression. The dependent variables are: the number of pawns-loans originated per day per branch, the number of borrowers per day-branch, a variable indicating whether a person who answered the baseline survey (before knowing contract terms) ended up pawning, and an indicator of whether the person that obtained the loan answered the baseline survey. Each dependent variable is regressed in a multivariate OLS regression against the experimental arms indicators (control, forced commitment, choice). The table reports the coefficients on each of these indicators, as well as the p-value of an F-test of the null hypothesis of equality of the three coefficients. Figure \ref{boxplot_attrition}, in the appendix shows a box-plot of the first two variables, showing the distribution across arms is balanced.}
+%\textit{Do file: } \texttt{ss\_att.do}
+\end{table}
 
 
-\vspace{.1in}
-\section{Internal Validity}
+The bottom panel of Table \ref{attrition_table} shows balance in a more focused way, given that the surveys were conducted prior to the revelation of treatment status. We find that in no arm did more than three percent of individuals who responded to the survey go on to refuse loans. That is, the overwhelming marjority of potential borrowers did not leave the branch after learning which contract was on offer. Moreover, the extremely small fraction that did leave is balanced across arms.  Therefore it appears that the treatments have not induced any endogenous shifts in the composition of borrowers. 
 
+A less critical form of attrition is differential refusal to answer the survey questions.  The survey was conducted before treatment status was revealed, and we observe loan outcomes regardless of whether the survey was conducted.  Our core experimental estimates do not use the survey data as covariates, but the analysis in Section \ref{Paternalism} is restricted to the subset of borrowers who answered at least some survey questions. The bottom row of Table \ref{attrition_table} shows that the survey response rate is broadly similar across arms (about 78 percent). 
+
+
+\vspace{.2in}
 \begin{figure}[H]
      \caption{Box-plot across arms}
     \label{boxplot_attrition}
     \begin{center}
-    \begin{subfigure}{0.45\textwidth}
+    \begin{subfigure}{0.35\textwidth}
     \caption{Number of pawns}
         \centering
         \includegraphics[width=\textwidth]{Figuras/box_plot_num_pawns.pdf}
     \end{subfigure}
-        \begin{subfigure}{0.45\textwidth}
+        \begin{subfigure}{0.35\textwidth}
     \caption{Number of borrowers}
         \centering
         \includegraphics[width=\textwidth]{Figuras/box_plot_num_pawns.pdf}
@@ -384,10 +429,11 @@ Because standard errors increase as sample size falls, some of the sub-group est
 
 
 \newpage
-\section{Main treatment effects: Additional material}
+
 
 
 \begin{landscape}
+\section{ Main treatment effects: Additional material}
 \subsection{Multiple loans}
 
 \begin{table}[H]
@@ -412,7 +458,7 @@ Because standard errors increase as sample size falls, some of the sub-group est
     \caption{Determinants of choice}
     \label{determinants_choose}
     \begin{center}
-    \begin{subfigure}{0.75\textwidth}
+    \begin{subfigure}{0.6\textwidth}
         \centering
         \includegraphics[width=\textwidth]{Figuras/determinants_choose_commitment.pdf}
     \end{subfigure}
@@ -424,25 +470,25 @@ Because standard errors increase as sample size falls, some of the sub-group est
 \end{figure}
 
 
-\vspace{.2in}
+
 \begin{figure}[H]
     \caption{Histogram of payments}
     \label{hist_payments}
     \begin{center}
-    \begin{subfigure}{0.45\textwidth}
+    \begin{subfigure}{0.31\textwidth}
         \caption{Status-quo}
         \centering
-        \includegraphics[width=\textwidth]{Figuras/hist_payments_sq.pdf}
+    \includegraphics[width=\textwidth]{Figuras/hist_payments_sq.pdf}
     \end{subfigure}
-    \begin{subfigure}{0.45\textwidth}
+    \begin{subfigure}{0.31\textwidth}
         \caption{Forced commitment}
         \centering
-        \includegraphics[width=\textwidth]{Figuras/hist_payments_fc.pdf}
+    \includegraphics[width=\textwidth]{Figuras/hist_payments_fc.pdf}
     \end{subfigure}
-    \begin{subfigure}{0.45\textwidth}
+    \begin{subfigure}{0.31\textwidth}
         \caption{Choice commitment}
         \centering
-        \includegraphics[width=\textwidth]{Figuras/hist_payments_cc.pdf}
+    \includegraphics[width=\textwidth]{Figuras/hist_payments_cc.pdf}
     \end{subfigure}    
     \end{center}
      \scriptsize
@@ -451,25 +497,21 @@ Because standard errors increase as sample size falls, some of the sub-group est
       %\footnotesize{ \textit{Do file: }  \texttt{hist\_payments.do}}
 \end{figure}
 
-\cleardoublepage
-
 
 \subsection{Censoring} \label{App_censoring}
 
-\vspace{.2in}
 
 \normalsize
-\linespread{1.25}
+\linespread{1.05}
 %Really force it to normal size and linespread
 \normalsize
-\linespread{1.25}
+\linespread{1.05}
 
 Some loans in our sample are ``censored'' in that they continue beyond our observation period.
 For these loans, we do not know whether the borrower ultimately defaulted or recovered her pawn.
 In this appendix, we show that our main results are robust to different ways of addressing censoring.
 
-Our main results, presented above, make no assumption on the default/recovery status of this loans. However, we compute the Financial Cost \& APR considering all the payments done so far. We now consider some alternative approaches. \\
-  
+Our main results, presented above, make no assumption on the default/recovery status of this loans. However, we compute the Financial Cost \& APR considering all the payments done so far. We now consider some alternative approaches. 
 
 One way of considering the effect that this issue could have on our results is to make extreme assumptions about the outcome of these loans in the treatment and control so as to bound the possible influence of censoring.  In Table \ref{bounding_censoring} we compare the Forced and Control arms, making the bracketing assumptions about repayment on censored loans.  Panel A assumes all censored loans are repaid, and Panel D that all default. Because forced commitment causes borrowers to make payments earlier than they otherwise would have, In Panel A we make a conservative assumption. To see why, suppose for the sake of argument that commitment affects payment timing, but does not not default.
 In other words, suppose that treatment makes censoring \emph{less likely} but has no effect on uncensored outcomes. 
@@ -481,39 +523,47 @@ Panel B provides the lower bound for the treatment effect by assuming censored c
 
 Finally, Panel E of this table conducts a lasso logit prediction model that uses all of the available information on loans that were completed to predict the outcome of loans that were not.  This is a best guess of the outcome on censored loans.  Using this prediction, we replicate the main experimental results and find that the treatment effect on financial cost increases from -204 (main results) to -264 (censored loans predicted), and the APR from -11\% to -17\%.  Hence, while the censoring issue does have a substantial influence on the magnitude of our estimated treatment effects, these  checks confirm that a) the core results are robust to censoring, and b) the headline approach that we take to the issue is conservative and is likely understating the true magnitude of impacts.
 
-\vspace{.3in}
 \begin{table}[H]
 \caption{Bounding censoring} 
 \label{bounding_censoring}
 \begin{center}
-\resizebox{0.9\textwidth}{!}{
-\scriptsize{\input{./Tables/censoring_imp.tex}}
+\resizebox{1.0\textwidth}{!}{
+\scriptsize{\input{./Tables/censoring_imp_1.tex}}
 }
 \end{center}
  
 \end{table}
- \scriptsize 
+\begin{table}[H]
+\begin{center}
+\resizebox{1.0\textwidth}{!}{
+\scriptsize{\input{./Tables/censoring_imp_2.tex}}
+}
+\end{center}
+ 
+ \scriptsize {
  Given the censored loans, i.e. loans that have not finished by the end of the observation period, we estimate `a la Manski' bounds for these loans, meaning that we impute all loans to either \emph{default}$=1$ or \emph{recovery}$=0$ depending on the treatment arm. Different panels perform different imputations for the censored loans for all possible combinations for the imputation, and computes the ATE for the same outcomes of Table \ref{main_impact_table}. Panel A, for instance, assumes that all outstanding loans are fully payed. Panel B is the most conservative imputation since it assumes all outstanding loans in the control arm are payed, while all the outstanding loans in the forced commitment arm default. Panel C, on the other hand, is the most optimistic scenario opposite to that of Panel B. Panel D assumes all remaining loans default. The last panel makes the imputation to the censored loans according to the best prediction using a piecewise lasso logit model for default. In concrete, we build two logit models with lasso regularization, depending whether the loan duration is less than 220 days (two cycles) or more than 220 days. For prediction we use the former whenever the last recorded payment was done within 220 days, and the latter otherwise. Both models includes loan characteristics (loan size, branch), and payment behavior (loan duration so far, days to first payment, \% of first payment, \% of payments at 30, 60, 90, and 105 days, and \% of interest payed at 105 days), but the latter model also includes \% of payments at 150, 180, and 210 days. This predictive model achieves an accuracy rate of 92\% both in-sample and out-of-sample.
 
- Note that in all panels we maintain significant results for Financial Cost as dependent variable, while only in the most conservative scenario (Panel B) we lose significance for the APR outcome. 
+\noindent Note that in all panels we maintain significant results for Financial Cost as dependent variable, while only in the most conservative scenario (Panel B) we lose significance for the APR outcome. }
+\end{table}
+
  
 \begin{figure}[H]
-        \caption{Interpolation on bounding censoring}
+        \caption{Interpolation on bounding censoring for Default}
     \label{interpolation_censoring_imp}
     \begin{center}
-   \begin{subfigure}{0.49\textwidth}
-   \caption{Significance area for APR}
+   % \begin{subfigure}{0.49\textwidth}
+   % \caption{Significance area for APR}
+   %      \centering
+   %      \includegraphics[width=\textwidth]{Figuras/frontera_sig_apr.pdf}
+   %  \end{subfigure}     
+   %  \begin{subfigure}{0.49\textwidth}
+   % \caption{Significance area for Default }
         \centering
-        \includegraphics[width=\textwidth]{Figuras/frontera_sig_apr.pdf}
-    \end{subfigure}     
-    \begin{subfigure}{0.49\textwidth}
-   \caption{Significance area for Default }
-        \centering
-        \includegraphics[width=\textwidth]{Figuras/frontera_sig_def_imp.pdf}
-    \end{subfigure} 
+        \includegraphics[width=0.5\textwidth]{Figuras/frontera_sig_def_imp.pdf}
+    % \end{subfigure} 
     \end{center}
-     \scriptsize  The next figure aims to answer the following question: For how many loans in the control arm can we impute recovery, and for how many in the treatment arm can we impute default and still have significance?
-     This figure shows exactly the boundary separating significance when we vary the percentage of imputed censored loans with recovery and default respectively for control and treatment. Each corner in the square will correspond to one of the panels from the Table \ref{bounding_censoring}. For instance, the origin is the best-case scenario (Panel C) and the point (100,100) (Panel B) is the worst-case scenario. Thus we can think of this graph as an `interpolation' from the four extreme cases. The `x' indicates the proportions imputed by the lasso logit model, and the different lines correspond to setting different significance levels. We do not include the plot for financial cost, since for any imputation we still have significant results.
+     \scriptsize  {The next figure aims to answer the following question: For how many loans in the control arm can we impute recovery, and for how many in the treatment arm can we impute default and still have significance?
+     This figure shows exactly the boundary separating significance when we vary the percentage of imputed censored loans with recovery and default respectively for control and treatment. Each corner in the square will correspond to one of the panels from the Table \ref{bounding_censoring}. For instance, the origin is the best-case scenario (Panel C) and the point (100,100) (Panel B) is the worst-case scenario. Thus we can think of this graph as an `interpolation' from the four extreme cases. The `x' indicates the proportions imputed by the lasso logit model, and the different lines correspond to setting different significance levels. We do not include the plot for APR nor financial cost, since for any imputation we still have significant results.}
 
      %\textit{Do file: }  \texttt{interpolation_censoring_imp.do}
 \end{figure}
@@ -563,29 +613,31 @@ Finally, Panel E of this table conducts a lasso logit prediction model that uses
 
 
 
+\subsection{Robustness accounting for other costs}
+
+\begin{table}[!h]
+\caption{Effects on more comprehensive cost measures}
+\label{table_robustness_fc}
+\begin{center}
+\scriptsize{\input{./Tables/fc_robustness.tex}}
+\end{center}
+ \scriptsize{ This table augments the measure of financial cost presented in Table \ref{main_impact_table} with measures of transaction costs, subjective costs, and adjustments for liquidity costs. Panel A reports financial cost in pesos, while Panel B shows APR. Columns (1) and (6) replicate our previous results for comparability. Columns (2) and (7) of Table \ref{table_robustness_fc} use the subjective value of the pawn reported by the borrower rather than its appraised value. Columns (3) and (8) adjust for self-reported transport costs per visit plus an entire day's wage, both multiplied by the number of visits that each individual made.\footnote{For clients who did not complete the individual survey, we adjust using the mean self-reported transport cost among respondents of the respective branch.} Columns (4) and (9) adjust to consider the liquidity cost. Finally, columns (5) and (10) include all three changes together. The main takeaway from the table is that results are quite robust to including a much expanded measure of costs. Each regression includes branch and day-of-week FE. Standard errors are clustered at the branch-day level.}
+%\textit{Do file: } \texttt{fc\_robustness.do}
+\end{table}
+
+\section{ Alternative explanations}
 
 
-
-
-
-
-
-
-
-
-
-
-
-\newpage
-\section{Alternative explanations}
-
-\vspace{.2in}
 \subsection{Learning}
 \normalsize
 Table \ref{learning_table} presents information about borrowers' \emph{future} pawning behavior as a function of treatment assignment. Column (1) considers the 228 clients who returned only a second time to pawn again at a day/branch that was randomly assigned to the choice arm. Each of the two rows in this column presents a difference of mean commitment take-up rates, and associated standard error. The first row compares those who were \emph{initially} assigned to forced commitment against those where were assigned to control; the second row compares those who were initially assigned to the choice commitment arm to those who were assigned to the other two arms. In each case, there is no statistically discernible difference in the rates of commitment take-up. Granted, this is a selected sample because the decision to pawn again is potentially endogenous to the initial treatment allocation. For this reason, Column (2) considers the full sample of 4441 borrowers by re-defining the outcome variable to be an indicator for returning to pawn again at a branch/day when commitment was offered \emph{and} choosing commitment. This composite outcome variable is not subject to the sample selection problem (although it is directly driven by the decision to repeat borrow). The comparison in the two rows remains the same: forced commitment versus control in row one and choice commitment versus forced arms in row two. Again, there is no statistically discernible difference in commitment take-up rates in either row. While these exercises cannot completely exclude the possibility that learning plays a role, they provide no indication that the lack of voluntary compliance is simply a matter of inexperience with commitment.
 
+
+
+
+
 \vspace{.1in}
-\begin{table}[H]
+\begin{table}[!h]
         \caption{Effect of Prior Assignment on Subsequent Choice}
     \label{learning_table}
 \begin{center}
@@ -604,10 +656,6 @@ Whereas column (1) conditions on the (endogenously) selected sample of borrowers
 
 \end{table}
 
-
-
-
-\vspace{.3in}
 
 \subsection{Discount rates}
 
@@ -695,17 +743,15 @@ Note the proof was done in the case of absolutely continuous and strictly increa
 
 
 
-\newpage
-
 \normalsize
-\linespread{1.25}
+\linespread{1.05}
 %Really force it to normal size and linespread
 \normalsize
-\linespread{1.25}
+\linespread{1.05}
 
 
 \begin{comment}
-\section{Causal Forest and individual predictions of `Mistakes'}
+\section{ Causal Forest and individual predictions of `Mistakes'}
 
     \begin{figure}[H]
         \caption{Example of a Causal Tree \textcolor{red}{WHAT IS THE DIFFERENCE OF THIS AND FIGURE OA-17?}}
@@ -723,7 +769,7 @@ Note the proof was done in the case of absolutely continuous and strictly increa
     \caption{Determinants sure confidence}
     \label{determinants_sure}
     \begin{center}
-    \begin{subfigure}{0.75\textwidth}
+    \begin{subfigure}{0.6\textwidth}
         \centering
         \includegraphics[width=\textwidth]{Figuras/determinants_confidence_100.pdf}
     \end{subfigure}
@@ -737,13 +783,7 @@ Note the proof was done in the case of absolutely continuous and strictly increa
 
 
 
-\cleardoublepage
-
-
-
-
-
-\section{Heterogeneity and Bounds}
+\section{ Heterogeneity and Bounds}
 
 \subsection{Testing for heterogeneity}
 \label{append:chernozhukov}
@@ -788,16 +828,16 @@ Thus we easily reject the null hypothesis of homogeneous treatment effects.
 
 %\todo[inline]{Some Questions for Issac: (1) How are we carrying out the sample splitting? If we cluster standard errors at the branch-day level, we should take this into account when we split. (2) How are you carrying out inference for $\beta_2$? Chernozhukov et al discuss two approaches: ``conditional'' and ``variational.'' The former is simpler as it conditions on the training/test split. The latter is a bit more involved, since one accounts for uncertainty arising from different splits. (3) What are the details of the random forest procedure employed here? (Tuning parameters choice, etc.) We should put them into the appendix.}
 
+\newpage
 
 \subsection{Bounds, FOSD and Rank Invariance} \label{bounds_FOSD}
 
 
-\vspace{.3in}
-\begin{figure}[H]
+\begin{figure}[!h]
     \caption{Fan \& Park bounds for benefit in APR\%}
     \label{fan_park_bounds}
     \begin{center}
-    \begin{subfigure}{0.75\textwidth}
+    \begin{subfigure}{0.55\textwidth}
         \caption{APR}
         \centering
         \includegraphics[width=\textwidth]{Figuras/fan_park_bounds_apr.pdf}
@@ -816,12 +856,9 @@ Thus we easily reject the null hypothesis of homogeneous treatment effects.
 
 
 
- 
-\vspace{.2in}
-\begin{figure}[H]
+\begin{figure}[!h]
         \caption{Empirical CDF: Forced commitment vs Control FOSF}
     \label{ecdf_fc}
-    
     \begin{center}
         \begin{subfigure}{0.49\textwidth}
          \caption{APR benefit}
@@ -842,8 +879,7 @@ Thus we easily reject the null hypothesis of homogeneous treatment effects.
    
 
 
-\vspace{.2in}
-\begin{figure}[H]
+\begin{figure}
         \caption{Distribution of treatment effects under rank invariance.}
     \label{te_rankinvariance}
     
@@ -872,7 +908,7 @@ where $F_1^{-1}$ and $F_0^{-1}$ are the quantile functions of $Y_1$ and $Y_0$.
 
 
 
-\section{Derivations for Section \ref{sec:randchoice}}
+\section{ Derivations for Section \ref{sec:randchoice}}
 \label{append:randchoice}
 
 
@@ -1304,14 +1340,14 @@ In our application the number of clusters, $G$, is large.
 If desired, an \emph{ad hoc} degrees of freedom correction can be applied by multiplying the standard errors by $\sqrt{G/(G-1)}$.
 
 
-\section{Testable Implications of the Exclusion Restriction}
+\section{ Testable Implications of the Exclusion Restriction}
 \label{append:exclusion}
 
 \normalsize
-\linespread{1.25}
+\linespread{1.05}
 %Really force it to normal size and linespread
 \normalsize
-\linespread{1.25}
+\linespread{1.05}
 
 This section describes the testable implications of our exclusion restrictions: \eqref{eq:exclusion0} and \eqref{eq:exclusion1} from Section \ref{sec:potentialOutcomes}. 
 To consider possible violations of these conditions, it is helpful to introduce some additional notation.
@@ -1413,10 +1449,8 @@ so we again find no evidence against the exclusion restriction for the choosers.
 The aforementioned bounds for $\mathbbm{E}(Y_0|C=0)$ and $\mathbbm{E}(Y_1|C=1)$ can alternatively be used construct partial identification bounds for the TOT and TUT effects that do not rely on our exclusion restrictions. If the TOT or TUT expression from \ref{append:randchoice} fall \emph{outside} the partial identification bounds, this is equivalent to finding a violation of \ref{eq:testable0} or \ref{eq:testable1}. We implement these bounds for the TOT and TUT in our companion STATA package.
 
 
-\newpage
 
-
-\section{Causal Random Forest, HTE, and `mistakes'}
+\section{ Causal Random Forest, HTE, and `mistakes'}
 
 
 
@@ -1434,30 +1468,29 @@ The aforementioned bounds for $\mathbbm{E}(Y_0|C=0)$ and $\mathbbm{E}(Y_1|C=1)$ 
 
 
 
-\subsection{Example of a Causal Tree}
+% \subsection{Example of a Causal Tree}
 
-\vspace{.3in}
-\begin{figure}[H]
-        \caption{Example Causal Tree}
-    \label{causal_tree1}
-    \begin{center}
-        \centering
-        \includegraphics[width=\textwidth]{Figuras/crf_apr.pdf}
-    \end{center}
-    \footnotesize 
-    This figure shows an example of one of the regression trees used to compute the causal forest estimates described in Section \ref{sec:RF}. Each tree is constructed from a sequence of recursive binary partitions of the covariate space, with a splitting rule that is targeted to the causal quantity of interest, following the methodology of \cite{atheygrf}.
-    %This is one(it is chosen such that it minimizes the pruned cost, that is it is the tree with the smallest root-node impurity) of the honest causal trees in the random forest we use for the estimation of the heterogeneous treatment effect of the fee-forcing contract. It is meant only as an example of how these trees look like. The forest was such that there are as many estimated treatment effects as there are clients.
-     %\footnotesize{ \textit{RScript: }  \texttt{grf.R}
-\end{figure}
+% \vspace{.3in}
+% \begin{figure}[H]
+%         \caption{Example Causal Tree}
+%     \label{causal_tree1}
+%     \begin{center}
+%         \centering
+%         \includegraphics[width=\textwidth]{Figuras/crf_apr.pdf}
+%     \end{center}
+%     \footnotesize 
+%     This figure shows an example of one of the regression trees used to compute the causal forest estimates described in Section \ref{sec:RF}. Each tree is constructed from a sequence of recursive binary partitions of the covariate space, with a splitting rule that is targeted to the causal quantity of interest, following the methodology of \cite{atheygrf}.
+%     %This is one(it is chosen such that it minimizes the pruned cost, that is it is the tree with the smallest root-node impurity) of the honest causal trees in the random forest we use for the estimation of the heterogeneous treatment effect of the fee-forcing contract. It is meant only as an example of how these trees look like. The forest was such that there are as many estimated treatment effects as there are clients.
+%      %\footnotesize{ \textit{RScript: }  \texttt{grf.R}
+% \end{figure}
 
-\newpage
+
 \subsection{Conditional ATE estimates}
 
-\vspace{.3in}
 \begin{figure}[H]
     \begin{center}
   \caption{Cumulative Distribution Function of Conditional ATE Estimates}
-  \includegraphics[width=0.75\textwidth]{Figuras/cdf_CATE.pdf} 
+  \includegraphics[width=0.6\textwidth]{Figuras/cdf_CATE.pdf} 
     \label{fig:CATEsurvival}
     \end{center}
     
@@ -1467,14 +1500,13 @@ The aforementioned bounds for $\mathbbm{E}(Y_0|C=0)$ and $\mathbbm{E}(Y_1|C=1)$ 
  
 
 
-  
-\cleardoublepage
+
 
 \begin{figure}[H]
     \caption{Conditional ATEs from ``wide'' and ``narrow'' covariate sets}
     \label{wide_narrow_forests}
     \begin{center}
-    \begin{subfigure}{0.75\textwidth}
+    \begin{subfigure}{0.65\textwidth}
         \centering
         \includegraphics[width=\textwidth]{Figuras/scatter_hist_wide_narrow.pdf}
     \end{subfigure}
@@ -1486,19 +1518,17 @@ The aforementioned bounds for $\mathbbm{E}(Y_0|C=0)$ and $\mathbbm{E}(Y_1|C=1)$ 
 
 
 
-
-
-
-\newpage
 \subsection{Targeting rule comparisons}
 
-\vspace{.3in}
+Figure \ref{targeting_rules} compares the in-sample performance of these targeting rules against a policy of universal forced commitment. The plot presents the estimated proportion of borrowers who benefit from a particular treatment assignment rule, along with associated 95\% confidence bands, where ``benefit'' is defined as having a CATE above a particular threshold. As above, we take the conditional average effects from the ``wide'' causal forest as ground truth for the purposes of this exercise. Because this is an in-sample exercise, the logistic and random forest classification rules have an unfair advantage: there is no adjustment for overfitting. In spite of this, their performance is unimpressive relative to a policy of universal forced commitment. The fraction of the whole sample incorrectly targeted when moving from universal forced commitment to targeting based on the narrow RF falls only from 9.78\% to 9.59\%. The logit targeting rule actually makes things marginally worse. 
 
-\begin{figure}[H]
+
+
+\begin{figure}
     \caption{Targeting rules}
     \label{targeting_rules}
     \begin{center}
-    \begin{subfigure}{0.75\textwidth}
+    \begin{subfigure}{0.6\textwidth}
         \centering
         \includegraphics[width=\textwidth]{Figuras/wide_narrow_rule.pdf}
     \end{subfigure}
@@ -1510,12 +1540,6 @@ The aforementioned bounds for $\mathbbm{E}(Y_0|C=0)$ and $\mathbbm{E}(Y_1|C=1)$ 
       %This figure plots the (reversed) cumulative densities of the estimated benefits from the casual forest for three different rules.  The blue line plots the HTEs from the `wide' random forest for the Forcing arm, which we take as the ground truth for actual impacts.  The green line plots HTEs if we first target individuals using the variables in the `narrow' forest, and only assign individuals to commitment if they are on a leaf whose predicted forcing benefit is positive.  The red line uses a logit regression to predict which individuals benefit from treatment, and assigns all individuals to the arm predicted to be best for them.
 
 \end{figure}
-\vspace{.1in}
-
-Figure \ref{targeting_rules} compares the in-sample performance of these targeting rules against a policy of universal forced commitment. The plot presents the estimated proportion of borrowers who benefit from a particular treatment assignment rule, along with associated 95\% confidence bands, where ``benefit'' is defined as having a conditional average treatment effect above a particular threshold. As above, we take the conditional average effects from the ``wide'' causal forest as ground truth for the purposes of this exercise. Because this is an in-sample exercise, the logistic and random forest classification rules have an unfair advantage: there is no adjustment for overfitting. In spite of this, their performance is quite unimpressive relative to a policy of universal forced commitment. The fraction of the whole sample incorrectly targeted when moving from universal forced commitment to targeting based on the narrow RF falls only from 9.78\% to 9.59\%. The logit targeting rule actually makes things marginally worse. 
-
-
-
 
 
 
@@ -1787,7 +1811,7 @@ We calculate that the discount rate that is necessary to compensate for the savi
 \label{appendix_c}
 \vspace{.2in}
 \normalsize
-\linespread{1.25}
+\linespread{1.05}
 
 Although the empirical results are striking and stand alone, this section refers to the model of \cite{John} to interpret our empirical results. The model is stylized but incorporates important features of our context. It allows for negative income shocks which we think are prevalent in this population. %The shock generates a cost of committing to monthly payments and could potentially be a reason for low take up. 
 It also features clients with present biased time preferences --allowing for partial naivete-- choosing to save to pay for an expense, and with the opportunity to make a commitment to save and pay. These two features parsimoniously explain several facts about the context --like overconfidence in recovering the pawn--, and about the results --e.g. that forcing commitment seems to help. We intend the model only as a very stylized approximation to our context, and we use it only to help us organize the interpretation of the empirical results, not as a literal description of reality. %Third, it allows for a simple way to model commitment afforded by late payment fees. %Nonetheless, the model abstracts from several details of the context. Even with these abstraction it allows us to explain our six main results listed in Section \ref{explanations_recap} below.
