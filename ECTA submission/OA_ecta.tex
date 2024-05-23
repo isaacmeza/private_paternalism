@@ -106,7 +106,7 @@
 \end{center}
 \legend {This table has two panels. Panel A uses administrative data at the loan level, while Panel B uses survey data. Each row in this table corresponds to a regression, where the level of observation is the individual loan originated. The dependent variables of these regressions are displayed in the first column. Each dependent variable is regressed in a multivariate OLS regression against the experimental arms indicators (control, forced commitment, choice). The table reports the coefficients on each of these indicators, as well as the p-value an F-test of the null hypothesis of equality of the three coefficients. The admin data was a very limited set of pre-determined variables. The dependent variables in Panel A are the loan amount in pesos, and an indicator for whether the day of the loan origination was a weekday (as opposed to weekend). The dependent variables in Panel B from the survey. Subjective value of the pawn (how much would the client be willing to sell it for (Q3), an indicator for having trouble paying bills in the last 6-months (Q28), present bias (constructed from questions Q10 and Q29 in the standard way as in \cite{Ashraf}), an indicator for whether they make expenses budget for the month ahead of time. The subjective probability of recovery was elicited a la Manski (from 0 to 100 what is the probability that you will recoup your pawn), pawned before is a dummy=1 if the client declares to have pawned before (although not necessarily with Lender $P$) age is in year, +High-school is a dummy that indicates if the client has completed high school. 
 }
-%\textit{Do file: } \texttt{ss\_att.do}
+%\textit{Do file: } \texttt{ss\_balance.do}
 \end{table}
 
 
@@ -133,7 +133,7 @@ A less critical form of attrition is differential refusal to answer the survey q
 
 %We now present an analysis of the extent to which the survey-responding sample is representative and balanced. Table \ref{SS_cond_survet} presents information about survey non-response. Panel A is a balance table that compares loan amount and day of the week across treatment arms for the subset of borrowers who responded to at least one survey question. The p-values in the fourth column are for the F-test of no difference of means across treatment arms. Panel B presents response-rates by question for each arm of the experiment, along with p-values for the F-test of no difference in question-specific response rates across treatment arms. This panel uses data from participants who answered at least one survey question and went on to pawn on the same day as their survey response. From the table, we see that loan amount and weekday are balanced across treatment arms among survey respondents and that response rates are likewise stable across treatment arms.
 
-% Table \ref{TUT_cond_survet} shows how the estimated TUT effect changes if we restrict our estimation sample based on survey response.
+% Table \ref{TUT_cond_survey} shows how the estimated TUT effect changes if we restrict our estimation sample based on survey response.
 % The first row of the table presents TUT results for the financial cost outcome, while the second presents corresponding results for the APR outcome.
 % In each row, column (1) presents the full-sample TUT estimate and standard error while the remaining columns restrict the sample to borrowers who answered a particular survey question or set of questions.
 % For example, column (4) presents results for borrowers who answered the two questions needed to compute our measure of ``present bias'' discussed in the next paragraph, while column (9) present results restricted to participants who disclosed their sex. 
@@ -147,7 +147,7 @@ A less critical form of attrition is differential refusal to answer the survey q
 
 % \begin{table}[H]
 % \caption{Survey Non-response: TUT estimates for respondents to each survey question.}
-% \label{TUT_cond_survet}
+% \label{TUT_cond_survey}
 % \begin{center}
 % \scriptsize{\input{./Tables/tut_cond_survey.tex}}
 % \end{center}

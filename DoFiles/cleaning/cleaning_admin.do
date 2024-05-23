@@ -135,12 +135,15 @@ label var pro_9 "C-Promise-NSQ"
 *Auxiliar dataset for number of pawns by branch-day
 preserve
 keep if clave_movimiento==4
+*Number of pawns per borrower
+sort NombrePig suc fecha_inicial
+by NombrePig suc fecha_inicial : gen num_pawns_borr = _N
 sort suc fecha_movimiento HoraM NombreP prenda, stable
 duplicates drop NombrePig prenda suc fecha_inicial, force
 duplicates drop NombrePig suc fecha_inicial, force
 
 *Number of borrowers by suc and day
-collapse (count) num_borrowers =  NombreP, by(suc fecha_inicial t_producto)
+collapse (count) num_borrowers = NombreP (mean) num_pawns_borr, by(suc fecha_inicial t_producto)
 tempfile temp_borrowers_suc_x_dia
 save `temp_borrowers_suc_x_dia'
 restore
