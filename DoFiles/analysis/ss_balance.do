@@ -8,14 +8,15 @@ version 17.0
 * Author:	Isaac M
 * Machine:	Isaac M 											
 * Date of creation:	-
-* Last date of modification: January. 15, 2023
+* Last date of modification: May. 23, 2024
 * Modifications: Dataset with only first visit sample
 	- Simplify dofile, remove soft arms and include survey response rate per question
+	- Only survey variables
 * Files used:     
 		- 
 * Files created:  
 
-* Purpose: Summary statistics - balance table 
+* Purpose: Summary statistics - balance table (survey variables)
 
 *******************************************************************************/
 */
@@ -25,40 +26,6 @@ use "$directorio/DB/Master.dta", clear
 
 
 **************************************SS ADMIN**********************************
-
-orth_out prestamo weekday if inlist(t_prod,1,2,4) , by(t_prod) overall count se  vce(cluster suc_x_dia) bdec(2) 
-
-qui putexcel set  "$directorio\Tables\SS_balance.xlsx", sheet("SS_admin") modify	
-qui putexcel B2=matrix(r(matrix)) 
-
-local i = 2	
-foreach var of varlist prestamo weekday  {
-	qui reg `var' ibn.t_prod if inlist(t_prod,1,2,4), nocons r cluster(suc_x_dia)
-	test 1.t_prod==2.t_prod==4.t_prod
-	local p_val = `r(p)'
-	qui putexcel L`i'=matrix(`p_val')  
-	local i = `i'+2
-	}
-	
-******************* Balance conditional on survey subsample
-gen sample_cov = !missing(f_encuesta)
-
-orth_out prestamo weekday if inlist(t_prod,1,2,4) & sample_cov==1, by(t_prod) overall count se  vce(cluster suc_x_dia) bdec(2) 
-
-qui putexcel set  "$directorio\Tables\SS_balance.xlsx", sheet("SS_admin_survey") modify	
-qui putexcel B2=matrix(r(matrix)) 
-
-local i = 2	
-foreach var of varlist prestamo weekday  {
-	qui reg `var' ibn.t_prod if inlist(t_prod,1,2,4) & sample_cov==1, nocons r cluster(suc_x_dia)
-	test 1.t_prod==2.t_prod==4.t_prod
-	local p_val = `r(p)'
-	qui putexcel L`i'=matrix(`p_val')  
-	local i = `i'+2
-	}	
-	
-	
-	
 *********************************Conditional on pawning*************************
 
 orth_out val_pren_orig faltas pb hace_presupuesto pr_recup pres_antes edad genero masqueprepa ///

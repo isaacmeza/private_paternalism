@@ -1,0 +1,545 @@
+\documentclass[11pt, a4paper]{article}
+
+\input{preamble.tex}
+%%% HELPER CODE FOR DEALING WITH EXTERNAL REFERENCES
+\usepackage{xr}
+\makeatletter
+\newcommand*{\addFileDependency}[1]{
+  \typeout{(#1)}
+  \@addtofilelist{#1}
+  \IfFileExists{#1}{}{\typeout{No file #1.}}
+}
+\makeatother
+
+
+\newcommand*{\myexternaldocument}[1]{
+    \externaldocument{#1}
+    \addFileDependency{#1.tex}
+    \addFileDependency{#1.aux}
+}
+
+\newgeometry{margin=1in}
+\linespread{1.25}
+\begin{document}
+
+
+\title{The controlled choice design and private paternalism in pawnshop borrowing - STATA documentation}
+\author{Craig McIntosh \and Isaac Meza \and Joyce Sadka \and Enrique Seira \and Francis J.\ DiTraglia   \thanks{Seira:  MSU, \url{enrique.seira@gmail.com} (corresponding author); McIntosh:  University of California San Diego, \url{ctmcintosh@ucsd.edu}; Meza: Harvard University, \url{isaacmezalopez@g.harvard.edu}; Sadka: ITAM, \url{jsadka@itam.mx}; DiTraglia: Oxford, \url{francis.ditraglia@economics.ox.ac.uk}} }
+\date{}
+\maketitle
+
+
+\section{ Derivations for Section \ref{sec:randchoice}}
+\label{append:randchoice}
+
+
+This appendix provides proofs of the results described in Section \ref{sec:randchoice}, using the notation and assumptions described in Section \ref{sec:potentialOutcomes}. 
+To simplify the presentation, we omit $i$ subscripts throughout this section.
+We also use the shorthand $Z_0 \equiv \mathbbm{1}(Z=0)$, $Z_1 \equiv \mathbbm{1}(Z=1)$, and $Z_2 \equiv\mathbbm{1}(Z=2)$.
+For convenience, the following assumption collects our exclusion restriction and the key features of the constrained choice design.
+
+\begin{assumption}\mbox{}
+\label{assump:randchoice}
+   \begin{enumerate}[(i)]
+   \item $Z$ is independent of $(Y_{0}, Y_{1}, C)$
+   \item $D = \mathbbm{1}(Z \neq 2)Z + \mathbbm{1}(Z = 2)C$
+   \item $Y = \mathbbm{1}(Z = 0) Y_{0} + \mathbbm{1}(Z = 1) Y_{1} + \mathbbm{1}(Z = 2) [ (1 - C) Y_{0} + C Y_{1}]$
+   \end{enumerate}
+\end{assumption}
+
+
+\subsection{Point Identification}
+
+We first show that the TOT, TUT, ASB, and ASL effects are point identified under the constrained choice design.
+It follows that the ASG effect, $(\text{TOT} - \text{TUT})$, is likewise point identified. 
+
+\begin{lem}
+Under Assumption \ref{assump:randchoice},
+\label{lem_randchoice}
+   \begin{enumerate}[(i)]
+       \item $\mathbbm{E}(D|Z=2) = \mathbb{P}(C=1)$
+       \item $\mathbbm{E}(Y|Z=0) = \mathbbm{E}(Y_0)$
+       \item $\mathbbm{E}(Y|Z=1) = \mathbbm{E}(Y_1)$
+       \item $\mathbbm{E}(Y|D=0,Z=2) = \mathbbm{E}(Y_0|C=0)$
+       \item $\mathbbm{E}(Y|D=1,Z=2) = \mathbbm{E}(Y_1|C=1)$.
+   \end{enumerate} 
+\end{lem}
+
+\begin{proof}
+Part (i) follows because $Z=2$ implies $D=C$ and $Z$ is independent of $C$.  
+Parts (ii) and (iii) follow similarly: given $Z=0$ we have $Y = Y_0$, given $Z=1$ we have $Y = Y_1$, and $Z$ is independent of $(Y_0,Y_1)$.
+For parts (iv) and (v), first note that Assumption \ref{assump:randchoice} (iii) implies that $Z$ is conditionally independent of $(Y_0,Y_1)$ given $C$.
+Now, $Z=2$ implies that $D=0$ if and only if $C=0$. Hence,
+\[
+\mathbbm{E}(Y|D=0, Z=2) = \mathbbm{E}(Y_0|D=0, Z=2) = \mathbbm{E}(Y_0|C=0, Z=2)=\mathbbm{E}(Y_0|C=0)
+\]
+establishing part (iv).
+For part (v) $Z=2$ implies that $D=1$ if and only if $C=1$ and hence
+\[
+\mathbbm{E}(Y|D=1, Z=2) = \mathbbm{E}(Y_1|D=1, Z=2) = \mathbbm{E}(Y_1|C=1, Z=2)= \mathbbm{E}(Y_1|C=1). %\qedhere
+\]
+\end{proof}
+
+\begin{prop} 
+Under Assumption \ref{assump:randchoice},
+    \begin{enumerate}[(i)]
+        \item $\text{TOT} \equiv \mathbbm{E}(Y_1 - Y_0|C=1)  = \displaystyle \frac{\mathbbm{E}(Y|Z=2) - \mathbbm{E}(Y|Z=0)}{\mathbbm{E}(D|Z=2)}$
+        \item $\text{TUT} \equiv \mathbbm{E}(Y_1 - Y_0|C=0) = \displaystyle \frac{\mathbbm{E}(Y|Z=1) - \mathbbm{E}(Y|Z=2)}{1 - \mathbbm{E}(D|Z=2)}$
+        \item $\text{ASB} \equiv \mathbbm{E}(Y_0|C=1) - \mathbbm{E}(Y_0|C=0) = \displaystyle \frac{\mathbbm{E}(Y|Z=0) - \mathbbm{E}(Y|Z=2,D=0)}{\mathbbm{E}(D|Z=2)}$
+        \item $\text{ASL} \equiv \mathbbm{E}(Y_1|C=1) - \mathbbm{E}(Y_1|C=0) = \displaystyle \frac{\mathbbm{E}(Y|Z=2,D=1) - \mathbbm{E}(Y|Z=1)}{1 - \mathbbm{E}(D|Z=2)}$.
+    \end{enumerate}
+\end{prop}
+
+\begin{proof}
+For parts (i) and (iii) we require an expression for $\mathbbm{E}(Y_0|C=1)$ in terms of the observables $(Y, D, Z)$.
+By Lemma \ref{lem_randchoice}(ii) and iterated expectations 
+\[
+\mathbbm{E}(Y|Z=0) = \mathbbm{E}(Y_0) = \mathbbm{E}(Y_0|C=0) \mathbbm{P}(C=0) + \mathbbm{E}(Y_0|C=1) \mathbbm{P}(C=1).
+\]
+Re-arranging and substituting Lemma \ref{lem_randchoice}(i) and (iv),
+\begin{align}
+\mathbbm{E}(Y_0|C=1)  &= \frac{\mathbbm{E}(Y|Z=0) - \mathbbm{E}(Y_0|C=0) \mathbbm{P}(C=0)}{\mathbbm{P}(C=1)}\nonumber\\ 
+&=  \frac{\mathbbm{E}(Y|Z=0) - \mathbbm{E}(Y|Z=2,D=0) \mathbbm{E}(1 - D|Z=2)}{\mathbbm{E}(D|Z=2)}.
+\label{eq:Y0C1}
+\end{align}
+Part (i) follows by combining \eqref{eq:Y0C1} with Lemma \ref{lem_randchoice}(v) and simplifying; part (iii) follows by combining \eqref{eq:Y0C1} with Lemma \ref{lem_randchoice}(iv) and simplifying.
+Similarly, for parts (ii) and (iv) we require an expression for $\mathbbm{E}(Y_1|C=0)$ in terms of observables.
+By Lemma \ref{lem_randchoice}(iii) and iterated expectations,
+\[
+\mathbbm{E}(Y|Z=1) = \mathbbm{E}(Y_1) = \mathbbm{E}(Y_1|C=0)\mathbbm{P}(C=0) + \mathbbm{E}(Y_1|C=1) \mathbbm{P}(C=1).
+\]
+Re-arranging and substituting Lemma \ref{lem_randchoice}(i) and (v),
+\begin{align}
+\mathbbm{E}(Y_1|C=0) 
+&= \frac{\mathbbm{E}(Y|Z=1) - \mathbbm{E}(Y_1|C=1)\mathbbm{P}(C=1)}{\mathbb{P}(D=0)} \nonumber\\
+&=\frac{\mathbbm{E}(Y|Z=1) - \mathbbm{E}(Y|Z=2,D=1)\mathbbm{E}(D|Z=2)}{\mathbb{E}(1-D|Z=2)}.
+\label{eq:Y1C0}
+\end{align}
+Part (ii) follows by combining \eqref{eq:Y1C0} with Lemma \ref{lem_randchoice}(iv) and simplifying; part (iv) follows by combining \eqref{eq:Y1C0} with Lemma \ref{lem_randchoice}(v) and simplifying.
+\end{proof}
+
+\subsection{Regression-based Estimation of TOT, TUT, ASG, ASL, and ASB}
+
+We now show how a collection of just-identified, linear IV regressions can be used to consistently estimate the ATE, TOT, and TUT effects, along with each of the ingredients needed to construct the ASL and ASB. 
+These results are used below to provide a recipe for cluster-robust inference for the ASG, ASL, and ASB effects.
+%The first result provides a regression-based approach to estimate the ATE and TOT.
+
+\begin{prop} 
+\label{prop:TOTreg}
+Under Assumption \ref{assump:randchoice}, $Y = \mathbbm{E}(Y_0) + \text{ATE}\times Z_1 + \text{TOT} \times Z_2 D + U$ where $\mathbb{E}(U|Z) = 0$.
+Therefore, under standard regularity conditions, an IV regression of $Y$ on an intercept, $Z_1$ and $Z_2 D$ with instruments $(1, Z_0, Z_1)$ consistently estimates the ATE and TOT. 
+\end{prop}
+
+\begin{proof}
+By Assumption \ref{assump:randchoice} (iii),
+\begin{align*}
+Y &= Z_0 Y_0 + Z_1 Y_1 + Z_2[(1 - C) Y_0 + CY_1] = (Z_0 + Z_2)Y_0 + Z_1 Y_1 + Z_2C(Y_1 - Y_0)\\
+&= (Z_0 + Z_1 + Z_2)Y_0 + Z_1 (Y_1 - Y_0) + Z_2D(Y_1 - Y_0) = Y_0 + Z_1 (Y_1 - Y_0) + Z_2D(Y_1 - Y_0).
+\end{align*}
+since $Z_2 D = Z_2 C$ and $(Z_0 + Z_1 + Z_2) = 1$.
+Thus, defining 
+\[
+U \equiv [Y_0 - \mathbbm{E}(Y_0)] + Z_1[(Y_1 - Y_0) - \text{ATE}] + Z_2 D[(Y_1 - Y_0) - \text{TOT}]
+\]
+by construction we have $Y = \mathbbm{E}(Y_0) + \text{ATE} \times Z_1 + \text{TOT} \times Z_2 D+ U$.
+Now, since $Z_2 D = Z_2 C$ and $Z$ is independent of $(Y_1, Y_0)$ by Assumption \ref{assump:randchoice} (i), we have
+\begin{align*}
+\mathbbm{E}(U|Z) &= [\mathbbm{E}(Y_0|Z) - \mathbbm{E}(Y_0)]  + Z_1[\mathbbm{E}(Y_1 - Y_0|Z) - \text{ATE}] +  \mathbbm{E}\left[Z_2 D\left\{(Y_1 - Y_0) - \text{TOT}\right\}|Z\right]\\
+&= [\mathbbm{E}(Y_0) - \mathbbm{E}(Y_0)]  + Z_1[\mathbbm{E}(Y_1 - Y_0) - \text{ATE}] + Z_2 \mathbbm{E}\left[C\left\{(Y_1 - Y_0) - \text{TOT}\right\}|Z\right]\\
+&= Z_2 \mathbbm{E}\left[C\left\{(Y_1 - Y_0) - \text{TOT}\right\}|Z\right].
+\end{align*}
+Finally, by iterated expectations
+\begin{align*}
+\mathbbm{E}\left[C\left\{(Y_1 - Y_0) - \text{TOT}\right\}|Z\right] &=  \mathbbm{P}(C=1|Z) \left[\mathbbm{E}(Y_1 - Y_0|C=1,Z)  - \text{TOT}\right]\\
+&= \mathbbm{P}(C=1)\left[\mathbbm{E}(Y_1 - Y_0|C=1) - \text{TOT} \right]=0
+\end{align*}
+since $Z$ is conditionally independent of $(Y_0, Y_1)$ given $C$, an implication of \ref{assump:randchoice} (i).
+\end{proof}
+
+%The next proposition provides regression-based estimates of the ATE and TUT.
+\begin{prop}
+\label{prop:TUTreg}
+Under Assumption \ref{assump:randchoice} $Y = \mathbbm{E}(Y_1) + \text{ATE}\times -Z_0 + \text{TUT} \times -Z_2 (1 - D) + V$ where $\mathbb{E}(V|Z) = 0$.
+Therefore, under standard regularity conditions, an IV regression of $Y$ on an intercept, $-Z_0$ and $-Z_2(1-D)$ with instruments $(1, Z_0, Z_1)$ provides consistent estimates of the ATE and TUT effects.
+\end{prop}
+
+\begin{proof}
+By Assumption \ref{assump:randchoice} (iii),
+\begin{align*}
+Y &= Z_0 Y_0 + Z_1 Y_1 + Z_2[(1 - C) Y_0 + CY_1] = Z_0 Y_0 + Z_1 Y_1 + Z_2[(1 - C) (Y_0 - Y_1) + Y_1]\\
+&= Z_0 Y_0 + (Z_1 + Z_2) Y_1 + Z_2(1 - C) (Y_0 - Y_1) = Z_0 Y_0 + (1 - Z_0) Y_1 + Z_2(1 - D) (Y_0 - Y_1) \\
+&= Y_1 - Z_0 (Y_1 - Y_0) - Z_2(1 - D) (Y_1 - Y_0)
+\end{align*}
+since $Z_2(1 - C)= Z_2(1 - D)$ and $(Z_1 + Z_2) = 1 - Z_0$.
+Thus, defining 
+\[
+V \equiv [Y_1 - \mathbb{E}(Y_1)] - Z_0[(Y_1 - Y_0) - \text{ATE}] - Z_2(1 - D)[(Y_1 - Y_0) - \text{TUT}]
+\]
+by construction we have $Y = \mathbb{E}(Y_1) + \text{ATE} \times -Z_0 + \text{TUT} \times -Z_2(1 - D) + V$.
+Now, since $Z_2(1 - D) = Z_2 (1 - C)$ and $Z$ is independent of $(Y_0, Y_1)$ by Assumption \ref{assump:randchoice} (i),
+\begin{align*}
+\mathbb{E}(V|Z) &= [\mathbb{E}(Y_1|Z) - \mathbb{E}(Y_1)] - Z_0[\mathbb{E}(Y_1 - Y_0|Z) - \text{ATE}] - \mathbb{E}[Z_2(1 - D)\left\{(Y_1 - Y_0) - \text{TUT}\right\}|Z]\\
+&= [\mathbb{E}(Y_1) - \mathbb{E}(Y_1)] - Z_0[\mathbb{E}(Y_1 - Y_0) - \text{ATE}] - Z_2\mathbb{E}[(1 - C)\left\{(Y_1 - Y_0) - \text{TUT}\right\}|Z]\\
+&= -Z_2\mathbb{E}[(1 - C)\left\{(Y_1 - Y_0) - \text{TUT}\right\}|Z].
+\end{align*}
+Finally, by iterated expectations,
+\begin{align*}
+\mathbb{E}[(1 - C)\left\{(Y_1 - Y_0) - \text{TUT}\right\}|Z]&= \mathbb{P}(C=0|Z)\left[ \mathbb{E}(Y_1 - Y_0|C=0, Z) - \text{TUT}\right]\\
+&= \mathbb{P}(C=0|Z) \left[ \mathbb{E}(Y_1 - Y_0|C=0) - \text{TUT}\right] = 0
+\end{align*}
+since $Z$ is conditionally independent of $(Y_0, Y_1)$ given $C$, an implication of Assumption \ref{assump:randchoice} (i).
+\end{proof}
+
+Since $\text{ASG} = \text{TOT} - \text{TUT}$, the preceding two propositions provide consistent estimates of $\text{ASG}$ effect.
+The $\text{ASB}$ effect, $\mathbbm{E}(Y_0|C=1) - \mathbb{E}(Y_0|C=0)$, can likewise be estimated by taking the difference of coefficients across two linear IV regressions. %as shown in the following proposition.
+
+\begin{prop}
+\label{prop:ASBreg}
+Under Assumption \ref{assump:randchoice}
+\begin{align}
+\label{eq:ASB0}
+    (1 - D) Y &= \mathbbm{E}(Y_{0}) \times Z_0 + \mathbbm{E}(Y_{0}|C=0) \times (1 - D)Z_2 + U_{0}\\
+\label{eq:ASB1}
+    (1 - D) Y &= \mathbbm{E}(Y_{0}) \times(Z_0 + Z_2) + \mathbbm{E}(Y_{0}|C=1)\times -DZ_2 + U_{1}
+\end{align}
+where $\mathbbm{E}(U_0|Z) = \mathbbm{E}(U_1|Z) = 0$.
+Thus, under standard regularity conditions, an IV regression of $(1 - D)Y$ on $Z_0$ and $(1 - D)Z_2$ with instruments $(Z_0, Z_2)$ and no intercept consistently estimates $\mathbb{E}(Y_0)$ and $\mathbb{E}(Y_0|C=0)$. 
+Similarly, an IV regression of $(1 - D)Y$ on $(Z_0 + Z_2)$ and $-DZ_2$ with instruments $(Z_0, Z_2)$ and no intercept consistently estimates $\mathbb{E}(Y_0)$ and $\mathbb{E}(Y_0|C=1)$.
+\end{prop}
+
+\begin{proof}
+Assumption \ref{assump:randchoice} (ii) implies $(1 - D) = Z_0 + Z_2(1 - C)$. Hence, by Assumption \ref{assump:randchoice} (iii),
+\begin{align*}
+(1 - D)Y &=  [Z_0 + Z_2 (1 - C)]\left\{Z_0 Y_0 + Z_1 Y_1 + Z_2[(1 - C) Y_0 + CY_1]\right\}\\
+&= Z_0 Y_0 + Z_2 (1 - C) [(1 - C) Y_0 + C Y_1] = Z_0 Y_0 + Z_2 (1 - C) Y_0.
+\end{align*}
+because $Z_j^2 = Z_j$ for any $j$ and $Z_j Z_k = 0$ for any $j \neq k$ and, similarly, $(1 - C)^2 = (1 - C)$ and $C (1 - C) = 0$.
+Therefore, since $Z_2 (1 - C) = Z_2 (1 - D)$,
+\[
+(1 - D)Y = Z_0 Y_0 + Z_2 (1 - D) Y_0, \quad
+(1 - D)Y = (Z_0 + Z_2) Y_0 + (-DZ_2) Y_0. 
+\]
+Now, defining
+\begin{align*}
+U_0 &\equiv Z_0 [Y_0 - \mathbbm{E}(Y_0)] + Z_2(1 - D)[Y_0 - \mathbbm{E}(Y_0|C=0)]\\
+U_1 &\equiv (Z_0 + Z_2)[Y_0 - \mathbbm{E}(Y_0)] + (-Z_2 D)[Y_0 - \mathbbm{E}(Y_0|C=1)]
+\end{align*}
+by construction, we have
+\begin{align*}
+Y &= \mathbbm{E}(Y_0) \times Z_0 + \mathbbm{E}(Y_0|C=0) \times Z_2(1 - D) + U_0\\
+Y &= \mathbbm{E}(Y_0) \times (Z_0 + Z_2)+ \mathbbm{E}(Y_0|C=1) (-Z_2D) + U_1.
+\end{align*}
+Finally, since $Z_2(1-D) = Z_2(1 - C)$, and $Z$ is independent of $Y_0$,  
+\begin{align*}
+\mathbbm{E}(U_0|Z) &= Z_0[\mathbbm{E}(Y_0|Z) - \mathbbm{E}(Y_0)] + Z_2\mathbbm{E}\{(1 - C) [Y_0 - \mathbbm{E}(Y_0|C=0) |Z\}\\
+&= Z_2 \mathbbm{E}[Y_0 - \mathbbm{E}(Y_0|C=0) | C = 0, Z] = 0
+\end{align*}
+where the final two steps follow by iterated expectations and the fact that  $Z$ is conditionally independent of $Y_0$ given $C$. 
+Since $Z_2 D = Z_2 C$, a nearly identical argument gives
+\begin{align*}
+\mathbbm{E}(U_1|Z) &= (Z_0 + Z_2)[Y_0 - \mathbbm{E}(Y_0|Z)] -Z_2\mathbbm{E}\{C [Y_0 - \mathbbm{E}(Y_0|C=1) |Z\}\\
+&= -Z_2 \mathbbm{E}[Y_0 - \mathbbm{E}(Y_0|C=0) | C = 1, Z] = 0. \qedhere
+\end{align*}
+\end{proof}
+
+
+The next result shows that the $\text{ASL}$ effect, $\mathbbm{E}(Y_1|C=1) - \mathbb{E}(Y_1|C=0)$, can be estimated as the difference of coefficients across two linear IV regressions.
+
+\begin{prop}
+\label{prop:ASLreg}
+Under Assumption \ref{assump:randchoice},
+\begin{align}
+\label{eq:ASL0}
+    D Y &= \mathbbm{E}(Y_{1}) \times(Z_1 + Z_2) + \mathbbm{E}(Y_{1}|C=0)\times (D - 1)Z_2 + V_{0}\\
+\label{eq:ASL1}
+    D Y &= \mathbbm{E}(Y_{1}) \times Z_1 + \mathbbm{E}(Y_{1}|C=1)\times D Z_2+ V_{1}
+\end{align}
+where $\mathbbm{E}(V_0|Z) = \mathbbm{E}(V_1|Z) = 0$.
+Thus, under standard regularity conditions, an IV regression of $DY$ on $(Z_1 + Z_2)$ and $-Z_2(1 - D)$ with instruments $(Z_1, Z_2)$ and no intercept provides consistent estimates of $\mathbb{E}(Y_1)$ and $\mathbb{E}(Y_1|C=1)$.
+Similarly, an IV regression of $DY$ on $Z_1$ and $DZ_2$ with instruments $(Z_1, Z_2)$ and no intercept provides consistent estimates of $\mathbb{E}(Y_1)$ and $\mathbb{E}(Y_1|C=1)$. 
+\end{prop}
+
+
+\begin{proof}
+By Assumption \ref{assump:randchoice}, $D = Z_1 + Z_2 C$. Hence, by Assumption \ref{assump:randchoice} (iii),
+\begin{align*}
+DY &=  (Z_1 + Z_2 C)\left\{Z_0 Y_0 + Z_1 Y_1 + Z_2[(1 - C) Y_0 + CY_1]\right\}\\
+&= Z_1 Y_1 + Z_2 C[(1 -C) Y_0 + C Y_1] = Z_1 Y_1 + Z_2 C Y_1
+\end{align*}
+because $Z_j^2 = Z_j$ for any $j$ and $Z_j Z_k = 0$ for any $j \neq k$ and, similarly, $(1 - C)^2 = (1 - C)$ and $C (1 - C) = 0$. Therefore, since $Z_2 (1 - C) = Z_2 (1 - D)$,
+\[
+ DY = (Z_1 + Z_2)Y_1 + Z_2 (D - 1) Y_1, \quad
+ DY = Z_1 Y_1 + Z_2 D Y_1.
+\]
+Now, defining
+\begin{align*}
+V_0 &= (Z_1 + Z_2)[Y_1 - \mathbbm{E}(Y_1)] + Z_2(D - 1)[Y_1 - \mathbbm{E}(Y_1|C=0)]\\
+V_1 &= Z_1[Y_1 - \mathbbm{E}(Y_1)] + Z_2D[Y_1 - \mathbbm{E}(Y_1|C=1)]
+\end{align*}
+by construction we have
+\begin{align*}
+Y &= \mathbbm{E}(Y_1) \times (Z_1 + Z_2) + \mathbbm{E}(Y_1 | C = 0) \times Z_2 (D - 1) + V_0\\
+Y &= \mathbbm{E}(Y_1) \times Z_1 + \mathbbm{E}(Y_1 | C = 1) \times Z_2 D + V _1.
+\end{align*}
+Finally, since $Z_2(1 - D) = Z_2(1 - C)$ and $Z$ is independent of $Y_1$,
+\begin{align*}
+\mathbbm{E}(V_0|Z) &= (Z_1 + Z_2) [\mathbbm{E}(Y_1|Z) - \mathbbm{E}(Y_1) ]  - Z_2 \mathbbm{E}\{(1 - C)  [Y_1 - \mathbbm{E}(Y_1 | C=0)|Z\} \\
+&= -Z_2 \mathbbm{E}[Y_1 - \mathbbm{E}(Y_1 | C=0)|C=0, Z] = 0
+\end{align*}
+where the final two steps follow by iterated expectations and the fact that  $Z$ is conditionally independent of $Y_1$ given $C$. 
+Since $Z_2 D = Z_2 C$, a nearly identical argument gives
+\begin{align*}
+\mathbbm{E}(V_1|Z) &= Z_1 [\mathbbm{E}(Y_1 | Z) - \mathbbm{E}(Y_1)]  + Z_2 \mathbbm{E}\{C  [Y_1 - \mathbbm{E}(Y_1 | C=1)|Z\} \\
+&= Z_2 \mathbbm{E}[Y_1 - \mathbbm{E}(Y_1 | C=1)|C=1, Z] = 0. \qedhere
+\end{align*}
+\end{proof}
+
+
+
+
+\subsection{Inference for ASG, ASB, and ASL}
+\label{subsec:inference}
+We now explain how to carry out cluster-robust inference for the ASG, ASB, and ASL effects, as implemented in our companion STATA package.
+Each of these effects can be expressed as a difference of coefficients from two just-identified linear IV regressions.
+The ASG effect is the difference of the \text{TOT} effect from Proposition \ref{prop:TOTreg} and the \text{TUT} effect from Proposition \ref{prop:TUTreg}.
+Similarly, the ASB effect is the difference of $\mathbb{E}(Y_0|C=1)$ and $\mathbbm{E}(Y_0|C=0)$ from Proposition \ref{prop:ASBreg} while the ASL effect is the difference of $\mathbbm{E}(Y_1|C=1)$ and $\mathbbm{E}(Y_1|C=0)$ from Proposition \ref{prop:ASLreg}.
+Within each pair of IV regressions the outcome variable and instrument set is identical; only the regressors differ. 
+Since our estimators of all three effects share the same structure, our discussion of inference abstracts from the specific regressors and instruments used in each case to avoid duplication. 
+To implement these results in practice without relying on our STATA package, simply substitute supply the regressors and instruments specified in the relevant propositions. 
+
+Let $g = 1, ..., G$ index clusters and $i = 1, ..., N_g$ index individuals within a particular cluster $g$. 
+In our experiment, a cluster is a branch-day combination and the experimentally-assigned treatment (control, forced, or choice arm) is assigned at the cluster level.
+We assume that observations are iid across clusters but potentially correlated within cluster.
+Now consider a pair of just-identified linear IV regressions given by
+\[
+Y_{ig} = \boldsymbol{X}_{1,ig}' \boldsymbol{\theta}_0 + U_{ig}, \quad
+Y_{ig} = \boldsymbol{X}_{0,ig}' \boldsymbol{\theta}_1 + V_{ig}
+\]
+with common instrument vector $\boldsymbol{W}_{ig}$. 
+Stacking observations in the usual manner, e.g.\
+\[
+\mathbf{W}_g' \equiv \begin{bmatrix}
+\boldsymbol{W}_{1g} & \cdots & 
+\boldsymbol{W}_{N_gg} 
+\end{bmatrix}, \quad
+\mathbf{W}' = \begin{bmatrix}
+\mathbf{W}_1' & \cdots & \mathbf{W}_G'
+\end{bmatrix},
+\]
+we can write the preceding equations in matrix form as
+\[
+\mathbf{Y} = \mathbf{X}_1\boldsymbol{\theta_1} + \mathbf{U}, \quad
+\mathbf{Y} = \mathbf{X}_0\boldsymbol{\theta_0} + \mathbf{V}
+\]
+with instrument matrix $\mathbf{W}$.
+Now, the IV estimators for $\boldsymbol{\theta}_1$ and $\boldsymbol{\theta}_0$ can be expressed as 
+\begin{align*}
+\widehat{\boldsymbol{\theta}}_1 
+&= \left(\mathbf{W}'\mathbf{X}_1\right)^{-1}\mathbf{W}'\mathbf{Y}  = \boldsymbol{\theta}_1 + \left(\mathbf{W}'\mathbf{X}_1\right)^{-1}\mathbf{W}'\mathbf{U}\\ 
+\widehat{\boldsymbol{\theta}}_0 
+&= \left(\mathbf{W}'\mathbf{X}_0\right)^{-1}\mathbf{W}'\mathbf{Y} = \boldsymbol{\theta}_0 + \left(\mathbf{W}'\mathbf{X}_0\right)^{-1}\mathbf{W}'\mathbf{V}.
+\end{align*}
+Our parameter of interest is an element of the difference $(\theta_1 - \theta_0)$, so  it suffices to calculate the asymptotic distribution of $(\widehat{\boldsymbol{\theta}}_1 - \widehat{\boldsymbol{\theta}}_0)$.
+Re-arranging the preceding two equations, we have
+\begin{align*}
+\sqrt{G} \left(\widehat{\boldsymbol{\theta}}_1  - \boldsymbol{\theta}_1\right) &= 
+ \left(\frac{\mathbf{W}'\mathbf{X}_1}{G}\right)^{-1}\left(\frac{\mathbf{W}'\mathbf{U}}{\sqrt{G}}\right) = \left( \frac{1}{G} \sum_{g=1}^G \mathbf{W}_g' \mathbf{X}_{1,g}\right)^{-1}\left(\frac{1}{\sqrt{G}} \sum_{g=1}^G\mathbf{W}_g' \mathbf{U}_g\right) \\ 
+\sqrt{G} \left(\widehat{\boldsymbol{\theta}}_0  - \boldsymbol{\theta}_0\right) &= 
+ \left(\frac{\mathbf{W}'\mathbf{X}_0}{G}\right)^{-1}\left(\frac{\mathbf{W}'\mathbf{V}}{\sqrt{G}}\right) = \left( \frac{1}{G} \sum_{g=1}^G \mathbf{W}_g' \mathbf{X}_{0,g}\right)^{-1}\left(\frac{1}{\sqrt{G}} \sum_{g=1}^G\mathbf{W}_g' \mathbf{V}_g\right).
+\end{align*}
+Now, define $\mathbf{Q}_0 \equiv \mathbb{E}[\mathbf{W}_g'\mathbf{X}_{0g}]$ and $\mathbf{Q}_1 \equiv \mathbb{E}[\mathbf{W}_g'\mathbf{X}_{1g}]$ and suppose that these expectations exist and that the matrices $\mathbf{Q}_0$ and $\mathbf{Q}_1$ are invertible. Then, as $G \rightarrow \infty$
+\[
+ \left( \frac{1}{G} \sum_{g=1}^G \mathbf{W}_g' \mathbf{X}_{0,g}\right)^{-1} \rightarrow_p \mathbf{Q}_0^{-1}, \quad
+ \left( \frac{1}{G} \sum_{g=1}^G \mathbf{W}_g' \mathbf{X}_{1,g}\right)^{-1} \rightarrow_p \mathbf{Q}_1^{-1} \quad
+\]
+by the continuous mapping theorem.
+Now, by our experimental design and exclusion restriction, $\mathbf{W}_{ig}$ is independent of $U_{ig}$ both unconditionally and conditional on cluster size. 
+Therefore,
+\begin{align*}
+\mathbb{E}[\mathbf{W}_g' \mathbf{U}_g] &=  \mathbb{E}\left[ \sum_{i=1}^{N_g} \mathbf{W}_{ig} U_{ig} \right] = \mathbb{E}_{N_g}\left[ \mathbb{E}\left\{\left. \sum_{i=1}^{N_g} \mathbf{W}_{ig} U_{ig} \right| N_g \right\}\right]\\
+&= \mathbb{E}_{N_g}\left[ \sum_{i=1}^{N_g} \mathbb{E}(\mathbf{W}_{ig} U_{ig}|N_g)\right] = \mathbb{E}_{N_g}\left[ \sum_{i=1}^{N_g} \mathbb{E}(\mathbf{W}_{ig}U_{ig})\right] = 0
+\end{align*}
+by iterated expectations, and similarly smilarly, $\mathbb{E}[\mathbf{W}_g'\mathbf{V}_g] = \mathbf{0}$. 
+Thus, under mild regularity conditions (e.g.\ finite fourth moments), as $G \rightarrow \infty$  we have
+\[
+\frac{1}{\sqrt{G}} \sum_{g=1}^G \mathbf{W}_g' \otimes \begin{bmatrix} \mathbf{U}_g \\ \mathbf{V}_g \end{bmatrix} \rightarrow_d \text{N}(\mathbf{0}, \boldsymbol{\Omega})
+\]
+where the heteroskedasticity-- and cluster--robust variance-covariance matrix $\boldsymbol{\Omega}$ is defined as
+\[
+\boldsymbol{\Omega} \equiv 
+ \mathbb{E} \left[\left(\mathbf{W}_g \mathbf{W}_g' \right)\otimes \begin{pmatrix}
+\mathbf{U}_g \mathbf{U}_g' & \mathbf{U}_g \mathbf{V}_g' \\
+\mathbf{V}_g \mathbf{U}_g' & \mathbf{V}_g \mathbf{V}_g'  
+\end{pmatrix} \right] \equiv \begin{bmatrix}
+\Omega_{UU} & \Omega_{UV} \\
+\Omega_{VU} & \Omega_{VV}
+\end{bmatrix}.
+\]
+Therefore, the joint limiting distribution of $\widehat{\boldsymbol{\theta}}_1$ and $\widehat{\boldsymbol{\theta}}_0$ is given by
+\[
+\begin{bmatrix}
+\sqrt{G}(\widehat{\boldsymbol{\theta}}_1 - \boldsymbol{\theta}_1)\\
+\sqrt{G}(\widehat{\boldsymbol{\theta}}_0 - \boldsymbol{\theta}_0)
+\end{bmatrix} \rightarrow_d
+\begin{bmatrix}
+\mathbf{Q}_1^{-1} & \mathbf{0} \\
+\mathbf{0} & \mathbf{Q}_0^{-1} 
+\end{bmatrix}
+\begin{bmatrix}
+\boldsymbol{\xi}_U \\ \boldsymbol{\xi}_V 
+\end{bmatrix}, \quad
+\begin{bmatrix}
+\boldsymbol{\xi}_U \\ \boldsymbol{\xi}_V 
+\end{bmatrix} \sim \text{N}\left(\begin{bmatrix} \mathbf{0} \\ \mathbf{0}\end{bmatrix},
+\begin{bmatrix}
+\Omega_{UU} & \Omega_{UV} \\
+\Omega_{VU} & \Omega_{VV}
+\end{bmatrix}\right)
+\]
+from which it follows by the continuous mapping theorem that
+\[
+\sqrt{G}\left[ (\widehat{\boldsymbol{\theta}}_1 - \widehat{\boldsymbol{\theta}}_0 ) - (\boldsymbol{\theta}_1 - \boldsymbol{\theta}_0)\right] 
+\rightarrow_d
+\begin{bmatrix}
+\mathbf{Q}_1^{-1} & -\mathbf{Q}_0^{-1}
+\end{bmatrix}
+\begin{bmatrix}
+\boldsymbol{\xi}_U \\ \boldsymbol{\xi}_V 
+\end{bmatrix}.
+\]
+To use this result in practice, we estimate the standard errors of  $(\widehat{\boldsymbol{\theta}}_1 - \widehat{\boldsymbol{\theta}}_0)$ as the square root of the diagonal elements of the matrix
+\[
+\widehat{\text{Avar}}(\widehat{\boldsymbol{\theta}}_1 - \widehat{\boldsymbol{\theta}}_0) 
+= \begin{bmatrix}
+\left(\mathbf{W}'\mathbf{X}_1\right)^{-1} &
+-\left(\mathbf{W}'\mathbf{X}_0\right)^{-1} 
+\end{bmatrix}
+\begin{bmatrix}
+\mathbf{S}_{UU}& \mathbf{S}_{UV}\\
+\mathbf{S}_{VU}& \mathbf{S}_{VV}
+\end{bmatrix} 
+\begin{bmatrix}
+\left(\mathbf{X}_1'\mathbf{W}\right)^{-1} \\
+-\left(\mathbf{X}_0'\mathbf{W}\right)^{-1} 
+\end{bmatrix}
+\]
+where
+\[
+\mathbf{S}_{UU} \equiv \sum_{g=1}^G \mathbf{W}_g' \widehat{\mathbf{U}}_g \widehat{\mathbf{U}}_g' \mathbf{W}_g, \quad
+\mathbf{S}_{UV} \equiv \sum_{g=1}^G \mathbf{W}_g' \widehat{\mathbf{U}}_g \widehat{\mathbf{V}}_g' \mathbf{W}_g, \quad
+\mathbf{S}_{VU} \equiv \mathbf{S}_{UV}', \quad
+\mathbf{S}_{VV} \equiv \sum_{g=1}^G \mathbf{W}_g' \widehat{\mathbf{V}}_g \widehat{\mathbf{V}}_g' \mathbf{W}_g
+\]
+and we define the IV residuals
+\[
+\widehat{\mathbf{U}}_g \equiv \mathbf{Y}_g - \mathbf{X}_{1,g}\widehat{\boldsymbol{\theta}}_1, \quad
+\widehat{\mathbf{V}}_g \equiv \mathbf{Y}_g - \mathbf{X}_{0,g}\widehat{\boldsymbol{\theta}}_0.
+\]
+In our application the number of clusters, $G$, is large.
+If desired, an \emph{ad hoc} degrees of freedom correction can be applied by multiplying the standard errors by $\sqrt{G/(G-1)}$.
+
+
+\section{Testing the Exclusion Restriction}
+\label{append:exclusion}
+
+
+This section describes the testable implications of our exclusion restrictions: \eqref{eq:exclusion0} and \eqref{eq:exclusion1} from Section \ref{sec:potentialOutcomes}. 
+To consider possible violations of these conditions, it is helpful to introduce some additional notation.
+As above, let $Y_0 \equiv Y(d=0,z=0)$ and $Y_1 \equiv Y(d=1,z=1)$ denote the potential outcomes under \emph{forced treatment}: $Y_0$ is the potential outcome when forced into the status quo contract and $Y_1$ when forced into the commitment contract. 
+Further let $Y_{0,2} \equiv Y(d=0,z=2)$ and $Y_{1,2} \equiv Y(d=1,z=2)$ denote the potential outcomes under \emph{free choice of treatment}: $Y_{0,2}$ is the potential outcome when choosing the status quo contract and $Y_{1,2}$ when choosing the commitment contract. 
+Using this notation, \eqref{eq:exclusion0} becomes $Y_0 = Y_{0,2}$ and while \eqref{eq:exclusion1} becomes $Y_1 = Y_{1,2}$.
+Without imposing these, part (iii) of Assumption \ref{assump:randchoice} becomes 
+\[
+Y = \mathbbm{1}(Z =0) Y_{0} + \mathbbm{1}(Z = 1)  Y_{1}  + \mathbbm{1}(Z = 2) \left[(1 - C) Y_{0,2} + C Y_{1,2} \right]
+\]
+but parts (i) and (ii) continue to hold.
+Accordingly, parts (i)--(iii) of Lemma \ref{lem_randchoice} are unchanged, while parts (iv) and (v) become
+\[
+\mathbbm{E}(Y|D=0,Z=2) = \mathbbm{E}(Y_{0,2}|C=0), \quad
+\mathbbm{E}(Y|D=1,Z=2) = \mathbbm{E}(Y_{0,1}|C=1).
+\]
+Using these expressions, the testable restrictions we consider here are as follows:
+\begin{align}
+\label{eq:exclusion_append0}
+\mathbbm{E}(Y_0|C=0) &= \mathbbm{E}(Y_{0,2}|C=0) \\
+\label{eq:exclusion_append1}
+\mathbbm{E}(Y_1|C=1) &= \mathbbm{E}(Y_{1,2}|C=1).
+\end{align}
+Equation \ref{eq:exclusion_append0} is a restriction on the average potential outcomes of non-choosers that we use to point identify the TUT effect.
+It says that someone who \emph{would} choose the control condition when given a choice, experiences the same potential outcome, on average, when \emph{assigned} to the control condition.
+Equation \ref{eq:exclusion_append1} is a restriction on the average potential outcomes of choosers that we use to point identify the TOT effect.
+It says that someone who \emph{would} choose the commitment contract when given a choice, experiences the same potential outcome, on average, when \emph{assigned} to this condition.
+Because they refer to different groups of people, either of \eqref{eq:exclusion_append0}  and \eqref{eq:exclusion_append1} could hold when the other is violated.
+For this reason we consider each in turn.
+Our approach is closely related to arguments from \cite{huber_mellace} and \cite{BinaryRegressor}, among others.
+%As such, the following is a heuristic explanation rather than a fully-rigorous proof.
+%See the aforementioned papers for more details of how to make this argument fully rigorous.
+
+Consider first \eqref{eq:exclusion_append0}.
+Let $p \equiv \mathbbm{P}(C=1) = \mathbbm{P}(D=1|Z=2)$ denote the share of choosers in the population.
+This value is point identified regardless of whether the exclusion restriction holds.
+Because $Z$ was randomly assigned, a fraction $p$ of borrowers with $Z=0$ are choosers while the remaining $(1-p)$ are non-choosers.
+It follows that, regardless of whether the exclusion restriction holds, the observed distribution of $Y|Z=0$ is a mixture of $Y_0|C=0$ and $Y_0|C=1$ with mixing weights $(1-p)$ and $p$.
+This allows us to construct a pair of bounds for $\mathbb{E}(Y_0|C=0)$ as follows.
+The non-choosers must lie \emph{somewhere} in the distribution of $Y|Z=0$.
+Consider the two most extreme possibilities: they could occupy the bottom $(1-p)\times 100\%$ of the distribution or the top $(1-p)\times 100\%$ of the distribution.
+For this reason, computing the average of the \emph{truncated} distribution of $Y|Z=0$, cutting out the top $p\times 100\%$, provides a lower bound for the average of $Y_0$ among non-choosers.
+Similarly, cutting out the bottom $p \times 100\%$ provides an upper bound.
+Let $y^0_{1-p}$ denote the $(1-p)$ quantile of $Y|Z=0$ and $y^0_{p}$ denote the $p$ quantile of the same distribution.
+Using this notation, the bounds are given by
+\[
+\mathbb{E}\left(Y|Z=0, Y\leq y^0_{1-p}\right)\leq \mathbb{E}(Y_0|C=0) \leq \mathbb{E}\left(Y|Z=0, Y \geq y^0_p\right) 
+\]
+These bounds do not rely on the exclusion restriction.
+Under Equation \ref{eq:exclusion_append0}, however, we know that $\mathbb{E}(Y_0|C=0)=\mathbb{E}(Y|D=0,Z=2)$.
+Therefore, if the exclusion restriction for non-choosers holds, we must have
+\begin{equation}
+\mathbb{E}\left(Y|Z=0, Y\leq y^0_{1-p}\right)\leq \mathbb{E}(Y|D=0,Z=2) \leq \mathbb{E}\left(Y|Z=0, Y \geq y^0_p\right).
+\label{eq:testable0}
+\end{equation}
+Equation \ref{eq:testable0} provides a pair of testable implications of \eqref{eq:exclusion_append0}.
+If either inequality is violated, then the exclusion restriction for non-choosers fails.
+In our experiment, $\widehat{p} = \widehat{\mathbbm{P}}(D=1|Z=2) = 0.11$. For the APR outcome we estimate
+\[
+\widehat{\mathbbm{E}}(Y_\text{APR}|Z=0,Y_\text{APR}\leq y^0_{0.89}) = 0.48, \quad
+\widehat{\mathbbm{E}}(Y_\text{APR}|Z=0, Y_\text{APR}\geq y^0_{0.11}) = 0.62.
+\]
+Since $\widehat{\mathbbm{E}}(Y_\text{APR}|D=0,Z=2) = 0.58$ falls between these bounds, we find no evidence against the exclusion restriction for non-choosers. 
+Repeating this exercise for the financial cost outcome, we see that $\widehat{\mathbbm{E}}(Y_\text{FC}|D=0,Z=2) = 973$ likewise falls between 
+\[
+\widehat{\mathbbm{E}}(Y_\text{FC}|Z=0,Y_\text{FC}\leq y^0_{0.89}) = 626, \quad
+\widehat{\mathbbm{E}}(Y_\text{FC}|Z=0, Y_\text{FC}\geq y^0_{0.11}) = 1046 
+\]
+so we again find no evidence against the exclusion restriction for non-choosers.
+
+We can use an analogous approach to construct testable implications for \ref{eq:exclusion_append1}. 
+Because $Z$ was randomly assigned, a fraction $p$ of participants with $Z = 1$ are choosers so the distribution of $Y|Z=1$ is a mixture of $Y_1|C=1$ and $Y_1|C=0$ with mixing weights $p$ and $1 -p$.
+The participants with $C = 1$ must lie \emph{somewhere} in the distribution of $Y_0|Z=1$ so again consider the two most extreme cases: they could occupy the bottom or the top $p\times 100\%$ of the distribution. 
+Hence,
+\[
+\mathbbm{E}\left(Y|Z=1,Y\leq y^1_{p}\right) \leq \mathbbm{E}(Y_1|C=1) \leq \mathbbm{E}\left(Y|Z=1,Y \geq y^1_{1-p}\right)
+\]
+where $y^1_p$ and $y^1_{1-p}$ are the $p$ and $1 - p$ quantiles of the distribution of $Y|Z=1$.
+As above, these bounds do not rely on the exclusion restriction.
+If Equation \ref{eq:exclusion_append1} holds, however, we know that $\mathbb{E}(Y|D=1,Z=2) = \mathbb{E}(Y_1|C=1)$, yielding the following testable implications for choosers
+\begin{equation}
+\mathbbm{E}\left(Y|Z=1,Y\leq y^1_{p}\right) \leq \mathbbm{E}(Y|D=1,Z=2) \leq \mathbbm{E}\left(Y|Z=1,Y \geq y^1_{1-p}\right).
+\label{eq:testable1}
+\end{equation}
+If either inequality is violated, then the exclusion restriction from Equation \ref{eq:exclusion_append1} fails.
+Again, in our experiment $\widehat{p}=0.11$. For the APR outcome we estimate
+\[
+\widehat{\mathbbm{E}}(Y|Z=1,Y\leq y^1_{0.11}) = 0.06, \quad
+\widehat{\mathbbm{E}}(Y|Z=1,Y\geq y^1_{0.89}) = 1.28
+\]
+Since $\widehat{\mathbbm{E}}(Y_\text{APR}|D=1,Z=2) = 0.43$ falls between these bounds, we find no evidence against the exclusion restriction for the choosers. 
+Repeating this exercise for the financial cost outcome, we see  that $\widehat{\mathbbm{E}}(Y_\text{FC}|D=1,Z=2)= 570$ likewise falls between
+\[
+\widehat{\mathbbm{E}}(Y|Z=1,Y\leq y^1_{0.11}) = 53, \quad
+\widehat{\mathbbm{E}}(Y|Z=1,Y\geq y^1_{0.89}) = 2934
+\]
+so we again find no evidence against the exclusion restriction for the choosers.
+
+The aforementioned bounds for $\mathbbm{E}(Y_0|C=0)$ and $\mathbbm{E}(Y_1|C=1)$ can alternatively be used construct partial identification bounds for the TOT and TUT effects that do not rely on our exclusion restrictions. If the TOT or TUT expression from \ref{append:randchoice} fall \emph{outside} the partial identification bounds, this is equivalent to finding a violation of \ref{eq:testable0} or \ref{eq:testable1}. We implement these bounds for the TOT and TUT in our companion STATA package.
+
+\end{document}

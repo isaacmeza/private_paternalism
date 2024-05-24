@@ -1,5 +1,10 @@
 
-
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\setcounter{table}{0}
+\setcounter{figure}{0}
+\setcounter{section}{0}
+\pagenumbering{gobble}
+% APPENDIX 
 \pagenumbering{arabic}
 \renewcommand\thefigure{OA-\arabic{figure}}
 \renewcommand\thetable{OA-\arabic{table}}
@@ -7,54 +12,13 @@
 \renewcommand\thesection{Appendix \Alph{section}.}
 \renewcommand\thesubsection{\Alph{section}.\arabic{subsection}}
 
+\newgeometry{margin=1in}
+\begin{center}
+	\Large ONLINE APPENDIX: The controlled choice design and private paternalism in pawnshop borrowing \\[0.5em]
+	%\Large{Appendix $-$ For Online Publication} \\[1em]
+	\large \author{Craig McIntosh \and Isaac Meza \and Joyce Sadka \and Enrique Seira \and Francis J.\ DiTraglia}
+\end{center}
 
-
-
-\begin{frontmatter}
-
-\title{ONLINE APPENDIX: The controlled choice design and private paternalism in pawnshop borrowing}
-\runtitle{The controlled choice design and private paternalism}
-
-\begin{aug}
-% use \particle for den|der|de|van|von (only lc!)
-% [id=?,addressref=?,corref]{\fnms{}~\snm{}\ead[label=e?]{}\thanksref{}}
-%
-%% e-mail is mandatory for each author
-%
-%%% initials in fnms (if any) with spaces
-%
-\author[id=au1,addressref={add1}]{\fnms{Craig}~\snm{McIntosh}\ead[label=ee1]{ctmcintosh@ucsd.edu}}
-\author[id=au2,addressref={add2}]{\fnms{Isaac}~\snm{Meza}\ead[label=ee2]{isaacmezalopez@g.harvard.edu}}
-\author[id=au3,addressref={add3}]{\fnms{Joyce}~\snm{Sadka}\ead[label=ee3]{jsadka@itam.mx}}
-\author[id=au4,addressref={add4}]{\fnms{Enrique}~\snm{Seira}\ead[label=ee4]{enrique.seira@gmail.com}}
-\author[id=au5,addressref={add5}]{\fnms{Francis J.}~\snm{DiTraglia}\ead[label=ee5]{francis.ditraglia@economics.ox.ac.uk}}
-
-% Addresses
-\address[id=add1]{%
-\orgdiv{Department of Economics}
-\orgname{University of California San Diego}}
-
-\address[id=add2]{%
-\orgdiv{Department of Economics}
-\orgname{Harvard University}}
-
-\address[id=add3]{%
-\orgdiv{Department of Economics}
-\orgname{Instituto Tecnologico Autonomo de Mexico}}
-
-\address[id=add4]{%
-\orgdiv{Department of Economics}
-\orgname{Michigan State University}}
-
-\address[id=add5]{%
-\orgdiv{Department of Economics}
-\orgname{University of Oxford}}
-\end{aug}
-
-
-\end{frontmatter}
-
-\newpage
 
 \begin{appendix}
 
@@ -63,7 +27,7 @@
 \section{Additional materials} 
 %\vspace{.2in}
 \begin{figure}[!h]
-     
+     \caption{Behavior of borrowers who lost their pawn.}
     \begin{center}
     \begin{subfigure}{0.35\textwidth}
         \caption{Elapsed days to first payment}
@@ -86,11 +50,28 @@
         \includegraphics[width=\textwidth]{Figuras/hist_numpay_default.pdf}
     \end{subfigure}
     \end{center}
-        \caption{Behavior of borrowers who lost their pawn. This figure provides more details on the behavior of clients who were assigned to the control group and did not recover their pawn. Panel (a) shows a histogram of days elapsed from the pawn to the first payment, while panel (b) displays a histogram of days elapsed until the last payment. Some borrowers make payments after day 105, the end of the grace period: if they pay all interest owed, they can ``restart'' the loan. This amounts to starting a new loan with the same conditions and same pawn. Panel (c) shows a histogram of the fraction of the loan paid, while panel (d) presents a barplot of the number of times that borrowers went to the branch to make payments.}
+        \footnotesize{This figure provides more details on the behavior of clients who were assigned to the control group and did not recover their pawn. Panel (a) shows a histogram of days elapsed from the pawn to the first payment, while panel (b) displays a histogram of days elapsed until the last payment. Some borrowers make payments after day 105, the end of the grace period: if they pay all interest owed, they can ``restart'' the loan. This amounts to starting a new loan with the same conditions and same pawn. Panel (c) shows a histogram of the fraction of the loan paid, while panel (d) presents a barplot of the number of times that borrowers went to the branch to make payments.}
         \label{proxy_naive}
       %\textit{Do file: }  \texttt{hist\_den\_default.do}
 \end{figure}
 
+\begin{figure}[H]
+    \caption{Determinants of choice.}
+    \begin{center}
+    \begin{subfigure}{0.65\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{Figuras/determinants_choose_commitment.pdf}
+    \end{subfigure}
+    \end{center}
+\footnotesize{The above figure shows the determinants in a bivariate and multivariate OLS regression of choosing commitment. Choice commitment is a binary variable equal to one, whenever subjects choose the forced commitment contract in the choice arm. }
+    \label{weekly_def_rates}
+%\textit{Do file: } \texttt{determinants_choice.do}       
+\end{figure}
+
+
+\normalsize
+%Really force it to normal size and linespread
+\normalsize
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{ Internal Validity}
@@ -101,10 +82,10 @@
 \label{SS}
 \begin{center}
 \resizebox{0.65\textwidth}{!}{
-\scriptsize{\input{./Tables/SS.tex}}
+\footnotesize{\input{./Tables/SS.tex}}
 }
 \end{center}
-\legend {This table has two panels. Panel A uses administrative data at the loan level, while Panel B uses survey data. Each row in this table corresponds to a regression, where the level of observation is the individual loan originated. The dependent variables of these regressions are displayed in the first column. Each dependent variable is regressed in a multivariate OLS regression against the experimental arms indicators (control, forced commitment, choice). The table reports the coefficients on each of these indicators, as well as the p-value an F-test of the null hypothesis of equality of the three coefficients. The admin data was a very limited set of pre-determined variables. The dependent variables in Panel A are the loan amount in pesos, and an indicator for whether the day of the loan origination was a weekday (as opposed to weekend). The dependent variables in Panel B from the survey. Subjective value of the pawn (how much would the client be willing to sell it for (Q3), an indicator for having trouble paying bills in the last 6-months (Q28), present bias (constructed from questions Q10 and Q29 in the standard way as in \cite{Ashraf}), an indicator for whether they make expenses budget for the month ahead of time. The subjective probability of recovery was elicited a la Manski (from 0 to 100 what is the probability that you will recoup your pawn), pawned before is a dummy=1 if the client declares to have pawned before (although not necessarily with Lender $P$) age is in year, +High-school is a dummy that indicates if the client has completed high school. 
+\footnotesize {Each row in this table corresponds to a regression, where the level of observation is the individual loan originated. The dependent variables of these regressions are displayed in the first column. Each dependent variable is regressed in a multivariate OLS regression against the experimental arms indicators (control, forced commitment, choice). The table reports the coefficients on each of these indicators, as well as the p-value an F-test of the null hypothesis of equality of the three coefficients. The admin data was a very limited set of pre-determined variables. The dependent variables are: subjective value of the pawn (how much would the client be willing to sell it for (Q3), an indicator for having trouble paying bills in the last 6-months (Q28), present bias (constructed from questions Q10 and Q29 in the standard way as in \cite{Ashraf}), an indicator for whether they make expenses budget for the month ahead of time. The subjective probability of recovery was elicited a la Manski (from 0 to 100 what is the probability that you will recoup your pawn), pawned before is a dummy=1 if the client declares to have pawned before (although not necessarily with Lender $P$) age is in year, +High-school is a dummy that indicates if the client has completed high school. 
 }
 %\textit{Do file: } \texttt{ss\_balance.do}
 \end{table}
@@ -117,16 +98,16 @@ If potential borrowers disliked being forced into a commitment contract, we woul
 \caption{Limited and balanced attrition}
 \label{attrition_table}
 \begin{center}
-\scriptsize{\input{./Tables/Attrition.tex}}
+\footnotesize{\input{./Tables/Attrition.tex}}
 \end{center}
-\legend{Each row in this table 
+\footnotesize{Each row in this table 
  corresponds to a regression. The dependent variables are: the number of pawns-loans originated per day per branch, the number of borrowers per day-branch, a variable indicating whether a person who answered the baseline survey (before knowing contract terms) ended up pawning, and an indicator of whether the person that obtained the loan answered the baseline survey. Each dependent variable is regressed in a multivariate OLS regression against the experimental arms indicators (control, forced commitment, choice). The table reports the coefficients on each of these indicators, as well as the p-value of an F-test of the null hypothesis of equality of the three coefficients. %Figure \ref{boxplot_attrition}, in the appendix shows a box-plot of the first two variables, showing the distribution across arms is balanced.
  }
 %\textit{Do file: } \texttt{ss\_att.do}
 \end{table}
 
 
-The bottom panel of Table \ref{attrition_table} shows balance in a more focused way, given that the surveys were conducted prior to the revelation of treatment status. We find that in no arm did more than three percent of individuals who responded to the survey go on to refuse loans. That is, the overwhelming marjority of potential borrowers did not leave the branch after learning which contract was on offer. Moreover, the extremely small fraction that did leave is balanced across arms.  Therefore it appears that the treatments have not induced any endogenous shifts in the composition of borrowers. 
+The bottom panel of Table \ref{attrition_table} shows balance in a more focused way, given that the surveys were conducted prior to the revelation of treatment status. We find that in no arm did more than three percent of individuals who responded to the survey go on to refuse loans. That is, the overwhelming majority of potential borrowers did not leave the branch after learning which contract was on offer. Moreover, the extremely small fraction that did leave is balanced across arms.  Therefore it appears that the treatments have not induced any endogenous shifts in the composition of borrowers. 
 
 A less critical form of attrition is differential refusal to answer the survey questions.  The survey was conducted before treatment status was revealed, and we observe loan outcomes regardless of whether the survey was conducted.  Our core experimental estimates do not use the survey data as covariates, but the analysis in Section \ref{Paternalism} is restricted to the subset of borrowers who answered at least some survey questions. The bottom row of Table \ref{attrition_table} shows that the survey response rate is broadly similar across arms (about 78 percent). 
 
@@ -149,9 +130,9 @@ A less critical form of attrition is differential refusal to answer the survey q
 % \caption{Survey Non-response: TUT estimates for respondents to each survey question.}
 % \label{TUT_cond_survey}
 % \begin{center}
-% \scriptsize{\input{./Tables/tut_cond_survey.tex}}
+% \footnotesize{\input{./Tables/tut_cond_survey.tex}}
 % \end{center}
-% \legend{Some borrowers did not respond to our survey; others only completed part of the survey.
+% \footnotesize{Some borrowers did not respond to our survey; others only completed part of the survey.
 % This table computes the TUT effect for a number of sub-groups by survey response, and compares them against the overall TUT effect.
 % The top panel uses financial cost as the outcome variable, while the bottom panel uses APR.
 % Each group is defined by the borrowers who responded to a particular \emph{subset} of the survey questions. 
@@ -167,14 +148,14 @@ A less critical form of attrition is differential refusal to answer the survey q
 
 
 \begin{figure}[H]
-    
+    \caption{Determinants of choice.}
     \begin{center}
-    \begin{subfigure}{0.6\textwidth}
+    \begin{subfigure}{0.65\textwidth}
         \centering
         \includegraphics[width=\textwidth]{Figuras/determinants_choose_commitment.pdf}
     \end{subfigure}
     \end{center}
-\caption{Determinants of choice. The above figure shows the determinants in a bivariate and multivariate OLS regression of choosing commitment. Choice commitment is a binary variable equal to one, whenever subjects choose the forced commitment contract in the choice arm. }
+\footnotesize{The above figure shows the determinants in a bivariate and multivariate OLS regression of choosing commitment. Choice commitment is a binary variable equal to one, whenever subjects choose the forced commitment contract in the choice arm. }
     \label{determinants_choose}
 %\textit{Do file: } \texttt{determinants_choice.do}       
 \end{figure}
@@ -192,12 +173,17 @@ A less critical form of attrition is differential refusal to answer the survey q
 \scriptsize{\input{./Tables/mechanism.tex}}
 
 \end{center}
-\legend{This table explores treatment effects in ``intermediate variables''. Each column represents regression output for different dependent variables following equation (\ref{basic_reg}). Panel A focuses on variables related to the speed of payment. While Panel B focuses on variables related to default, and Panel C related to visits. 
+\footnotesize{This table explores treatment effects in ``intermediate variables''. Each column represents regression output for different dependent variables following equation (\ref{basic_reg}). Panel A focuses on variables related to the speed of payment. While Panel B focuses on variables related to default, and Panel C related to visits. 
 % The outcome variables are as follows:  number of days elapsed between origination and first payment (col 1); percentage of the loan paid in the first payment (col 2); probability of recovery in the first visit (col 3); loan duration is the number of days the borrower took to payoff her loan for those that recover, the number of days until default for those that default, and the maximum number of days we observe them in the sample for those that have not recovered or defaulted (col 4); loan duration conditional on recovery; an indicator for paying a positive amount towards recovery but nonetheless losing the pawn (col 6); the percentage or the loan paid, conditional on defaulting --`wasted payments' (col 7). Column 8 uses the phrase `selling the pawn' for a dummy variable indicating the borrower did not pay any amount towards recovery and lost the pawn. Moreover, (col 9) shows that treatment effects are concentrated in the intensive margin as treatment does not affect the fraction of clients who pay a positive amount towards pawn recovery. The dependent variable in column 10 is the number of day-visits to the branch (measured by the existence of transactions that day associated with our particular pawn), while column 11 conditions on borrowers that lost the pawn.
 Each regression includes branch and day-of-week FE. Standard errors are clustered at the branch-day level.}
 %\textit{Do file: } \texttt{mechanisms.do}
 \end{table}
 \end{landscape}
+
+\normalsize
+%Really force it to normal size and linespread
+\normalsize
+
 
 \subsection{Censoring} \label{App_censoring}
 
@@ -219,14 +205,12 @@ Finally, Panel E of this table conducts a logit prediction model that uses all o
 \label{bounding_censoring}
 \begin{center}
 \resizebox{0.75\textwidth}{!}{
-\scriptsize{\input{./Tables/censoring_imp.tex}}
+\footnotesize{\input{./Tables/censoring_imp.tex}}
 }
 \end{center}
  
 \end{table}
-
- 
- \legend{ Given the censored loans, i.e. loans that have not finished by the end of the observation period, we estimate `a la Manski' bounds for these loans, meaning that we impute all loans to either \emph{default}$=1$ or \emph{recovery}$=0$ depending on the treatment arm. Different panels perform different imputations for the censored loans for all possible combinations for the imputation, and computes the ATE for the same outcomes of Table \ref{main_impact_table}. Panel A, for instance, assumes that all outstanding loans are fully payed. Panel B is the most conservative imputation since it assumes all outstanding loans in the control arm are payed, while all the outstanding loans in the forced commitment arm default. Panel C, on the other hand, is the most optimistic scenario opposite to that of Panel B. Panel D assumes all remaining loans default. The last panel makes the imputation to the censored loans according to the best prediction using a piecewise lasso logit model for default. In concrete, we build two logit models with lasso regularization, depending whether the loan duration is less than 220 days (two cycles) or more than 220 days. For prediction we use the former whenever the last recorded payment was done within 220 days, and the latter otherwise. Both models includes loan characteristics (loan size, branch), and payment behavior (loan duration so far, days to first payment, \% of first payment, \% of payments at 30, 60, 90, and 105 days, and \% of interest payed at 105 days), but the latter model also includes \% of payments at 150, 180, and 210 days. This predictive model achieves an accuracy rate of 92\% both in-sample and out-of-sample.
+ \footnotesize{ Given the censored loans, i.e. loans that have not finished by the end of the observation period, we estimate `a la Manski' bounds for these loans, meaning that we impute all loans to either \emph{default}$=1$ or \emph{recovery}$=0$ depending on the treatment arm. Different panels perform different imputations for the censored loans for all possible combinations for the imputation, and computes the ATE for the same outcomes of Table \ref{main_impact_table}. Panel A, for instance, assumes that all outstanding loans are fully payed. Panel B is the most conservative imputation since it assumes all outstanding loans in the control arm are payed, while all the outstanding loans in the forced commitment arm default. Panel C, on the other hand, is the most optimistic scenario opposite to that of Panel B. Panel D assumes all remaining loans default. The last panel makes the imputation to the censored loans according to the best prediction using a piecewise lasso logit model for default. In concrete, we build two logit models with lasso regularization, depending whether the loan duration is less than 220 days (two cycles) or more than 220 days. For prediction we use the former whenever the last recorded payment was done within 220 days, and the latter otherwise. Both models includes loan characteristics (loan size, branch), and payment behavior (loan duration so far, days to first payment, \% of first payment, \% of payments at 30, 60, 90, and 105 days, and \% of interest payed at 105 days), but the latter model also includes \% of payments at 150, 180, and 210 days. This predictive model achieves an accuracy rate of 92\% both in-sample and out-of-sample.
  Note that in all panels we maintain significant results for Financial Cost as dependent variable, while only in the most conservative scenario (Panel B) we lose significance for the APR outcome. }
 
 
@@ -255,6 +239,7 @@ Finally, Panel E of this table conducts a logit prediction model that uses all o
 
 
 \begin{figure}[H]
+\caption{Survival graph.}
     \begin{center}
    \begin{subfigure}{0.49\textwidth}
    \caption{Ended contract}
@@ -267,7 +252,7 @@ Finally, Panel E of this table conducts a logit prediction model that uses all o
         \includegraphics[width=\textwidth]{Figuras/survival_graph_unpledge.pdf}
     \end{subfigure}     
     \end{center}
-      \caption{Survival graph. This Figure shows the CDF of loan completion either default or recovery in Panel (a), or loan recovery in Panel (b), by the number of days since first pawn.}
+      \footnotesize{This Figure shows the CDF of loan completion either default or recovery in Panel (a), or loan recovery in Panel (b), by the number of days since first pawn.}
       \label{survival_graph}
      %\textit{Do file: }  \texttt{survival\_graph.do}
 \end{figure}
@@ -300,14 +285,19 @@ Finally, Panel E of this table conducts a logit prediction model that uses all o
 \label{table_robustness_fc}
 \begin{center}
 \resizebox{0.9\textwidth}{!}{
-\scriptsize{\input{./Tables/fc_robustness.tex}}
+\footnotesize{\input{./Tables/fc_robustness.tex}}
 }
 \end{center}
- \legend{ This table augments the measure of financial cost presented in Table \ref{main_impact_table} with measures of transaction costs, subjective costs, and adjustments for liquidity costs. Panel A reports financial cost in pesos, while Panel B shows APR. Columns (1) and (6) replicate our previous results for comparability. Columns (2) and (7) of Table \ref{table_robustness_fc} use the subjective value of the pawn reported by the borrower rather than its appraised value. Columns (3) and (8) adjust for self-reported transport costs per visit plus an entire day's wage, both multiplied by the number of visits that each individual made.\footnote{For clients who did not complete the individual survey, we adjust using the mean self-reported transport cost among respondents of the respective branch.} Columns (4) and (9) adjust to consider the liquidity cost. Finally, columns (5) and (10) include all three changes together. The main takeaway from the table is that results are quite robust to including a much expanded measure of costs. Each regression includes branch and day-of-week FE. Standard errors are clustered at the branch-day level.}
+ \footnotesize{ This table augments the measure of financial cost presented in Table \ref{main_impact_table} with measures of transaction costs, subjective costs, and adjustments for liquidity costs. Panel A reports financial cost in pesos, while Panel B shows APR. Columns (1) and (6) replicate our previous results for comparability. Columns (2) and (7) of Table \ref{table_robustness_fc} use the subjective value of the pawn reported by the borrower rather than its appraised value. Columns (3) and (8) adjust for self-reported transport costs per visit plus an entire day's wage, both multiplied by the number of visits that each individual made.\footnote{For clients who did not complete the individual survey, we adjust using the mean self-reported transport cost among respondents of the respective branch.} Columns (4) and (9) adjust to consider the liquidity cost. Finally, columns (5) and (10) include all three changes together. The main takeaway from the table is that results are quite robust to including a much expanded measure of costs. Each regression includes branch and day-of-week FE. Standard errors are clustered at the branch-day level.}
 %\textit{Do file: } \texttt{fc\_robustness.do}
 \end{table}
 
 \newpage 
+
+\normalsize
+
+%Really force it to normal size and linespread
+\normalsize
 
 
 \section{ Alternative explanations}
@@ -322,9 +312,9 @@ Table \ref{learning_table} presents information about borrowers' \emph{future} p
         \caption{Effect of Prior Assignment on Subsequent Choice}
     \label{learning_table}
 \begin{center}
-\scriptsize{\input{./Tables/learning_exp.tex}}
+\footnotesize{\input{./Tables/learning_exp.tex}}
 \end{center}
- \legend{Column (1) reports results for the 228 borrowers who returned to pawn again at a day/branch that was randomly assigned to the choice arm, enabling us to observe whether they chose commitment or the status quo contract.
+ \footnotesize{Column (1) reports results for the 228 borrowers who returned to pawn again at a day/branch that was randomly assigned to the choice arm, enabling us to observe whether they chose commitment or the status quo contract.
 Each row presents a difference in mean commitment take-up rates and associated standard errors.
 The first row (ATE) compares borrowers who were initially assigned to forced commitment against those were assigned to the control condition.
 The second row (ITT) compares borrowers who were initially assigned to the choice commitment condition to those who were not.
@@ -333,21 +323,30 @@ Whereas column (1) conditions on the (endogenously) selected sample of borrowers
 %This table explores learning by focusing on a subsample of borrowers in the experiment and observing their subsequent behavior. Column 1 conditions the sample on borrowers who (a) pawned during the experiment a subsequent time after being assigned to control, forced commitment or choice (the regressors), and (b) when pawning again they went to a branch day when (randomly) choice was available, thus enabling us to observe if they chose the commitment contract or the status quo.  in this sample it estimates a linear probability model where the dependent variable is equal to one if the borrower chose the commitment contract in that subsequent `choice' occasion and zero otherwise. The regressors are indicators for the treatment arms in their first pawn in the experiment. Column 1 conditions the sample on the (endogenous) event of pawning again. Column 2 does not condition the sample, but instead defined the dependent variable as equal to one \hl{if the borrower pawned subsequently and choice was available that day and chose commitment, and zero otherwise.}
 
 \end{table}
+\normalsize
+%Really force it to normal size and linespread
+\normalsize
 
+
+\newpage 
 
 \subsection{Discount rates}
 
-\vspace{-.3in}
+
 \begin{figure}[!h]
-  
+  \caption{Financial benefit TUT effect for different discount rates.}
     \begin{center}
         \centering
-        \includegraphics[width=0.55\textwidth]{Figuras/discount_effect_tut.pdf}
+        \includegraphics[width=0.65\textwidth]{Figuras/discount_effect_tut.pdf}
     \end{center}
-      \caption{Financial benefit TUT effect for different discount rates. This Figure re-estimates the treatment on the untreated (TUT) effect from Table \ref{tot_tut}, introducing a daily discount factor in the definition of financial benefit.  At a given annual discount rate in percentage points (x-axis) the solid line gives the adjusted TUT and the shaded regions 90\% \& 95\% confidence bands. A discount factor of one corresponds to the estimate from Table \ref{tot_tut}. As seen from the figure, borrowers would need to face unrealistically large discount rates to reverse our headline result of a large, positive, and statistically significant TUT effect.}
+       \footnotesize{This Figure re-estimates the treatment on the untreated (TUT) effect from Table \ref{tot_tut}, introducing a daily discount factor in the definition of financial benefit.  At a given annual discount rate in percentage points (x-axis) the solid line gives the adjusted TUT and the shaded regions 90\% \& 95\% confidence bands. A discount factor of one corresponds to the estimate from Table \ref{tot_tut}. As seen from the figure, borrowers would need to face unrealistically large discount rates to reverse our headline result of a large, positive, and statistically significant TUT effect.}
         \label{fc_discount_rates}
      %It estimates the effect of the treatment arms  for different discount factors, where a discount factor of 1 corresponds exactly to the estimate of column 1 of Table \ref{main_impact_table}. Because the commitment contract induces earlier payments, this adjusted financial cost will be higher, and thus financial savings will be lower. This figure shows the range of estimated effects and their confidence intervals, where the discount rate used is ploted in the x-axis annualized.    %\textit{Do file: }  \texttt{discounted\_noeffect.do}
 \end{figure}
+
+\normalsize
+%Really force it to normal size and linespread
+\normalsize
 
 
 \subsection{Present Bias}\label{App_presentbias}
@@ -366,13 +365,12 @@ The overall TUT is a weighted average of the impact in these two sub-groups.  Th
 
 
 \begin{figure}
+\caption{Heterogeneity of the TUT by behavioral variables.}
     \begin{center}
         \centering
-        \includegraphics[width=0.7\textwidth]{Figuras/tut_beh_partition.pdf} 
-    \end{center}
-     \scriptsize  
-\caption{Heterogeneity of the TUT by behavioral variables. Each panel in this figure shows how the estimated treatment on the untreated (TUT) effect varies with a binary survey variable $X_i$. In the left panel (P.B.), $X_i = 1$ if borrower $i$ is ``present-biased'' based on her responses to the time preference questions from our survey. In the right panel (Sure-confidence) $X_i = 1$ if  borrower $i$ reported that she was certain to recover her pawn, zero otherwise. }
-
+        \includegraphics[width=0.65\textwidth]{Figuras/tut_beh_partition.pdf} 
+    \end{center}  
+ \footnotesize{Each panel in this figure shows how the estimated treatment on the untreated (TUT) effect varies with a binary survey variable $X_i$. In the left panel (P.B.), $X_i = 1$ if borrower $i$ is ``present-biased'' based on her responses to the time preference questions from our survey. In the right panel (Sure-confidence) $X_i = 1$ if  borrower $i$ reported that she was certain to recover her pawn, zero otherwise. }
     \label{tut_beh_partition}
       %\footnotesize{ \textit{Do file: }  \texttt{partition_tut.do}
 
@@ -380,18 +378,20 @@ The overall TUT is a weighted average of the impact in these two sub-groups.  Th
 \subsection{Sure Confidence} \label{App_sureconfidence}
 
 \begin{figure}[H]
+\caption{Determinants sure confidence.}
     \begin{center}
-    \begin{subfigure}{0.6\textwidth}
+    \begin{subfigure}{0.60\textwidth}
         \centering
         \includegraphics[width=\textwidth]{Figuras/determinants_confidence_100.pdf}
     \end{subfigure}
     \end{center}
-    \caption{Determinants sure confidence. The above figure shows the determinants in a bivariate and multivariate OLS regression of sure confidence among the non-choosers. Sure confidence is a binary variable defined to be one when people report a 100\% probability of recovery.}
+     \footnotesize{The above figure shows the determinants in a bivariate and multivariate OLS regression of sure confidence among the non-choosers. Sure confidence is a binary variable defined to be one when people report a 100\% probability of recovery.}
     \label{determinants_sure}
 %\textit{Do file: } \texttt{determinants_sure_confidence.do}       
 \end{figure}
 
 
+\newpage
 
 
 %\section{ Heterogeneity and Bounds}
@@ -434,7 +434,7 @@ The overall TUT is a weighted average of the impact in these two sub-groups.  Th
 
 %\begin{table}[H]
 %\begin{center}
-%\scriptsize{\input{./Tables/test_calibration_2.tex}}
+%\footnotesize{\input{./Tables/test_calibration_2.tex}}
 %\end{center}
 %\end{table}
 
@@ -442,18 +442,16 @@ The overall TUT is a weighted average of the impact in these two sub-groups.  Th
 
 %\newpage
 
-
-
 \begin{figure}[!h]
-   
+   \caption{Fan \& Park bounds for benefit in APR\%.}
     \begin{center}
-    \begin{subfigure}{0.55\textwidth}
+    \begin{subfigure}{0.65\textwidth}
         \caption{APR Bounds}
         \centering
         \includegraphics[width=\textwidth]{Figuras/fan_park_bounds_apr.pdf}
     \end{subfigure}
     \end{center}
-        \caption{Fan \& Park bounds for benefit in APR\%.  This figure depicts the \cite{fan2010sharp} bounds on the distribution $F_\Delta$ of individual treatment effects $\Delta \equiv (Y_1 - Y_0)$, described in Section \ref{sec:bounds}, for the APR outcome.
+          \footnotesize{This figure depicts the \cite{fan2010sharp} bounds on the distribution $F_\Delta$ of individual treatment effects $\Delta \equiv (Y_1 - Y_0)$, described in Section \ref{sec:bounds}, for the APR outcome.
     The dark red curve and light red shaded region give the estimated upper bound function $\overline{F}$ for $F_\Delta$ and associated (pointwise) 95\% confidence interval. 
     The dark blue curve and light blue shaded region give the estimated lower bound function $\underline{F}$ for $F_\Delta$ and associated (pointwise) 95\% confidence interval.
     Confidence intervals are computed using the asymptotic distribution for the bounds.  Evaluating the bounds at $\delta = 0$, we see that between 23\% and 97\% of borrowers have a positive individual treatment effect.}
@@ -461,11 +459,8 @@ The overall TUT is a weighted average of the impact in these two sub-groups.  Th
 %\textit{Do file: } \texttt{fan\_park\_bnds.do}       
 \end{figure}
 
-
-
-\begin{figure}
-        
-    
+\begin{figure}[!h]
+\caption{Distribution of treatment effects under rank invariance.}        
     \begin{center}
        \begin{subfigure}{0.49\textwidth}
         \caption{APR benefit}
@@ -478,13 +473,14 @@ The overall TUT is a weighted average of the impact in these two sub-groups.  Th
         \includegraphics[width=\textwidth]{Figuras/te_rankinvariance_fc_admin.pdf}
     \end{subfigure} 
     \end{center}
-    \caption{Distribution of treatment effects under rank invariance. This figure shows the CDF of individual treatment effects under the assumption of rank invariance, computed from $F_\Delta(\delta) = \int_0^1 \mathbbm{1}\{ F_1^{-1}(u) - F_0^{-1}(u)\leq \delta\}\,\mathrm{d}u$ where $F_1^{-1}$ and $F_0^{-1}$ are the quantile functions of $Y_1$ and $Y_0$.}
+    \footnotesize{This figure shows the CDF of individual treatment effects under the assumption of rank invariance, computed from $F_\Delta(\delta) = \int_0^1 \mathbbm{1}\{ F_1^{-1}(u) - F_0^{-1}(u)\leq \delta\}\,\mathrm{d}u$ where $F_1^{-1}$ and $F_0^{-1}$ are the quantile functions of $Y_1$ and $Y_0$.}
 \label{te_rankinvariance}
     %The dotted line at the bottom of panels (a) and (b)   the empirical cumulative distribution function APR and financial cost of financial cost. It does this separately for the fee-forcing contract and for the status-quo contract. The dotted line at the bottom is the difference of the control CDF minus the forced CDF arm. It shows that the CDF of the status quo contract is always below that of the fee-forcing (and this difference is significant for the points indicated by the blue line).
     % \texttt{te_rankinvariance.do}}
 \end{figure}
-   
 
+
+\newpage 
 
 \section{ Causal Random Forest, CATE, and `mistakes'}\label{app:cate}
 
@@ -499,44 +495,44 @@ While closely related to more familiar ``regression-tree'' random forests, the g
 \footnote{For more details, see \cite{atheygrf} and the \texttt{grf} documentation: \url{https://grf-labs.github.io/grf/}. When constructing our random forest estimates of heterogeneous treatment effects, we use observations for all borrowers who answered at least \emph{part} of the intake survey.
 We impute the median response for the missing values, while also including an indicator whether the variable originally had a missing value. Results are similar if we manually include interactions between the original/imputed variable and an indicator for missingness. This is as expected, given that tree-based methods by their nature ``automatically'' consider interactions of arbitrary orders.}
 
-\begin{figure}
-     
+\begin{figure}[!h]
+     \caption{Heterogeneous Treatment Effects.} 
+     \label{heterogeneous_effects}    
     \begin{center}
-     \begin{subfigure}{0.32\textwidth}
+     \begin{subfigure}{0.35\textwidth}
        \centering
       \includegraphics[width=\textwidth]{Figuras/he_dist_tau_hat_tot.pdf}
           \caption{ToT}
     \end{subfigure}
-    \begin{subfigure}{0.32\textwidth}
+    \begin{subfigure}{0.35\textwidth}
        \centering
       \includegraphics[width=\textwidth]{Figuras/he_dist_tau_hat_tut.pdf}
           \caption{TuT}
     \end{subfigure} 
-       \begin{subfigure}{.32\textwidth}
+       \begin{subfigure}{.35\textwidth}
         \centering
         \includegraphics[width=\textwidth]{Figuras/he_dist_tau_hat_eff.pdf}
         \caption{ATE}
     \end{subfigure} 
     \end{center}
-    \caption{Heterogeneous Treatment Effects.}
-    \label{heterogeneous_effects}    
   %\footnotesize{ } \textit{Do file: }  \texttt{cate_dist.do}
 \end{figure}
 
 \begin{figure}[h!]
-   
+   \caption{Conditional ATEs from ``wide'' and ``narrow'' covariate sets.}
     \begin{center}
     \begin{subfigure}{0.75\textwidth}
         \centering
         \includegraphics[width=\textwidth]{Figuras/scatter_hist_wide_narrow.pdf}
     \end{subfigure}
     \end{center}
-       \caption{Conditional ATEs from ``wide'' and ``narrow'' covariate sets. This figure plots the relationship between the causal forest conditional ATE estimates from Section \ref{sec:RF} that use the ``wide'' set of covariates (all intake survey responses) and those based on a restricted ``narrow'' set of covariates (age, gender, HS education, and previous borrowing). The scatterplot graphs one estimate versus the other, with the ``wide'' covariate set on the horizontal axis and the ``narrow'' set on the vertical axis. The density plots on each axis show the estimated marginal distribution of conditional ATEs under each covariate set. The density for the ``wide'' covariate set is considerably more dispersed, as the causal forest based on this set of covariates captures considerably more treatment effect heterogeneity.}
+        \footnotesize{This figure plots the relationship between the causal forest conditional ATE estimates from Section \ref{sec:RF} that use the ``wide'' set of covariates (all intake survey responses) and those based on a restricted ``narrow'' set of covariates (age, gender, HS education, and previous borrowing). The scatterplot graphs one estimate versus the other, with the ``wide'' covariate set on the horizontal axis and the ``narrow'' set on the vertical axis. The density plots on each axis show the estimated marginal distribution of conditional ATEs under each covariate set. The density for the ``wide'' covariate set is considerably more dispersed, as the causal forest based on this set of covariates captures considerably more treatment effect heterogeneity.}
     \label{wide_narrow_forests}
 
 %\textit{Do file: } \texttt{wide_narrow_forests.do}       
 \end{figure}
 
+\newpage 
 
 \section{Testable Implications of the Exclusion Restriction} \label{sec:testing_exclusion}
 
@@ -867,6 +863,10 @@ Since $Z_2 D = Z_2 C$, a similar argument gives
 &= Z_2 \mathbbm{E}[Y_1 - \mathbbm{E}(Y_1 | C=1)|C=1, Z] = 0. \qedhere
 \end{align*}
 \end{proof}
+
+\normalsize
+%Really force it to normal size and linespread
+\normalsize
 
 
 \subsection{Inference for ASG, ASB, and ASL}
