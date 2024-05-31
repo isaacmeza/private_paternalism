@@ -81,7 +81,6 @@ forvalues i = -100(5)100  {
 
 local rep_num = 100
 forvalues rep = 1/`rep_num' {
-	di "`rep'"
 	*Draw random effect Y_1-Y_0 from normal distribution with standard error according to Athey
 	replace tau_sim_1 = rnormal(inst_hat_1, sqrt(inst_oobvarianceestimates_1))	
 	replace tau_sim_0 = rnormal(inst_hat_0, sqrt(inst_oobvarianceestimates_0))	
@@ -129,7 +128,11 @@ forvalues rep = 1/`rep_num' {
 		local k = `k' + 1
 		}
 		}
-
+	if `rep'==1{
+		di " "
+		_dots 0, title(Replication number) reps(`rep_num')
+	}
+	_dots `rep' 0
 	}	
 
 *Recover the means

@@ -56,14 +56,15 @@
 \end{figure}
 
 \begin{figure}[H]
-    \caption{Determinants of choice.}
+    \caption{Weekly default rates experimental branches and all branches}
+    \label{external_validity}
     \begin{center}
     \begin{subfigure}{0.65\textwidth}
         \centering
-        \includegraphics[width=\textwidth]{Figuras/determinants_choose_commitment.pdf}
+        \includegraphics[width=\textwidth]{Figuras/weekly_def_rates.pdf}
     \end{subfigure}
     \end{center}
-\footnotesize{The above figure shows the determinants in a bivariate and multivariate OLS regression of choosing commitment. Choice commitment is a binary variable equal to one, whenever subjects choose the forced commitment contract in the choice arm. }
+\footnotesize{The above figure shows the weekly default rates for our experimental sample, and for 4 years after our experiment. We show that the default rates in the experimental sample are not atypical. }
     \label{weekly_def_rates}
 %\textit{Do file: } \texttt{determinants_choice.do}       
 \end{figure}
@@ -72,79 +73,6 @@
 \normalsize
 %Really force it to normal size and linespread
 \normalsize
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{ Internal Validity}
-
-
-\begin{table}[!h]
-\caption{Summary statistics and Balance}
-\label{SS}
-\begin{center}
-\resizebox{0.65\textwidth}{!}{
-\footnotesize{\input{./Tables/SS.tex}}
-}
-\end{center}
-\footnotesize {Each row in this table corresponds to a regression, where the level of observation is the individual loan originated. The dependent variables of these regressions are displayed in the first column. Each dependent variable is regressed in a multivariate OLS regression against the experimental arms indicators (control, forced commitment, choice). The table reports the coefficients on each of these indicators, as well as the p-value an F-test of the null hypothesis of equality of the three coefficients. The admin data was a very limited set of pre-determined variables. The dependent variables are: subjective value of the pawn (how much would the client be willing to sell it for (Q3), an indicator for having trouble paying bills in the last 6-months (Q28), present bias (constructed from questions Q10 and Q29 in the standard way as in \cite{Ashraf}), an indicator for whether they make expenses budget for the month ahead of time. The subjective probability of recovery was elicited a la Manski (from 0 to 100 what is the probability that you will recoup your pawn), pawned before is a dummy=1 if the client declares to have pawned before (although not necessarily with Lender $P$) age is in year, +High-school is a dummy that indicates if the client has completed high school. 
-}
-%\textit{Do file: } \texttt{ss\_balance.do}
-\end{table}
-
-
-If potential borrowers disliked being forced into a commitment contract, we would expect a lower number of pawns on branch days where only the commitment contract is available compared to control days. Table \ref{attrition_table} shows that this is not the case. There is no difference at all between the Control and Forced Commitment arm in terms of the number of pawns per branch-day. Although we cannot reject equality across the three arms (p-value=0.21), the Choice arm appears to have a somewhat larger number of borrowers than the Control and Forced arms.\footnote{p-value=0.23 and 0.12 respectively.} This seems to be due to sampling variability. Differences across arms are smaller when for medians, or when we compare the number of borrowers pawning (some borrowers pawn more than one piece). 
-% Figure \ref{boxplot_attrition} shows that distribution of loans per day is comparable across arms. The only noticeable difference is that the choice arm has a few more positive outliers.\footnote{If we winzorize at the 90th percentile, the mean number of branch-day pawns becomes identical across arms.}
-
-\begin{table}
-\caption{Limited and balanced attrition}
-\label{attrition_table}
-\begin{center}
-\footnotesize{\input{./Tables/Attrition.tex}}
-\end{center}
-\footnotesize{Each row in this table 
- corresponds to a regression. The dependent variables are: the number of pawns-loans originated per day per branch, the number of borrowers per day-branch, a variable indicating whether a person who answered the baseline survey (before knowing contract terms) ended up pawning, and an indicator of whether the person that obtained the loan answered the baseline survey. Each dependent variable is regressed in a multivariate OLS regression against the experimental arms indicators (control, forced commitment, choice). The table reports the coefficients on each of these indicators, as well as the p-value of an F-test of the null hypothesis of equality of the three coefficients. %Figure \ref{boxplot_attrition}, in the appendix shows a box-plot of the first two variables, showing the distribution across arms is balanced.
- }
-%\textit{Do file: } \texttt{ss\_att.do}
-\end{table}
-
-
-The bottom panel of Table \ref{attrition_table} shows balance in a more focused way, given that the surveys were conducted prior to the revelation of treatment status. We find that in no arm did more than three percent of individuals who responded to the survey go on to refuse loans. That is, the overwhelming majority of potential borrowers did not leave the branch after learning which contract was on offer. Moreover, the extremely small fraction that did leave is balanced across arms.  Therefore it appears that the treatments have not induced any endogenous shifts in the composition of borrowers. 
-
-A less critical form of attrition is differential refusal to answer the survey questions.  The survey was conducted before treatment status was revealed, and we observe loan outcomes regardless of whether the survey was conducted.  Our core experimental estimates do not use the survey data as covariates, but the analysis in Section \ref{Paternalism} is restricted to the subset of borrowers who answered at least some survey questions. The bottom row of Table \ref{attrition_table} shows that the survey response rate is broadly similar across arms (about 78 percent). 
-
-
-%We now present an analysis of the extent to which the survey-responding sample is representative and balanced. Table \ref{SS_cond_survey} presents information about survey non-response. Panel A is a balance table that compares loan amount and day of the week across treatment arms for the subset of borrowers who responded to at least one survey question. The p-values in the fourth column are for the F-test of no difference of means across treatment arms. Panel B presents response-rates by question for each arm of the experiment, along with p-values for the F-test of no difference in question-specific response rates across treatment arms. This panel uses data from participants who answered at least one survey question and went on to pawn on the same day as their survey response. From the table, we see that loan amount and weekday are balanced across treatment arms among survey respondents and that response rates are likewise stable across treatment arms.
-
-% Table \ref{TUT_cond_survey} shows how the estimated TUT effect changes if we restrict our estimation sample based on survey response.
-% The first row of the table presents TUT results for the financial cost outcome, while the second presents corresponding results for the APR outcome.
-% In each row, column (1) presents the full-sample TUT estimate and standard error while the remaining columns restrict the sample to borrowers who answered a particular survey question or set of questions.
-% For example, column (4) presents results for borrowers who answered the two questions needed to compute our measure of ``present bias'' discussed in the next paragraph, while column (9) present results restricted to participants who disclosed their sex. 
-% As seen from the table, our TUT estimates are quite stable across sub-samples defined by survey response.
-% In each case they are positive and of the same magnitude as the corresponding full-sample estimate, although statistical significance varies depending on the size of the corresponding sub-sample. 
-% For these reasons, we are comfortable relying on data for survey respondents in the empirical exercises that follow.
-% In exercises that rely on a single survey question, we use data for every borrower who answered that question.
-% In the random forest exercises described below, we use data for every borrower who answered at least one survey question.
-
-
-
-% \begin{table}[H]
-% \caption{Survey Non-response: TUT estimates for respondents to each survey question.}
-% \label{TUT_cond_survey}
-% \begin{center}
-% \footnotesize{\input{./Tables/tut_cond_survey.tex}}
-% \end{center}
-% \footnotesize{Some borrowers did not respond to our survey; others only completed part of the survey.
-% This table computes the TUT effect for a number of sub-groups by survey response, and compares them against the overall TUT effect.
-% The top panel uses financial cost as the outcome variable, while the bottom panel uses APR.
-% Each group is defined by the borrowers who responded to a particular \emph{subset} of the survey questions. 
-% For example, column (4) computes TUT effects for the subgroup of borrowers who responded to the two questions needed to compute our measure of present bias, while column (8) computes the TUT for the subgroup of borrowers who provided their age.
-% The bottom row of the table counts the number of borrowers in each category.
-% TUT estimates are quite stable across sub-groups and generally similar to the full-sample estimates.
-% Because standard errors increase as sample size falls, some of the sub-group estimates are not statistically significant.}
-% %\textit{Do file: } \texttt{tut_cond_survey.do}
-% \end{table}
-
-
-\section{ Main treatment effects: Additional material}
 
 
 \begin{figure}[H]
@@ -160,7 +88,7 @@ A less critical form of attrition is differential refusal to answer the survey q
 %\textit{Do file: } \texttt{determinants_choice.do}       
 \end{figure}
 
-
+\newpage
 \subsection{Intermediate Outcomes}
 
 \begin{landscape}
@@ -183,6 +111,7 @@ Each regression includes branch and day-of-week FE. Standard errors are clustere
 \normalsize
 %Really force it to normal size and linespread
 \normalsize
+
 
 
 \subsection{Censoring} \label{App_censoring}
@@ -284,7 +213,7 @@ Finally, Panel E of this table conducts a logit prediction model that uses all o
 \caption{Effects on more comprehensive cost measures}
 \label{table_robustness_fc}
 \begin{center}
-\resizebox{0.9\textwidth}{!}{
+\resizebox{0.95\textwidth}{!}{
 \footnotesize{\input{./Tables/fc_robustness.tex}}
 }
 \end{center}
@@ -299,6 +228,37 @@ Finally, Panel E of this table conducts a logit prediction model that uses all o
 %Really force it to normal size and linespread
 \normalsize
 
+
+\subsection{Repawning}
+
+We now estimate equation \ref{basic_reg} with Different dependent variables.  In column 1, the dependent variable indicates, for each borrower in the experiment, whether he/she pawned again after the first loan in the
+experiment (up to the end period of our data set 338 days after the experiment began). The result is that the likelihood of repeat business increases by 6.7\%.  While this appears to be \emph{prima facie} evidence of greater satisfaction among borrowers in the forced arm, the interpretation is complicated by the fact that monthly payments may themselves trigger more borrowing to pay them. Note that from the lender's perspective, why repeat pawning happens may not be as important as the fact that it happens. Illiquidity does not seem to drive this result, given that the effect on re-pawning comes after 90 days (during the period of contract demanded payments) and not before  (see columns 2 and 3). Column 4 only considers new loans that use different collateral from that of the initial one. We do this to foreclose the explanation that those in the Forced arm, being more liquidity-constrained, return to pawn a second pawn to be able to pay the monthly payments of their first loan. However, we cannot reject a zero effect on pawning a different collateral. Column 5 focuses on the (endogenous) subsample of those recovering their pawn in both arms of the experiment. This means that \textit{both} arms have recovered their pawn and could re-pawn if they so wish, and also that the liquidity demands from the monthly contract are \textit{no longer} there as the contract has been closed.  We find that the difference between the Forcing contract and the status quo is even larger in this subsample, with the former having 11pp higher likelihood of being a repeat client during our sample period.
+
+\begin{table}[!h]
+\caption{Effects on Repeat Pawning}
+\label{repeat_loans}
+\begin{center}
+\footnotesize{\input{./Tables/repeat_loans.tex}}
+\end{center}
+ \footnotesize{This table estimates the specification of equation \ref{basic_reg} but at the level of the borrower (not the loan). Each column represents a regression with a different outcome variable. In column 1, the dependent variable indicates, for each borrower in the experiment, whether he/she pawned again after the first loan in the experiment (up to the end period of our data set 338 days after the experiment began). Column 2 is analogous, but only pawning after 90 days of the first loan is considered. Column 3 instead considers pawning before 90 days. Column 4 is analogous to column 1 but focuses on the pawning of a gold piece that is different from the one in the first experimental loan. Column 5 is analogous to column 1, but conditioning on the sample that recovered the first loan. 
+Standard errors are clustered at the branch-day level.}
+%\textit{Do file: } \texttt{repeat\_loans.do}
+\end{table}
+
+
+
+\begin{table}[!h]
+\caption{Lender's Profit}
+\label{lenders_profit}
+\begin{center}
+ \footnotesize{\input{./Tables/lenders_profit.tex}}
+\end{center}
+ \footnotesize{ The dependent variable in column (1) is the profit formula in equation (\ref{profit_function}). Columns (2)-(3) are back-of-the-envelope computations of the lender's profit.
+ Standard errors are clustered at the branch-day level.}
+%\textit{Do file: } \texttt{lenders\_profit.do}
+\end{table}
+
+\newpage
 
 \section{ Alternative explanations}
 \subsection{Learning}
@@ -327,8 +287,6 @@ Whereas column (1) conditions on the (endogenously) selected sample of borrowers
 %Really force it to normal size and linespread
 \normalsize
 
-
-\newpage 
 
 \subsection{Discount rates}
 

@@ -40,7 +40,6 @@ mat varz = J(1,2,0)
 
 local j = 0
 forvalues i=1/100 {
-	di `i'
 	qui fan_park apr treat $C0 , delta_values(0) cov_partition(8) nograph 
 	mat bnd[1,1] = bnd[1,1] +  r(bounds)[1,1]/100
 	mat bnd[1,2] = bnd[1,2] +  r(bounds)[1,2]/100
@@ -49,6 +48,11 @@ forvalues i=1/100 {
 		mat varz[1,2] = varz[1,2] +  r(sigma_2)[1,2]
 		local j = `j' + 1
 	}
+	if `i'==1{
+		di ""
+		_dots 0, title(Loop running) reps(100)
+	}
+	_dots `i' 0
 }
 mat varz = varz/`j'
 mat list bnd 

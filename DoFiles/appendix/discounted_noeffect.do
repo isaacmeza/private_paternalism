@@ -64,7 +64,6 @@ matrix results_tut = J(1001, 4, .)
 
 local i = 1
 forvalues d = 0(100)5000 {	
-	di `d'
 	qui {
 	preserve
 
@@ -116,6 +115,11 @@ forvalues d = 0(100)5000 {
 	local i = `i' + 1
 	restore
 	}
+	if `d'==0 {
+		di ""
+		_dots 0, title(Discount rate) reps(5000)
+	}
+	_dots `d' 0
 	}
 
 *****************************************ATE************************************	

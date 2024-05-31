@@ -89,7 +89,7 @@ sort suc fecha_movimiento HoraM NombreP prenda, stable
 duplicates drop NombrePig prenda suc fecha_inicial if !missing(NombrePig), force
 duplicates drop Enc f_encuesta if missing(NombrePig), force
 duplicates drop NombrePig suc fecha_inicial if !missing(NombrePig), force
-collapse (count) num_borrowers = NombreP (mean) num_pawns_borr (mean) prestamo_i (mean) takeup (mean) num_pawns_client  , by(suc fecha_inicial t_producto)
+collapse (count) num_borrowers = NombreP (mean) num_pawns_borr (mean) prestamo_i (sum) total_borrowed = prestamo_i (mean) takeup   , by(suc fecha_inicial t_producto)
 
 merge 1:1 suc fecha_inicial t_producto using `temp_num_pawns', nogen
 
@@ -108,7 +108,7 @@ local i = 2
 qui putexcel set  "$directorio\Tables\SS_att.xlsx", sheet("SS_att") modify	
 
 eststo clear
-foreach var of varlist takeup num_borrowers num_pawns_borr num_pawns prestamo_i  num_pawns_client {
+foreach var of varlist takeup num_borrowers num_pawns_borr num_pawns prestamo_i total_borrowed {
 	
 	orth_out `var' if inlist(t_prod,1,2,4), by(t_prod) overall se vce(cluster suc) bdec(2) count
 	qui putexcel B`i'=matrix(r(matrix)) 

@@ -18,9 +18,10 @@ version 17.0
 
 *******************************************************************************/
 */
-
+*Dataset with first visit only
 use "$directorio/DB/Master.dta", clear
-
+*Borrower level
+duplicates drop NombreP, force
 
 *Ever pawns again conditional on repaying first pawn
 gen reincidence_des = !missing(days_second_pawns)  if first_pawn==1 & !missing(first_dias_des)
@@ -30,7 +31,6 @@ gen reincidence_des = !missing(days_second_pawns)  if first_pawn==1 & !missing(f
 gen reincidence_ar =  !missing(days_second_pawns) & (days_second_pawns>=90) if first_pawn==1
 *Dummy indicating if customer returned after first visit & within 90 days
 gen reincidence_br =  !missing(days_second_pawns) & (days_second_pawns<=90) if first_pawn==1
-
 
 
 *-------------------------------------------------------------------------------
@@ -48,6 +48,7 @@ foreach var of varlist reincidence reincidence_ar reincidence_br  reincidence_ot
 	estadd scalar ContrMean = `r(mean)'	
 	
 }
+
 esttab using "$directorio/Tables/reg_results/repeat_loans.csv", se r2 ${star} b(a2) ///
 		scalars("ContrMean Control Mean") keep(2.t_producto 4.t_producto) replace 
 	

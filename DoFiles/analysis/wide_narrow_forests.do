@@ -102,7 +102,6 @@ forvalues i = -10(1)10 {
 	
 local k = 1
 forvalues i = -10(1)10 {	
-	di "`k'"
 	
 	*Computation of people that makes mistakes in the choice arm according to estimated counterfactual
 	local rep_num = 100
@@ -219,7 +218,11 @@ forvalues i = -10(1)10 {
 		}
 		
 		local k = `k' + 1
-
+	if `i'==-10{
+		di ""
+		_dots 0, title(Threshold running) reps(20)
+	}
+	_dots `i' 0
 	}	
 
 *Recover the means
