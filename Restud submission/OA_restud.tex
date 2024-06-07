@@ -14,7 +14,7 @@
 
 \newgeometry{margin=1in}
 \begin{center}
-	\Large ONLINE APPENDIX: The controlled choice design and private paternalism in pawnshop borrowing \\[0.5em]
+	\Large ONLINE APPENDIX: The forcing-choice design and paternalism in pawnshop borrowing \\[0.5em]
 	%\Large{Appendix $-$ For Online Publication} \\[1em]
 	\large \author{Craig McIntosh \and Isaac Meza \and Joyce Sadka \and Enrique Seira \and Francis J.\ DiTraglia}
 \end{center}
@@ -26,6 +26,7 @@
 %\section{ Treatment Explanation Materials and Pictures}
 \section{Additional materials} 
 %\vspace{.2in}
+
 \begin{figure}[!h]
      \caption{Behavior of borrowers who lost their pawn.}
     \begin{center}
@@ -89,10 +90,22 @@
 \end{figure}
 
 \newpage
-\subsection{Intermediate Outcomes}
+
+\begin{table}[!h]
+\caption{Baseline survey questions (translated to English)}
+\label{baseline_survey}
+\begin{center}
+\scriptsize{\input{./Tables/transcribed.tex}}
+\end{center}
+\scriptsize{
+Translation of the baseline questionnaire. Highlighted questions were used in the wide forest.}
+\end{table}
+
+\newpage
 
 \begin{landscape}
-    
+\subsection{Intermediate Outcomes}
+  
 \begin{table}[!h]
 \caption{Effects on intermediate outcomes}
 \label{mechanisms}
@@ -253,12 +266,17 @@ Standard errors are clustered at the branch-day level.}
 \begin{center}
  \footnotesize{\input{./Tables/lenders_profit.tex}}
 \end{center}
- \footnotesize{ The dependent variable in column (1) is the profit formula in equation (\ref{profit_function}). Columns (2)-(3) are back-of-the-envelope computations of the lender's profit.
- Standard errors are clustered at the branch-day level.}
+ \footnotesize{ The dependent variable in column (1) is the profit formula in equation (\ref{profit_function}). For columns (2)-(3) we compute average profit for borrower in arm $j$ according to (\ref{profit_function}). We then extrapolate the flow of payments over several periods depending on their repeat pawning behavior. In column (2) the flow of profits is given by
+ \[\sum_{T=0}^{\infty}\text{Profit}_j\times\Pr(\text{Pawn}_j)^T\]
+ assuming independence of repeat pawning across periods. In column (3) the stream of profits is given by
+ \[\text{Profit}_j + \text{Profit}_j\times \Pr(\text{Pawn}_j) +\text{Profit}_j\times\Pr(\text{Pawn}_j) \]
+ assuming that once learning (and hence repeat pawning behavior) occurs the borrower keeps coming back (we only keep 2 further periods for the exercise).
+ For columns(2)-(3) we clustered-bootstrapped the standard error. All Standard errors are clustered at the branch-day level.}
 %\textit{Do file: } \texttt{lenders\_profit.do}
 \end{table}
 
 \newpage
+
 
 \section{ Alternative explanations}
 \subsection{Learning}
@@ -443,7 +461,7 @@ The overall TUT is a weighted average of the impact in these two sub-groups.  Th
 \section{ Causal Random Forest, CATE, and `mistakes'}\label{app:cate}
 
 
-To estimate conditional average treatment effects given administrative and survey data, we use the function \texttt{causal\_forest()} of the \texttt{grf} R package; to estimate conditional TOT and TUT effects we use the \texttt{instrumental\_forest()} function from the same package.
+To estimate the conditional average treatment effects shown in Figure \ref{heterogeneous_effects}, we use administrative and survey data, and the function \texttt{causal\_forest()} of the \texttt{grf} R package; to estimate conditional TOT and TUT effects we use the \texttt{instrumental\_forest()} function from the same package.
 In each case, we use the default parameter values from the \texttt{grf} package with one exception: we increase the number of trees from the default value of 2000 to 5000.
 The functions \texttt{causal\_forest()} and \texttt{instrumental\_forest()} implement special cases of the ``generalized random forest'' methods of \cite{atheygrf}.
 In broad strokes, these functions combine a large number of regression trees that recursively partition the covariate space to estimate conditional average effects.
@@ -453,28 +471,8 @@ While closely related to more familiar ``regression-tree'' random forests, the g
 \footnote{For more details, see \cite{atheygrf} and the \texttt{grf} documentation: \url{https://grf-labs.github.io/grf/}. When constructing our random forest estimates of heterogeneous treatment effects, we use observations for all borrowers who answered at least \emph{part} of the intake survey.
 We impute the median response for the missing values, while also including an indicator whether the variable originally had a missing value. Results are similar if we manually include interactions between the original/imputed variable and an indicator for missingness. This is as expected, given that tree-based methods by their nature ``automatically'' consider interactions of arbitrary orders.}
 
-\begin{figure}[!h]
-     \caption{Heterogeneous Treatment Effects.} 
-     \label{heterogeneous_effects}    
-    \begin{center}
-     \begin{subfigure}{0.35\textwidth}
-       \centering
-      \includegraphics[width=\textwidth]{Figuras/he_dist_tau_hat_tot.pdf}
-          \caption{ToT}
-    \end{subfigure}
-    \begin{subfigure}{0.35\textwidth}
-       \centering
-      \includegraphics[width=\textwidth]{Figuras/he_dist_tau_hat_tut.pdf}
-          \caption{TuT}
-    \end{subfigure} 
-       \begin{subfigure}{.35\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{Figuras/he_dist_tau_hat_eff.pdf}
-        \caption{ATE}
-    \end{subfigure} 
-    \end{center}
-  %\footnotesize{ } \textit{Do file: }  \texttt{cate_dist.do}
-\end{figure}
+
+
 
 \begin{figure}[h!]
    \caption{Conditional ATEs from ``wide'' and ``narrow'' covariate sets.}

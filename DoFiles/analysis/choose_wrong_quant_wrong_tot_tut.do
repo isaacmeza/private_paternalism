@@ -171,9 +171,9 @@ twoway 	(rarea cwf_normal_l cwf_normal_h threshold, lcolor(navy%5) fcolor(navy) 
 			(rarea cwf_choose_l cwf_choose_h threshold, lcolor(maroon%5) fcolor(maroon%70) fintensity(40)) ///
 			(line cwf_choose threshold, lpattern(dot) lwidth(medthick) lcolor(maroon%70)) ///
 			(scatter cwf_choose threshold, connect(l) msymbol(x) color(maroon%70) ) ///				
-			, legend(order(3 "Choice commitment"  ///
+			, legend(order(3 "All borrowers in choice arm"  ///
 				6 "Non-choosers" 9 "Choosers") pos(6) rows(1))  ///
-			graphregion(color(white)) xtitle("APR % threshold") xlabel(-50(20)50) ///
+			graphregion(color(white)) xtitle("APR threshold (percentage points)") xlabel(-50(20)50) ///
 			ytitle("% of mistakes") ///
 			ylabel(0(10)100) xline(0, lcolor(black) lwidth(medthick) lpattern(dash))
 graph export "$directorio/Figuras/line_cw_apr_tot_tut.pdf", replace
