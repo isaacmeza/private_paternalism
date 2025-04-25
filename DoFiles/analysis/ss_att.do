@@ -65,6 +65,18 @@ gen response = !missing(f_encuesta)
 
 *Take-up treatment
 gen takeup = (_merge==3) if inlist(_merge,1,3)
+sort NombrePig takeup
+by NombrePig : gen num_emp_aux = _n
+replace takeup = . if num_emp_aux>1 & takeup==1
+
+qui putexcel set  "$directorio\Tables\SS_att.xlsx", sheet("SS_att") modify	
+orth_out takeup if inlist(t_prod,1,2,4), by(t_prod) overall se vce(cluster suc) count
+	qui putexcel B2=matrix(r(matrix)) 
+	
+	qui reg takeup ibn.t_prod if inlist(t_prod,1,2,4), nocons r cluster(suc)
+	test 1.t_prod==2.t_prod==4.t_prod
+	local p_val = `r(p)'
+	qui putexcel L2=matrix(`p_val')
 
 * Drop irrelevant observations  (important for correct # obs count)
 drop if missing(t_prod)
@@ -104,11 +116,11 @@ gen arm = t_prod
 replace arm = 2.5 if t_prod==2
 egen suc_x_dia = group(suc fecha_inicial) 	
 
-local i = 2	
+local i = 5	
 qui putexcel set  "$directorio\Tables\SS_att.xlsx", sheet("SS_att") modify	
 
 eststo clear
-foreach var of varlist takeup num_borrowers num_pawns_borr num_pawns prestamo_i total_borrowed {
+foreach var of varlist num_borrowers num_pawns_borr num_pawns prestamo_i total_borrowed {
 	
 	orth_out `var' if inlist(t_prod,1,2,4), by(t_prod) overall se vce(cluster suc) bdec(2) count
 	qui putexcel B`i'=matrix(r(matrix)) 

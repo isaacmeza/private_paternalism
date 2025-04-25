@@ -1,0 +1,274 @@
+% !TeX root = editor_letter.tex
+% !TEX TS-program = pdflatex
+% !TEX encoding = UTF-8 Unicode
+% !TEX output_directory = .texpadtmp
+
+\documentclass[11pt, colorinlistoftodos]{article} % otra posibilidad es [openany]{book}
+
+\input{preamble} % document preamble
+%\input{commands}
+
+% To-do commands (must go after authblk to avoid clash)
+\usepackage{todonotes}
+\usepackage{marginnote}
+\renewcommand*{\marginfont}{\color{red}\sffamily\scriptsize}
+\setlength{\marginparwidth}{2cm}  % prevent todo cutoff
+\newcounter{todoListItems}
+\newcommand{\todoLink}[2][ ]{
+  \addtocounter{todoListItems}{1}
+  \todo[caption={\protect\hypertarget{todo\thetodoListItems}{}Translation},size=\scriptsize,#1]{
+    \scriptsize #2 \hfill \hyperlink{todo\thetodoListItems}{$\uparrow$}
+  }
+}
+\newcommand{\forES}[1]{\todoLink[color=green!20,inline,caption={\thetodoListItems: For @Enrique}]{\textbf{@Enrique} -- #1}}
+\newcommand{\forIM}[1]{\todoLink[color=blue!20,inline,caption={\thetodoListItems: For @Isaac}]{\textbf{@Isaac} -- #1}}
+\newcommand{\forFdT}[1]{\todoLink[color=red!20,inline,caption={\thetodoListItems: For @Francis}]{\textbf{@Francis} -- #1}}
+\newcommand{\forCM}[1]{\todoLink[color=violet!20,inline,caption={\thetodoListItems: For @Craig}]{\textbf{@Craig} -- #1}}
+\newcommand{\forAll}[1]{\todoLink[color=orange!20,inline,caption={\thetodoListItems: For All}]{\textbf{@All} -- #1}}
+
+\newcounter{point}
+\setcounter{point}{0}
+\def\thepoint{\alph{point}}
+
+\newenvironment{point}{\refstepcounter{point}\noindent\textbf{Point~(\thepoint)~}\hrulefill\newline\itshape\small}{\par\vspace{-1.25em}\noindent\hrulefill}
+
+%----------------------------------------------------------------------------------------
+%	INICIO DEL DOCUMENTO
+%----------------------------------------------------------------------------------------
+\begin{document}
+
+\listoftodos
+
+\noindent \textbf{Letter to the Editor}
+\vspace{.3in}
+
+
+\noindent
+Dear Editor,
+
+
+\vspace{.4in}
+\noindent \textbf{1. Mechanisms}
+\vspace{.2in}
+
+
+\textcolor{red}{Editor, }\begin{point} 
+   R4 and R5 call into question your favored explanation of overconfidence, in that they fail to see why overconfident consumers would react to a structured contract. Both referees convincingly argue that it could be the opposite, actually. I think this is a major point to clarify.
+\end{point}
+
+\forAll{sss}
+
+\textcolor{red}{Editor, }\begin{point}
+Relatedly, Figure OA-7 is a major piece of evidence in favor of overconfidence, so it should appear in the main text. More importantly, you should also give the p-values of the tests of equality of the two corresponding conditional TUTs (I have the impression that one cannot reject at usual levels the null that the TUT of “sure” clients is the same as the TUT of the others).
+\end{point}
+
+
+\textcolor{red}{Editor, }\begin{point}
+Given that the overconfidence interpretation of your results raises questions, I agree with R4 that you should include and discuss the other arm without a penalty fee. Also, please at least disclose the additional arms of the experiment.
+\end{point}
+
+
+
+\textcolor{red}{Editor, }\begin{point}
+Another reason mentioned by R5 for why people prefer the status quo is liquidity concerns. I am more sanguine than R5 on this issue but I think it is important to discuss it.
+
+\end{point}
+
+
+\textcolor{red}{Editor, }\begin{point}
+ The clients in the “choice” arm could be influenced by the appraisers, who could have discouraged the clients to make this choice. Even if the appraisers are not incentivized, the structure payment could, e.g., increase their workload. That the results do not change too much with appraisers fixed effects is reassuring in this respect but all appraisers could have reacted in a similar way. This issue should be discussed.
+\end{point}
+
+
+
+\textcolor{red}{Editor, }\begin{point}
+ I agree with R4 that you should discuss more extensively your results in view of the related literature.
+\end{point}
+
+
+\vspace{.4in}
+\noindent \textbf{2. Econometric Issues}
+\vspace{.2in}
+\setcounter{point}{0}
+
+
+\textcolor{red}{Editor, }\begin{point}
+I encourage you to shorten the discussion on the identification of TOT and TUT. I would just present identification of the TUT and explain that the same reasoning applies to the TOT.
+
+\end{point}
+
+
+
+
+\textcolor{red}{Editor, }\begin{point}
+As a suggestion, you could investigate how your bounds on the distribution of treatment effects improve when you include covariates, following Fan, Guerre and Zhu (2017, Journal of Econometrics).
+\end{point}
+
+
+
+
+\textcolor{red}{Editor, }\begin{point}
+ Obtaining a consistent estimator of the true distribution of the TOT, TUT and ATE is hard, because of the estimation noise. Specifically, for individual i, one has, for instance for the conditional TOT,
+$\widehat{CTOT_i} = CTOT_i + \epsilon_i$, where, approximately, $\epsilon_i \sim N (0, \sigma^2)$ and $\sigma^2$ can be consistently estimated. Of course, ignoring that the $CTOT_i$ are estimated artificially increases the dispersion of the estimated distribution. Note that the problem above would be a standard (but already non-trivial) deconvolution problem if  can be consistently estimated. Of course,  was constant across individuals but here this is not the case. So I wonder how you obtain Figure 3 (and in turn, Figure 4).
+
+\end{point}
+
+
+
+
+\textcolor{red}{Editor, }\begin{point}
+Related to the previous point, you indicate in Footnote 23, that your “inferences in this section are carried out by simulating from the normal limit distributions using the estimated standard errors”. This is not very precise, and I am not sure that this leads to correct inference. Why not use the bootstrap instead?
+\end{point}
+
+
+
+
+\textcolor{red}{Editor, }\begin{point}
+Footnote 24 is important and should appear in the text. I would also clarify that Figure 4 can be interpreted as you do if one assumes that individual treatment effects are equal to conditional TOT/TUT 
+(relatedly, you say p.23 that “By adding assumptions it is possible to say more”, but afterwards you do not consider the distribution of treatment effects anymore).
+
+\end{point}
+
+
+\vspace{.4in}
+\noindent \textbf{3. Exposition}
+\vspace{.2in}
+\setcounter{point}{0}
+
+\textcolor{red}{Editor, }\begin{point}
+ I think R1’s suggestion (see their Comment 3) on the organization of your paper is very good.
+\end{point}
+
+
+\textcolor{red}{Editor, }\begin{point}
+  An implication of several of the points above is that you should tone down some of your conclusions (see also, e.g., R1’s Comment 2 and R4’s Comment 1 in their “must do”).
+\end{point}
+
+
+\textcolor{red}{Editor, }\begin{point}
+  I would consider moving to an online appendix Section 6.3. This seems less important to me than, e.g., the points mentioned in Section 1 above.
+\end{point}
+
+
+\vspace{.4in}
+\noindent \textbf{4. Other points}
+\vspace{.2in}
+\setcounter{point}{0}
+
+
+\textcolor{red}{Editor, }\begin{point}
+Among the multiple (good) points of R4, Point 7 in their “Strongly consider doing” seems very important to me.
+\end{point}
+
+
+
+\textcolor{red}{Editor, }\begin{point}
+You have very low power on TOTs since very few clients chose the structured contracts. So I suggest that you remain cautious about your related results. For instance, I cannot see any evidence that “the structured contract benefits both those who would choose it (...)”.
+\end{point}
+
+
+\textcolor{red}{Editor, }\begin{point}
+ p.14, “Branches have an average of 2.8 of these shops in the vicinity”: how do you define the “vicinity”? And is it clear that clients are aware of that?
+\end{point}
+
+
+\textcolor{red}{Editor, }\begin{point}
+  pp.16-17, how are the standard errors computed in Tables 1 and 2 (and same question for the tests of equality)?
+\end{point}
+
+
+
+\textcolor{red}{Editor, }\begin{point}
+p.21, in the computation of profit, you also assume independence between repeat and the amounts. Also: couldn’t you simply model total financial costs as a function of the duration observed, to extrapolate?
+\end{point}
+
+
+
+\textcolor{red}{Editor, }\begin{point}
+p.21, in {Financial Costj |Contract= X}, an expectation sign is missing.
+\end{point}
+
+
+
+
+\textcolor{red}{Editor, }\begin{point}
+ p.24, consider simplifying the discussion by just assuming the standard exclusion restriction Y (d, z) = Y (d). Also, note that “Yi(d = 1, z = 1)” is not consistent with the previous notation Yi(d, z).
+\end{point}
+
+
+
+
+\textcolor{red}{Editor, }\begin{point}
+p.25, “Selection on gains implies $TOT>TUT>ATE$”. These inequalities are impossible, since ATE satisfies $ATE = p TOT + (1 - p)$ TUT with p the probability of choosers. I guess you meant $TOT>ATE>TUT$?
+\end{point}
+
+
+
+
+\textcolor{red}{Editor, }\begin{point}
+p.29, the hypotheses ATE = TOT and ATE=TUT are redundant given that ATE is a convex combination of TOT and TUT (and it would seem more natural to me to test for TOT = TUT, as these correspond to non-overlapping populations)
+\end{point}
+
+
+
+
+\textcolor{red}{Editor, }\begin{point}
+ p.30, “ although not significant only at 5,000\% discount rates.” My reading of the figure is that it becomes non-significant at the 5\% level already for a discount rate of 1,000\%.
+\end{point}
+
+
+
+
+\textcolor{red}{Editor, }\begin{point}
+ p.30, my impression is that “we should find that the TUT for present-biased borrowers is positive” should rather be “we should find that the TUT for present-biased borrowers is larger than for the others”.
+\end{point}
+
+
+
+
+\textcolor{red}{Editor, }\begin{point}
+p.32, the titles of Figure 3 should reflect that these are conditional TOT, TUT and ATE.  Changed to say “Conditional” in front of each. 
+\end{point}
+
+
+
+
+
+\textcolor{red}{Editor, }\begin{point}
+ p. 34, ``the red curve is merely $F_{TOT}(−\delta)$ $\times$ 100\%.'' Should not it rather be $[1 - F_{TOT}(\delta)]$ $\times$ 100\%? Also, the explanation of Figure 4 is repetitive and could be shortened. 
+\end{point}
+
+
+
+\textcolor{red}{Editor, }\begin{point}
+p.34, “In contrast, relatively few choosers appear to have made mistakes by choosing it” I may have missed something but this is not my reading of the graph.
+\end{point}
+
+
+
+\textcolor{red}{Editor, }\begin{point}
+ p.35, how is “Overall Error Rate” computed in Table 5? It’s always the sum of the previous columns except for the last row
+\end{point}
+
+
+
+\textcolor{red}{Editor, }\begin{point}
+ Figure OA-3 is difficult to read; I would remove the results of the bivariate regressions.
+\end{point}
+
+
+
+
+%\begin{point} this is point a
+%\end{point}
+
+%\textcolor{red}{ENRIQUE}
+
+% REFERENCES ======================================================
+%\cleardoublepage
+%\singlespacing
+%\bibliographystyle{chicago}
+%\bibliography{References.bib}
+%\printbibliography
+\end{document}
+

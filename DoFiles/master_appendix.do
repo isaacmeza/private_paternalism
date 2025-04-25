@@ -14,57 +14,52 @@ version 17.0
 
 ********************************** Appendix ************************************
 
-* No discontinuity in number of pawns
-do "./DoFiles/appendix/num_pawns_bal.do"
-
-* Table OA-2: Balance conditional on survey response and question-by-question response rates by treatment arm
-*do "./DoFiles/analysis/ss.do"
-
-* Table OA-3: Survey Non-response: TUT estimates for respondents to each survey question
-do "./DoFiles/appendix/tut_cond_survey.do"
-
-* Figure OA-3: Behavior of borrowers who lost their pawn
+* Figure OA-1: Behavior of borrowers who lost their pawn
 do "./DoFiles/appendix/hist_den_default.do"
 
-* Table OA-4: Multiple-loans robustness check
-do "./DoFiles/appendix/multiple_loans.do"
+* Figure OA-2: Weekly default rates experimental branches and all branches
+do "./DoFiles/appendix/weekly_def_rates.do"
 
-* Figure OA-4: Determinants of choice
+* Figure OA-3: Determinants of choice
 do "./DoFiles/appendix/determinants_choice.do"
 
-* Figure OA-5: Histogram of payments
-do "./DoFiles/appendix/hist_payments.do"
+* Table OA-2: Effects on intermediate outcomes
+do "./DoFiles/appendix/mechanisms.do"
 
-* Table OA-5: Bounding censoring
+* Table OA-3: Bounding censoring
 do "./DoFiles/appendix/censoring_imp.do"
 do "./DoFiles/appendix/censoring_imp_pr.do"
 
-* Figure OA-6: Interpolation on bounding censoring
-do "./DoFiles/appendix/interpolation_censoring_imp.do"
-
-* Figure OA-7: Survival graph
+* Figure OA-4: Survival graph
 do "./DoFiles/appendix/survival_graph.do"
 
-* Figure OA-8: % of payment over time
-do "./DoFiles/appendix/cumulative_porc_pay_time.do"
+* Table OA-4: Effects on more comprehensive cost measures
+do "./DoFiles/appendix/fc_robustness.do"
 
-* Table OA-6: Effect of Prior Assignment on Subsequent Choice
+* Table OA-5: Effects on Repeat Pawning
+do "./DoFiles/appendix/repeat_loans.do"
+
+* Table OA-6: Lender's Profit
+do "./DoFiles/appendix/lenders_profit.do"
+
+* Table OA-7: Effect of Prior Assignment on Subsequent Choice
 do "./DoFiles/appendix/learning_exp.do"
 
-* Figure OA-9: Financial benefit TUT effect for different discount rates
+* Figure OA-5: Financial benefit TUT effect for different discount rates
 do "./DoFiles/appendix/discounted_noeffect.do"
 
-* Figure OA-10: Empirical CDF of Financial Cost: Forced commitment vs Control
-do "./DoFiles/appendix/fosd_ecdf.do"
+* Figure OA-6: Heterogeneity of the TUT by behavioral variables
+do "./DoFiles/appendix/partition_tut.do"
 
-* Figure OA-11: Distribution of treatment effects under rank invariance.
-do "./DoFiles/appendix/te_rankinvariance.do"
-
-* Figure OA-12: Determinants sure confidence
+* Figure OA-7: Determinants sure confidence
 do "./DoFiles/appendix/determinants_sure_confidence.do"
 
-* Figure OA-13: Example Causal Tree
-*rscript using "./RScripts/te_grf.R", rversion(4.2.2)
+* Figure OA-8: Fan & Park bounds for benefit in APR%
+do "./DoFiles/appendix/fan_park_bnds.do"
 
+* Figure OA-9: Distribution of treatment effects under rank invariance.
+do "./DoFiles/appendix/te_rankinvariance.do"
 
+* Figure OA-10:  Conditional ATEs from "wide" and "narrow" covariate sets
+*do "./DoFiles/analysis/wide_narrow_forests.do"
 

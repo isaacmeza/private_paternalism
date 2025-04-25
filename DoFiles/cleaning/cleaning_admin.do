@@ -575,6 +575,7 @@ by prenda: egen num_p=max(sum_np)
 by prenda: gen num_v=sum_visit[_N]
 
 by prenda: egen dias_primer_pago = min(dpp)
+by prenda: egen dias_ultimo_pago = max(dpp)
 by prenda: gen dias_ultimo_mov = dias_inicio[_N]
 gen dias_inicio_d=dias_inicio if des_i_c==1
 *Days towards recovery

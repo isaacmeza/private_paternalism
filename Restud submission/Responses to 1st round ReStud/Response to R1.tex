@@ -1,0 +1,120 @@
+% !TeX root = editor_letter.tex
+% !TEX TS-program = pdflatex
+% !TEX encoding = UTF-8 Unicode
+% !TEX output_directory = .texpadtmp
+
+\documentclass[11pt, colorinlistoftodos]{article} % otra posibilidad es [openany]{book}
+
+\input{preamble} % document preamble
+%\input{commands}
+
+% To-do commands (must go after authblk to avoid clash)
+\usepackage{todonotes}
+\usepackage{marginnote}
+\renewcommand*{\marginfont}{\color{red}\sffamily\scriptsize}
+\setlength{\marginparwidth}{2cm}  % prevent todo cutoff
+\newcounter{todoListItems}
+\newcommand{\todoLink}[2][ ]{
+  \addtocounter{todoListItems}{1}
+  \todo[caption={\protect\hypertarget{todo\thetodoListItems}{}Translation},size=\scriptsize,#1]{
+    \scriptsize #2 \hfill \hyperlink{todo\thetodoListItems}{$\uparrow$}
+  }
+}
+\newcommand{\forES}[1]{\todoLink[color=green!20,inline,caption={\thetodoListItems: For @Enrique}]{\textbf{@Enrique} -- #1}}
+\newcommand{\forIM}[1]{\todoLink[color=blue!20,inline,caption={\thetodoListItems: For @Isaac}]{\textbf{@Isaac} -- #1}}
+\newcommand{\forFdT}[1]{\todoLink[color=red!20,inline,caption={\thetodoListItems: For @Francis}]{\textbf{@Francis} -- #1}}
+\newcommand{\forCM}[1]{\todoLink[color=violet!20,inline,caption={\thetodoListItems: For @Craig}]{\textbf{@Craig} -- #1}}
+\newcommand{\forAll}[1]{\todoLink[color=orange!20,inline,caption={\thetodoListItems: For All}]{\textbf{@All} -- #1}}
+
+\newcounter{point}
+\setcounter{point}{0}
+\def\thepoint{\alph{point}}
+
+\newenvironment{point}{\refstepcounter{point}\noindent\textbf{Point~(\thepoint)~}\hrulefill\newline\itshape\small}{\par\vspace{-1.25em}\noindent\hrulefill}
+\setlength {\marginparwidth }{2cm} 
+%----------------------------------------------------------------------------------------
+%	INICIO DEL DOCUMENTO
+%----------------------------------------------------------------------------------------
+\begin{document}
+
+\listoftodos
+
+
+\noindent \textbf{Letter to Referee 1}
+\vspace{.3in}
+
+
+\noindent
+Dear Referee 1,
+
+ Thank you for your very encouraging review. We agree with your that ``the experiment is designed around an understudied and important market'' that ``It delivers credible results that speak both locally to the functioning of the market of interest and more broadly to consumer sophistication in general.'' And that ``the methodological component expands the potential impact of the manuscript beyond the current research questions in consumer finance and will likely inspire similar designs in other areas''.
+
+You correctly point to several improvements in terms of structure, organization, and consistency of language. We agree with you and have closely followed your suggestions.
+
+
+
+
+% \vspace{.4in}
+% \noindent \textbf{1. Mechanisms}
+% \vspace{.2in}
+
+\vspace{.2in}
+\textcolor{red}{R1, }\begin{point} 
+Commitment Contracts or Structured Payment Plans: the manuscript jumps between describing their experimental pawn contract as a structured payment plan or as a commitment contract. The latter terminology is not sufficiently descriptive: even the status quo contract generates a cost (collateral forfeiture) upon failure to complete a future action (timely repayment) and so constitutes a commitment. Readers will benefit from a single term for the experimental pawn contract and `structured payment plan’ distinguishes it from the status quo and is easily understood.
+\end{point}
+
+Agreed. We don't use ``commitment contract'' as a label, and instead refer to it as structured payments or structured payment plan.
+
+\vspace{.2in}
+\textcolor{red}{R1, }\begin{point} 
+Unsubstantiated Claims of Subject Comprehension: When describing the explanation of structured payment plans to subjects, the authors make several unsubstantiated claims that should be eliminated from the text. This includes saying “we made sure clients understood the contract terms” and “we are confident the overwhelming majority of clients understood the contracts and that those in the choice arm made informed choices.” It may be fair to say that the experiment made efforts to aid comprehension and describe the design details, but the text should stop short of claims such as those above. 
+\end{point}
+
+We agree also. We have now removed this language and focus on the objective steps the team took to deliver the information in a comprehensible way.
+
+\vspace{.2in}
+\textcolor{red}{R1, }\begin{point} 
+Ordering of Results: The presentation of experimental results follows a somewhat jumpy path. After describing the basics of treatment balance, a standard experimental analysis is conducted examining average treatment and intent to treat effects. Then substantial discussion is provided of an online appendix table on intermediate outcomes. Then, the authors present a potential outcomes framework and discuss additional objects of interest such as the distribution of individual treatment effects, treatment on treated and untreated, selection effects, and then more details on the distribution of treatment effects. The manuscript would be more effective if there was an overarching framework for considering all (or most of) the results. This could be achieved by presenting the potential outcomes framework first along with the assumptions that deliver TOT and TUT as a way to understand the experimental design and what it can deliver (Figure 2 is particularly compelling for conveying what one gets from the mandates vs. choice design). Then one could proceed to results without interruption for presenting a new empirical framework. It would also seem natural to consider the headline aggregate findings before delving into the distributions of treatment effects. The discussion of intermediate outcomes may fit best in an appendix alongside table OA-2.
+   
+\end{point}
+
+\forFdT{Frank can you take this?  --ES}
+
+
+\vspace{.2in}
+\textcolor{red}{R1, }\begin{point} 
+Proofreading: The manuscript has quite a few remaining spelling and grammar errors and would benefit from a thorough proofread. It also seems that moving from section to section the tone changes from formal to conversational. And consistency of vocabulary would be desirable for things like TOT, TUT, “mandates vs. choice” vs. “universal vs. choice” vs “mandates-choice”
+  
+\end{point}
+
+Thanks. We have converged on using ''mandates vs. choice'', have corrected typos, and now one person has edited all the sections for style.
+
+\forCM{Craig, can you edit for section to section the tone changes?  --ES}
+
+
+\vspace{.2in}
+\textcolor{red}{R1, }\begin{point} 
+Concluding Thoughts: Given that one of the primary contributions of the manuscript is the “mandates vs. choice”  experimental design, it might be helpful to say more about broader applicability in the conclusion beyond the second paragraph. Expanding on footnote 18 might be useful for making the case for the mandates vs choice approach.   
+\end{point}
+
+We believe that the design would be used profitably in many domains. The domain has to be such that some experimental arms are mandated and display high compliance, and other arms involve choice. For example, in medical research, new drugs are tested by allocating treatment and placebo with high compliance, but in some cases patients can have opt-out options. In environmental research, consumers are often faced with choices or mandates for energy-saving technologies, with costs and benefits on each side. In educational environments schools design core versus optional curricula to maximize learning. In financial settings, e.g. insurance products, consumers often decide on the sizes of deductibles and premia, but government could (and often do) mandate some minimum. In labor market settings, employers may mandate participation in default retirement savings plans or workplace wellness programs, while offering opt-out clauses. In digital platform design, users are sometimes required to accept some privacy terms while retaining discretion over others specific sharing settings (choice).  
+
+These examples suggest a broad applicability of the design to settings where institutional where take-up behavior and downstream effects can be studied under each regime.
+
+
+Thank you for your thoughtful comments.
+
+
+%\begin{point} this is point a
+%\end{point}
+
+%\textcolor{red}{ENRIQUE}
+
+% REFERENCES ======================================================
+%\cleardoublepage
+%\singlespacing
+%\bibliographystyle{chicago}
+%\bibliography{References.bib}
+%\printbibliography
+\end{document}
+

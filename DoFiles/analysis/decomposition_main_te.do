@@ -25,7 +25,7 @@ use "$directorio/DB/Master.dta", clear
 eststo clear
 
 *TE
-foreach var of varlist fc_admin  sum_int_c sum_pay_fee_c downpayment_capital cost_losing_pawn def_c apr {
+foreach var of varlist fc_admin sum_int_c sum_pay_fee_c downpayment_capital cost_losing_pawn def_c apr {
 	*OLS 
 	eststo : reg `var' i.t_prod $C0 if inlist(t_prod,1,2,4), vce(cluster suc_x_dia)
 	su `var' if e(sample) & t_prod==1

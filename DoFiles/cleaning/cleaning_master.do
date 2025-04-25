@@ -8,10 +8,11 @@ version 17.0
 * Author:	Isaac M
 * Machine:	Isaac M 											
 * Date of creation:	-
-* Last date of modification: September. 21, 2023
+* Last date of modification: Oct. 1, 2024
 * Modifications: - Change value of lost pawn to (0.3/0.7) x loan
 	- Redefinition of main outcomes.
 	- Prediction of confidence & OC
+	- Add APR calculation - fees
 * Files used:     
 		- 
 * Files created:  
@@ -138,7 +139,7 @@ replace apr_i_tc = (1 + (fc_i_tc/prestamo_i)/dias_ultimo_mov)^dias_ultimo_mov - 
 
 *APR -int
 gen double fc_i_int = .
-	*Only fees and interest for recovered pawns
+	*Only fees for recovered pawns
 replace fc_i_int = sum_pay_fee_c if des_i_c==1
 	*All payments + appraised value net of loan when default
 replace fc_i_int = sum_p_c + prestamo_i*(0.3/0.7) if def_i_c==1
@@ -149,6 +150,23 @@ gen double apr_i_int  = .
 replace apr_i_int = (1 + (fc_i_int/prestamo_i)/dias_al_desempenyo)^dias_al_desempenyo - 1  if des_i_c==1
 replace apr_i_int = (1 + (fc_i_int/prestamo_i)/dias_al_default)^dias_al_default - 1  if def_i_c==1
 replace apr_i_int = (1 + (fc_i_int/prestamo_i)/dias_ultimo_mov)^dias_ultimo_mov - 1  if def_i_c==0 & des_i_c==0
+
+***************************************
+
+*APR -fee
+gen double fc_i_fee = .
+	*Only interest for recovered pawns
+replace fc_i_fee = sum_int_c  if des_i_c==1
+	*All payments + appraised value net of loan amount when default
+replace fc_i_fee = sum_p_c + prestamo_i*(0.3/0.7) if def_i_c==1
+	*Not ended at the end of observation period - only interest
+replace fc_i_fee = sum_int_c  if def_i_c==0 & des_i_c==0
+
+
+gen double apr_i_fee  = .
+replace apr_i_fee = (1 + (fc_i_fee/prestamo_i)/dias_al_desempenyo)^dias_al_desempenyo - 1  if des_i_c==1
+replace apr_i_fee = (1 + (fc_i_fee/prestamo_i)/dias_al_default)^dias_al_default - 1  if def_i_c==1
+replace apr_i_fee = (1 + (fc_i_fee/prestamo_i)/dias_ultimo_mov)^dias_ultimo_mov - 1  if def_i_c==0 & des_i_c==0
 
 ***************************************
 
@@ -236,6 +254,11 @@ gen double fc_int = fc_i_int
 label var fc_int "Financial cost - interest"
 gen double apr_int = apr_i_int
 label var apr_int "APR - interest"
+
+gen double fc_fee = fc_i_fee
+label var fc_fee "Financial cost - fee"
+gen double apr_fee = apr_i_fee
+label var apr_fee "APR - fee"
 
 gen double fc_fa = fc_i_fa
 label var fc_fa "Financial cost (appraised value)"

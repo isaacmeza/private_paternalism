@@ -6,7 +6,8 @@ version 17.0
 /*******************************************************************************
 * Name of file:	
 * Author:	Isaac M
-* Machine:	Isaac M 											
+* Machine:	Isaac M 
+* Date of creation:		
 * Last date of modification:   May. 31, 2023
 * Modifications:-Added covariates for heterogeneity
 				-Added one covariate (sure_confidence) and restrict to new sample and definition of dep vars

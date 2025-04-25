@@ -137,11 +137,19 @@ replace suc = sucursal if _merge==1
 drop suc_x_dia
 egen suc_x_dia = group(fecha_inicial suc)
 
-*Response survey dummy
-gen response = !missing(f_encuesta) 
-
 *Take-up treatment
 gen takeup = (_merge==3) if inlist(_merge,1,3)
+sort NombrePig takeup
+by NombrePig : gen num_emp_aux = _n
+replace takeup = . if num_emp_aux>1 & takeup==1
+
+*Response survey dummy
+gen response = !missing(f_encuesta) 
+replace response = . if num_emp_aux>1 & !missing(NombrePig)
+
+*Pawned dummy
+gen pawned = (inlist(_merge,2,3))
+replace pawned = . if num_emp_aux>1 & !missing(NombrePig)
 
 * Drop irrelevant observations  (important for correct # obs count)
 drop if missing(t_prod)
@@ -153,5 +161,5 @@ orth_out takeup if inlist(t_prod,1,2,4), by(t_prod) bdec(2)
 qui putexcel set  "$directorio\Tables\consort.xlsx", sheet("exp_arms") modify	
 qui putexcel B18=matrix(r(matrix))  	
 
-	
+tab response pawned if inlist(t_prod,1,2,4)
 	

@@ -1,0 +1,102 @@
+
+% !TeX root = editor_letter.tex
+% !TEX TS-program = pdflatex
+% !TEX encoding = UTF-8 Unicode
+% !TEX output_directory = .texpadtmp
+
+\documentclass[11pt, colorinlistoftodos]{article} % otra posibilidad es [openany]{book}
+
+\input{preamble} % document preamble
+%\input{commands}
+
+% To-do commands (must go after authblk to avoid clash)
+\usepackage{todonotes}
+\usepackage{marginnote}
+\renewcommand*{\marginfont}{\color{red}\sffamily}
+\setlength{\marginparwidth}{2cm}  % prevent todo cutoff
+
+\newcounter{todoListItems}
+\newcommand{\todoLink}[2][ ]{
+  \addtocounter{todoListItems}{1}
+  \todo[caption={\protect\hypertarget{todo\thetodoListItems}{}Translation},#1]{
+    #2 \hfill \hyperlink{todo\thetodoListItems}{$\uparrow$}
+  }
+}
+\newcommand{\forES}[1]{\todoLink[color=green!20,inline,caption={\thetodoListItems: For @Enrique}]{\textbf{@Enrique} -- #1}}
+\newcommand{\forIM}[1]{\todoLink[color=blue!20,inline,caption={\thetodoListItems: For @Isaac}]{\textbf{@Isaac} -- #1}}
+\newcommand{\forFdT}[1]{\todoLink[color=red!20,inline,caption={\thetodoListItems: For @Francis}]{\textbf{@Francis} -- #1}}
+\newcommand{\forCM}[1]{\todoLink[color=violet!20,inline,caption={\thetodoListItems: For @Craig}]{\textbf{@Craig} -- #1}}
+\newcommand{\forAll}[1]{\todoLink[color=orange!20,inline,caption={\thetodoListItems: For All}]{\textbf{@All} -- #1}}
+
+\newcounter{point}
+\setcounter{point}{0}
+\def\thepoint{\alph{point}}
+
+\newenvironment{point}{\refstepcounter{point}\noindent\textbf{Point~(\thepoint)~}\hrulefill\newline\itshape\small}{\par\vspace{-1.25em}\noindent\hrulefill}
+\setlength {\marginparwidth }{2cm} 
+%----------------------------------------------------------------------------------------
+%	INICIO DEL DOCUMENTO
+%----------------------------------------------------------------------------------------
+\begin{document}
+
+\listoftodos
+
+\noindent \textbf{Letter to Referee 5}
+\vspace{.3in}
+
+\noindent
+Dear Referee 5,
+
+Thank you for your very encouraging review. You write that ``This is a very interesting paper that I enjoyed reading.'' and that you ``think it should go in a good journal'' not that there is not enough for a journal like REStud, owing to lack of clarity on mechanisms/welfare/policy implications. 
+
+We took your comments to heart, and below, we made progress on some of them. However, we disagree about the contribution of the paper. We see the paper as having three core strengths: (1) to estimate TOT and TUT in a rigorous way with weaker assumptions that the literature now employs using a new experimental design that can be useful beyond this paper; (2) to provide much-needed information about the pawn lending industry which we think will draw the attention of researchers and regulators\footnote{Indeed R4 goes as far as suggesting that just the descriptives could merit publication in a top-5 journal.}; (3) to assess if there is consumer demand for structured payments.
+
+The cost of doing the study in this industry with one of the largest lenders was that we did not have borrowers' contact information and could only implement a 5-minute survey. This limits preference elicitation and what we can do to study mechanisms, and that is why we were cautious and short in section 6.1. There are different kinds of papers in top-5 general publications, including papers that just present stylized facts unknown before, or document important consumer behavior. This paper studies an unstudied industry that affects tens of millions of people, uses high-quality data to describe its workings and striking stylized facts, innovates on RCT design, and estimates parameters that would be useful for considering policy (ATE, TOT, TUT, and others). These are significant contributions, but indeed, just the first word rather than the last one in a research agenda.
+
+
+% \vspace{.4in}
+% \noindent \textbf{1. Mechanisms}
+% \vspace{.2in}
+
+\vspace{.2in}
+\textcolor{red}{R1, }\begin{point} 
+In the structured contract, the penalty for not meeting the first or second installments was very small: 2 percentage points of the loan. This is truly small compared to the value of the pawn, so it's odd that this small penalty could decrease the probability of losing the pawn by 15\%, and overall decrease the costs relative to control by 22\%.
+
+What could explain why repayment behavior was so elastic relative to such a relatively small incentive for starting repayment early? While overconfidence might explain extensive margin choice (i.e., the strong preference for unstructured contracts), it does not explain why the structured contract is effective in the first place. In fact, overconfidence might even imply the opposite: if I'm wildly over-optimistic and think I'm going to have a huge payday in 2 months, then I'll be willing to incur an additional small 2\% fee now, and wait to repay my loan until I have a lot more liquidity.
+
+A simpler explanation for why behavior is so elastic might simply be that borrowers go to another lender, and take out a loan that covers the first and/or second installment. Since this paper is based on admin data from only one lender, this explanation cannot be ruled out. Of course, if this is the bulk of what's going on, then the implication probably is that the structured contract is highly inefficient.
+
+\end{point}
+
+
+
+\vspace{.2in}
+\textcolor{red}{R1, }\begin{point} 
+Minimizing fees paid without holding all else equal is not equivalent to increasing welfare. The structured contract gets people to start repaying the loan earlier, and that might be a costly inconvenience that is not taken into account in the paper's conclusion that the structured contract is great. To see my point as starkly as possible, imagine a loan that must be repaid the next day. With a 1-day deadline, most people would be able to repay it (and thus save on fees), because they would probably just use the amount they borrowed to repay. But then, that of course defeats the whole purpose of taking out the loan in the first place. While this example is obviously just for purposes of illustration, it does illustrate that when it comes to borrowing and repayment speed, you cannot evaluate which loan products are better or worse for people if you just look at total fees paid, without holding constant people's liquidity over the repayment cycle.
+In sum, the headline conclusion of this paper, "We show that structured repayment benefits nearly all borrowers, including those who would not freely choose it, and find no evidence of selection on gains," is unfortunately not supported by the data and analysis.
+\end{point}
+
+
+\vspace{.2in}
+\textcolor{red}{R1, }\begin{point} 
+Minor: I don't think "A number of papers have found low demand for commitment" is an accurate description of the literature. Relative to what benchmark? I suggest the authors take a look at Carrera et al. (2022) "Who chooses commitment?" (That paper also extensively documents the relationship between choice, treatment effects, preferences, and beliefs, so probably worth discussing in that light as well).
+\end{point}
+
+
+\vspace{.3in}
+Thank you for your thoughtful comments.
+
+
+%\begin{point} this is point a
+%\end{point}
+
+%\textcolor{red}{ENRIQUE}
+
+% REFERENCES ======================================================
+%\cleardoublepage
+%\singlespacing
+%\bibliographystyle{chicago}
+%\bibliography{References.bib}
+%\printbibliography
+\end{document}
+

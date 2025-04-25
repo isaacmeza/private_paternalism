@@ -1,0 +1,392 @@
+% !TeX root = editor_letter.tex
+% !TEX TS-program = pdflatex
+% !TEX encoding = UTF-8 Unicode
+% !TEX output_directory = .texpadtmp
+
+\documentclass[11pt, colorinlistoftodos]{article} % otra posibilidad es [openany]{book}
+
+\input{preamble} % document preamble
+%\input{commands}
+
+% To-do commands (must go after authblk to avoid clash)
+\usepackage{todonotes}
+\usepackage{marginnote}
+\renewcommand*{\marginfont}{\color{red}\sffamily}
+\setlength{\marginparwidth}{2cm}  % prevent todo cutoff
+
+\newcounter{todoListItems}
+\newcommand{\todoLink}[2][ ]{
+  \addtocounter{todoListItems}{1}
+  \todo[caption={\protect\hypertarget{todo\thetodoListItems}{}Translation},#1]{
+    #2 \hfill \hyperlink{todo\thetodoListItems}{$\uparrow$}
+  }
+}
+\newcommand{\forES}[1]{\todoLink[color=green!20,inline,caption={\thetodoListItems: For @Enrique}]{\textbf{@Enrique} -- #1}}
+\newcommand{\forIM}[1]{\todoLink[color=blue!20,inline,caption={\thetodoListItems: For @Isaac}]{\textbf{@Isaac} -- #1}}
+\newcommand{\forFdT}[1]{\todoLink[color=red!20,inline,caption={\thetodoListItems: For @Francis}]{\textbf{@Francis} -- #1}}
+\newcommand{\forCM}[1]{\todoLink[color=violet!20,inline,caption={\thetodoListItems: For @Craig}]{\textbf{@Craig} -- #1}}
+\newcommand{\forAll}[1]{\todoLink[color=orange!20,inline,caption={\thetodoListItems: For All}]{\textbf{@All} -- #1}}
+
+\newcounter{point}
+\setcounter{point}{0}
+\def\thepoint{\alph{point}}
+
+\newenvironment{point}{\refstepcounter{point}\noindent\textbf{Point~(\thepoint)~}\hrulefill\newline\itshape\small}{\par\vspace{-1.25em}\noindent\hrulefill}
+\setlength {\marginparwidth }{2cm} 
+%----------------------------------------------------------------------------------------
+%	INICIO DEL DOCUMENTO
+%----------------------------------------------------------------------------------------
+\begin{document}
+
+\noindent \textbf{Letter to Referee 4}
+\vspace{.3in}
+
+
+
+\noindent
+Dear Referee 4,
+
+Thank you for the very encouraging revision. You write that ``This is a fascinating and rich paper that makes important contributions both substantively and methodologically. Either of these contributions is probably worthy of a top-tier econ journal placement on its own...I agree that the pawn market has been understudied in econ.'' You also write that you ``love the paper’s methods focus on using a relatively simple field experiment design to help identify treatment effects of vital importance for both basic and applied research'' and that ``that menus—what I mean here is giving people different choice sets—seem to be understudied and underutilized in applied economics''. We agree with all these statements. 
+
+We also agree that the paper could further improve along several dimensions which you mention. We now go through all your points and explain how we respond to each of them.
+
+
+
+\vspace{.4in}
+ \noindent \textbf{Must-do}
+ \vspace{.2in}
+
+\noindent  1. Be more judicious in inference about “null” results. (The paper is overconfident about some of its inferences haha.
+
+
+\vspace{.2in}
+\textcolor{red}{R4, }\begin{point} 
+Statistically speaking, the paper focuses too much on point estimate and
+arbitrary p-value cutoffs, and not nearly enough on confidence intervals. This
+applies to both design integrity checks (Section 3.4) and treatment effect
+inference.
+\end{point}
+
+\forCM{Include nuance and confidence intervals when we talk about results. Cite the new paragraphs here}.
+
+\vspace{.2in}
+\textcolor{red}{R4, }\begin{point} 
+With respect to present bias in particular, there is the added issue of
+measurement error that must be foregrounded if the lack of evidence for present bias present-bias mediating the results continues to be foregrounded. I agree with everything that is currently relegated to fn20, and would add that:
+i. for theory about the primacy of present bias over consumption related to
+your setting and application, see Heidhues and Koszegi (2010 AER) and Allcott et al (2022 RESTUD)
+ii. additional cites re: innovations in measurement of discounting biases over money: Allcott et al and Carrera et al (2022 RESTUD)
+\end{point}
+
+\forES{Enrique brings the footnote to the text, acknowledges PB could have measurement error, and cites the 3 papers mentioned here.  --ES}
+
+\vspace{.2in}
+\textcolor{red}{R4, }\begin{point} 
+The paper also claims a null (set) regarding previous work on pawn lending.
+Caskey (1991 JMCB) would seem to falsify that—and his subsequent book,
+which may have been more influential than the article—and some quick Google
+Scholar searches turned up several other papers. You should position your
+paper based on quality, and/or on more specific claims about what you’re the
+first to do.
+\end{point}
+
+\forES{Enrique includes a paragraph citing Caskey (1991 JMCB) and Bos et al working paper  --ES}
+
+
+\vspace{.2in}
+\textcolor{red}{R4, }\begin{point} 
+The paper also claims an institutional null, for motivation purposes: no other
+standard credit contract offers flexibility comparable to pawns (see e.g., the first
+sentence of Abstract). To establish this convincingly, I think you need to have
+some discussion of the (lack of) prevalence of comparable flexibility in at least
+two types of contracts that come to mind: i) line of credit without periodic min
+payment requirements; ii) shorter-maturity installment loans, like payday loans,
+that can be rolled over or refinanced indefinitely without any min repayment
+requirement.
+\end{point}
+
+\forCM{I would just say it a very flexible contract, without saying which is more flexible, and not fight the referee.}
+
+\vspace{.2in}
+\noindent \textbf{ 2. Be more thorough in analyzing and discussing mechanisms underlying your results.}
+
+\setcounter{point}{0}
+\vspace{.2in}
+\textcolor{red}{R4, }\begin{point} 
+My main comment here is that it’s unclear, theoretically, how mandated repayment structure cures overconfidence. To me this highlights that, for your purposes, overconfidence about repayment may be too reduced-form of an object to infer much about mechanisms underlying your treatment effects and about related questions such as policy implications.
+
+i. If I’m overconfident about scraping together the cash to make the balloon payment, why doesn’t that lead me to ignore the structure, particularly given the modest commitment provided by structure (indeed, it seems like there is basically zero financial commitment, in the sense that the cost of getting to the branch to make the payment cancels out benefit of avoiding the late fee).
+\end{point}
+
+\forAll{This is where Isaac's model will come in. It is a question about both: (a) how PB is different from overconfidence (i.e. the reduced form part); and (b) how theoretically OC can lead to large TUT. --ES}
+
+\noindent Thanks. This is a very interesting comment that has several points to it. We will try to parse it into several parts.
+
+\begin{enumerate}
+    \item On ``overconfidence about repayment may be too reduced-form of an object to infer much about mechanisms''. We interpret this as saying that several models can generate borrowers over predicting payment. This is correct. One way to model overconfidence is by borrowers having stochastic income streams: while some borrowers have the correct beliefs about the distribution function generating this income, overconfident borrowers (incorrectly) believe their distribution is right-shifted.  It is not hard to write a simple model where this incorrect belief generates overprediction of recovery, more backloaded payments, and more default than correct beliefs would generate. We wrote one such model in Appendix \hl{XXX}. One can also generate those outcomes with a beta-delta present bias model with naivite. Indeed, \cite{heidhues2010} write such a model. Future work could more thoroughly test if present-bias or over-estimation of future income is more important. With our measures, we found present bias not to predict TUT.  Not that our experimental intervention requiring frequent payments would work theoretically under both present bias and overconfidence of income models. 
+    \item The paper does not claim that ``mandated repayment structure cures overconfidence''. But it does show it modifies behavior towards paying earlier and defaulting less. Behavior changes not necessarily because beliefs change but potentially because constraints (payment structure) do. A treatment one could try to implement to correct overconfidence could be to inform people of personalized statistical predictions about payment and recovery.\footnote{Along the lines of one of these paper's cauthors here: \cite{sadka2024information}.}
+    \item On  ``If I’m overconfident about scraping together the cash to make the balloon payment, why doesn’t that lead me to ignore the structure, particularly given the modest commitment provided by structure (indeed, it seems like there is basically zero financial commitment, in the sense that the cost of getting to the branch to make the payment cancels out benefit of avoiding the late fee).''  There is an empirical question and a theoretical question about mechanisms embedded here. First, the empirical fact is this ``modest'' commitment was sufficient to cause economically large and statistically significant changes in behavior and outcomes. Borrowers did \textit{not} ignore the structure, and in that sense, it was not modest for them. A second question is what mechanism can explain this fact. Let's start by focusing on the ATE. What structured payments do is, all else constant, impose a cost for not paying each month. In our typology: neoclassical, present biased sophisticated, present bias naives, or income-overconfidents would all pay more compared to the counterfactual of the status quo contract simply because we are making it more costly not to pay. That is, being overoptimistic about your future income does not imply that you ignore the cost of your actions today. Recall that we are here comparing two overconfident borrowers, one in the status quo arm and the other in the structured payments arm.
+    \item Another way to interpret R4's question is Why would a modest fee have the significant effect the data revealed. Based on \cite{beshears2016beyond} we argue that a modest fee may matter as it could: 1) circumvent limited attention, 2) set a reference point, 3) fight forgetfulness, 4) be a trigger-cue acting as a recommendation to act, 5) set a goal (which have been shown to work even without punishment\footnote{See for instance \cite{locke1990theory, heath1999goals}.}), 6) increase salience \citep{bordalo2013salience}. Note that several papers show that making a plan with no pecuniary penalty has had significant effects on behavior in many domains \citep{nickerson2010voting,milkman2011using,milkman2013planning}. Although we cannot separately identify which of these potential mechanisms could be generating the effects, our result does not run counter to other findings in the literature. 
+    \item R4 may be asking if overconfident borrowers would respond more to structure than other types of borrowers (i.e. a comparison across borrower types rather than across experimental arms)? There are two ways to answer this question. Empirically, we do find that the effects are, in fact, larger for those we classify as overconfident using our measure. Theoretically, we write a simple three-period model with concave consumption utility that generates this result. The intuition is the following. Start from period 2, where borrowers contemplate making an interim payment of size k, trading off lower liquidity in that period against lower debt (and therefore lower interest and larger probability of recovering). Take the marginal non-overconfident borrower who is indifferent in that tradeoff. If we now make this borrower overconfident and increase her expected period 3 income (all else constant), the borrower will now prefer not to pay the interim payment (or pay less) since the future self is richer and the cost of paying in terms of marginal utility will be lower for the future self. So R4 is correct that overconfident borrowers would postpone payment to the future and make less interim ones, only to find that they cannot pay. \forIM{Does sureconfidence predict default in levels $Y_0$?} That is precisely the reason why if they were forced do more interim payments their TUT would be larger. Now, they are not forced but encouraged through a fee.\forCM{My problem is that for the same reason as above, the overconfident will be \textit{more} willing to pay the fee than a non-overconfident since for their period 2 self liquidity is worth more than for their period 3 self.}
+    
+\end{enumerate}
+
+ 
+
+
+
+
+\setcounter{point}{0}
+\vspace{.2in}
+\textcolor{red}{R4, }\begin{point}  \setcounter{point}{0}
+Continued...
+ii. Your informal theory here seems to be that the late penalty payment provides commitment, but see above about the lack of financial
+commitment and also consider why accruing interest at 7\%, compounded daily, is not commitment enough.
+iii. A related consideration is how your interpretation of a commitment effect
+squares with your inference that present-bias is unimportant (see Allcott et al 2022 on this and the point above). Do you, or others, have some theory of how commitment operates on beliefs but not discounting?
+\end{point}
+
+Thanks. On point (ii): the payment structure we introduce may operate in several ways (we posited six possibilities based on the literature) as explained above, and not all of them are commitment-related (in fact, we have mostly eliminated the word commitment and focused on the word ``structure'' for this reason). We agree that accruing interest at 7\%, compounded daily, creates an incentive to pay early. However, that is held constant across experimental conditions.  The experimental result is that the extra payment structure (on top of the interest rate) generates earlier payments and more recovery. 
+
+On point (iii): we do not claim that present bias could not theoretically generate the results we observe. On the contrary, the model in Appendix \hl{XX} shows it can potentially deliver them, depending on exact parameter values. The modest claim we make in the paper is that our measure of present bias does not predict the TUT effect. This, of course, can be due to our measure being noisy. In the previous version of the paper we acknowledged this by writing in the paper that \hl{``...''}. Now we are more emphatic in indicating to the reader that this is a real and likely possibility and write the following: \hl{``...''}.
+
+On the last part of the question on how commitment may operate on beliefs but not discounting, we understand that you are asking if we can write a model where structured payments could generate positive ATE and TUT effects for overconfident borrowers even if they are not present-biased. We show one model that generates this in the appendix. Commitment does not change beliefs in the model (recall that beliefs are not an outcome we measure), but it does change behavior in a way that could rationalize our empirical results qualitatively. The paper you cite above, \cite{predatory2022}, does talk in the introduction as if present-focus (preferences) were in principle separate from over-optimism of the financial situation\footnote{``if borrowers are “naive” about their present focus, over-optimistic about their future financial situation, or for some other reason do not anticipate their high likelihood of repeat borrowing, they could underestimate the costs of repaying a loan. In this case, restricting credit access might make borrowers better off''.} and this is indeed how we wrote the appendix model.
+
+
+\setcounter{point}{0}
+\vspace{.2in}
+\textcolor{red}{R4, }\begin{point} 
+Continued...
+iv. Having a structured payment arm without a penalty fee would be useful
+for interpreting the results. It sounds like you have such an arm, and
+other related arms, but are saving those for another paper (fn 7). Seems
+like those arms probably belong in this paper.
+\end{point}
+
+
+
+
+
+\setcounter{point}{0}
+\vspace{.2in}
+\textcolor{red}{R4, }\begin{point} 
+Continued...
+v. Usuallly our first thought for treating a mistaken or biased belief like
+overconfidence is to treat the belief itself (e.g., Bertrand and Morse). Even
+more so if the belief is not about preferences, broadly defined, as is the
+case with present bias. So why the focus on structured payments and not
+on, e.g., belief-focused treatments? This is something to tee up for future
+work, in the Conclusion, if nothing else.
+\end{point}
+
+
+\vspace{.2in}
+\textcolor{red}{R4, }\begin{point} 
+Another comment is that it’s useful to engage with related literature on how
+behavioral biases like overconfidence can persist, even in a high-stakes setting
+with lots of feedback <-> opportunities for learning
+i. Pfauti, Seyrich, and Zinman offer some discussion about this that is
+specific to overconfidence.
+ii. There is theory and empirical work specifically focused on (not) learning
+about one’s specific biases... Josh Schwartzstein’s papers are a good
+entry point. Heidhues, Koszegi, and co-authors also might have good
+work on this.
+iii. Enke and co-authors’ work, and the “cognitive turn” in behavioral econ
+more generally, also seems relevant here: if many biases (like oc, and/or
+present-bias) emerge from an underlying cognitive process like limited
+processing power or cognitive noise, then the well-documented
+persistence of cognitive skills could explain the persistence of emergent
+biases.
+\end{point}
+
+\forAll{Craig and me should read these papers and discuss}
+
+
+\vspace{.2in}
+\noindent \textbf{3. Engage more with related results from other papers}
+
+\setcounter{point}{0}
+\vspace{.2in}
+\textcolor{red}{R4, }\begin{point} 
+Allcott et al offer a new debt reduction commitment contract in a similar market,
+borrowers value it, but it does not seem to produce its intended effects. Seems
+like you find the opposite, in some sense... what might explain the differences? Do you find any sort of gradient between forecast errors and
+experience?
+\end{point}
+
+\forIM{Can you show in a regression if more experienced borrowers predict better?}
+
+
+
+\vspace{.2in}
+\textcolor{red}{R4, }\begin{point} 
+Allcott et al find that experienced borrowers in a similar market are well-
+calibrated about their repayment likelihood, even though their borrowers are predicting something that is plausibly more difficult to predict than paying off a
+single loan. You find less sophistication overall. What might explain the
+difference? Do you find any sort of gradient between forecast errors and
+experience?
+\end{point}
+
+
+
+
+\vspace{.2in}
+\textcolor{red}{R4, }\begin{point} 
+Virhriala (JFE) on liquidity-constrained borrowers forgoing free mortgage
+payment flexibility seems more consistent with your findings....
+\end{point}
+
+
+\vspace{.2in}
+\textcolor{red}{R4, }\begin{point} 
+See also my point below on costly failed commitment from partial adherence to
+multi-payment commitment contracts in other domains
+\end{point}
+
+
+
+\vspace{.2in}
+\noindent \textbf{4. Revisit your APR exposition and calculation}
+
+\setcounter{point}{0}
+\vspace{.2in}
+\textcolor{red}{R4, }\begin{point} 
+I think you are including the actual pecuniary cost of defaulting, not the expected
+cost as stated on p.10. The expected cost would average across defaulters and
+non-defaulters, and your notation on p. 10 is at the individual borrower or pawn
+level.
+\end{point}
+
+\forCM{R4 is right that we are using realized rather than expected cost. We need to write here why. }
+
+
+\vspace{.2in}
+\textcolor{red}{R4, }\begin{point} 
+I don’t understand how 7\% monthly interest, compounded daily, equates to a
+sample mean APR of 57\%. 7\% monthly on declining balance should be at least
+84\% APR, even before accounting for compounding and pecuniary default costs.
+\end{point}
+
+\forCM{R4 is right that we are using realized rather than expected cost. We need to write here why. }
+
+
+
+\vspace{.2in}
+\noindent \textbf{5. Did you pre-register? If yes, link to the relevant docs... if not, explain why not.}
+
+
+\vspace{.2in}
+\noindent \textbf{6. Clarify what you mean by the last two sentences on p. 20: “Having said this, a large literature focuses on the cost of servicing loans. We follow in the steps of that the
+literature.”
+}
+
+\vspace{.2in}
+\noindent \textbf{7. Athey et al. estimator. My understanding is that an essential first step here, omitted from the paper, is validating the model with tests of Mean Forest Prediction and
+Differential Forest Prediction. For a recent implementation in household finance see,
+e.g., Burke et al (2023 RFS).
+}
+
+\forFdT{Is this the same as the Chernusukov heterogeneity test? Can we make R4 happy by implementing the same test he implements in Burke et al (2023 RFS)? i.e. Mean Forest Prediction and
+Differential Forest Prediction}
+
+\vspace{.3in}
+\noindent \textbf{STRONGLY CONSIDER DOING}
+
+\vspace{.2in}
+\noindent \textbf{1. Broadening the motivation to engage with the commitment vs. flexibility literature outside of loan contracting.}
+
+
+
+\setcounter{point}{0}
+\vspace{.2in}
+\textcolor{red}{R4, }\begin{point} 
+Broadly, “hard” commitments have come under fire, particularly when the target
+market includes liquidity constrained consumers in risky environments (as is
+clearly the case in your setting)—e.g., I think Laibson has a paper on this, and
+several papers by Taubinsky and various co-authors—and/or when the
+commitment contract is new and/or potentially confusing (Carrera et al
+RESTUD).
+\end{point}
+
+
+
+\vspace{.2in}
+\textcolor{red}{R4, }\begin{point} 
+Also n.b. is the failed commitment accompanied by very costly partial
+adherence to the contract is a common feature of other multi-payment
+commitment contracts (see e.g., the literatures on savings, smoking cessation,
+exercise....)
+\end{point}
+
+
+\vspace{.2in}
+\noindent \textbf{2. Broaden the motivation to engage with nudging, including defaults. Seems like your design helps with, for example, identifying when to use a strong (sludgy) opt-out
+default. }
+
+\vspace{.2in}
+\noindent \textbf{3. Add to motivation on commitment—or at least benefit of payment structure—in loan contracting... the Mortgages as Piggy Banks paper (QJE I think) seems relevant here.}
+
+
+\vspace{.2in}
+\noindent \textbf{4. Consider the importance of higher moments in the distribution of key outcomes. Allcott et al shows that accounting for risk aversion <-> concavity in the utility function is crucial.
+}
+
+
+\vspace{.2in}
+\noindent \textbf{5. Adding a bit more detail on pawn shop cost structure. In particular, I’m wondering why interest rates are so high and LTV so low (especially if appraised value << market value, as suggested in a different section of the paper) ... is this mostly due to operating costs, or is there also a substantial component of risk re: gold prices?}
+
+\vspace{.2in}
+\noindent \textbf{6. Adding a bit more detail on borrowers’ high-cost credit (outside) options, to help with thinking about how closely your results map into welfare implications. What are the closest substitutes for pawning?}
+
+\vspace{.2in}
+\noindent \textbf{7. I may just be missing this, but I couldn’t find any confirmation of the other key aspect of treatment assignment compliance besides take-up: that borrowers in the no-choice arms got their assigned contract.}
+
+\vspace{.2in}
+\noindent \textbf{8. I think partial repayment (what you call “payment bifurcation” on p. 19) is the best welfare proxy you have. I would make this a main outcome.}
+
+\forAll{I agree. Lets bring this table to the paper.}
+
+
+\vspace{.2in}
+\noindent \textbf{9. I would create a single standardized index of your main outcomes... otherwise you’re begging the question of why you’re not adjusting for multiple hypothesis testing.}
+
+\vspace{.3in}
+\noindent \textbf{OTHER COMMENTS}
+\vspace{.2in}
+
+
+\textbf{1. Fn 4 is missing cites}
+
+\textbf{2. Define “CONSORT”}
+
+\textbf{3. Fn17 is confusing, as it implies that at least one of your key estimates is done with
+the randomization strata. Why not always include the strata?}
+
+\forIM{Include strata in all results}
+
+
+\textbf{4. Typo: “wide-fores”}
+
+\textbf{5. Typo: “panw”}
+
+
+
+
+
+
+\vspace{.2in}
+Thank you for your thoughtful comments.
+
+
+%\begin{point} this is point a
+%\end{point}
+
+%\textcolor{red}{ENRIQUE}
+
+% REFERENCES ======================================================
+\cleardoublepage
+\singlespacing
+\bibliographystyle{chicago}
+\bibliography{References.bib}
+%\printbibliography
+\end{document}

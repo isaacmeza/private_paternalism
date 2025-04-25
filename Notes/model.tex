@@ -1,0 +1,257 @@
+\documentclass[11pt]{article}
+\usepackage{amsmath,amssymb,amsthm,fullpage}
+\usepackage{bm}
+\usepackage{mathtools}
+\usepackage{color}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{proposition}{Proposition}
+\newtheorem{remark}{Remark}
+
+\begin{document}
+
+\section{Model Setup}
+
+\paragraph{Periods and Loan.}
+Time is discrete, \(t \in \{1,2,3\}\). In period \(t=1\), the borrower receives a loan of size \(L > 0\). She has exogenous incomes \(\{y_1,y_2,y_3\}\) in each period. We allow for a \emph{prepayment} of size \(k \in [0, L]\) in period~2, and a final repayment decision in period~3. Two interest rates apply:
+\[
+R_2 > 0 
+\quad (\text{applies to the period-2 prepayment}), \]
+\[R_3 > 0 
+\quad (\text{applies to the period-3 repayment of remaining balance}).
+\]
+Hence, if the borrower prepays \(k\) in period~2, she pays \(R_2 \cdot k\). If there remains \(L - k\) principal going into period~3, repaying it fully costs \(R_3 \cdot (L - k)\).
+
+\paragraph{Preferences.}
+We assume \emph{quasi-hyperbolic} discounting with parameters \((\beta, \delta)\), where \(0 < \delta < 1\) and \(0 < \beta \le 1\). The instantaneous utility is given by some \(u(\cdot)\). Thus, from the perspective of period~1, the total utility over consumption \(\{c_1, c_2, c_3\}\) plus an extra payoff \(v\) if she repays by \(t=3\) is
+\begin{align}
+U 
+\;=\;
+u(c_1) 
+\;+\;
+\beta\,\delta \, u(c_2)
+\;+\;
+\beta\,\delta^2 
+\Bigl(
+   u(c_3) 
+   \;+\; 
+   \mathbf{1}_{\{\text{repay at }t=3\}} \cdot v
+\Bigr),
+\tag{1}
+\end{align}
+where \(\mathbf{1}_{\{\text{repay at }t=3\}}\) indicates \(1\) if the borrower fully repays in period~3, and \(0\) otherwise.
+
+\paragraph{Behavioral Types.}
+\begin{itemize}
+\item \emph{Rational}: \(\beta = 1\).  
+\item \emph{Present-Biased Sophisticate}: \(0 < \beta < 1\) and \emph{foresees} that future selves also discount by \(\beta\).
+\item \emph{Present-Biased Na\"{i}f}: \(0 < \beta < 1\) but \emph{believes (incorrectly)} that future selves use \(\beta=1\).
+\end{itemize}
+Moreover, the borrower may be \emph{overconfident} about future income, believing \((y_2,y_3)\sim \mathbb{P}'\) that is more optimistic than the true distribution \(\mathbb{P}\). A \emph{realistic} borrower uses the correct \(\mathbb{P}\).
+
+\paragraph{Commitment vs.\ No Commitment.}
+At period \(1\), the borrower chooses
+\[
+C 
+\;\in\; 
+\{\text{Commit},\, \text{No-Commit}\}.
+\]
+Under \textbf{No-Commit}, the borrower \emph{may} prepay \(k\) in \(t=2\), but faces no penalty for skipping it. Under \textbf{Commit}, if she skips \(k\) in \(t=2\), she must pay a fee \(\phi \ge 0\) in period~3 \emph{if} she ultimately repays.  
+
+\section{Period-by-Period Decisions}
+
+\subsection{Period 3: Repay or Default}
+
+Let the \emph{outstanding principal} be \(L-k\) if the borrower prepays \(k\) in period~2, or \(L\) if she does not. If she is in the commitment regime but skips \(k\), she also owes a fee \(\phi\) when repaying. Thus:
+
+\[
+\text{Consumption if Repay} 
+\;=\; 
+y_3 \;-\; R_3 \times (\text{outstanding}) 
+\;-\; 
+\phi \cdot \mathbf{1}_{\{\text{commit} \,\wedge\, \text{skipped }k\}},
+\]
+plus the continuation payoff \(v\). If she \textbf{defaults}, consumption is \(y_3\) with no \(v\). Hence she repays if and only if
+\[
+u\Bigl(
+  y_3 - R_3 \cdot (\text{outstanding})
+  \;-\; 
+  \phi \cdot \mathbf{1}_{\{\text{commit}\,\wedge\,\text{skipped }k\}}
+\Bigr)
+\;+\; v
+\quad>\quad
+u(y_3).
+\]
+
+\subsection{Period 2: Pay $k$ or Not}
+
+In period~2, the borrower’s discount factor toward period~3 is \(\beta\,\delta\).  Denote
+\[
+\text{Pay-$k$ Utility} 
+\;=\; 
+u\bigl(y_2 - R_2\,k\bigr)
+\;+\;
+\beta\,\delta\,
+\mathbb{E}\Bigl[
+  \max\{\,u(y_3 - R_3(L - k)) + v,\;u(y_3)\}
+\Bigr],
+\]
+\[
+\text{Not-Pay Utility (No-Commit)} 
+\;=\;
+u(y_2)
+\;+\;
+\beta\,\delta\,
+\mathbb{E}\Bigl[
+  \max\{\,u(y_3 - R_3\,L) + v,\;u(y_3)\}
+\Bigr].
+\]
+Under \textbf{No-Commit}, she prepays \(k\) if and only if
+\[
+\text{Pay-$k$ Utility} 
+\;>\;
+\text{Not-Pay Utility (No-Commit)}.
+\]
+Under \textbf{Commit}, skipping \(k\) adds \(\phi\) if she repays at \(t=3\). Thus
+\[
+\text{Skip-$k$ Utility (Commit)}
+\;=\;
+u(y_2)
+\;+\;
+\beta\,\delta\,
+\mathbb{E}\Bigl[
+  \max\bigl\{
+    u(y_3 - R_3\,L - \phi) + v,\;
+    u(y_3)
+  \bigr\}
+\Bigr].
+\]
+So in \textbf{Commit}, she pays \(k\) iff
+\[
+\text{Pay-$k$ Utility} 
+\;>\;
+\text{Skip-$k$ Utility (Commit)}.
+\]
+
+\subsection{Period 1: Choose Commitment or Not}
+
+At \(t=1\), the borrower compares the ex-ante \emph{perceived} expected utilities of \textbf{No-Commit} vs.\ \textbf{Commit}:
+\[
+U_{\text{NC}}
+\;=\;
+u(y_1)
+\;+\;
+\beta_{\text{hat}}\,\delta 
+\;\mathbb{E}_{(y_2,y_3)}\Bigl[
+   \max\{\text{Pay-$k$ Utility},\;\text{Not-Pay Utility (No-Commit)}\}
+\Bigr],
+\]
+\[
+U_{\text{C}}
+\;=\;
+u(y_1)
+\;+\;
+\beta_{\text{hat}}\,\delta 
+\;\mathbb{E}_{(y_2,y_3)}\Bigl[
+  \max\{\text{Pay-$k$ Utility},\;\text{Skip-$k$ Utility (Commit)}\}
+\Bigr].
+\]
+Here, \(\beta_{\text{hat}}=1\) if the borrower is \emph{na\"{\i}ve} (incorrectly assuming future \(\beta=1\)), whereas \(\beta_{\text{hat}}=\beta\) if she is \emph{sophisticated} or rational (\(\beta=1\)). Also, \(\mathbb{E}_{(y_2,y_3)}\) might be taken under the true distribution \(\mathbb{P}\) (if realistic) or a biased \(\mathbb{P}'\) (if overconfident). She chooses \(\text{Commit}\) iff \(U_{\text{C}} > U_{\text{NC}}\).
+
+% \section{Thresholds in Each Period}
+
+% \paragraph{Period 3 (Repay vs.\ Default).} Define the function
+% \[
+% D_3(y_3,\text{outstanding},\phi_{\text{commit}}) 
+% \;=\;
+% u\bigl(y_3 - R_3\,(\text{outstanding}) - \phi_{\text{commit}}\bigr)
+% \;+\; v 
+% \;-\; 
+% u(y_3).
+% \]
+% She repays iff \(D_3(\cdot) > 0\). Otherwise she defaults.
+
+% \paragraph{Period 2 (Pay-$k$ vs.\ Not Pay).} 
+% In either regime, define
+% \[
+% D_2^{\text{(pay)}}(y_2)
+% \;=\;
+% u(y_2 - R_2\,k)
+% \;+\;
+% \beta\,\delta \,
+% \mathbb{E}\bigl[\text{repay-or-default payoff if outstanding }(L-k)\bigr]\]
+% \[\qquad \;-\;
+% \Bigl(
+%   u(y_2)
+%   \;+\;
+%   \beta\,\delta \,
+%   \mathbb{E}\bigl[\text{repay-or-default payoff if outstanding }L \bigr]
+% \Bigr).
+% \]
+% Under \textbf{No-Commit}, she pays \(k\) iff \(D_2^{\text{(pay)}}(y_2) > 0\).  
+% Under \textbf{Commit}, replace the “repay payoff” for the \((L\text{-skipped},\phi)\) case accordingly. She pays \(k\) iff
+% \[
+% D_2^{\text{(pay)}}(y_2) 
+% \;>\; 
+% D_2^{\text{(skip, commit)}}(y_2),
+% \]
+% where \(D_2^{\text{(skip, commit)}}\) includes the \(\phi\) penalty if repaying.
+
+% \paragraph{Period 1 (Commit vs.\ No-Commit).}
+% Define
+% \[
+% D_1 
+% \;=\;
+% U_{\text{C}} - U_{\text{NC}}
+% \;\;=\;\;
+% \bigl[u(y_1) + \beta_{\text{hat}}\delta \,\mathbb{E}(\dots)\bigr] 
+% \;-\;
+% \bigl[u(y_1) + \beta_{\text{hat}}\delta \,\mathbb{E}(\dots)\bigr].
+% \]
+% She chooses \(\text{Commit}\) iff \(D_1>0\).
+
+\section{Outcomes of Interest}
+
+Once the borrower’s type (rational, naive, or sophisticated; realistic or overconfident) is specified, along with the realized \((y_2,y_3)\), the above thresholds determine each period’s decision. We then define:
+
+\begin{enumerate}
+\item \textbf{Probability of Default}:
+\[
+\Pr[\text{default}] \;=\; \mathbb{E}\bigl[\mathbf{1}_{\{\text{default at }t=3\}}\bigr].
+\]
+\item \textbf{Average Payment}:
+\[
+\mathbb{E}\bigl[m_2 + m_3\bigr],
+\]
+where \(m_2 \in \{0,\,kR_2\}\) is the actual period-2 payment (including interest factor \(R_2\)), and \(m_3 \in \{0,\,(\!L\!-\!k\!)\,R_3, LR_3\}\) is the period-3 repayment if it occurs.
+\item \textbf{Probability of Choosing Commitment}:
+\[
+\Pr[C = \text{Commit}]
+\]
+\item \textbf{Financial Cost} \(F\):
+\[
+F \;=\;
+\begin{cases}
+\displaystyle
+\phi \cdot \mathbf{1}_{\{C=\text{commit} \,\wedge\, m_2=0\}}
+\;+\;v \;-\;L \;+\;(m_2 + m_3),
+&
+\text{if default occurs at }t=3,
+\\[6pt]
+\displaystyle
+\phi \cdot \mathbf{1}_{\{C=\text{commit} \,\wedge\, m_2=0\}}
+\;+\;\bigl[\,(m_2 - k) + (m_3 - (L-k))\bigr],
+&
+\text{if repaying in full at }t=3.
+\end{cases}
+\]
+\noindent
+Here, \(m_2 = R_2\,k\) if the borrower prepays, else \(0\); \(m_3 = R_3\,(L - k)\) if the borrower repays in \(t=3\) and $m_2 =  R_2\,k$, if $m_2=0$, then \(m_3 = R_3\,L \), otherwise it is \(m_3=0\). The term \(\phi\) arises only if the borrower is in the commitment regime, skipped \(k\), and repays. In the event of default, we add \(\,(v - L + m_2 + m_3)\). In the event of repayment, we effectively sum the “interest” portions \(\,(m_2 - k) + (m_3 - (L-k))\).
+\end{enumerate}
+
+
+
+\end{document}
