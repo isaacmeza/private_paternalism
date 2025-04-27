@@ -5,7 +5,7 @@ library(MCMCpack)
 library(parallel)
 
 # SET WORKING DIRECTORY
-setwd('C:/Users/isaac/Dropbox/Apps/Overleaf/Donde2022')
+setwd("~/Donde2022")
 set.seed(1)
 
 
@@ -216,8 +216,8 @@ fit_instr_forest = function(xvar, xvar_test, wvar, yvar, zvar, dta, iter, pred_n
 }
 
 compute_choose_wrong_stats <- function(df) {
-  # Define threshold values from -100 to 100 by 5
-  thresholds <- seq(-100, 100, by = 5)
+  # Define threshold values from -50 to 50 by 5
+  thresholds <- seq(-50, 50, by = 5)
   
   # Initialize a results data frame
   results <- data.frame(
@@ -233,30 +233,43 @@ compute_choose_wrong_stats <- function(df) {
     # Convert to decimal (e.g., -100 becomes -1)
     t_val <- i / 100
     
-    # For all borrowers in the choice arm (t_producto == 4) 
-    df_subset <- df %>%
-      filter(t_producto == 4 & (!is.na(inst_hat_0) | !is.na(inst_hat_1))) %>%
-      mutate(choose_wrong_fee = ifelse((inst_hat_0 > t_val & pro_6 == 1) |
-                                         (inst_hat_1 < -t_val & pro_7 == 1),
-                                       1, 0))
-    mean_cwf <- mean(df_subset$choose_wrong_fee, na.rm = TRUE) * 100
-    
-    # For "choosers": observations with pro_7 == 1 and non-missing inst_hat_1
-    df_choose <- df %>%
-      filter(pro_7 == 1 & !is.na(inst_hat_1)) %>%
-      mutate(choose_wrong_fee_choose = ifelse(inst_hat_1 < -t_val, 1, 0))
-    mean_cwf_choose <- mean(df_choose$choose_wrong_fee_choose, na.rm = TRUE) * 100
-    
-    # For "non-choosers": observations with pro_6 == 1 and non-missing inst_hat_0
-    df_nonchoose <- df %>%
-      filter(pro_6 == 1 & !is.na(inst_hat_0)) %>%
-      mutate(choose_wrong_fee_nonchoose = ifelse(inst_hat_0 > t_val, 1, 0))
-    mean_cwf_nonchoose <- mean(df_nonchoose$choose_wrong_fee_nonchoose, na.rm = TRUE) * 100
+    df_cwf <- df %>%
+      mutate(
+        # 1) choose_wrong_fee:
+        #    1 if ((inst_hat_0 > i/100 & pro_6==1) OR (inst_hat_1 < -i/100 & pro_7==1)) 
+        #    0 if not satisfied
+        #    NA if t_producto != 4
+        choose_wrong_fee = case_when(
+          t_producto != 4 ~ NA_real_,  # condition: not product 4
+          (inst_hat_0 > i/100 & pro_6 == 1) | (inst_hat_1 < -i/100 & pro_7 == 1) ~ 1,
+          TRUE ~ 0
+        ),
+        
+        # 2) choose_wrong_fee_choose:
+        #    1 if (inst_hat_1 < -i/100 & pro_7 == 1)
+        #    0 if not satisfied
+        #    NA if pro_7 != 1 or inst_hat_1 is NA
+        choose_wrong_fee_choose = case_when(
+          pro_7 == 1 & !is.na(inst_hat_1) & inst_hat_1 < (-i/100) ~ 1,
+          pro_7 == 1 & !is.na(inst_hat_1)                         ~ 0,
+          TRUE                                                    ~ NA_real_
+        ),
+        
+        # 3) choose_wrong_fee_nonchoose:
+        #    1 if (inst_hat_0 > i/100 & pro_6 == 1)
+        #    0 if not satisfied
+        #    NA if pro_6 != 1 or inst_hat_0 is NA
+        choose_wrong_fee_nonchoose = case_when(
+          pro_6 == 1 & !is.na(inst_hat_0) & inst_hat_0 > i/100 ~ 1,
+          pro_6 == 1 & !is.na(inst_hat_0)                      ~ 0,
+          TRUE                                                 ~ NA_real_
+        )
+      )
     
     # Store the computed means in the results data frame
-    results$cwf[k] <- mean_cwf
-    results$cwf_choose[k] <- mean_cwf_choose
-    results$cwf_nonchoose[k] <- mean_cwf_nonchoose
+    results$cwf[k] <- mean(df_cwf$choose_wrong_fee, na.rm = TRUE) * 100
+    results$cwf_choose[k] <- mean(df_cwf$choose_wrong_fee_choose, na.rm = TRUE) * 100
+    results$cwf_nonchoose[k] <- mean(df_cwf$choose_wrong_fee_nonchoose, na.rm = TRUE) * 100
   }
   
   return(results)
@@ -272,7 +285,7 @@ require("dplyr")
 tot_tut <- read_csv('./_aux/tot_tut_btsp_apr.csv') 
 
 data_in <- tot_tut %>%
-  mutate_all(~ifelse(is.na(.), median(., na.rm = TRUE), .))  
+  mutate(across(-c(pro_6, pro_7), ~ ifelse(is.na(.), median(., na.rm = TRUE), .)))  
 
 tot <- data_in %>% 
   filter(esample_tot == 1) 
@@ -345,9 +358,11 @@ fit_model_wrapper <- function(i) {
   return(cwf_stats)
 }
 
-reps <- 1:2
+reps <- 1:5000
 
-cl <- makeCluster(detectCores() - 2)
+time_taken <- system.time({
+cl <- makeCluster(detectCores() - 10)
+
 clusterExport(cl, varlist = c("fit_instr_forest", "compute_choose_wrong_stats", "crump", "X_tot", "X_tut", 
                               "tot_copy", "tut_copy", "W_tot", "W_tut", "Y_tot", "Y_tut", 
                               "Z_tot", "Z_tut"))
@@ -359,12 +374,13 @@ clusterEvalQ(cl, {
   library(MCMCpack)
 })
 
-start_time <- Sys.time()
 results_list <- parLapply(cl, reps, fit_model_wrapper)
-end_time <- Sys.time()
-cat("Total running time:", end_time - start_time, "\n")
 
 stopCluster(cl)
+rm(cl)         # Remove the cluster object from your workspace
+gc()           # Run garbage collection to free memory
+})
+print(time_taken)
 
 # Combine all the results into one data frame
 cw_tot_tut_btsp <- bind_rows(results_list)
@@ -427,3 +443,9 @@ density_plot <- ggplot(cw_tot_tut_btsp_long %>% filter(threshold == 0),
     title = "Density at Threshold 0"
   ) +
   theme_minimal()
+
+# Save the plots to files
+ggsave("./Figuras/line_cw_apr_tot_tut_btsp.png", summary_plot, width = 8, height = 6, dpi = 300)
+summary_plot
+ggsave("./Figuras/density_cw_apr_tot_tut_btsp.png", density_plot, width = 8, height = 6, dpi = 300)
+density_plot
